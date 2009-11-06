@@ -23,7 +23,7 @@
 
         public static void WriteMetadata(string inputFile)
         {
-            File.Copy(inputFile, "Output-WriteMetadataUsingWpfTools.jpg", true);
+            File.Copy(inputFile, "BitmapMetadataExamples.WriteMetadata.jpg", true);
 
             WpfFileManager wpfFileManager = new WpfFileManager();
 
@@ -32,7 +32,7 @@
             WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
             wpfMetadata.PlaceCountry = "United States";
 
-            wpfFileManager.Write("Output-WriteMetadataUsingWpfTools.jpg", bitmapMetadata);
+            wpfFileManager.Write("BitmapMetadataExamples.WriteMetadata.jpg", bitmapMetadata);
         }
 
         public static void ReadIPTCAddres(string inputFile)

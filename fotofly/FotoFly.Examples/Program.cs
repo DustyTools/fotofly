@@ -11,7 +11,7 @@ namespace FotoFly.Examples
         public static void Main(string[] args)
         {
             // Test files
-            string testNoRegion = "Test-NoRegion.jpg";
+            string testNoRegion = "Test-NoRegions.jpg";
             string testOneRegion = "Test-OneRegion.jpg";
             string testGeotagged = "Test-Geotagged.jpg";
 
