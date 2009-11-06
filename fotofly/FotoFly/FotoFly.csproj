@@ -58,6 +58,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Queries\ExifQueries.cs" />
+    <Compile Include="Queries\IptcQueries.cs" />
+    <Compile Include="Queries\XmpQueries.cs" />
     <Compile Include="WpfBitmapMetadataExtender.cs" />
     <Compile Include="IImageMetadataTools.cs" />
     <Compile Include="MetadataProperties\Address.cs" />

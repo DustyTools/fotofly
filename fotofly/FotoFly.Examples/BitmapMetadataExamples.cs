@@ -181,13 +181,13 @@
                         if (regionMetadata.ContainsQuery(microsoftPersonDisplayName))
                         {
                             Console.WriteLine("PersonDisplayName:\t"
-                               + regionMetadata.GetQuery(WpfQueries.MicrosoftPersonDisplayName).ToString());
+                               + regionMetadata.GetQuery(XmpQueries.MicrosoftPersonDisplayName).ToString());
                         }
 
                         if (regionMetadata.ContainsQuery(microsoftRectangle))
                         {
                             Console.WriteLine("Rectangle:\t\t"
-                               + regionMetadata.GetQuery(WpfQueries.MicrosoftRectangle).ToString());
+                               + regionMetadata.GetQuery(XmpQueries.MicrosoftRectangle).ToString());
                         }
                     }
                 }
@@ -248,13 +248,13 @@
                         // If the region has a DisplayName, change the value
                         if (regionMetadata.ContainsQuery(microsoftPersonDisplayName))
                         {
-                            regionMetadata.SetQuery(WpfQueries.MicrosoftPersonDisplayName, "test");
+                            regionMetadata.SetQuery(XmpQueries.MicrosoftPersonDisplayName, "test");
                         }
 
                         // If the region has a DisplayName, change the value
                         if (regionMetadata.ContainsQuery(microsoftRectangle))
                         {
-                            regionMetadata.SetQuery(WpfQueries.MicrosoftRectangle, "test");
+                            regionMetadata.SetQuery(XmpQueries.MicrosoftRectangle, "test");
                         }
                     }
 

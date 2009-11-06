@@ -20,6 +20,9 @@
 
     public class WpfFileManager
     {
+        public static readonly uint PaddingAmount = 5120;
+
+        // XMP Types
         public BitmapMetadata Read(string file)
         {
             // The Metadata we'll be returning
@@ -71,9 +74,9 @@
             }
 
             // Ensure the metadata has the right padding in place for new data
-            if (Convert.ToInt32(bitmapMetadata.GetQuery(WpfQueries.ExifPadding)) < WpfQueries.PaddingAmount
-                || Convert.ToInt32(bitmapMetadata.GetQuery(WpfQueries.XmpPadding)) < WpfQueries.PaddingAmount
-                || Convert.ToInt32(bitmapMetadata.GetQuery(WpfQueries.IfdPadding)) < WpfQueries.PaddingAmount)
+            if (Convert.ToInt32(bitmapMetadata.GetQuery(ExifQueries.Padding)) < WpfFileManager.PaddingAmount
+                || Convert.ToInt32(bitmapMetadata.GetQuery(XmpQueries.Padding)) < WpfFileManager.PaddingAmount
+                || Convert.ToInt32(bitmapMetadata.GetQuery(IptcQueries.Padding)) < WpfFileManager.PaddingAmount)
             {
                 this.AddMetadataPadding(bitmapMetadata);
             }
@@ -196,6 +199,7 @@
 
         private void ValidateThreadingModel()
         {
+            // TODO: Don't need this check for Win 7 or Vista with the Platform Update Package (KB971644
             // Try changing to STA
             Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
             Thread.CurrentThread.IsBackground = false;
@@ -211,21 +215,21 @@
         private void AddMetadataPadding(BitmapMetadata bitmapMetadata)
         {
             // Ensure there's enough EXIF Padding
-            if (Convert.ToInt32(bitmapMetadata.GetQuery(WpfQueries.ExifPadding)) < WpfQueries.PaddingAmount)
+            if (Convert.ToInt32(bitmapMetadata.GetQuery(ExifQueries.Padding)) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(WpfQueries.ExifPadding, WpfQueries.PaddingAmount);
+                bitmapMetadata.SetQuery(ExifQueries.Padding, WpfFileManager.PaddingAmount);
             }
 
             // Ensure there's enough XMP Padding
-            if (Convert.ToInt32(bitmapMetadata.GetQuery(WpfQueries.XmpPadding)) < WpfQueries.PaddingAmount)
+            if (Convert.ToInt32(bitmapMetadata.GetQuery(XmpQueries.Padding)) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(WpfQueries.XmpPadding, WpfQueries.PaddingAmount);
+                bitmapMetadata.SetQuery(XmpQueries.Padding, WpfFileManager.PaddingAmount);
             }
 
             // Ensure there's enough IFD Padding
-            if (Convert.ToInt32(bitmapMetadata.GetQuery(WpfQueries.IfdPadding)) < WpfQueries.PaddingAmount)
+            if (Convert.ToInt32(bitmapMetadata.GetQuery(IptcQueries.Padding)) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(WpfQueries.IfdPadding, WpfQueries.PaddingAmount);
+                bitmapMetadata.SetQuery(IptcQueries.Padding, WpfFileManager.PaddingAmount);
             }
         }
     }
