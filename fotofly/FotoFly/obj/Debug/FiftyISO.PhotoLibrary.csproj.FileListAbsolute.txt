@@ -1,0 +1,15 @@
+D:\Storage (Tassography)\Tassography-VisualStudio\Projects\FiftyISO.PhotoLibrary\bin\Debug\TassographyPhotoLibrary.dll
+D:\Storage (Tassography)\Tassography-VisualStudio\Projects\FiftyISO.PhotoLibrary\bin\Debug\TassographyPhotoLibrary.pdb
+D:\Storage (Tassography)\Tassography-VisualStudio\Projects\FiftyISO.PhotoLibrary\obj\Debug\ResolveAssemblyReference.cache
+D:\Storage (Tassography)\Tassography-VisualStudio\Projects\FiftyISO.PhotoLibrary\obj\Debug\TassographyPhotoLibrary.dll
+D:\Storage (Tassography)\Tassography-VisualStudio\Projects\FiftyISO.PhotoLibrary\obj\Debug\TassographyPhotoLibrary.pdb
+D:\Storage (50iso)\VisualStudio\Projects\FiftyISO.PhotoLibrary\bin\Debug\50isoPhotoLibrary.dll
+D:\Storage (50iso)\VisualStudio\Projects\FiftyISO.PhotoLibrary\bin\Debug\50isoPhotoLibrary.pdb
+D:\Storage (50iso)\VisualStudio\Projects\FiftyISO.PhotoLibrary\obj\Debug\ResolveAssemblyReference.cache
+D:\Storage (50iso)\VisualStudio\Projects\FiftyISO.PhotoLibrary\obj\Debug\50isoPhotoLibrary.dll
+D:\Storage (50iso)\VisualStudio\Projects\FiftyISO.PhotoLibrary\obj\Debug\50isoPhotoLibrary.pdb
+D:\Storage (FiftyISO)\VisualStudio\FiftyISO.PhotoLibrary\bin\Debug\50isoPhotoLibrary.dll
+D:\Storage (FiftyISO)\VisualStudio\FiftyISO.PhotoLibrary\bin\Debug\50isoPhotoLibrary.pdb
+D:\Storage (FiftyISO)\VisualStudio\FiftyISO.PhotoLibrary\obj\Debug\ResolveAssemblyReference.cache
+D:\Storage (FiftyISO)\VisualStudio\FiftyISO.PhotoLibrary\obj\Debug\50isoPhotoLibrary.dll
+D:\Storage (FiftyISO)\VisualStudio\FiftyISO.PhotoLibrary\obj\Debug\50isoPhotoLibrary.pdb
