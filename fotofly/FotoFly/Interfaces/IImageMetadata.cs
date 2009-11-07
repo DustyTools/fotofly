@@ -14,8 +14,6 @@
         // / </summary>
         PeopleList Authors { get; set; }
 
-        double Brightness { get; }
-
         // / <summary>
         // / Comment, also known as Description
         // / </summary>

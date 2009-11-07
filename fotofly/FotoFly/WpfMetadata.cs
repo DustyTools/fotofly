@@ -89,30 +89,6 @@ namespace FotoFly
             }
         }
 
-        public double Brightness
-        {
-            get
-            {
-                try
-                {
-                    Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.Brightness);
-
-                    if (rational != null)
-                    {
-                        return Math.Round(rational.ToDouble(), 4);
-                    }
-                    else
-                    {
-                        return double.NaN;
-                    }
-                }
-                catch
-                {
-                    return double.NaN;
-                }
-            }
-        }
-
         // / <summary>
         // / Comment (also know as description)
         // / </summary>
@@ -258,7 +234,7 @@ namespace FotoFly
         {
             get
             {
-                DateTime? newDateTime = this.bitmapMetadataExtender.QueryMetadataForExifDateTime(ExifQueries.DateDigitised);
+                DateTime? newDateTime = this.bitmapMetadataExtender.QueryMetadataForExifDateTime(ExifQueries.DateDigitized);
 
                 if (newDateTime == null)
                 {
@@ -279,7 +255,7 @@ namespace FotoFly
                 exifDate = exifDate.Replace("-", ":");
                 exifDate = exifDate.Replace("T", " ");
 
-                this.bitmapMetadataExtender.SetProperty(ExifQueries.DateDigitised, exifDate);
+                this.bitmapMetadataExtender.SetProperty(ExifQueries.DateDigitized, exifDate);
             }
         }
 
@@ -611,7 +587,7 @@ namespace FotoFly
         {
             get
             {
-                uint? iso = this.bitmapMetadataExtender.QueryMetadataForUint(ExifQueries.Iso);
+                uint? iso = this.bitmapMetadataExtender.QueryMetadataForUint(ExifQueries.IsoSpeedRating);
 
                 if (iso == null)
                 {
@@ -629,7 +605,7 @@ namespace FotoFly
 
             set
             {
-                this.bitmapMetadataExtender.SetProperty(ExifQueries.Iso, value.Replace("ISO-", string.Empty));
+                this.bitmapMetadataExtender.SetProperty(ExifQueries.IsoSpeedRating, value.Replace("ISO-", string.Empty));
             }
         }
 
