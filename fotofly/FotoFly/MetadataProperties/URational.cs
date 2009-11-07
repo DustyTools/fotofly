@@ -1,3 +1,7 @@
+// <copyright file="URational.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>URational</summary>
 namespace FotoFly
 {
     using System;

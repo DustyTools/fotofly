@@ -1,4 +1,8 @@
-﻿namespace FotoFly
+﻿// <copyright file="ExifQueries.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>ExifQueries</summary>
+namespace FotoFly
 {
     using System;
     using System.Collections.Generic;
@@ -30,6 +34,11 @@
         // Rational. The number of pixels per <ResolutionUnit> in the <ImageLength> direction.
         // The same value as <XResolution> is designated. 
         public static readonly string VerticalResolution = "/app1/ifd/exif:{uint=283}";
+
+        // Short. The unit for measuring <XResolution> and <YResolution>. The same unit is used
+        // for both <XResolution> and <YResolution>. If the image resolution is unknown, 2 (inches)
+        // is designated. 
+        public static readonly string ResolutionUnit = "/app1/ifd/exif:{uint=296}";
 
         // Ascii. This tag records the name and version of the software or firmware of the camera
         // or image input device used to generate the image. The detailed format is not specified,
@@ -85,21 +94,32 @@
         // recorded as Uncalibrated can be treated as sRGB when it is converted to FlashPix. 
         public static readonly string ColorRepresentation = "/app1/ifd/exif/subifd:{uint=40961}";
 
-        // Long. Information specific to compressed data. When a compressed file is recorded, the
-        // valid width of the meaningful image must be recorded in this tag, whether or not there
-        // is padding data or a restart marker. This tag should not exist in an uncompressed file. 
-        public static readonly string HorizontalPixelDimension = "/app1/ifd/exif/subifd:{uint=40962}";
-
-        // Long. Information specific to compressed data. When a compressed file is recorded, the
-        // valid height of the meaningful image must be recorded in this tag, whether or not there
-        // is padding data or a restart marker. This tag should not exist in an uncompressed file.
-        // Since data padding is unnecessary in the vertical direction, the number of lines recorded
-        // in this valid image height tag will in fact be the same as that recorded in the SOF. 
-        public static readonly string VerticalPixelDimension = "/app1/ifd/exif/subifd:{uint=40963}";
-
         // Rational. This tag indicates the digital zoom ratio when the image was shot. If the
         // numerator of the recorded value is 0, this indicates that digital zoom was not used. 
         public static readonly string DigitalZoomRatio = "/app1/ifd/exif/subifd:{uint=41988}";
+
+        // *********************************************************************************** //
+        //       Iop Tags
+        // *********************************************************************************** //
+
+        // Ascii. RelatedImageFileFormat
+        public static readonly string ImageFileFormat = "/app1/ifd/exif:{uint=4096}";
+
+        // Long. Image width
+        public static readonly string ImageWidth = "/app1/ifd/exif:{uint=4097}";
+
+        // Long. Image height
+        public static readonly string ImageHeight = "/app1/ifd/exif:{uint=4098}";
+
+        // *********************************************************************************** //
+        //       Iop Tags
+        // *********************************************************************************** //
+
+        // Rational. Horizontal Thumbnail Resolution
+        public static readonly string ThumbnailHorizontalResolution = "/App1/{uint=1}/{uint=282}";
+
+        // Rational. Vertical Thumbnail Resolution
+        public static readonly string ThumbnailVerticalResolution = "/App1/{uint=1}/{uint=283}";
 
         // *********************************************************************************** //
         //       GPSInfo Tags
@@ -139,7 +159,7 @@
         // Indicates the GPS satellites used for measurements. This tag can be used to describe
         // the number of satellites, their ID number, angle of elevation, azimuth, SNR and other
         // information in ASCII notation. 
-        public static readonly string GPSSatellites = "/app1/ifd/Gps/subifd:{uint=8}";
+        public static readonly string GpsSatellites = "/app1/ifd/Gps/subifd:{uint=8}";
 
         // Indicates the status of the GPS receiver when the image is recorded. "A" means measurement
         // is in progress, and "V" means the measurement is Interoperability. Stored as Ascii.
@@ -202,7 +222,7 @@
         // two decimal places, the format would be ddd/1,mmmm/100,0/1. 
         public static readonly string GpsDestLongitude = "/app1/ifd/Gps/subifd:{uint=22}";
 
-        //  Ascii Indicates the reference used for giving the bearing to the destination point.
+        // Ascii Indicates the reference used for giving the bearing to the destination point.
         // "T" denotes true direction and "M" is magnetic direction. 
         public static readonly string GpsDestBearingRef = "/app1/ifd/Gps/subifd:{uint=23}";
 

@@ -1,3 +1,7 @@
+// <copyright file="JpgMetadata.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>JpgMetadata</summary>
 namespace FotoFly
 {
     using System;
@@ -6,7 +10,7 @@ namespace FotoFly
     using System.Text;
     using System.Xml.Serialization;
 
-    public class JpgMetadata : IImageMetadata
+    public class JpgMetadata : IPhotoMetadata
     {
         private XmpRegionInfo regionInfo;
         private GpsPosition gpsPosition;
@@ -20,13 +24,6 @@ namespace FotoFly
 
         [XmlAttribute]
         public string Aperture
-        {
-            get;
-            set;
-        }
-
-        [XmlIgnore]
-        public double Brightness
         {
             get;
             set;
@@ -157,15 +154,15 @@ namespace FotoFly
             set;
         }
 
-        [XmlAttribute]
-        public int Width
+        [XmlAttribute("Width")]
+        public int ImageWidth
         {
             get;
             set;
         }
 
-        [XmlAttribute]
-        public int Height
+        [XmlAttribute("Height")]
+        public int ImageHeight
         {
             get;
             set;
@@ -253,7 +250,7 @@ namespace FotoFly
             get
             {
                 // Work out Orientation
-                if (this.Height > this.Width)
+                if (this.ImageHeight > this.ImageWidth)
                 {
                     return PhotoMetadataEnums.Orientations.Portrait;
                 }
@@ -262,6 +259,27 @@ namespace FotoFly
                     return PhotoMetadataEnums.Orientations.Landscape;
                 }
             }
+        }
+
+        [XmlIgnore]
+        public int VerticalResolution
+        {
+            get;
+            set;
+        }
+
+        [XmlIgnore]
+        public int HorizontalResolution
+        {
+            get;
+            set;
+        }
+
+        [XmlAttribute]
+        public double DigitalZoomRatio
+        {
+            get;
+            set;
         }
     }
 }

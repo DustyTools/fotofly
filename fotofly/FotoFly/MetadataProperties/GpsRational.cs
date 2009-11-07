@@ -1,3 +1,7 @@
+// <copyright file="GpsRational.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>GpsRational</summary>
 namespace FotoFly
 {
     using System;
@@ -6,24 +10,6 @@ namespace FotoFly
 
     public class GpsRational
     {
-        public Rational Hours
-        {
-            get;
-            set;
-        }
-
-        public Rational Minutes
-        {
-            get;
-            set;
-        }
-        
-        public Rational Seconds
-        {
-            get;
-            set;
-        }
-
         public GpsRational(double hours, double minutes, double seconds)
         {
             this.Hours = new Rational(hours, 5);
@@ -46,6 +32,24 @@ namespace FotoFly
             ////    this.Minutes = new Rational(minutes, 5);
             ////    this.Seconds = new Rational(seconds, 5);
             ////}
+        }
+
+        public Rational Hours
+        {
+            get;
+            set;
+        }
+
+        public Rational Minutes
+        {
+            get;
+            set;
+        }
+
+        public Rational Seconds
+        {
+            get;
+            set;
         }
 
         public ulong[] ToUlongArray(bool secondsInMinutes)

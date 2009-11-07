@@ -1,4 +1,8 @@
-﻿namespace FotoFly
+﻿// <copyright file="WpfBitmapMetadataExtender.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>Class that extends BitmapMetadata with additional methods</summary>
+namespace FotoFly
 {
     using System;
     using System.Collections;
@@ -9,8 +13,8 @@
     using System.Drawing;
     using System.Drawing.Imaging;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
     using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Formatters.Binary;
     using System.Text;
     using System.Threading;
     using System.Windows;
@@ -19,15 +23,15 @@
 
     public class WpfBitmapMetadataExtender
     {
+        public WpfBitmapMetadataExtender(BitmapMetadata bitmapMetadata)
+        {
+            this.BitmapMetadata = bitmapMetadata;
+        }
+
         public BitmapMetadata BitmapMetadata
         {
             get;
             set;
-        }
-
-        public WpfBitmapMetadataExtender(BitmapMetadata bitmapMetadata)
-        {
-            this.BitmapMetadata = bitmapMetadata;
         }
 
         public Dictionary<string, object> MetadataDictionary
@@ -361,22 +365,29 @@
                 {
                     string tempQuery = fullQuery + query;
 
-                    // query string here is relative to the previous metadata reader.
-                    object o = metadata.GetQuery(query);
-
-                    BitmapMetadata moreMetadata = o as BitmapMetadata;
-
-                    if (moreMetadata != null)
+                    try
                     {
-                        // Add all sub values
-                        foreach (KeyValuePair<string, object> keyValuePair in this.GenerateMetadataDictionary(moreMetadata, tempQuery))
+                        // query string here is relative to the previous metadata reader.
+                        object unknownObject = metadata.GetQuery(query);
+
+                        BitmapMetadata moreMetadata = unknownObject as BitmapMetadata;
+
+                        if (moreMetadata != null)
                         {
-                            returnValue.Add(keyValuePair.Key, keyValuePair.Value);
+                            // Add all sub values
+                            foreach (KeyValuePair<string, object> keyValuePair in this.GenerateMetadataDictionary(moreMetadata, tempQuery))
+                            {
+                                returnValue.Add(keyValuePair.Key, keyValuePair.Value);
+                            }
+                        }
+                        else
+                        {
+                            returnValue.Add(tempQuery, unknownObject);
                         }
                     }
-                    else
+                    catch
                     {
-                        returnValue.Add(tempQuery, o);
+                        // Swallow it
                     }
                 }
             }

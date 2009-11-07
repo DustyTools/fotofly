@@ -23,7 +23,7 @@
         {
             File.Copy(inputFile, "BitmapMetadataExamples.WriteMetadata.jpg", true);
 
-            BitmapMetadata bitmapMetadata = WpfFileManager.Read(inputFile, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
             wpfMetadata.PlaceCountry = "United States";
@@ -41,7 +41,7 @@
             // iptcSubLocation = "/app13/irb/8bimiptc/iptc/Sub-location";
             string iptcCity = @"/app13/irb/8bimiptc/iptc/City";
 
-            BitmapMetadata bitmapMetadata = WpfFileManager.Read(inputFile, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             // Check there's city data
             if (bitmapMetadata.ContainsQuery(iptcCity))
@@ -54,7 +54,7 @@
         public static void ReadGpsAltitude(string inputFile)
         {
             // Grab copy of BitmapMetadata
-            BitmapMetadata bitmapMetadata = WpfFileManager.Read(inputFile, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             // Grab the GpsAltitudeRef
             string altitudeRef = bitmapMetadata.GetQuery("/app1/ifd/Gps/subifd:{uint=5}").ToString();
@@ -72,7 +72,7 @@
 
         public static void ReadGpsLatitude(string inputFile)
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.Read(inputFile, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             // Grab the GpsLatitudeRef
             // 'N' indicates north latitude, and 'S' is south latitude
@@ -104,7 +104,7 @@
             string iptcCity = @"/app13/irb/8bimiptc/iptc/City";
             string iptcSubLocation = @"/app13/irb/8bimiptc/iptc/Sub-location";
 
-            BitmapMetadata bitmapMetadata = WpfFileManager.Read(inputFile, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             // Use SetQuery to store the IPTC Address fields
             bitmapMetadata.SetQuery(iptcCity, "IPTC City");
@@ -127,7 +127,7 @@
             string iptcCity = @"/app13/irb/8bimiptc/iptc/City";
             string iptcSubLocation = @"/app13/irb/8bimiptc/iptc/Sub-location";
 
-            BitmapMetadata bitmapMetadata = WpfFileManager.Read(inputFile, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             // Remove IPTC Address fields
             bitmapMetadata.RemoveQuery(iptcCity);
@@ -141,7 +141,7 @@
 
         public static void ReadWLPGRegions(string inputFile)
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.Read(inputFile, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             // Declare a bunch of XMP paths (see my last blog for details)
             string microsoftRegions = @"/xmp/MP:RegionInfo/MPRI:Regions";
@@ -181,7 +181,7 @@
 
         public static void CreateWLPGRegions(string inputFile)
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.Read(inputFile, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             // Declare a bunch of XMP paths (see my last blog for details)
             string microsoftRegionInfo = @"/xmp/MP:RegionInfo";
@@ -203,7 +203,7 @@
 
         public static void UpdateWLPGRegions(string inputFile)
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.Read(inputFile, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             // Declare a bunch of XMP paths (see my last blog for details)
             string microsoftRegions = @"/xmp/MP:RegionInfo/MPRI:Regions";

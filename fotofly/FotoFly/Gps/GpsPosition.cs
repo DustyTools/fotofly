@@ -1,4 +1,8 @@
-﻿namespace FotoFly
+﻿// <copyright file="GpsPosition.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>GpsPosition Class</summary>
+namespace FotoFly
 {
     using System;
     using System.Collections.Generic;
@@ -136,6 +140,7 @@
                     return false;
                 }
             }
+
             set
             {
                 // Swallow this, done done for serialisation

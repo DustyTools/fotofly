@@ -1,3 +1,7 @@
+// <copyright file="JpgPhoto.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>JpgPhoto</summary>
 namespace FotoFly
 {
     using System;
@@ -10,14 +14,23 @@ namespace FotoFly
 
     public class JpgPhoto
     {
+        private JpgMetadata metadata;
+
+        public JpgPhoto()
+        {
+        }
+
+        public JpgPhoto(string filename)
+        {
+            this.Filename = filename;
+        }
+
         public bool HandleExceptions
         {
             get;
             set;
         }
     
-        private JpgMetadata metadata;
-
         public JpgMetadata Metadata
         {
             get
@@ -38,15 +51,6 @@ namespace FotoFly
             {
                 return !string.IsNullOrEmpty(this.Filename) && File.Exists(this.Filename) && new FileInfo(this.Filename).Extension.ToLower() == ".jpg";
             }
-        }
-
-        public JpgPhoto()
-        {
-        }
-
-        public JpgPhoto(string filename)
-        {
-            this.Filename = filename;
         }
 
         public void ReadMetadata()
@@ -146,7 +150,7 @@ namespace FotoFly
                 metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.Filename);
 
                 // Compate Metadata
-                IImageMetadataTools.CompareMetadata(this.metadata, metadataInFile, out changes);
+                IPhotoMetadataTools.CompareMetadata(this.metadata, metadataInFile, out changes);
             }
 
             return changes;
@@ -164,7 +168,7 @@ namespace FotoFly
                 metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.Filename);
 
                 // Copy in file metadata across to jpgmetadata class
-                IImageMetadataTools.CopyMetadata(metadataInFile, this.metadata);
+                IPhotoMetadataTools.CopyMetadata(metadataInFile, this.metadata);
             }
         }
 
@@ -177,7 +181,7 @@ namespace FotoFly
                 metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.Filename);
 
                 // Copy JpgMetadata across to file Metadata
-                IImageMetadataTools.CopyMetadata(this.metadata, metadataInFile);
+                IPhotoMetadataTools.CopyMetadata(this.metadata, metadataInFile);
 
                 // Save
                  WpfFileManager.WriteBitmapMetadata(this.Filename, metadataInFile.BitmapMetadata);

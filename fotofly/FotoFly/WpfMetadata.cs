@@ -1,3 +1,7 @@
+// <copyright file="WpfMetadata.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>WpfMetadata Class</summary>
 namespace FotoFly
 {
     using System;
@@ -8,6 +12,7 @@ namespace FotoFly
     using System.Diagnostics;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -16,13 +21,22 @@ namespace FotoFly
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using System.Globalization;
 
-    public class WpfMetadata : IImageMetadata, IDisposable
+    public class WpfMetadata : IPhotoMetadata, IDisposable
     {
+        private WpfBitmapMetadataExtender bitmapMetadataExtender;
+
         private bool disposed = false;
 
-        protected WpfBitmapMetadataExtender bitmapMetadataExtender;
+        public WpfMetadata()
+        {
+            this.bitmapMetadataExtender = new WpfBitmapMetadataExtender(new BitmapMetadata("jpg"));
+        }
+
+        public WpfMetadata(BitmapMetadata bitmapMetadata)
+        {
+            this.bitmapMetadataExtender = new WpfBitmapMetadataExtender(bitmapMetadata);
+        }
 
         public BitmapMetadata BitmapMetadata
         {
@@ -35,16 +49,6 @@ namespace FotoFly
             {
                 this.bitmapMetadataExtender.BitmapMetadata = value;
             }
-}
-
-        public WpfMetadata()
-        {
-            this.bitmapMetadataExtender = new WpfBitmapMetadataExtender(new BitmapMetadata("jpg"));
-        }
-
-        public WpfMetadata(BitmapMetadata bitmapMetadata)
-        {
-            this.bitmapMetadataExtender = new WpfBitmapMetadataExtender(bitmapMetadata);
         }
 
         public string Aperture
@@ -283,6 +287,23 @@ namespace FotoFly
 
                 // Use specific format for EXIF data, 2008:12:01 13:14:10
                 this.bitmapMetadataExtender.SetProperty(ExifQueries.DateTaken, value.ToString("yyyy:MM:dd HH:mm:ss"));
+            }
+        }
+
+        public double DigitalZoomRatio
+        {
+            get
+            {
+                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.DigitalZoomRatio);
+
+                if (rational == null || rational.Numerator == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return rational.ToDouble();
+                }
             }
         }
 
@@ -525,7 +546,8 @@ namespace FotoFly
 
                 return new DateTime();
             }
-            set
+
+             set
             {
                 if (value != new DateTime())
                 {
@@ -542,7 +564,7 @@ namespace FotoFly
                 }
             }
         }
-
+         
         public string GpsVersionID
         {
             get
@@ -602,10 +624,22 @@ namespace FotoFly
                     return string.Empty;
                 }
             }
+        }
 
-            set
+        public int HorizontalResolution
+        {
+            get
             {
-                this.bitmapMetadataExtender.SetProperty(ExifQueries.IsoSpeedRating, value.Replace("ISO-", string.Empty));
+                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.HorizontalResolution);
+
+                if (rational == null || rational.Numerator == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return rational.ToInt();
+                }
             }
         }
 
@@ -641,6 +675,40 @@ namespace FotoFly
                 this.PlaceRegion = value.Region;
                 this.PlaceCity = value.City;
                 this.PlaceSubLocation = value.AddressLine;
+            }
+        }
+
+        public int ImageHeight
+        {
+            get
+            {
+                int? imageHeight = this.bitmapMetadataExtender.QueryMetadataForInt(ExifQueries.ImageHeight);
+
+                if (imageHeight == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return imageHeight.Value;
+                }
+            }
+        }
+
+        public int ImageWidth
+        {
+            get
+            {
+                int? imageWidth = this.bitmapMetadataExtender.QueryMetadataForInt(ExifQueries.ImageWidth);
+
+                if (imageWidth == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return imageWidth.Value;
+                }
             }
         }
 
@@ -846,6 +914,40 @@ namespace FotoFly
             }
         }
 
+        public int ThumbnailVerticalResolution
+        {
+            get
+            {
+                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.ThumbnailVerticalResolution);
+
+                if (rational == null || rational.Numerator == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return rational.ToInt();
+                }
+            }
+        }
+
+        public int ThumbnailHorizontalResolution
+        {
+            get
+            {
+                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.ThumbnailHorizontalResolution);
+
+                if (rational == null || rational.Numerator == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return rational.ToInt();
+                }
+            }
+        }
+
         public string Title
         {
             get
@@ -1035,22 +1137,27 @@ namespace FotoFly
             }
         }
 
-        public int Height
+        public int VerticalResolution
         {
             get
             {
-                ////return this.bitmapMetadataExtender.BitmapDecoder.Frames[0].PixelHeight;
-                return 0;
+                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.VerticalResolution);
+
+                if (rational == null || rational.Numerator == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return rational.ToInt();
+                }
             }
         }
 
-        public int Width
+        protected WpfBitmapMetadataExtender BitmapMetadataExtender
         {
-            get
-            {
-                ////return this.bitmapMetadataExtender.BitmapDecoder.Frames[0].PixelWidth;
-                return 0;
-            }
+            get { return this.bitmapMetadataExtender; }
+            set { this.bitmapMetadataExtender = value; }
         }
 
         public void Dispose()

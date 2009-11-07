@@ -1,3 +1,7 @@
+// <copyright file="Rational.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>Rational</summary>
 namespace FotoFly
 {
     using System;
@@ -30,6 +34,16 @@ namespace FotoFly
         {
             this.numerator = (int)(data & 0xFFFFFFFFL);
             this.denominator = (int)((data & 0xFFFFFFFF00000000L) >> 32);
+        }
+
+        public int Numerator
+        {
+            get { return this.numerator; }
+        }
+
+        public int Denominator
+        {
+            get { return this.denominator; }
         }
 
         /// <summary>

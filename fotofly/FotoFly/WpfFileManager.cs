@@ -1,4 +1,8 @@
-﻿namespace FotoFly
+﻿// <copyright file="WpfFileManager.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>Class for reading and writing BitmapMetadata</summary>
+namespace FotoFly
 {
     using System;
     using System.Collections;
@@ -9,8 +13,8 @@
     using System.Drawing;
     using System.Drawing.Imaging;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
     using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Formatters.Binary;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading;
@@ -58,7 +62,7 @@
             return bitmapMetadata;
         }
 
-        public static BitmapMetadata Read(string file, bool openForEditing)
+        public static BitmapMetadata ReadBitmapMetadata(string file, bool openForEditing)
         {
             // Validate the threading model
             WpfFileManager.ValidateThreadingModel();

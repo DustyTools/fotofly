@@ -1,3 +1,7 @@
+// <copyright file="GpsCoordinates.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>GpsCoordinate Class</summary>
 namespace FotoFly
 {
     using System;
@@ -7,17 +11,17 @@ namespace FotoFly
 
     public class GpsCoordinate : ICloneable
     {
+        public static readonly int MaxLatitude = 90;
+        public static readonly int MinLatitude = -90;
+        public static readonly int MaxLongitude = 180;
+        public static readonly int MinLongitude = -180;
+
         private double degrees;
         private double seconds;
         private double minutes;
 
         private bool isRefPositive;
         private LatOrLons latOrLon;
-
-        public static readonly int MaxLatitude = 90;
-        public static readonly int MinLatitude = -90;
-        public static readonly int MaxLongitude = 180;
-        public static readonly int MinLongitude = -180;
 
         public GpsCoordinate()
         {
@@ -67,7 +71,7 @@ namespace FotoFly
                 else
                 {
                     // Example 32° 56' 26.57" is 32 + (56/60) + (26.57 / 3600) = 32.940713888
-                    double numeric = Math.Round(this.Degrees + Convert.ToDouble(this.Minutes) / 60 + Convert.ToDouble(this.Seconds) / 3600, 4);
+                    double numeric = Math.Round(this.Degrees + (Convert.ToDouble(this.Minutes) / 60) + (Convert.ToDouble(this.Seconds) / 3600), 4);
 
                     if (!this.IsValidNumeric(numeric, this.LatOrLon))
                     {
@@ -282,6 +286,11 @@ namespace FotoFly
             return new GpsCoordinate(this.LatOrLon, this.isRefPositive, this.Degrees, this.Minutes, this.Seconds);
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         private string AddPaddingZeros(double number, int leading, int trailing)
         {
             StringBuilder returnValue = new StringBuilder();
@@ -338,11 +347,6 @@ namespace FotoFly
             {
                 return true;
             }
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
         }
     }
 }

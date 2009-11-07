@@ -1,3 +1,7 @@
+// <copyright file="Address.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>Address Class</summary>
 namespace FotoFly
 {
     using System;
@@ -246,6 +250,11 @@ namespace FotoFly
             return new Address(this.HierarchicalNameTruncated(length));
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         private string HierarchicalNameTruncated(int length)
         {
             StringBuilder returnName = new StringBuilder();
@@ -272,11 +281,6 @@ namespace FotoFly
             this.AddressLine = string.Empty;
             this.Region = string.Empty;
             this.Country = string.Empty;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
         }
     }
 }

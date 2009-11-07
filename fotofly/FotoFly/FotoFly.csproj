@@ -58,15 +58,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IPhotoMetadata.cs" />
+    <Compile Include="IPhotoMetadataTools.cs" />
     <Compile Include="Queries\ExifQueries.cs" />
     <Compile Include="Queries\IptcQueries.cs" />
     <Compile Include="Queries\XmpQueries.cs" />
     <Compile Include="WpfBitmapMetadataExtender.cs" />
-    <Compile Include="IImageMetadataTools.cs" />
     <Compile Include="MetadataProperties\Address.cs" />
     <Compile Include="Gps\GpsCoordinate.cs" />
     <Compile Include="Gps\GpsPosition.cs" />
-    <Compile Include="Interfaces\IImageMetadata.cs" />
     <Compile Include="JpgPhoto.cs" />
     <Compile Include="JpgMetadata.cs" />
     <Compile Include="MetadataProperties\GpsRational.cs" />
