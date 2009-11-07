@@ -17,7 +17,6 @@ namespace FotoFly
         }
     
         private JpgMetadata metadata;
-        private WpfMetadata metadataInFile;
 
         public JpgMetadata Metadata
         {
@@ -110,52 +109,79 @@ namespace FotoFly
 
         public List<string> CompareMetadataToFileMetadata()
         {
-            if (this.IsFileValid)
+            if (!this.IsFileValid)
             {
-                List<string> changes;
+                throw new Exception("File does not exist or is not valid: " + this.Filename);
+            }
 
+            List<string> changes;
+
+            if (this.HandleExceptions)
+            {
                 try
                 {
-                    WpfFileManager wpfFileManager = new WpfFileManager();
-
-                    BitmapMetadata fileMetadata = wpfFileManager.Read(this.Filename);
-
-                    IImageMetadataTools.CompareMetadata(this.metadata, fileMetadata, out changes);
+                    changes = this.UnhandledCompare();
                 }
                 catch (Exception e)
                 {
                     throw new Exception("Error reading metadata: " + this.Filename, e);
                 }
-
-                return changes;
             }
             else
             {
-                throw new Exception("File does not exist or is not valid: " + this.Filename);
+                changes = this.UnhandledCompare();
             }
+
+            return changes;
+        }
+
+        private List<string> UnhandledCompare()
+        {
+            List<string> changes;
+
+            // Read existing metadata in Using block to force garbage collection
+            using (WpfMetadata metadataInFile = new WpfMetadata())
+            {
+                // Read Metadata from File
+                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.Filename);
+
+                // Compate Metadata
+                IImageMetadataTools.CompareMetadata(this.metadata, metadataInFile, out changes);
+            }
+
+            return changes;
         }
 
         private void UnhandledReadMetadata()
         {
-            // Get clean JpgMetadata
+            // Create a new instance of JpgMetadata
             this.metadata = new JpgMetadata();
 
-            // Get file metadata
-            WpfFileManager wpfFileManager = new WpfFileManager();
-            this.metadataInFile = new WpfMetadata(wpfFileManager.Read(this.Filename));
+            // Read existing metadata in Using block to force garbage collection
+            using (WpfMetadata metadataInFile = new WpfMetadata())
+            {
+                // Read Metadata from File
+                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.Filename);
 
-            // Copy across
-            IImageMetadataTools.CopyMetadata(this.metadataInFile, this.metadata);
+                // Copy in file metadata across to jpgmetadata class
+                IImageMetadataTools.CopyMetadata(metadataInFile, this.metadata);
+            }
         }
 
         private void UnhandledSaveMetadata()
         {
-            // Copy JpgMetadata across to file Metadata
-            IImageMetadataTools.CopyMetadata(this.metadata, this.metadataInFile);
+            // Read existing metadata in Using block to force garbage collection
+            using (WpfMetadata metadataInFile = new WpfMetadata())
+            {
+                // Read Metadata from File
+                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.Filename);
 
-            // Save
-            WpfFileManager wpfFileManager = new WpfFileManager();
-            wpfFileManager.Write(this.Filename, this.metadataInFile.BitmapMetadata);
+                // Copy JpgMetadata across to file Metadata
+                IImageMetadataTools.CopyMetadata(this.metadata, metadataInFile);
+
+                // Save
+                 WpfFileManager.WriteBitmapMetadata(this.Filename, metadataInFile.BitmapMetadata);
+            }
         }
     }
 }

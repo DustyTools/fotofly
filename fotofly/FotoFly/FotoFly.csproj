@@ -80,7 +80,6 @@
     <Compile Include="MetadataProperties\TagList.cs" />
     <Compile Include="WpfFileManager.cs" />
     <Compile Include="WpfMetadata.cs" />
-    <Compile Include="WpfQueries.cs" />
     <Compile Include="MetadataProperties\XmpRegion.cs" />
     <Compile Include="MetadataProperties\XmpRegionInfo.cs" />
   </ItemGroup>

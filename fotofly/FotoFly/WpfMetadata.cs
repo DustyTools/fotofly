@@ -18,8 +18,10 @@ namespace FotoFly
     using System.Windows.Media.Imaging;
     using System.Globalization;
 
-    public class WpfMetadata : IImageMetadata
+    public class WpfMetadata : IImageMetadata, IDisposable
     {
+        private bool disposed = false;
+
         protected WpfBitmapMetadataExtender bitmapMetadataExtender;
 
         public BitmapMetadata BitmapMetadata
@@ -28,7 +30,12 @@ namespace FotoFly
             {
                 return this.bitmapMetadataExtender.BitmapMetadata;
             }
-        }
+
+            set
+            {
+                this.bitmapMetadataExtender.BitmapMetadata = value;
+            }
+}
 
         public WpfMetadata()
         {
@@ -1068,6 +1075,25 @@ namespace FotoFly
                 ////return this.bitmapMetadataExtender.BitmapDecoder.Frames[0].PixelWidth;
                 return 0;
             }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+
+            // Take yourself off the Finalization queue 
+            // to prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Force Garbage ObjCollection
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            this.disposed = true;
         }
     }
 }

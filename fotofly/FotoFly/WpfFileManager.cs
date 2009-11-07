@@ -18,18 +18,17 @@
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
-    public class WpfFileManager
+    public static class WpfFileManager
     {
         public static readonly uint PaddingAmount = 5120;
 
-        // XMP Types
-        public BitmapMetadata Read(string file)
+        public static BitmapMetadata ReadBitmapMetadata(string file)
         {
             // The Metadata we'll be returning
             BitmapMetadata bitmapMetadata;
 
             // Check file exists and is a JPG
-            this.ValidateFileIsJpg(file);
+            WpfFileManager.ValidateFileIsJpg(file);
 
             // Open the file
             try
@@ -59,18 +58,18 @@
             return bitmapMetadata;
         }
 
-        public BitmapMetadata Read(string file, bool openForEditing)
+        public static BitmapMetadata Read(string file, bool openForEditing)
         {
             // Validate the threading model
-            this.ValidateThreadingModel();
+            WpfFileManager.ValidateThreadingModel();
 
             // The Metadata we'll be returning
-            BitmapMetadata bitmapMetadata = this.Read(file);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(file);
 
             // Return the metadata if it's not going to be edited
             if (!openForEditing)
             {
-                return this.Read(file);
+                return WpfFileManager.ReadBitmapMetadata(file);
             }
 
             // Ensure the metadata has the right padding in place for new data
@@ -78,13 +77,13 @@
                 || Convert.ToInt32(bitmapMetadata.GetQuery(XmpQueries.Padding)) < WpfFileManager.PaddingAmount
                 || Convert.ToInt32(bitmapMetadata.GetQuery(IptcQueries.Padding)) < WpfFileManager.PaddingAmount)
             {
-                this.AddMetadataPadding(bitmapMetadata);
+                WpfFileManager.AddMetadataPadding(bitmapMetadata);
             }
 
             return bitmapMetadata;
         }
 
-        public void Write(string outputFile, BitmapMetadata bitmapMetadata, string sourceFileForImage)
+        public static void WriteBitmapMetadata(string outputFile, BitmapMetadata bitmapMetadata, string sourceFileForImage)
         {
             // Open Source File
             using (Stream sourceStream = File.Open(sourceFileForImage, FileMode.Open, FileAccess.ReadWrite))
@@ -103,18 +102,18 @@
             }
         }
 
-        public void Write(string outputFile, BitmapMetadata bitmapMetadata)
+        public static void WriteBitmapMetadata(string outputFile, BitmapMetadata bitmapMetadata)
         {
-            this.Write(outputFile, bitmapMetadata, 3);
+            WpfFileManager.WriteBitmapMetadata(outputFile, bitmapMetadata, 3);
         }
 
-        public void Write(string outputFile, BitmapMetadata bitmapMetadata, int retryCount)
+        public static void WriteBitmapMetadata(string outputFile, BitmapMetadata bitmapMetadata, int retryCount)
         {
             // Check file exists and is a valid jpg\jpeg file
-            this.ValidateFileIsJpg(outputFile);
+            WpfFileManager.ValidateFileIsJpg(outputFile);
 
             // Validate Threading Model
-            this.ValidateThreadingModel();
+            WpfFileManager.ValidateThreadingModel();
 
             // Source file is is used as source of the the image & thumbnail for the new file
             string sourceFile = outputFile.ToLower().Replace(".jpg", ".temp");
@@ -146,7 +145,7 @@
 
                 try
                 {
-                    this.Write(outputFile, bitmapMetadata, sourceFile);
+                    WpfFileManager.WriteBitmapMetadata(outputFile, bitmapMetadata, sourceFile);
 
                     File.Delete(sourceFile);
 
@@ -182,37 +181,7 @@
             }
         }
 
-        private void ValidateFileIsJpg(string file)
-        {
-            FileInfo fileInfo = new FileInfo(file);
-
-            if (!fileInfo.Exists)
-            {
-                throw new Exception("File does not exist: " + fileInfo.FullName);
-            }
-            
-            if (!Regex.IsMatch(fileInfo.Extension, ".jpg", RegexOptions.IgnoreCase))
-            {
-                throw new Exception(@"File is not a jpg: " + fileInfo.FullName);
-            }
-        }
-
-        private void ValidateThreadingModel()
-        {
-            // TODO: Don't need this check for Win 7 or Vista with the Platform Update Package (KB971644
-            // Try changing to STA
-            Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
-            Thread.CurrentThread.IsBackground = false;
-
-            // Exception if the thread apartment state is not valid
-            // https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2192976&SiteID=1
-            if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
-            {
-                throw new Exception("The current thread is not ApartmentState.STA");
-            }
-        }
-
-        private void AddMetadataPadding(BitmapMetadata bitmapMetadata)
+        public static void AddMetadataPadding(BitmapMetadata bitmapMetadata)
         {
             // Ensure there's enough EXIF Padding
             if (Convert.ToInt32(bitmapMetadata.GetQuery(ExifQueries.Padding)) < WpfFileManager.PaddingAmount)
@@ -230,6 +199,36 @@
             if (Convert.ToInt32(bitmapMetadata.GetQuery(IptcQueries.Padding)) < WpfFileManager.PaddingAmount)
             {
                 bitmapMetadata.SetQuery(IptcQueries.Padding, WpfFileManager.PaddingAmount);
+            }
+        }
+
+        public static void ValidateFileIsJpg(string file)
+        {
+            FileInfo fileInfo = new FileInfo(file);
+
+            if (!fileInfo.Exists)
+            {
+                throw new Exception("File does not exist: " + fileInfo.FullName);
+            }
+            
+            if (!Regex.IsMatch(fileInfo.Extension, ".jpg", RegexOptions.IgnoreCase))
+            {
+                throw new Exception(@"File is not a jpg: " + fileInfo.FullName);
+            }
+        }
+
+        private static void ValidateThreadingModel()
+        {
+            // TODO: Don't need this check for Win 7 or Vista with the Platform Update Package (KB971644
+            // Try changing to STA
+            Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
+            Thread.CurrentThread.IsBackground = false;
+
+            // Exception if the thread apartment state is not valid
+            // https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2192976&SiteID=1
+            if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+            {
+                throw new Exception("The current thread is not ApartmentState.STA");
             }
         }
     }
