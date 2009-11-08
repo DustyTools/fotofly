@@ -1,16 +1,20 @@
-﻿namespace FotoFly
+﻿// <copyright file="GenericPhotoFile.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-04</date>
+// <summary>GenericPhotoFile Abstract Class</summary>
+namespace FotoFly
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
-    using System.IO;
 
     public abstract class GenericPhotoFile
     {
-        private FileMetadata metadata;
+        private PhotoMetadata metadata;
 
-        public FileMetadata Metadata
+        public PhotoMetadata Metadata
         {
             get { return this.metadata; }
             set { this.metadata = value; }
@@ -143,7 +147,7 @@
 
         public string RecommendedFileName(GenericPhotoEnums.FilenameFormats fileFormat, string fileNamePrefix)
         {
-            //  Throw Exception if date is not read
+            // Throw Exception if date is not read
             if (this.Metadata == null || this.Metadata.DateTaken == new DateTime())
             {
                 throw new Exception("Metadata has not been read or it is invalid");

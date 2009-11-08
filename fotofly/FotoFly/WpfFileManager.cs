@@ -26,19 +26,55 @@ namespace FotoFly
     {
         public static readonly uint PaddingAmount = 5120;
 
+        public static PhotoMetadata ReadPhotoMetadata(string file)
+        {
+            // The Metadata we'll be returning
+            PhotoMetadata photoMetadata = new PhotoMetadata();
+
+            try
+            {
+                BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
+
+                // Open the stream, readonly
+                using (Stream sourceStream = File.Open(file, FileMode.Open, FileAccess.Read))
+                {
+                    // Create a decoder with no cache options set
+                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.None);
+
+                    // Check the contents of the file is valid
+                    if (bitmapDecoder.Frames[0] != null && bitmapDecoder.Frames[0].Metadata != null)
+                    {
+                        // Create a new WpfMetadata class that exposes all the right fields
+                        WpfMetadata wpfMetadata = new WpfMetadata(bitmapDecoder.Frames[0].Metadata as BitmapMetadata);
+
+                        // Copy the common metadata across using reflection tool
+                        IPhotoMetadataTools.CopyMetadata(wpfMetadata, photoMetadata);
+                    }
+                    else
+                    {
+                        throw new Exception("No Frames of Metadata in the file:\n\n" + file);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to read the file:\n\n", e);
+            }
+
+            return photoMetadata;
+        }
+
         public static BitmapMetadata ReadBitmapMetadata(string file)
         {
             // The Metadata we'll be returning
             BitmapMetadata bitmapMetadata;
 
-            // Check file exists and is a JPG
-            WpfFileManager.ValidateFileIsJpg(file);
-
-            // Open the file
             try
             {
+                // Open the stream, readonly
                 BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
 
+                // Create a decoder, cache all content on load because we'll close the stream
                 using (Stream sourceStream = File.Open(file, FileMode.Open, FileAccess.Read))
                 {
                     BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.OnLoad);
@@ -46,6 +82,8 @@ namespace FotoFly
                     // Check the contents of the file is valid
                     if (bitmapDecoder.Frames[0] != null && bitmapDecoder.Frames[0].Metadata != null)
                     {
+                        // Copy across the metadata
+                        // If BitmapCacheOption.None then the clone will be empty of any metadata
                         bitmapMetadata = bitmapDecoder.Frames[0].Metadata.Clone() as BitmapMetadata;
                     }
                     else
@@ -64,9 +102,6 @@ namespace FotoFly
 
         public static BitmapMetadata ReadBitmapMetadata(string file, bool openForEditing)
         {
-            // Validate the threading model
-            WpfFileManager.ValidateThreadingModel();
-
             // The Metadata we'll be returning
             BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(file);
 
@@ -76,13 +111,14 @@ namespace FotoFly
                 return WpfFileManager.ReadBitmapMetadata(file);
             }
 
+            // Validate the threading model
+            WpfFileManager.ValidateThreadingModel();
+
+            // The file must be JPG because the TIFF padding queries are different
+            WpfFileManager.ValidateFileIsJpg(file);
+
             // Ensure the metadata has the right padding in place for new data
-            if (Convert.ToInt32(bitmapMetadata.GetQuery(ExifQueries.Padding)) < WpfFileManager.PaddingAmount
-                || Convert.ToInt32(bitmapMetadata.GetQuery(XmpQueries.Padding)) < WpfFileManager.PaddingAmount
-                || Convert.ToInt32(bitmapMetadata.GetQuery(IptcQueries.Padding)) < WpfFileManager.PaddingAmount)
-            {
-                WpfFileManager.AddMetadataPadding(bitmapMetadata);
-            }
+            WpfFileManager.AddMetadataPadding(bitmapMetadata);
 
             return bitmapMetadata;
         }
@@ -93,7 +129,9 @@ namespace FotoFly
             using (Stream sourceStream = File.Open(sourceFileForImage, FileMode.Open, FileAccess.ReadWrite))
             {
                 BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-                BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.OnLoad);
+
+                // Create the decoder, caching is not needed because file remains open
+                BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.None);
 
                 JpegBitmapEncoder jpegBitmapEncoder = new JpegBitmapEncoder();
                 jpegBitmapEncoder.Frames.Add(BitmapFrame.Create(bitmapDecoder.Frames[0], bitmapDecoder.Frames[0].Thumbnail, bitmapMetadata, bitmapDecoder.Frames[0].ColorContexts));
@@ -214,14 +252,14 @@ namespace FotoFly
             {
                 throw new Exception("File does not exist: " + fileInfo.FullName);
             }
-            
+
             if (!Regex.IsMatch(fileInfo.Extension, ".jpg", RegexOptions.IgnoreCase))
             {
                 throw new Exception(@"File is not a jpg: " + fileInfo.FullName);
             }
         }
 
-        private static void ValidateThreadingModel()
+        public static void ValidateThreadingModel()
         {
             // TODO: Don't need this check for Win 7 or Vista with the Platform Update Package (KB971644
             // Try changing to STA

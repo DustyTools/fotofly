@@ -20,10 +20,10 @@ namespace FotoFly
 
         public JpgPhoto(string fileName)
         {
-            base.FileName = fileName;
+            this.FileName = fileName;
         }
 
-        public FileMetadata Metadata
+        public new PhotoMetadata Metadata
         {
             get
             {
@@ -37,12 +37,12 @@ namespace FotoFly
             }
         }
         
-        public bool IsFileValid
+        public new bool IsFileValid
         {
             get
             {
                 // Compliment Base checks with file extension checks
-                return base.IsFileValid && base.ImageType == GenericPhotoEnums.ImageTypes.Jpeg;
+                return base.IsFileValid && this.ImageType == GenericPhotoEnums.ImageTypes.Jpeg;
             }
         }
 
@@ -58,7 +58,7 @@ namespace FotoFly
                     }
                     catch (Exception e)
                     {
-                        throw new Exception("Error reading Metadata: " + base.FileName, e);
+                        throw new Exception("Error reading Metadata: " + this.FileName, e);
                     }
                 }
                 else
@@ -70,7 +70,7 @@ namespace FotoFly
             {
                 if (this.HandleExceptions)
                 {
-                    throw new Exception("File does not exist or is not valid: " + base.FileName);
+                    throw new Exception("File does not exist or is not valid: " + this.FileName);
                 }
             }
         }
@@ -140,7 +140,7 @@ namespace FotoFly
             using (WpfMetadata metadataInFile = new WpfMetadata())
             {
                 // Read Metadata from File
-                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(base.FileName);
+                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileName);
 
                 // Compate Metadata
                 IPhotoMetadataTools.CompareMetadata(this.Metadata, metadataInFile, out changes);
@@ -151,18 +151,8 @@ namespace FotoFly
 
         private void UnhandledReadMetadata()
         {
-            // Create a new instance of JpgMetadata
-            base.Metadata = new FileMetadata();
-
-            // Read existing metadata in Using block to force garbage collection
-            using (WpfMetadata metadataInFile = new WpfMetadata())
-            {
-                // Read Metadata from File
-                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(base.FileName);
-
-                // Copy in file metadata across to jpgmetadata class
-                IPhotoMetadataTools.CopyMetadata(metadataInFile, base.Metadata);
-            }
+            // Read Photo Metadata
+            base.Metadata = WpfFileManager.ReadPhotoMetadata(this.FileName);
         }
 
         private void UnhandledSaveMetadata()
@@ -171,13 +161,13 @@ namespace FotoFly
             using (WpfMetadata metadataInFile = new WpfMetadata())
             {
                 // Read Metadata from File
-                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(base.FileName);
+                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileName);
 
                 // Copy JpgMetadata across to file Metadata
                 IPhotoMetadataTools.CopyMetadata(base.Metadata, metadataInFile);
 
                 // Save
-                 WpfFileManager.WriteBitmapMetadata(base.FileName, metadataInFile.BitmapMetadata);
+                 WpfFileManager.WriteBitmapMetadata(this.FileName, metadataInFile.BitmapMetadata);
             }
         }
     }

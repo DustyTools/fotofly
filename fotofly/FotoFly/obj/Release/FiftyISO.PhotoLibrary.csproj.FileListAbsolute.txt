@@ -1,3 +1,0 @@
-D:\Storage (FiftyISO)\VisualStudio\FiftyISO.PhotoLibrary\bin\Release\50isoPhotoLibrary.dll
-D:\Storage (FiftyISO)\VisualStudio\FiftyISO.PhotoLibrary\obj\Release\ResolveAssemblyReference.cache
-D:\Storage (FiftyISO)\VisualStudio\FiftyISO.PhotoLibrary\obj\Release\50isoPhotoLibrary.dll

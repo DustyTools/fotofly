@@ -1,3 +1,0 @@
-D:\Storage (Tassography)\Tassography-VisualStudio\Projects\Tassography.PhotoLibrary\bin\Release\TassographyPhotoLibrary.dll
-D:\Storage (Tassography)\Tassography-VisualStudio\Projects\Tassography.PhotoLibrary\obj\Release\ResolveAssemblyReference.cache
-D:\Storage (Tassography)\Tassography-VisualStudio\Projects\Tassography.PhotoLibrary\obj\Release\TassographyPhotoLibrary.dll

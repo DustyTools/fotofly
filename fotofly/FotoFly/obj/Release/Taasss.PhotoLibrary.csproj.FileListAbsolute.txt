@@ -1,3 +1,0 @@
-D:\Dev-Projects\VisualStudio\Taasss.PhotoLibrary\bin\Release\TaasssPhotoLibrary.dll
-D:\Dev-Projects\VisualStudio\Taasss.PhotoLibrary\obj\Release\ResolveAssemblyReference.cache
-D:\Dev-Projects\VisualStudio\Taasss.PhotoLibrary\obj\Release\TaasssPhotoLibrary.dll

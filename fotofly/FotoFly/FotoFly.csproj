@@ -58,8 +58,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseClasses\GenericPhotoEnums.cs" />
+    <Compile Include="BaseClasses\GenericPhotoFile.cs" />
     <Compile Include="Interfaces\IPhotoMetadata.cs" />
     <Compile Include="IPhotoMetadataTools.cs" />
+    <Compile Include="PhotoMetadata.cs" />
     <Compile Include="Queries\ExifQueries.cs" />
     <Compile Include="Queries\IptcQueries.cs" />
     <Compile Include="Queries\XmpQueries.cs" />
@@ -68,7 +71,6 @@
     <Compile Include="Gps\GpsCoordinate.cs" />
     <Compile Include="Gps\GpsPosition.cs" />
     <Compile Include="JpgPhoto.cs" />
-    <Compile Include="JpgMetadata.cs" />
     <Compile Include="MetadataProperties\GpsRational.cs" />
     <Compile Include="MetadataProperties\URational.cs" />
     <Compile Include="MetadataProperties\PhotoMetadataEnums.cs" />

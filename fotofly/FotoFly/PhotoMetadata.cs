@@ -10,7 +10,7 @@ namespace FotoFly
     using System.Text;
     using System.Xml.Serialization;
 
-    public class JpgMetadata : IPhotoMetadata
+    public class PhotoMetadata : IPhotoMetadata
     {
         private XmpRegionInfo regionInfo;
         private GpsPosition gpsPosition;
@@ -18,7 +18,7 @@ namespace FotoFly
         private TagList tags;
         private Address iptcAddress;
 
-        public JpgMetadata()
+        public PhotoMetadata()
         {
         }
 
