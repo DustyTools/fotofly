@@ -49,6 +49,14 @@ namespace FotoFly
 
                         // Copy the common metadata across using reflection tool
                         IPhotoMetadataTools.CopyMetadata(wpfMetadata, photoMetadata);
+
+                        // Manually copy across ImageHeight & ImageWidth if they are not set in metadata
+                        // This should be pretty rare but can happen if the image has been resized or manipulated and the metadata not copied across
+                        if (photoMetadata.ImageHeight == 0 || photoMetadata.ImageWidth == 0)
+                        {
+                            photoMetadata.ImageHeight = bitmapDecoder.Frames[0].PixelHeight;
+                            photoMetadata.ImageWidth = bitmapDecoder.Frames[0].PixelWidth;
+                        }
                     }
                     else
                     {
@@ -77,12 +85,13 @@ namespace FotoFly
                 // Create a decoder, cache all content on load because we'll close the stream
                 using (Stream sourceStream = File.Open(file, FileMode.Open, FileAccess.Read))
                 {
+                    // Create a Bitmap Decoder, loading all metadata on load
                     BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.OnLoad);
 
                     // Check the contents of the file is valid
                     if (bitmapDecoder.Frames[0] != null && bitmapDecoder.Frames[0].Metadata != null)
                     {
-                        // Copy across the metadata
+                        // Grab the metadata
                         // If BitmapCacheOption.None then the clone will be empty of any metadata
                         bitmapMetadata = bitmapDecoder.Frames[0].Metadata.Clone() as BitmapMetadata;
                     }
