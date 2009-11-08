@@ -39,6 +39,7 @@ namespace FotoFly.Examples
             JpgPhotoExamples.AddTag(testOneRegion);
             JpgPhotoExamples.AddRegion(testOneRegion);
             JpgPhotoExamples.AddGpsCoor(testOneRegion);
+            JpgPhotoExamples.GenerateFileNames(testOneRegion);
         }
     }
 }

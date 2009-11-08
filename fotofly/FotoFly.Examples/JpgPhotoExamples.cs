@@ -76,5 +76,17 @@
 
             jpgPhoto.SaveMetadata();
         }
+
+        public static void GenerateFileNames(string inputFile)
+        {
+            // Read File
+            JpgPhoto jpgphoto = new JpgPhoto(inputFile);
+            jpgphoto.ReadMetadata();
+
+            // Write out three suggested file names
+            Console.WriteLine(jpgphoto.RecommendedFileName(GenericPhotoEnums.FilenameFormats.yyyymmddSecondsSinceMidnight, "Photo"));
+            Console.WriteLine(jpgphoto.RecommendedFileName(GenericPhotoEnums.FilenameFormats.yyyymmddHoursMinutesSeconds, "Photo"));
+            Console.WriteLine(jpgphoto.RecommendedFileName(GenericPhotoEnums.FilenameFormats.yyyymmddSequence, "Photo"));
+        }
     }
 }
