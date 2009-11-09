@@ -255,6 +255,10 @@ namespace FotoFly
 
         public static void ValidateFileIsJpg(string file)
         {
+            // TODO: Add code to check the first bits of the file to check it really us a jpeg
+            // Something like this
+            // if (buf[0]==0xFF && buf[1]==0xD8 && buf[2]==0xFF && buf[3]==0xE0 && buf[6]=='J' && buf[7]=='F' && buf[8]=='I' && buf[9]=='F')
+
             FileInfo fileInfo = new FileInfo(file);
 
             if (!fileInfo.Exists)
@@ -262,13 +266,13 @@ namespace FotoFly
                 throw new Exception("File does not exist: " + fileInfo.FullName);
             }
 
-            if (!Regex.IsMatch(fileInfo.Extension, ".jpg", RegexOptions.IgnoreCase))
+            if (!Regex.IsMatch(fileInfo.Extension, ".jpg", RegexOptions.IgnoreCase) && !Regex.IsMatch(fileInfo.Extension, ".jpeg", RegexOptions.IgnoreCase))
             {
-                throw new Exception(@"File is not a jpg: " + fileInfo.FullName);
+                throw new Exception(@"File does not have the extension jpg or jpeg: " + fileInfo.FullName);
             }
         }
 
-        public static void ValidateThreadingModel()
+        private static void ValidateThreadingModel()
         {
             // TODO: Don't need this check for Win 7 or Vista with the Platform Update Package (KB971644
             // Try changing to STA

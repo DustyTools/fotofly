@@ -30,6 +30,22 @@ namespace FotoFly
         }
 
         [XmlAttribute]
+        public string ShutterSpeed
+        {
+            get;
+            set;
+        }
+
+        [XmlIgnore]
+        public string ShutterSpeedAndAperture
+        {
+            get
+            {
+                return this.ShutterSpeed + " " + this.Aperture;
+            }
+        }
+
+        [XmlAttribute]
         public string ExposureBias
         {
             get;
@@ -170,13 +186,6 @@ namespace FotoFly
 
         [XmlAttribute]
         public int Rating
-        {
-            get;
-            set;
-        }
-
-        [XmlAttribute]
-        public string ShutterSpeed
         {
             get;
             set;

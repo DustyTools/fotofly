@@ -26,7 +26,7 @@
             BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
             WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
-            wpfMetadata.PlaceCountry = "United States";
+            wpfMetadata.IptcCountry = "United States";
 
             WpfFileManager.WriteBitmapMetadata("BitmapMetadataExamples.WriteMetadata.jpg", bitmapMetadata);
         }

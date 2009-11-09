@@ -10,10 +10,15 @@ namespace FotoFly.Examples
         [STAThread]
         public static void Main(string[] args)
         {
+            JpgPhotoExamples.ReadMetadata("../../TestPhotos/Regions-1.jpg");
+        }
+
+        public void Asd()
+        {
             // Test files
-            string testNoRegion = "Test-NoRegions.jpg";
-            string testOneRegion = "Test-OneRegion.jpg";
-            string testGeotagged = "Test-Geotagged.jpg";
+            string testNoRegion = "../../TestPhotos/Regions-0.jpg";
+            string testOneRegion = "../../TestPhotos/Regions-1.jpg";
+            string testGeotagged = "../../TestPhotos/Geotagged.jpg";
 
             // Wpf Examples, consisting of four classes
             // WpfFileManager uses WPF to read and write BitmapMetadata in a valid jpg file

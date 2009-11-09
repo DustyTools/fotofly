@@ -51,6 +51,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Aperture
+        /// </summary>
         public string Aperture
         {
             get
@@ -68,9 +71,9 @@ namespace FotoFly
             }
         }
 
-        // / <summary>
-        // / Author (also known as Photographer)
-        // / </summary>
+        /// <summary>
+        /// List of Authors, also known as Photographer
+        /// </summary>
         public PeopleList Authors
         {
             get
@@ -93,9 +96,9 @@ namespace FotoFly
             }
         }
 
-        // / <summary>
-        // / Comment (also know as description)
-        // / </summary>
+        /// <summary>
+        /// Comment, also known as Description
+        /// </summary>
         public string Comment
         {
             get
@@ -127,6 +130,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Camera Manufacturer
+        /// </summary>
         public string CameraManufacturer
         {
             get
@@ -158,6 +164,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Camera Model, normally includes camera Manufacturer
+        /// </summary>
         public string CameraModel
         {
             get
@@ -190,6 +199,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Copyright owner of the photo
+        /// </summary>
         public string Copyright
         {
             get
@@ -221,6 +233,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Software used to last modify the photo
+        /// </summary>
         public string CreationSoftware
         {
             get
@@ -234,6 +249,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// DateDigitized, recorded by the camera when the photo is taken
+        /// </summary>
         public DateTime DateDigitised
         {
             get
@@ -263,6 +281,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// DateTaken, recorded by the camera when the photo is taken
+        /// </summary>
         public DateTime DateTaken
         {
             get
@@ -290,6 +311,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// DigitalZoomRatio
+        /// </summary>
         public double DigitalZoomRatio
         {
             get
@@ -307,6 +331,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Exposure Bias
+        /// </summary>
         public string ExposureBias
         {
             get
@@ -331,6 +358,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Focal Length
+        /// </summary>
         public string FocalLength
         {
             get
@@ -348,263 +378,9 @@ namespace FotoFly
             }
         }
 
-        public double GpsAltitude
-        {
-            // Altitude is expressed as one RATIONAL count. The reference unit is meters
-            // 0 = Above sea level, 1 = Below sea level 
-            get
-            {
-                string gpsRef = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsAltitudeRef);
-                URational urational = this.bitmapMetadataExtender.QueryMetadataForURational(ExifQueries.GpsAltitude);
-
-                if (String.IsNullOrEmpty(gpsRef) || urational == null || double.IsNaN(urational.ToDouble()))
-                {
-                    return double.NaN;
-                }
-                else if (gpsRef == "1")
-                {
-                    return -urational.ToDouble(3);
-                }
-                else
-                {
-                    return urational.ToDouble(3);
-                }
-            }
-
-            set
-            {
-                // Check to see if the values have changed
-                if (double.IsNaN(value))
-                {
-                    // Blank out existing values
-                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsAltitudeRef);
-                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsAltitude);
-                }
-                else
-                {
-                    // Keep three decimal place of precision
-                    Rational rational = new Rational(value, 3);
-
-                    string altRef;
-
-                    if (value > 0)
-                    {
-                        altRef = "0";
-                    }
-                    else
-                    {
-                        altRef = "1";
-                    }
-
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsAltitudeRef, altRef);
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsAltitude, rational.ToUlong());
-                }
-            }
-        }
-
-        public GpsCoordinate GpsLatitude
-        {
-            get
-            {
-                string gpsRef = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsLatitudeRef).ToUpper();
-                GpsRational gpsRational = this.bitmapMetadataExtender.QueryMetadataForGpsRational(ExifQueries.GpsLatitude);
-
-                if (gpsRef == "N" && gpsRational != null)
-                {
-                    return new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, true, gpsRational.ToDouble());
-                }
-                else if (gpsRef == "S" && gpsRational != null)
-                {
-                    return new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, false, gpsRational.ToDouble());
-                }
-                else
-                {
-                    return new GpsCoordinate();
-                }
-            }
-
-            set
-            {
-                if (value.IsValidCoordinate)
-                {
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLatitudeRef, value.Ref);
-
-                    GpsRational gpsRational = new GpsRational(value.Degrees, value.Minutes, value.Seconds);
-
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLatitude, gpsRational.ToUlongArray(true));
-                }
-                else
-                {
-                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLatitude);
-                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLatitudeRef);
-                }
-            }
-        }
-
-        public GpsCoordinate GpsLongitude
-        {
-            get
-            {
-                string gpsRef = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsLongitudeRef).ToUpper();
-                GpsRational gpsRational = this.bitmapMetadataExtender.QueryMetadataForGpsRational(ExifQueries.GpsLongitude);
-
-                if (gpsRef == "E" && gpsRational != null)
-                {
-                    return new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, true, gpsRational.ToDouble());
-                }
-                else if (gpsRef == "W" && gpsRational != null)
-                {
-                    return new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, false, gpsRational.ToDouble());
-                }
-                else
-                {
-                    return new GpsCoordinate();
-                }
-            }
-
-            set
-            {
-                if (value.IsValidCoordinate)
-                {
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLongitudeRef, value.Ref);
-
-                    GpsRational gpsRational = new GpsRational(value.Degrees, value.Minutes, value.Seconds);
-
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLongitude, gpsRational.ToUlongArray(true));
-                }
-                else
-                {
-                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLongitude);
-                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLongitudeRef);
-                }
-            }
-        }
-
-        public GpsPosition.Dimensions GpsMeasureMode
-        {
-            get
-            {
-                string returnValue = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsMeasureMode);
-
-                if (string.IsNullOrEmpty(returnValue))
-                {
-                    return GpsPosition.Dimensions.NotSpecified;
-                }
-                else if (returnValue == "2")
-                {
-                    return GpsPosition.Dimensions.TwoDimensional;
-                }
-                else if (returnValue == "3")
-                {
-                    return GpsPosition.Dimensions.ThreeDimensional;
-                }
-                else
-                {
-                    return GpsPosition.Dimensions.NotSpecified;
-                }
-            }
-
-            set
-            {
-                switch (value)
-                {
-                    default:
-                    case GpsPosition.Dimensions.NotSpecified:
-                        this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsMeasureMode);
-                        break;
-
-                    case GpsPosition.Dimensions.ThreeDimensional:
-                        this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsMeasureMode, 3);
-                        break;
-
-                    case GpsPosition.Dimensions.TwoDimensional:
-                        this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsMeasureMode, 2);
-                        break;
-                }
-            }
-        }
-
-        public DateTime GpsDateTimeStamp
-        {
-            get
-            {
-                try
-                {
-                    GpsRational time = this.bitmapMetadataExtender.QueryMetadataForGpsRational(ExifQueries.GpsTimeStamp);
-                    string date = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsDateStamp);
-
-                    if (time != null && !string.IsNullOrEmpty(date))
-                    {
-                        string[] dateParts = date.Split(':');
-
-                        return new DateTime(Convert.ToInt32(dateParts[0]), Convert.ToInt32(dateParts[1]), Convert.ToInt32(dateParts[2]), time.Hours.ToInt(), time.Minutes.ToInt(), time.Seconds.ToInt());
-                    }
-                }
-                catch
-                {
-                }
-
-                return new DateTime();
-            }
-
-             set
-            {
-                if (value != new DateTime())
-                {
-                    GpsRational time = new GpsRational(value.Hour, value.Minute, value.Second);
-                    string date = value.ToString("yyyy:MM:dd");
-
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsDateStamp, date);
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsTimeStamp, time.ToUlongArray(false));
-                }
-                else
-                {
-                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsDateStamp);
-                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsTimeStamp);
-                }
-            }
-        }
-         
-        public string GpsVersionID
-        {
-            get
-            {
-                return this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsVersionID);
-            }
-
-            set
-            {
-                this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsVersionID, value);
-            }
-        }
-
-        public string GpsProcessingMethod
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsProcessingMethod)))
-                {
-                    return "None";
-                }
-                else
-                {
-                    return this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsProcessingMethod);
-                }
-            }
-
-            set
-            {
-                if (value == "None")
-                {
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsProcessingMethod, string.Empty);
-                }
-                else
-                {
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsProcessingMethod, value);
-                }
-            }
-        }
-
+        /// <summary>
+        /// ISO Speed rating 
+        /// </summary>
         public string Iso
         {
             get
@@ -626,6 +402,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Horizontal Resolution
+        /// </summary>
         public int HorizontalResolution
         {
             get
@@ -643,6 +422,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// List of Tags, sometimes known as Keywords
+        /// </summary>
         public TagList Tags
         {
             get
@@ -656,28 +438,34 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Address as stored in IPTC fields
+        /// </summary>
         public Address IptcAddress
         {
             get
             {
                 Address address = new Address();
-                address.Country = this.PlaceCountry;
-                address.Region = this.PlaceRegion;
-                address.City = this.PlaceCity;
-                address.AddressLine = this.PlaceSubLocation;
+                address.Country = this.IptcCountry;
+                address.Region = this.IptcRegion;
+                address.City = this.IptcCity;
+                address.AddressLine = this.IptcSubLocation;
 
                 return address;
             }
 
             set
             {
-                this.PlaceCountry = value.Country;
-                this.PlaceRegion = value.Region;
-                this.PlaceCity = value.City;
-                this.PlaceSubLocation = value.AddressLine;
+                this.IptcCountry = value.Country;
+                this.IptcRegion = value.Region;
+                this.IptcCity = value.City;
+                this.IptcSubLocation = value.AddressLine;
             }
         }
 
+        /// <summary>
+        /// Image Height measured in Pixels
+        /// </summary>
         public int ImageHeight
         {
             get
@@ -695,6 +483,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Image Width measured in Pixels
+        /// </summary>
         public int ImageWidth
         {
             get
@@ -712,7 +503,10 @@ namespace FotoFly
             }
         }
 
-        public string PlaceCity
+        /// <summary>
+        /// Iptc City
+        /// </summary>
+        public string IptcCity
         {
             get
             {
@@ -741,7 +535,10 @@ namespace FotoFly
             }
         }
 
-        public string PlaceCountry
+        /// <summary>
+        /// Iptc County
+        /// </summary>
+        public string IptcCountry
         {
             get
             {
@@ -770,7 +567,10 @@ namespace FotoFly
             }
         }
 
-        public string PlaceRegion
+        /// <summary>
+        /// Iptc Region, also used for State, County or Province
+        /// </summary>
+        public string IptcRegion
         {
             get
             {
@@ -799,7 +599,10 @@ namespace FotoFly
             }
         }
 
-        public string PlaceSubLocation
+        /// <summary>
+        /// Iptc Sublocation
+        /// </summary>
+        public string IptcSubLocation
         {
             get
             {
@@ -828,6 +631,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Shutter Speed
+        /// </summary>
         public string ShutterSpeed
         {
             get
@@ -872,6 +678,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Rating (Ranging 0-5)
+        /// </summary>
         public int Rating
         {
             get
@@ -894,6 +703,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Subject, not often used by software, Title should be used in most cases
+        /// </summary>
         public string Subject
         {
             get
@@ -914,6 +726,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Vertical Resolution of Thumbnail
+        /// </summary>
         public int ThumbnailVerticalResolution
         {
             get
@@ -931,6 +746,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Horizontal Resolution of Thumbnail
+        /// </summary>
         public int ThumbnailHorizontalResolution
         {
             get
@@ -948,6 +766,9 @@ namespace FotoFly
             }
         }
 
+        // / <summary>
+        // / Title (sometimes knows as Subject but there is another attribute for that!)
+        // / </summary>
         public string Title
         {
             get
@@ -970,6 +791,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Microsoft Region Info extension which provides data on regions in the photo
+        /// </summary>
         public XmpRegionInfo RegionInfo
         {
             get
@@ -997,24 +821,24 @@ namespace FotoFly
                         {
                             XmpRegion newRegion = new XmpRegion();
 
-                            if (this.bitmapMetadataExtender.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRectangle))
+                            if (regionMetadata.ContainsQuery(XmpQueries.MicrosoftRectangle))
                             {
-                                newRegion.RectangleString = this.bitmapMetadataExtender.BitmapMetadata.GetQuery(XmpQueries.MicrosoftRectangle).ToString();
+                                newRegion.RectangleString = regionMetadata.GetQuery(XmpQueries.MicrosoftRectangle).ToString();
                             }
 
-                            if (this.bitmapMetadataExtender.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftPersonDisplayName))
+                            if (regionMetadata.ContainsQuery(XmpQueries.MicrosoftPersonDisplayName))
                             {
-                                newRegion.PersonDisplayName = this.bitmapMetadataExtender.BitmapMetadata.GetQuery(XmpQueries.MicrosoftPersonDisplayName).ToString();
+                                newRegion.PersonDisplayName = regionMetadata.GetQuery(XmpQueries.MicrosoftPersonDisplayName).ToString();
                             }
 
-                            if (this.bitmapMetadataExtender.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftPersonEmailDigest))
+                            if (regionMetadata.ContainsQuery(XmpQueries.MicrosoftPersonEmailDigest))
                             {
-                                newRegion.PersonEmailDigest = this.bitmapMetadataExtender.BitmapMetadata.GetQuery(XmpQueries.MicrosoftPersonEmailDigest).ToString();
+                                newRegion.PersonEmailDigest = regionMetadata.GetQuery(XmpQueries.MicrosoftPersonEmailDigest).ToString();
                             }
 
-                            if (this.bitmapMetadataExtender.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftPersonLiveIdCID))
+                            if (regionMetadata.ContainsQuery(XmpQueries.MicrosoftPersonLiveIdCID))
                             {
-                                newRegion.PersonLiveIdCID = this.bitmapMetadataExtender.BitmapMetadata.GetQuery(XmpQueries.MicrosoftPersonLiveIdCID).ToString();
+                                newRegion.PersonLiveIdCID = regionMetadata.GetQuery(XmpQueries.MicrosoftPersonLiveIdCID).ToString();
                             }
 
                             regionInfo.Regions.Add(newRegion);
@@ -1137,6 +961,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Vertical Resolution of Main Photo
+        /// </summary>
         public int VerticalResolution
         {
             get
@@ -1150,6 +977,337 @@ namespace FotoFly
                 else
                 {
                     return rational.ToInt();
+                }
+            }
+        }
+
+        /// <summary>
+        /// GpsPosition 
+        /// </summary>
+        public GpsPosition GpsPosition
+        {
+            get
+            {
+                GpsPosition gpsPosition = new GpsPosition();
+                gpsPosition.Latitude = this.GpsLatitude.Clone() as GpsCoordinate;
+                gpsPosition.Longitude = this.GpsLongitude.Clone() as GpsCoordinate;
+                gpsPosition.Altitude = this.GpsAltitude;
+                gpsPosition.Source = this.GpsProcessingMethod;
+                gpsPosition.Dimension = this.GpsMeasureMode;
+                gpsPosition.SatelliteTime = this.GpsDateTimeStamp;
+
+                return gpsPosition;
+            }
+
+            set
+            {
+                if (value.IsValidCoordinate)
+                {
+                    if (value.Dimension == GpsPosition.Dimensions.ThreeDimensional)
+                    {
+                        this.GpsAltitude = value.Altitude;
+                    }
+                    else
+                    {
+                        this.BitmapMetadataExtender.RemoveProperty(ExifQueries.GpsAltitudeRef);
+                        this.BitmapMetadataExtender.RemoveProperty(ExifQueries.GpsAltitude);
+                    }
+
+                    this.GpsLatitude = value.Latitude.Clone() as GpsCoordinate;
+                    this.GpsLongitude = value.Longitude.Clone() as GpsCoordinate;
+                    this.GpsDateTimeStamp = value.SatelliteTime;
+                    this.GpsMeasureMode = value.Dimension;
+                    this.GpsProcessingMethod = value.Source;
+                    this.GpsVersionID = "2200";
+                }
+                else
+                {
+                    // Clear all properties
+                    this.GpsAltitude = double.NaN;
+                    this.GpsLatitude = new GpsCoordinate();
+                    this.GpsLongitude = new GpsCoordinate();
+                    this.GpsDateTimeStamp = new DateTime();
+                    this.GpsProcessingMethod = string.Empty;
+                    this.GpsVersionID = string.Empty;
+                    this.GpsMeasureMode = GpsPosition.Dimensions.NotSpecified;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gps Altitude
+        /// </summary>
+        public double GpsAltitude
+        {
+            // Altitude is expressed as one RATIONAL count. The reference unit is meters
+            // 0 = Above sea level, 1 = Below sea level 
+            get
+            {
+                string gpsRef = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsAltitudeRef);
+                URational urational = this.bitmapMetadataExtender.QueryMetadataForURational(ExifQueries.GpsAltitude);
+
+                if (String.IsNullOrEmpty(gpsRef) || urational == null || double.IsNaN(urational.ToDouble()))
+                {
+                    return double.NaN;
+                }
+                else if (gpsRef == "1")
+                {
+                    return -urational.ToDouble(3);
+                }
+                else
+                {
+                    return urational.ToDouble(3);
+                }
+            }
+
+            set
+            {
+                // Check to see if the values have changed
+                if (double.IsNaN(value))
+                {
+                    // Blank out existing values
+                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsAltitudeRef);
+                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsAltitude);
+                }
+                else
+                {
+                    // Keep three decimal place of precision
+                    Rational rational = new Rational(value, 3);
+
+                    string altRef;
+
+                    if (value > 0)
+                    {
+                        altRef = "0";
+                    }
+                    else
+                    {
+                        altRef = "1";
+                    }
+
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsAltitudeRef, altRef);
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsAltitude, rational.ToUlong());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gps Latitude
+        /// </summary>
+        public GpsCoordinate GpsLatitude
+        {
+            get
+            {
+                string gpsRef = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsLatitudeRef).ToUpper();
+                GpsRational gpsRational = this.bitmapMetadataExtender.QueryMetadataForGpsRational(ExifQueries.GpsLatitude);
+
+                if (gpsRef == "N" && gpsRational != null)
+                {
+                    return new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, true, gpsRational.ToDouble());
+                }
+                else if (gpsRef == "S" && gpsRational != null)
+                {
+                    return new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, false, gpsRational.ToDouble());
+                }
+                else
+                {
+                    return new GpsCoordinate();
+                }
+            }
+
+            set
+            {
+                if (value.IsValidCoordinate)
+                {
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLatitudeRef, value.Ref);
+
+                    GpsRational gpsRational = new GpsRational(value.Degrees, value.Minutes, value.Seconds);
+
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLatitude, gpsRational.ToUlongArray(true));
+                }
+                else
+                {
+                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLatitude);
+                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLatitudeRef);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gps Longitude
+        /// </summary>
+        public GpsCoordinate GpsLongitude
+        {
+            get
+            {
+                string gpsRef = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsLongitudeRef).ToUpper();
+                GpsRational gpsRational = this.bitmapMetadataExtender.QueryMetadataForGpsRational(ExifQueries.GpsLongitude);
+
+                if (gpsRef == "E" && gpsRational != null)
+                {
+                    return new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, true, gpsRational.ToDouble());
+                }
+                else if (gpsRef == "W" && gpsRational != null)
+                {
+                    return new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, false, gpsRational.ToDouble());
+                }
+                else
+                {
+                    return new GpsCoordinate();
+                }
+            }
+
+            set
+            {
+                if (value.IsValidCoordinate)
+                {
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLongitudeRef, value.Ref);
+
+                    GpsRational gpsRational = new GpsRational(value.Degrees, value.Minutes, value.Seconds);
+
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLongitude, gpsRational.ToUlongArray(true));
+                }
+                else
+                {
+                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLongitude);
+                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLongitudeRef);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gps Measure Mode
+        /// </summary>
+        public GpsPosition.Dimensions GpsMeasureMode
+        {
+            get
+            {
+                string returnValue = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsMeasureMode);
+
+                if (string.IsNullOrEmpty(returnValue))
+                {
+                    return GpsPosition.Dimensions.NotSpecified;
+                }
+                else if (returnValue == "2")
+                {
+                    return GpsPosition.Dimensions.TwoDimensional;
+                }
+                else if (returnValue == "3")
+                {
+                    return GpsPosition.Dimensions.ThreeDimensional;
+                }
+                else
+                {
+                    return GpsPosition.Dimensions.NotSpecified;
+                }
+            }
+
+            set
+            {
+                switch (value)
+                {
+                    default:
+                    case GpsPosition.Dimensions.NotSpecified:
+                        this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsMeasureMode);
+                        break;
+
+                    case GpsPosition.Dimensions.ThreeDimensional:
+                        this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsMeasureMode, 3);
+                        break;
+
+                    case GpsPosition.Dimensions.TwoDimensional:
+                        this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsMeasureMode, 2);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gps Time stamp
+        /// </summary>
+        public DateTime GpsDateTimeStamp
+        {
+            get
+            {
+                try
+                {
+                    GpsRational time = this.bitmapMetadataExtender.QueryMetadataForGpsRational(ExifQueries.GpsTimeStamp);
+                    string date = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsDateStamp);
+
+                    if (time != null && !string.IsNullOrEmpty(date))
+                    {
+                        string[] dateParts = date.Split(':');
+
+                        return new DateTime(Convert.ToInt32(dateParts[0]), Convert.ToInt32(dateParts[1]), Convert.ToInt32(dateParts[2]), time.Hours.ToInt(), time.Minutes.ToInt(), time.Seconds.ToInt());
+                    }
+                }
+                catch
+                {
+                }
+
+                return new DateTime();
+            }
+
+            set
+            {
+                if (value != new DateTime())
+                {
+                    GpsRational time = new GpsRational(value.Hour, value.Minute, value.Second);
+                    string date = value.ToString("yyyy:MM:dd");
+
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsDateStamp, date);
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsTimeStamp, time.ToUlongArray(false));
+                }
+                else
+                {
+                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsDateStamp);
+                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsTimeStamp);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gps Version ID
+        /// </summary>
+        public string GpsVersionID
+        {
+            get
+            {
+                return this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsVersionID);
+            }
+
+            set
+            {
+                this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsVersionID, value);
+            }
+        }
+
+        /// <summary>
+        /// Gps Processing Mode
+        /// </summary>
+        public string GpsProcessingMethod
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsProcessingMethod)))
+                {
+                    return "None";
+                }
+                else
+                {
+                    return this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsProcessingMethod);
+                }
+            }
+
+            set
+            {
+                if (value == "None")
+                {
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsProcessingMethod, string.Empty);
+                }
+                else
+                {
+                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsProcessingMethod, value);
                 }
             }
         }
