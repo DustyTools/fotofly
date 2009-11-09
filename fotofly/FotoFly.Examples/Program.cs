@@ -9,34 +9,34 @@ namespace FotoFly.Examples
 
     public class Program
     {
+        private static string testPhotoPath = @"..\..\..\FotoFly.UnitTests\TestPhotos\";
+
         [STAThread]
         public static void Main(string[] args)
         {
-            // Wpf Examples, consisting of four classes
+            // Wpf Examples:
             // WpfFileManager uses WPF to read and write BitmapMetadata in a valid jpg file
-            // WpfBitmapMetadataExtender provides additional methods on top of BitmapMetadata to set and retrieve metadata
-            // WpfMetadata provides additional properties that use WpfBitmapMetadataExtender
-            // WpfProperties provides all the queries for common metadata properties
-            BitmapMetadataExamples.ReadMetadata(TestPhotos.Regions0);
-            BitmapMetadataExamples.WriteMetadata(TestPhotos.Regions0);
+            // BitmapMetadataHelper provides Extension Methods on top of BitmapMetadata
+            // WpfMetadata provides additional properties that are not in BitmapMetadata
+            // ExifQueries, XmpQueries, IptcQueries provides all the queries for common metadata properties
+            BitmapMetadataExamples.ReadMetadata(Program.testPhotoPath + TestPhotos.Regions0);
+            BitmapMetadataExamples.WriteMetadata(Program.testPhotoPath + TestPhotos.Regions0);
+            BitmapMetadataExamples.CreateWLPGRegions(Program.testPhotoPath + TestPhotos.Regions0);
+            BitmapMetadataExamples.UpdateWLPGRegions(Program.testPhotoPath + TestPhotos.Regions0);
+            BitmapMetadataExamples.ReadGpsAltitude(Program.testPhotoPath + TestPhotos.Geotagged);
+            BitmapMetadataExamples.ReadGpsLatitude(Program.testPhotoPath + TestPhotos.Geotagged);
+            BitmapMetadataExamples.ReadIPTCAddres(Program.testPhotoPath + TestPhotos.Geotagged);
+            BitmapMetadataExamples.RemoveIPTCAddres(Program.testPhotoPath + TestPhotos.Geotagged);
 
-            BitmapMetadataExamples.CreateWLPGRegions(TestPhotos.Regions0);
-            BitmapMetadataExamples.UpdateWLPGRegions(TestPhotos.Regions0);
-
-            BitmapMetadataExamples.ReadGpsAltitude(TestPhotos.Geotagged);
-            BitmapMetadataExamples.ReadGpsLatitude(TestPhotos.Geotagged);
-            BitmapMetadataExamples.ReadIPTCAddres(TestPhotos.Geotagged);
-            BitmapMetadataExamples.RemoveIPTCAddres(TestPhotos.Geotagged);
-
-            // JpgPhoto Examples, consisting of two classes, which sit on top of the Wpf classes above
+            // JpgPhoto Examples:
             // JpgPhoto for managing Jpg files and their metadata
             // JpgMetadata provides properties for various metadata properties
-            JpgPhotoExamples.ReadMetadata(TestPhotos.Regions1);
-            JpgPhotoExamples.WriteMetadata(TestPhotos.Regions1);
-            JpgPhotoExamples.AddTag(TestPhotos.Regions1);
-            JpgPhotoExamples.AddRegion(TestPhotos.Regions1);
-            JpgPhotoExamples.AddGpsCoor(TestPhotos.Regions1);
-            JpgPhotoExamples.GenerateFileNames(TestPhotos.Regions1);
+            JpgPhotoExamples.ReadMetadata(Program.testPhotoPath + TestPhotos.Regions1);
+            JpgPhotoExamples.WriteMetadata(Program.testPhotoPath + TestPhotos.Regions1);
+            JpgPhotoExamples.AddTag(Program.testPhotoPath + TestPhotos.Regions1);
+            JpgPhotoExamples.AddRegion(Program.testPhotoPath + TestPhotos.Regions1);
+            JpgPhotoExamples.AddGpsCoor(Program.testPhotoPath + TestPhotos.Regions1);
+            JpgPhotoExamples.GenerateFileNames(Program.testPhotoPath + TestPhotos.Regions1);
         }
     }
 }

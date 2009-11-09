@@ -257,18 +257,18 @@ namespace FotoFly
         }
 
         [XmlIgnore]
-        public PhotoMetadataEnums.Orientations Orientation
+        public PhotoMetadataEnums.ImageOrientations Orientation
         {
             get
             {
                 // Work out Orientation
                 if (this.ImageHeight > this.ImageWidth)
                 {
-                    return PhotoMetadataEnums.Orientations.Portrait;
+                    return PhotoMetadataEnums.ImageOrientations.Portrait;
                 }
                 else
                 {
-                    return PhotoMetadataEnums.Orientations.Landscape;
+                    return PhotoMetadataEnums.ImageOrientations.Landscape;
                 }
             }
         }

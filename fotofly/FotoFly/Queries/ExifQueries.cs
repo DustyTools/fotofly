@@ -27,6 +27,9 @@ namespace FotoFly
         // the image. When the field is left blank, it is treated as unknown. 
         public static readonly string CameraModel = "/app1/ifd/exif:{uint=272}";
 
+        // Short
+        public static readonly string Orientation = "/app1/ifd/exif:{uint=274}";
+
         // Rational. The number of pixels per <ResolutionUnit> in the <ImageWidth> direction.
         // When the image resolution is unknown, 72 [dpi] is designated. 
         public static readonly string HorizontalResolution = "/app1/ifd/exif:{uint=282}";
@@ -42,8 +45,7 @@ namespace FotoFly
 
         // Ascii. This tag records the name and version of the software or firmware of the camera
         // or image input device used to generate the image. The detailed format is not specified,
-        // but it is recommended that the example shown below be followed. When the field is left
-        // blank, it is treated as unknown. 
+        // When the field is left blank, it is treated as unknown. 
         public static readonly string CreationSoftware = "/app1/ifd/exif:{uint=305}";
 
         // Ascii. The date and time of image creation. In Exif standard, it is the date and time the
@@ -61,7 +63,7 @@ namespace FotoFly
         public static readonly string Aperture = "/app1/ifd/exif/subifd:{uint=33437}";
 
         // Short. The class of the program used by the camera to set exposure when the picture is taken. 
-        public static readonly string ExposureMode = "/app1/ifd/exif/subifd:{uint=34850}";
+        public static readonly string ExposureProgram = "/app1/ifd/exif/subifd:{uint=34850}";
 
         // Short. Indicates the ISO Speed and ISO Latitude of the camera or input device as specified
         // in ISO 12232. 
@@ -78,8 +80,11 @@ namespace FotoFly
         // in the range of -99.99 to 99.99. 
         public static readonly string ExposureBias = "/app1/ifd/exif/subifd:{uint=37380}";
 
+        // Short
+        public static readonly string MeteringMode = "/app1/ifd/exif/subifd:{uint=37383}";
+
         // Short. The kind of light source. 
-        public static readonly string WhiteBalanceMode = "/app1/ifd/exif/subifd:{uint=37384}";
+        public static readonly string LightSource = "/app1/ifd/exif/subifd:{uint=37384}";
 
         // Short. This tag is recorded when an image is taken using a strobe light (flash)
         public static readonly string FlashFired = "/app1/ifd/exif/subifd:{uint=37385}";
@@ -94,9 +99,18 @@ namespace FotoFly
         // recorded as Uncalibrated can be treated as sRGB when it is converted to FlashPix. 
         public static readonly string ColorRepresentation = "/app1/ifd/exif/subifd:{uint=40961}";
 
+        // Short
+        public static readonly string ExposureMode = "/app1/ifd/exif/subifd:{uint=41986}";
+
+        // Short
+        public static readonly string WhiteBalance = "/app1/ifd/exif/subifd:{uint=41987}";
+
         // Rational. This tag indicates the digital zoom ratio when the image was shot. If the
         // numerator of the recorded value is 0, this indicates that digital zoom was not used. 
         public static readonly string DigitalZoomRatio = "/app1/ifd/exif/subifd:{uint=41988}";
+
+        // Short
+        public static readonly string SubjectDistanceRange = "/app1/ifd/exif/subifd:{uint=41996}";
 
         // *********************************************************************************** //
         //       Iop Tags

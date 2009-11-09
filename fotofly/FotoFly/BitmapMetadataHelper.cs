@@ -23,6 +23,22 @@ namespace FotoFly
 
     public static class BitmapMetadataHelper
     {
+        public static T GetQuery<T>(this BitmapMetadata bitmapMetadata, string query)
+        {
+            object unknownObject = bitmapMetadata.GetQuery(query);
+
+            if (unknownObject == null)
+            {
+                throw new System.NullReferenceException("query not found");
+            }
+            else if (!typeof(T).IsAssignableFrom(unknownObject.GetType()))
+            {
+                throw new System.ArgumentException("query has type " + unknownObject.GetType().ToString());
+            }
+
+            return (T)unknownObject;
+        }
+
         public static int? GetQueryAsInt(this BitmapMetadata bitmapMetadata, string query)
         {
             object unknownObject = bitmapMetadata.GetQueryAsObject(query);
