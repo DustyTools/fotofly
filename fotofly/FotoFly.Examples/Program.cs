@@ -10,11 +10,6 @@ namespace FotoFly.Examples
         [STAThread]
         public static void Main(string[] args)
         {
-            JpgPhotoExamples.ReadMetadata("../../TestPhotos/Regions-1.jpg");
-        }
-
-        public void Asd()
-        {
             // Test files
             string testNoRegion = "../../TestPhotos/Regions-0.jpg";
             string testOneRegion = "../../TestPhotos/Regions-1.jpg";

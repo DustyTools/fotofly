@@ -60,13 +60,13 @@
   <ItemGroup>
     <Compile Include="BaseClasses\GenericPhotoEnums.cs" />
     <Compile Include="BaseClasses\GenericPhotoFile.cs" />
+    <Compile Include="BitmapMetadataHelper.cs" />
     <Compile Include="Interfaces\IPhotoMetadata.cs" />
     <Compile Include="IPhotoMetadataTools.cs" />
     <Compile Include="PhotoMetadata.cs" />
     <Compile Include="Queries\ExifQueries.cs" />
     <Compile Include="Queries\IptcQueries.cs" />
     <Compile Include="Queries\XmpQueries.cs" />
-    <Compile Include="WpfBitmapMetadataExtender.cs" />
     <Compile Include="MetadataProperties\Address.cs" />
     <Compile Include="Gps\GpsCoordinate.cs" />
     <Compile Include="Gps\GpsPosition.cs" />

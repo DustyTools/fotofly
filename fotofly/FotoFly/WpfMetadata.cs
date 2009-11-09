@@ -24,31 +24,21 @@ namespace FotoFly
 
     public class WpfMetadata : IPhotoMetadata, IDisposable
     {
-        private WpfBitmapMetadataExtender bitmapMetadataExtender;
-
         private bool disposed = false;
 
         public WpfMetadata()
         {
-            this.bitmapMetadataExtender = new WpfBitmapMetadataExtender(new BitmapMetadata("jpg"));
         }
 
         public WpfMetadata(BitmapMetadata bitmapMetadata)
         {
-            this.bitmapMetadataExtender = new WpfBitmapMetadataExtender(bitmapMetadata);
+            this.BitmapMetadata = bitmapMetadata;
         }
 
         public BitmapMetadata BitmapMetadata
         {
-            get
-            {
-                return this.bitmapMetadataExtender.BitmapMetadata;
-            }
-
-            set
-            {
-                this.bitmapMetadataExtender.BitmapMetadata = value;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -58,7 +48,7 @@ namespace FotoFly
         {
             get
             {
-                URational urational = this.bitmapMetadataExtender.QueryMetadataForURational(ExifQueries.Aperture);
+                URational urational = this.BitmapMetadata.GetQueryAsURational(ExifQueries.Aperture);
 
                 if (urational != null)
                 {
@@ -78,7 +68,7 @@ namespace FotoFly
         {
             get
             {
-                ReadOnlyCollection<string> readOnlyCollectionString = this.bitmapMetadataExtender.BitmapMetadata.Author;
+                ReadOnlyCollection<string> readOnlyCollectionString = this.BitmapMetadata.Author;
 
                 if (readOnlyCollectionString == null || readOnlyCollectionString.Count == 0)
                 {
@@ -92,7 +82,7 @@ namespace FotoFly
 
             set
             {
-                this.bitmapMetadataExtender.BitmapMetadata.Author = new ReadOnlyCollection<string>(value);
+                this.BitmapMetadata.Author = new ReadOnlyCollection<string>(value);
             }
         }
 
@@ -107,7 +97,7 @@ namespace FotoFly
 
                 try
                 {
-                    formattedString = this.bitmapMetadataExtender.BitmapMetadata.Comment;
+                    formattedString = this.BitmapMetadata.Comment;
                 }
                 catch
                 {
@@ -121,11 +111,11 @@ namespace FotoFly
             {
                 if (value == null)
                 {
-                    this.bitmapMetadataExtender.BitmapMetadata.Comment = string.Empty;
+                    this.BitmapMetadata.Comment = string.Empty;
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.BitmapMetadata.Comment = value;
+                    this.BitmapMetadata.Comment = value;
                 }
             }
         }
@@ -141,7 +131,7 @@ namespace FotoFly
 
                 try
                 {
-                    formattedString = this.bitmapMetadataExtender.BitmapMetadata.CameraManufacturer;
+                    formattedString = this.BitmapMetadata.CameraManufacturer;
                 }
                 catch
                 {
@@ -155,11 +145,11 @@ namespace FotoFly
             {
                 if (value == null)
                 {
-                    this.bitmapMetadataExtender.BitmapMetadata.CameraManufacturer = string.Empty;
+                    this.BitmapMetadata.CameraManufacturer = string.Empty;
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.BitmapMetadata.CameraManufacturer = value;
+                    this.BitmapMetadata.CameraManufacturer = value;
                 }
             }
         }
@@ -171,11 +161,11 @@ namespace FotoFly
         {
             get
             {
-                string cameraModel = this.bitmapMetadataExtender.BitmapMetadata.CameraModel;
+                string cameraModel = this.BitmapMetadata.CameraModel;
 
                 if (string.IsNullOrEmpty(cameraModel))
                 {
-                    object cameraModelArray = this.bitmapMetadataExtender.QueryMetadataForObject(ExifQueries.CameraModel);
+                    object cameraModelArray = this.BitmapMetadata.GetQueryAsObject(ExifQueries.CameraModel);
 
                     if (cameraModelArray is string[])
                     {
@@ -190,11 +180,11 @@ namespace FotoFly
             {
                 if (value == null)
                 {
-                    this.bitmapMetadataExtender.BitmapMetadata.CameraModel = string.Empty;
+                    this.BitmapMetadata.CameraModel = string.Empty;
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.BitmapMetadata.CameraModel = value;
+                    this.BitmapMetadata.CameraModel = value;
                 }
             }
         }
@@ -210,7 +200,7 @@ namespace FotoFly
 
                 try
                 {
-                    formattedString = this.bitmapMetadataExtender.BitmapMetadata.Copyright;
+                    formattedString = this.BitmapMetadata.Copyright;
                 }
                 catch
                 {
@@ -224,11 +214,11 @@ namespace FotoFly
             {
                 if (value == null)
                 {
-                    this.bitmapMetadataExtender.BitmapMetadata.Copyright = string.Empty;
+                    this.BitmapMetadata.Copyright = string.Empty;
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.BitmapMetadata.Copyright = value;
+                    this.BitmapMetadata.Copyright = value;
                 }
             }
         }
@@ -240,12 +230,12 @@ namespace FotoFly
         {
             get
             {
-                return this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.CreationSoftware);
+                return this.BitmapMetadata.GetQueryAsString(ExifQueries.CreationSoftware);
             }
 
             set
             {
-                this.bitmapMetadataExtender.SetProperty(ExifQueries.CreationSoftware, value);
+                this.BitmapMetadata.SetQuery(ExifQueries.CreationSoftware, value);
             }
         }
 
@@ -256,7 +246,7 @@ namespace FotoFly
         {
             get
             {
-                DateTime? newDateTime = this.bitmapMetadataExtender.QueryMetadataForExifDateTime(ExifQueries.DateDigitized);
+                DateTime? newDateTime = this.BitmapMetadata.GetQueryAsExifDateTime(ExifQueries.DateDigitized);
 
                 if (newDateTime == null)
                 {
@@ -277,7 +267,7 @@ namespace FotoFly
                 exifDate = exifDate.Replace("-", ":");
                 exifDate = exifDate.Replace("T", " ");
 
-                this.bitmapMetadataExtender.SetProperty(ExifQueries.DateDigitized, exifDate);
+                this.BitmapMetadata.SetQuery(ExifQueries.DateDigitized, exifDate);
             }
         }
 
@@ -288,7 +278,7 @@ namespace FotoFly
         {
             get
             {
-                DateTime? datetimeTaken = Convert.ToDateTime(this.bitmapMetadataExtender.BitmapMetadata.DateTaken);
+                DateTime? datetimeTaken = Convert.ToDateTime(this.BitmapMetadata.DateTaken);
 
                 if (datetimeTaken == null)
                 {
@@ -304,10 +294,10 @@ namespace FotoFly
             {
                 // Write to tempBitmap count
                 // Use sortable string to avoid US date format issue with Month\Date
-                this.bitmapMetadataExtender.BitmapMetadata.DateTaken = value.ToString("s");
+                this.BitmapMetadata.DateTaken = value.ToString("s");
 
                 // Use specific format for EXIF data, 2008:12:01 13:14:10
-                this.bitmapMetadataExtender.SetProperty(ExifQueries.DateTaken, value.ToString("yyyy:MM:dd HH:mm:ss"));
+                this.BitmapMetadata.SetQuery(ExifQueries.DateTaken, value.ToString("yyyy:MM:dd HH:mm:ss"));
             }
         }
 
@@ -318,7 +308,7 @@ namespace FotoFly
         {
             get
             {
-                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.DigitalZoomRatio);
+                Rational rational = this.BitmapMetadata.GetQueryAsRational(ExifQueries.DigitalZoomRatio);
 
                 if (rational == null || rational.Numerator == 0)
                 {
@@ -340,7 +330,7 @@ namespace FotoFly
             {
                 try
                 {
-                    Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.ExposureBias);
+                    Rational rational = this.BitmapMetadata.GetQueryAsRational(ExifQueries.ExposureBias);
 
                     if (rational != null)
                     {
@@ -365,7 +355,7 @@ namespace FotoFly
         {
             get
             {
-                URational urational = this.bitmapMetadataExtender.QueryMetadataForURational(ExifQueries.FocalLenght);
+                URational urational = this.BitmapMetadata.GetQueryAsURational(ExifQueries.FocalLenght);
 
                 if (urational != null)
                 {
@@ -385,7 +375,7 @@ namespace FotoFly
         {
             get
             {
-                uint? iso = this.bitmapMetadataExtender.QueryMetadataForUint(ExifQueries.IsoSpeedRating);
+                uint? iso = this.BitmapMetadata.GetQueryAsUint(ExifQueries.IsoSpeedRating);
 
                 if (iso == null)
                 {
@@ -409,7 +399,7 @@ namespace FotoFly
         {
             get
             {
-                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.HorizontalResolution);
+                Rational rational = this.BitmapMetadata.GetQueryAsRational(ExifQueries.HorizontalResolution);
 
                 if (rational == null || rational.Numerator == 0)
                 {
@@ -429,12 +419,12 @@ namespace FotoFly
         {
             get
             {
-                return new TagList(this.bitmapMetadataExtender.BitmapMetadata.Keywords);
+                return new TagList(this.BitmapMetadata.Keywords);
             }
 
             set
             {
-                this.bitmapMetadataExtender.BitmapMetadata.Keywords = new ReadOnlyCollection<string>(value.ToReadOnlyCollection());
+                this.BitmapMetadata.Keywords = new ReadOnlyCollection<string>(value.ToReadOnlyCollection());
             }
         }
 
@@ -470,7 +460,7 @@ namespace FotoFly
         {
             get
             {
-                int? imageHeight = this.bitmapMetadataExtender.QueryMetadataForInt(ExifQueries.ImageHeight);
+                int? imageHeight = this.BitmapMetadata.GetQueryAsInt(ExifQueries.ImageHeight);
 
                 if (imageHeight == null)
                 {
@@ -490,7 +480,7 @@ namespace FotoFly
         {
             get
             {
-                int? imageWidth = this.bitmapMetadataExtender.QueryMetadataForInt(ExifQueries.ImageWidth);
+                int? imageWidth = this.BitmapMetadata.GetQueryAsInt(ExifQueries.ImageWidth);
 
                 if (imageWidth == null)
                 {
@@ -510,7 +500,7 @@ namespace FotoFly
         {
             get
             {
-                string returnValue = this.bitmapMetadataExtender.QueryMetadataForString(IptcQueries.City);
+                string returnValue = this.BitmapMetadata.GetQueryAsString(IptcQueries.City);
 
                 if (string.IsNullOrEmpty(returnValue))
                 {
@@ -526,11 +516,11 @@ namespace FotoFly
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.bitmapMetadataExtender.RemoveProperty(IptcQueries.City);
+                    this.BitmapMetadata.SetQuery(IptcQueries.City, string.Empty);
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.SetProperty(IptcQueries.City, value);
+                    this.BitmapMetadata.SetQuery(IptcQueries.City, value);
                 }
             }
         }
@@ -542,7 +532,7 @@ namespace FotoFly
         {
             get
             {
-                string returnValue = this.bitmapMetadataExtender.QueryMetadataForString(IptcQueries.Country);
+                string returnValue = this.BitmapMetadata.GetQueryAsString(IptcQueries.Country);
 
                 if (string.IsNullOrEmpty(returnValue))
                 {
@@ -558,11 +548,11 @@ namespace FotoFly
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.bitmapMetadataExtender.RemoveProperty(IptcQueries.Country);
+                    this.BitmapMetadata.SetQuery(IptcQueries.Country, string.Empty);
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.SetProperty(IptcQueries.Country, value);
+                    this.BitmapMetadata.SetQuery(IptcQueries.Country, value);
                 }
             }
         }
@@ -574,7 +564,7 @@ namespace FotoFly
         {
             get
             {
-                string returnValue = this.bitmapMetadataExtender.QueryMetadataForString(IptcQueries.Region);
+                string returnValue = this.BitmapMetadata.GetQueryAsString(IptcQueries.Region);
 
                 if (string.IsNullOrEmpty(returnValue))
                 {
@@ -590,11 +580,11 @@ namespace FotoFly
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.bitmapMetadataExtender.RemoveProperty(IptcQueries.Region);
+                    this.BitmapMetadata.SetQuery(IptcQueries.Region, string.Empty);
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.SetProperty(IptcQueries.Region, value);
+                    this.BitmapMetadata.SetQuery(IptcQueries.Region, value);
                 }
             }
         }
@@ -606,7 +596,7 @@ namespace FotoFly
         {
             get
             {
-                string returnValue = this.bitmapMetadataExtender.QueryMetadataForString(IptcQueries.SubLocation);
+                string returnValue = this.BitmapMetadata.GetQueryAsString(IptcQueries.SubLocation);
 
                 if (string.IsNullOrEmpty(returnValue))
                 {
@@ -622,11 +612,11 @@ namespace FotoFly
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.bitmapMetadataExtender.RemoveProperty(IptcQueries.SubLocation);
+                    this.BitmapMetadata.SetQuery(IptcQueries.SubLocation, string.Empty);
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.SetProperty(IptcQueries.SubLocation, value);
+                    this.BitmapMetadata.SetQuery(IptcQueries.SubLocation, value);
                 }
             }
         }
@@ -640,7 +630,7 @@ namespace FotoFly
             {
                 try
                 {
-                    Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.ShutterSpeed);
+                    Rational rational = this.BitmapMetadata.GetQueryAsRational(ExifQueries.ShutterSpeed);
 
                     if (rational != null)
                     {
@@ -685,7 +675,7 @@ namespace FotoFly
         {
             get
             {
-                int rating = this.bitmapMetadataExtender.BitmapMetadata.Rating;
+                int rating = this.BitmapMetadata.Rating;
 
                 return rating;
             }
@@ -694,7 +684,7 @@ namespace FotoFly
             {
                 if (value >= 0 || value <= 5)
                 {
-                    this.bitmapMetadataExtender.BitmapMetadata.Rating = value;
+                    this.BitmapMetadata.Rating = value;
                 }
                 else
                 {
@@ -710,19 +700,19 @@ namespace FotoFly
         {
             get
             {
-                if (string.IsNullOrEmpty(this.bitmapMetadataExtender.BitmapMetadata.Subject))
+                if (string.IsNullOrEmpty(this.BitmapMetadata.Subject))
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return this.bitmapMetadataExtender.BitmapMetadata.Subject;
+                    return this.BitmapMetadata.Subject;
                 }
             }
 
             set
             {
-                this.bitmapMetadataExtender.BitmapMetadata.Subject = value;
+                this.BitmapMetadata.Subject = value;
             }
         }
 
@@ -733,7 +723,7 @@ namespace FotoFly
         {
             get
             {
-                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.ThumbnailVerticalResolution);
+                Rational rational = this.BitmapMetadata.GetQueryAsRational(ExifQueries.ThumbnailVerticalResolution);
 
                 if (rational == null || rational.Numerator == 0)
                 {
@@ -753,7 +743,7 @@ namespace FotoFly
         {
             get
             {
-                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.ThumbnailHorizontalResolution);
+                Rational rational = this.BitmapMetadata.GetQueryAsRational(ExifQueries.ThumbnailHorizontalResolution);
 
                 if (rational == null || rational.Numerator == 0)
                 {
@@ -773,7 +763,7 @@ namespace FotoFly
         {
             get
             {
-                string formattedString = this.bitmapMetadataExtender.BitmapMetadata.Title;
+                string formattedString = this.BitmapMetadata.Title;
 
                 if (String.IsNullOrEmpty(formattedString))
                 {
@@ -787,7 +777,7 @@ namespace FotoFly
 
             set
             {
-                this.bitmapMetadataExtender.BitmapMetadata.Title = value;
+                this.BitmapMetadata.Title = value;
             }
         }
 
@@ -801,13 +791,13 @@ namespace FotoFly
                 XmpRegionInfo regionInfo = new XmpRegionInfo();
 
                 // Read Last Update Date
-                if (this.bitmapMetadataExtender.QueryMetadataForDateTime(XmpQueries.MicrosoftRegionsLastUpdate) != null)
+                if (this.BitmapMetadata.GetQueryAsDateTime(XmpQueries.MicrosoftRegionsLastUpdate) != null)
                 {
-                    regionInfo.LastUpdate = this.bitmapMetadataExtender.QueryMetadataForDateTime(XmpQueries.MicrosoftRegionsLastUpdate).Value;
+                    regionInfo.LastUpdate = this.BitmapMetadata.GetQueryAsDateTime(XmpQueries.MicrosoftRegionsLastUpdate).Value;
                 }
 
                 // Read Each Region
-                BitmapMetadata regionsMetadata = this.bitmapMetadataExtender.QueryMetadataForBitmapMetadata(XmpQueries.MicrosoftRegions);
+                BitmapMetadata regionsMetadata = this.BitmapMetadata.GetQueryAsBitmapMetadata(XmpQueries.MicrosoftRegions);
 
                 if (regionsMetadata != null)
                 {
@@ -815,7 +805,7 @@ namespace FotoFly
                     {
                         string regionFullQuery = XmpQueries.MicrosoftRegions + regionQuery;
 
-                        BitmapMetadata regionMetadata = this.bitmapMetadataExtender.QueryMetadataForBitmapMetadata(regionFullQuery);
+                        BitmapMetadata regionMetadata = this.BitmapMetadata.GetQueryAsBitmapMetadata(regionFullQuery);
 
                         if (regionMetadata != null)
                         {
@@ -860,21 +850,21 @@ namespace FotoFly
                 if (value != null && value.Regions.Count > 0)
                 {
                     // Check for RegionInfo Struct, if none exists, create it
-                    if (!this.bitmapMetadataExtender.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRegionInfo))
+                    if (!this.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRegionInfo))
                     {
-                        this.bitmapMetadataExtender.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegionInfo, new BitmapMetadata(XmpQueries.Struct));
+                        this.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegionInfo, new BitmapMetadata(XmpQueries.Struct));
                     }
 
                     // Set LastUpdate if it's been set
                     if (value.LastUpdate != new DateTime())
                     {
-                        this.bitmapMetadataExtender.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegionsLastUpdate, value.LastUpdate.ToUniversalTime());
+                        this.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegionsLastUpdate, value.LastUpdate.ToUniversalTime());
                     }
 
                     // Check for Regions Bag, if none exists, create it
-                    if (!this.bitmapMetadataExtender.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRegions))
+                    if (!this.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRegions))
                     {
-                        this.bitmapMetadataExtender.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegions, new BitmapMetadata(XmpQueries.Bag));
+                        this.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegions, new BitmapMetadata(XmpQueries.Bag));
                     }
 
                     // If Region count has changed, clear our existing regions and create empty regions
@@ -886,7 +876,7 @@ namespace FotoFly
                             // Build query for current region
                             string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpQueries.MicrosoftRegion, i.ToString());
 
-                            this.bitmapMetadataExtender.BitmapMetadata.RemoveQuery(currentRegionQuery);
+                            this.BitmapMetadata.RemoveQuery(currentRegionQuery);
                         }
 
                         // Add any additional regions
@@ -895,7 +885,7 @@ namespace FotoFly
                             // Build query for current region
                             string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpQueries.MicrosoftRegion, i.ToString());
 
-                            this.bitmapMetadataExtender.BitmapMetadata.SetQuery(currentRegionQuery, new BitmapMetadata(XmpQueries.Struct));
+                            this.BitmapMetadata.SetQuery(currentRegionQuery, new BitmapMetadata(XmpQueries.Struct));
                         }
                     }
 
@@ -910,41 +900,41 @@ namespace FotoFly
                         // Update or clear PersonDisplayName
                         if (string.IsNullOrEmpty(xmpRegion.PersonDisplayName))
                         {
-                            this.bitmapMetadataExtender.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonDisplayName);
+                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonDisplayName);
                         }
                         else
                         {
-                            this.bitmapMetadataExtender.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonDisplayName, xmpRegion.PersonDisplayName);
+                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonDisplayName, xmpRegion.PersonDisplayName);
                         }
 
                         // Update or clear PersonEmailDigest
                         if (string.IsNullOrEmpty(xmpRegion.PersonEmailDigest))
                         {
-                            this.bitmapMetadataExtender.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonEmailDigest);
+                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonEmailDigest);
                         }
                         else
                         {
-                            this.bitmapMetadataExtender.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonEmailDigest, xmpRegion.PersonEmailDigest);
+                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonEmailDigest, xmpRegion.PersonEmailDigest);
                         }
 
                         // Update or clear PersonLiveIdCID
                         if (string.IsNullOrEmpty(xmpRegion.PersonLiveIdCID))
                         {
-                            this.bitmapMetadataExtender.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonLiveIdCID);
+                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonLiveIdCID);
                         }
                         else
                         {
-                            this.bitmapMetadataExtender.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonLiveIdCID, xmpRegion.PersonLiveIdCID);
+                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonLiveIdCID, xmpRegion.PersonLiveIdCID);
                         }
 
                         // Update or clear RectangleString
                         if (string.IsNullOrEmpty(xmpRegion.RectangleString))
                         {
-                            this.bitmapMetadataExtender.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftRectangle);
+                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftRectangle);
                         }
                         else
                         {
-                            this.bitmapMetadataExtender.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftRectangle, xmpRegion.RectangleString);
+                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftRectangle, xmpRegion.RectangleString);
                         }
 
                         currentRegion++;
@@ -953,9 +943,9 @@ namespace FotoFly
                 else
                 {
                     // Delete existing RegionInfos, deletes all child data
-                    if (this.bitmapMetadataExtender.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRegionInfo))
+                    if (this.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRegionInfo))
                     {
-                        this.bitmapMetadataExtender.BitmapMetadata.RemoveQuery(XmpQueries.MicrosoftRegionInfo);
+                        this.BitmapMetadata.RemoveQuery(XmpQueries.MicrosoftRegionInfo);
                     }
                 }
             }
@@ -968,7 +958,7 @@ namespace FotoFly
         {
             get
             {
-                Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(ExifQueries.VerticalResolution);
+                Rational rational = this.BitmapMetadata.GetQueryAsRational(ExifQueries.VerticalResolution);
 
                 if (rational == null || rational.Numerator == 0)
                 {
@@ -1009,8 +999,8 @@ namespace FotoFly
                     }
                     else
                     {
-                        this.BitmapMetadataExtender.RemoveProperty(ExifQueries.GpsAltitudeRef);
-                        this.BitmapMetadataExtender.RemoveProperty(ExifQueries.GpsAltitude);
+                        this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitudeRef, string.Empty);
+                        this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitude, string.Empty);
                     }
 
                     this.GpsLatitude = value.Latitude.Clone() as GpsCoordinate;
@@ -1043,8 +1033,8 @@ namespace FotoFly
             // 0 = Above sea level, 1 = Below sea level 
             get
             {
-                string gpsRef = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsAltitudeRef);
-                URational urational = this.bitmapMetadataExtender.QueryMetadataForURational(ExifQueries.GpsAltitude);
+                string gpsRef = this.BitmapMetadata.GetQueryAsString(ExifQueries.GpsAltitudeRef);
+                URational urational = this.BitmapMetadata.GetQueryAsURational(ExifQueries.GpsAltitude);
 
                 if (String.IsNullOrEmpty(gpsRef) || urational == null || double.IsNaN(urational.ToDouble()))
                 {
@@ -1066,8 +1056,8 @@ namespace FotoFly
                 if (double.IsNaN(value))
                 {
                     // Blank out existing values
-                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsAltitudeRef);
-                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsAltitude);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitudeRef, string.Empty);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitude, string.Empty);
                 }
                 else
                 {
@@ -1085,8 +1075,8 @@ namespace FotoFly
                         altRef = "1";
                     }
 
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsAltitudeRef, altRef);
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsAltitude, rational.ToUlong());
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitudeRef, altRef);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitude, rational.ToUlong());
                 }
             }
         }
@@ -1098,8 +1088,8 @@ namespace FotoFly
         {
             get
             {
-                string gpsRef = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsLatitudeRef).ToUpper();
-                GpsRational gpsRational = this.bitmapMetadataExtender.QueryMetadataForGpsRational(ExifQueries.GpsLatitude);
+                string gpsRef = this.BitmapMetadata.GetQueryAsString(ExifQueries.GpsLatitudeRef).ToUpper();
+                GpsRational gpsRational = this.BitmapMetadata.GetQueryAsGpsRational(ExifQueries.GpsLatitude);
 
                 if (gpsRef == "N" && gpsRational != null)
                 {
@@ -1119,16 +1109,16 @@ namespace FotoFly
             {
                 if (value.IsValidCoordinate)
                 {
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLatitudeRef, value.Ref);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLatitudeRef, value.Ref);
 
                     GpsRational gpsRational = new GpsRational(value.Degrees, value.Minutes, value.Seconds);
 
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLatitude, gpsRational.ToUlongArray(true));
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLatitude, gpsRational.ToUlongArray(true));
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLatitude);
-                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLatitudeRef);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLatitude, string.Empty);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLatitudeRef, string.Empty);
                 }
             }
         }
@@ -1140,8 +1130,8 @@ namespace FotoFly
         {
             get
             {
-                string gpsRef = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsLongitudeRef).ToUpper();
-                GpsRational gpsRational = this.bitmapMetadataExtender.QueryMetadataForGpsRational(ExifQueries.GpsLongitude);
+                string gpsRef = this.BitmapMetadata.GetQueryAsString(ExifQueries.GpsLongitudeRef).ToUpper();
+                GpsRational gpsRational = this.BitmapMetadata.GetQueryAsGpsRational(ExifQueries.GpsLongitude);
 
                 if (gpsRef == "E" && gpsRational != null)
                 {
@@ -1161,16 +1151,16 @@ namespace FotoFly
             {
                 if (value.IsValidCoordinate)
                 {
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLongitudeRef, value.Ref);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLongitudeRef, value.Ref);
 
                     GpsRational gpsRational = new GpsRational(value.Degrees, value.Minutes, value.Seconds);
 
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsLongitude, gpsRational.ToUlongArray(true));
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLongitude, gpsRational.ToUlongArray(true));
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLongitude);
-                    this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsLongitudeRef);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLongitude, string.Empty);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLongitudeRef, string.Empty);
                 }
             }
         }
@@ -1182,7 +1172,7 @@ namespace FotoFly
         {
             get
             {
-                string returnValue = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsMeasureMode);
+                string returnValue = this.BitmapMetadata.GetQueryAsString(ExifQueries.GpsMeasureMode);
 
                 if (string.IsNullOrEmpty(returnValue))
                 {
@@ -1208,15 +1198,15 @@ namespace FotoFly
                 {
                     default:
                     case GpsPosition.Dimensions.NotSpecified:
-                        this.bitmapMetadataExtender.RemoveProperty(ExifQueries.GpsMeasureMode);
+                        this.BitmapMetadata.SetQuery(ExifQueries.GpsMeasureMode, string.Empty);
                         break;
 
                     case GpsPosition.Dimensions.ThreeDimensional:
-                        this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsMeasureMode, 3);
+                        this.BitmapMetadata.SetQuery(ExifQueries.GpsMeasureMode, 3);
                         break;
 
                     case GpsPosition.Dimensions.TwoDimensional:
-                        this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsMeasureMode, 2);
+                        this.BitmapMetadata.SetQuery(ExifQueries.GpsMeasureMode, 2);
                         break;
                 }
             }
@@ -1231,8 +1221,8 @@ namespace FotoFly
             {
                 try
                 {
-                    GpsRational time = this.bitmapMetadataExtender.QueryMetadataForGpsRational(ExifQueries.GpsTimeStamp);
-                    string date = this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsDateStamp);
+                    GpsRational time = this.BitmapMetadata.GetQueryAsGpsRational(ExifQueries.GpsTimeStamp);
+                    string date = this.BitmapMetadata.GetQueryAsString(ExifQueries.GpsDateStamp);
 
                     if (time != null && !string.IsNullOrEmpty(date))
                     {
@@ -1255,13 +1245,13 @@ namespace FotoFly
                     GpsRational time = new GpsRational(value.Hour, value.Minute, value.Second);
                     string date = value.ToString("yyyy:MM:dd");
 
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsDateStamp, date);
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsTimeStamp, time.ToUlongArray(false));
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsDateStamp, date);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsTimeStamp, time.ToUlongArray(false));
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsDateStamp);
-                    this.bitmapMetadataExtender.ClearProperty(ExifQueries.GpsTimeStamp);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsDateStamp, string.Empty);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsTimeStamp, string.Empty);
                 }
             }
         }
@@ -1273,12 +1263,12 @@ namespace FotoFly
         {
             get
             {
-                return this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsVersionID);
+                return this.BitmapMetadata.GetQueryAsString(ExifQueries.GpsVersionID);
             }
 
             set
             {
-                this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsVersionID, value);
+                this.BitmapMetadata.SetQuery(ExifQueries.GpsVersionID, value);
             }
         }
 
@@ -1289,13 +1279,13 @@ namespace FotoFly
         {
             get
             {
-                if (string.IsNullOrEmpty(this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsProcessingMethod)))
+                if (string.IsNullOrEmpty(this.BitmapMetadata.GetQueryAsString(ExifQueries.GpsProcessingMethod)))
                 {
                     return "None";
                 }
                 else
                 {
-                    return this.bitmapMetadataExtender.QueryMetadataForString(ExifQueries.GpsProcessingMethod);
+                    return this.BitmapMetadata.GetQueryAsString(ExifQueries.GpsProcessingMethod);
                 }
             }
 
@@ -1303,19 +1293,13 @@ namespace FotoFly
             {
                 if (value == "None")
                 {
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsProcessingMethod, string.Empty);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsProcessingMethod, string.Empty);
                 }
                 else
                 {
-                    this.bitmapMetadataExtender.SetProperty(ExifQueries.GpsProcessingMethod, value);
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsProcessingMethod, value);
                 }
             }
-        }
-
-        protected WpfBitmapMetadataExtender BitmapMetadataExtender
-        {
-            get { return this.bitmapMetadataExtender; }
-            set { this.bitmapMetadataExtender = value; }
         }
 
         public void Dispose()
