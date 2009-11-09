@@ -1,0 +1,12 @@
+D:\Dev-Projects\VisualStudio\FotoFly.UnitTests\bin\Debug\FotoFly.UnitTests.dll
+D:\Dev-Projects\VisualStudio\FotoFly.UnitTests\bin\Debug\FotoFly.UnitTests.pdb
+D:\Dev-Projects\VisualStudio\FotoFly.UnitTests\obj\Debug\ResolveAssemblyReference.cache
+D:\Dev-Projects\VisualStudio\FotoFly.UnitTests\obj\Debug\FotoFly.UnitTests.dll
+D:\Dev-Projects\VisualStudio\FotoFly.UnitTests\obj\Debug\FotoFly.UnitTests.pdb
+D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.UnitTests\bin\Debug\FotoFly.UnitTests.dll
+D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.UnitTests\bin\Debug\FotoFly.UnitTests.pdb
+D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.UnitTests\obj\Debug\ResolveAssemblyReference.cache
+D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.UnitTests\obj\Debug\FotoFly.UnitTests.dll
+D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.UnitTests\obj\Debug\FotoFly.UnitTests.pdb
+D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.UnitTests\bin\Debug\FotoFly.dll
+D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.UnitTests\bin\Debug\FotoFly.pdb

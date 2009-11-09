@@ -108,6 +108,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FotoFly.UnitTests\FotoFly.UnitTests.csproj">
+      <Project>{07809749-5636-48BA-ADD3-8C95757DADC2}</Project>
+      <Name>FotoFly.UnitTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FotoFly\FotoFly.csproj">
       <Project>{156697C5-5AFD-4E4D-B96C-BC55B219907D}</Project>
       <Name>FotoFly</Name>

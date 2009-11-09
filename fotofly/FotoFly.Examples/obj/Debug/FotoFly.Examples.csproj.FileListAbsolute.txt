@@ -19,3 +19,5 @@ D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.Examples\bin\Debug\Fot
 D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.Examples\obj\Debug\ResolveAssemblyReference.cache
 D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.Examples\obj\Debug\FotoFly.Examples.exe
 D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.Examples\obj\Debug\FotoFly.Examples.pdb
+D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.Examples\bin\Debug\FotoFly.UnitTests.dll
+D:\Dev-Projects\Codeplex Projects\FotoFly\fotofly\FotoFly.Examples\bin\Debug\FotoFly.UnitTests.pdb

@@ -124,7 +124,7 @@ namespace FotoFly
             WpfFileManager.ValidateThreadingModel();
 
             // The file must be JPG because the TIFF padding queries are different
-            WpfFileManager.ValidateFileIsJpg(file);
+            WpfFileManager.ValidateFileIsJpeg(file);
 
             // Ensure the metadata has the right padding in place for new data
             WpfFileManager.AddMetadataPadding(bitmapMetadata);
@@ -161,7 +161,7 @@ namespace FotoFly
         public static void WriteBitmapMetadata(string outputFile, BitmapMetadata bitmapMetadata, int retryCount)
         {
             // Check file exists and is a valid jpg\jpeg file
-            WpfFileManager.ValidateFileIsJpg(outputFile);
+            WpfFileManager.ValidateFileIsJpeg(outputFile);
 
             // Validate Threading Model
             WpfFileManager.ValidateThreadingModel();
@@ -253,12 +253,11 @@ namespace FotoFly
             }
         }
 
-        public static void ValidateFileIsJpg(string file)
+        public static void ValidateFileIsJpeg(string file)
         {
             // TODO: Add code to check the first bits of the file to check it really us a jpeg
             // Something like this
             // if (buf[0]==0xFF && buf[1]==0xD8 && buf[2]==0xFF && buf[3]==0xE0 && buf[6]=='J' && buf[7]=='F' && buf[8]=='I' && buf[9]=='F')
-
             FileInfo fileInfo = new FileInfo(file);
 
             if (!fileInfo.Exists)

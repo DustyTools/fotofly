@@ -111,9 +111,9 @@ namespace FotoFly
         /// </summary>
         TagList Tags { get; set; }
 
-        // / <summary>
-        // / Title (sometimes knows as Subject but there is another attribute for that!)
-        // / </summary>
+        /// <summary>
+        /// Title, sometimes knows as Caption and Subject (there is also another attribute for Subject)
+        /// </summary>
         string Title { get; set; }
 
         /// <summary>

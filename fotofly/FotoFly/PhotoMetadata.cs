@@ -198,6 +198,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Title, sometimes knows as Caption and Subject (there is also another attribute for Subject)
+        /// </summary>
         [XmlAttribute]
         public string Title
         {

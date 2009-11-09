@@ -14,11 +14,17 @@ namespace FotoFly
         // Padding used when adding properties to the File
         public static readonly string Padding = "/xmp/PaddingSchema:Padding";
 
-        // Data types
-        public static readonly string Struct = "xmpstruct";
-        public static readonly string Bag = "xmpbag";
+        // XMP Block Types
+        public static readonly string StructBlock = "xmpstruct";
 
-        // XMP People
+        // XMP Alt has a default value x-default where you can set the value
+        public static readonly string AltBlock = "xmpalt";
+
+        // XMP Seq/XMP Bag are indexed.  You can set multiple values using {ulong=<offset>}
+        public static readonly string BagBlock = "xmpbag";
+        public static readonly string SeqBlock = "xmpseq";
+
+        // People
         public static readonly string People = "/xmp/mediapro:People";
 
         // "RegionInfo" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/" (LPWSTR)]

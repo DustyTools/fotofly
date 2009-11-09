@@ -756,9 +756,9 @@ namespace FotoFly
             }
         }
 
-        // / <summary>
-        // / Title (sometimes knows as Subject but there is another attribute for that!)
-        // / </summary>
+        /// <summary>
+        /// Title, sometimes knows as Caption and Subject (there is also another attribute for Subject)
+        /// </summary>
         public string Title
         {
             get
@@ -852,7 +852,7 @@ namespace FotoFly
                     // Check for RegionInfo Struct, if none exists, create it
                     if (!this.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRegionInfo))
                     {
-                        this.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegionInfo, new BitmapMetadata(XmpQueries.Struct));
+                        this.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegionInfo, new BitmapMetadata(XmpQueries.StructBlock));
                     }
 
                     // Set LastUpdate if it's been set
@@ -864,7 +864,7 @@ namespace FotoFly
                     // Check for Regions Bag, if none exists, create it
                     if (!this.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRegions))
                     {
-                        this.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegions, new BitmapMetadata(XmpQueries.Bag));
+                        this.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegions, new BitmapMetadata(XmpQueries.BagBlock));
                     }
 
                     // If Region count has changed, clear our existing regions and create empty regions
@@ -885,7 +885,7 @@ namespace FotoFly
                             // Build query for current region
                             string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpQueries.MicrosoftRegion, i.ToString());
 
-                            this.BitmapMetadata.SetQuery(currentRegionQuery, new BitmapMetadata(XmpQueries.Struct));
+                            this.BitmapMetadata.SetQuery(currentRegionQuery, new BitmapMetadata(XmpQueries.StructBlock));
                         }
                     }
 
@@ -1302,6 +1302,14 @@ namespace FotoFly
             }
         }
 
+        public Dictionary<string, object> MetadataDictionary
+        {
+            get
+            {
+                return this.GenerateMetadataDictionary(this.BitmapMetadata, string.Empty);
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);
@@ -1320,5 +1328,311 @@ namespace FotoFly
 
             this.disposed = true;
         }
+
+        private Dictionary<string, object> GenerateMetadataDictionary(BitmapMetadata metadata)
+        {
+            return this.GenerateMetadataDictionary(metadata, string.Empty);
+        }
+
+        private Dictionary<string, object> GenerateMetadataDictionary(BitmapMetadata metadata, string fullQuery)
+        {
+            Dictionary<string, object> returnValue = new Dictionary<string, object>();
+
+            if (metadata != null)
+            {
+                foreach (string query in metadata)
+                {
+                    string tempQuery = fullQuery + query;
+
+                    try
+                    {
+                        // query string here is relative to the previous metadata reader.
+                        object unknownObject = metadata.GetQuery(query);
+
+                        BitmapMetadata moreMetadata = unknownObject as BitmapMetadata;
+
+                        if (moreMetadata != null)
+                        {
+                            // Add all sub values
+                            foreach (KeyValuePair<string, object> keyValuePair in this.GenerateMetadataDictionary(moreMetadata, tempQuery))
+                            {
+                                returnValue.Add(keyValuePair.Key, keyValuePair.Value);
+                            }
+                        }
+                        else
+                        {
+                            returnValue.Add(tempQuery, unknownObject);
+                        }
+                    }
+                    catch
+                    {
+                        // Swallow it
+                    }
+                }
+            }
+
+            return returnValue;
+        }
+
+        #region Unfinished code for additional properties
+
+        /* Metadata code
+        [XmlAttribute]
+        public FlashStatus Flash
+        {
+            get;
+            set;
+        }
+
+        [XmlAttribute]
+        public ColorRepresentation ColorRepresentation
+        {
+            get;
+            set;
+        }
+
+        [XmlAttribute]
+        public WhiteBalanceModes WhiteBalanceMode
+        {
+            get;
+            set;
+        }
+
+        [XmlAttribute]
+        public string ExposureBias
+        {
+            get;
+            set;
+        }
+
+        [XmlAttribute]
+        public ExposureModes ExposureMode
+        {
+            get;
+            set;
+        }
+
+        */
+
+        /* WpfMetadata code
+
+        public PhotoMetadataEnums.WhiteBalanceModes WhiteBalanceMode
+        {
+            get
+            {
+                PhotoMetadataEnums.WhiteBalanceModes whiteBalanceMode;
+
+                try
+                {
+                    object exifWhiteBalanceMode = this.bitmapMetadataExtender.QueryMetadataForObject(WpfProperties.ExifWhiteBalanceMode);
+
+                    if (string.IsNullOrEmpty(exifWhiteBalanceMode.ToString()))
+                    {
+                        whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.Unknown;
+                    }
+                    else
+                    {
+                        ushort? mode = (ushort?)exifWhiteBalanceMode;
+
+                        switch ((int)mode)
+                        {
+                            case 1:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.Daylight;
+                                break;
+                            case 2:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.Fluorescent;
+                                break;
+                            case 3:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.Tungsten;
+                                break;
+                            case 10:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.Flash;
+                                break;
+                            case 17:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.StandardLightA;
+                                break;
+                            case 18:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.StandardLightB;
+                                break;
+                            case 19:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.StandardLightC;
+                                break;
+                            case 20:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.D55;
+                                break;
+                            case 21:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.D65;
+                                break;
+                            case 22:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.D75;
+                                break;
+                            case 255:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.Other;
+                                break;
+                            default:
+                                whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.Unknown;
+                                break;
+                        }
+                    }
+                }
+                catch
+                {
+                    whiteBalanceMode = PhotoMetadataEnums.WhiteBalanceModes.Unknown;
+                }
+
+                return whiteBalanceMode;
+            }
+        }
+
+         * public ColorRepresentation ColorRepresentation
+        {
+            get
+            {
+                try
+                {
+                    object colour = this.bitmapMetadataExtender.QueryMetadataForObject(WpfProperties.ExifColorRepresentation);
+
+                    if (string.IsNullOrEmpty(colour.ToString()))
+                    {
+                        return PhotoMetadataEnums.ColorRepresentation.Unknown;
+                    }
+                    else if ((ushort)colour == 1)
+                    {
+                        return PhotoMetadataEnums.ColorRepresentation.sRGB;
+                    }
+                    else
+                    {
+                        return PhotoMetadataEnums.ColorRepresentation.Uncalibrated;
+                    }
+                }
+                catch
+                {
+                    return PhotoMetadataEnums.ColorRepresentation.sRGB;
+                }
+            }
+        }
+
+        public string ExposureBias
+        {
+            // The exposure bias. The unit is the APEX count.
+            // Ordinarily it is given in the range of –99.99 to 99.99.
+            get
+            {
+                // Rational rational = this.bitmapMetadataExtender.QueryMetadataForRational(WpfProperties.ExposureBias);
+
+                // if (rational.IsValid)
+                // {
+                //     return "0 step";
+                // }
+                // else
+                // {
+                //    return "0 step";
+                // }
+                return String.Empty;
+            }
+        }
+
+        public ExposureModes ExposureMode
+        {
+            get
+            {
+                PhotoMetadataEnums.ExposureModes exposureMode;
+
+                object unknownObject = this.bitmapMetadataExtender.QueryMetadataForObject(WpfProperties.ExifExposureMode);
+
+                if (unknownObject == null)
+                {
+                    exposureMode = PhotoMetadataEnums.ExposureModes.Unknown;
+                }
+                else if (Convert.ToString(unknownObject) == string.Empty)
+                {
+                    exposureMode = PhotoMetadataEnums.ExposureModes.Unknown;
+                }
+                else
+                {
+                    switch (Convert.ToInt16(unknownObject))
+                    {
+                        case 1:
+                            exposureMode = PhotoMetadataEnums.ExposureModes.Manual;
+                            break;
+                        case 2:
+                            exposureMode = PhotoMetadataEnums.ExposureModes.NormalProgram;
+                            break;
+                        case 3:
+                            exposureMode = PhotoMetadataEnums.ExposureModes.AperturePriority;
+                            break;
+                        case 4:
+                            exposureMode = PhotoMetadataEnums.ExposureModes.ShutterPriority;
+                            break;
+                        case 5:
+                            exposureMode = PhotoMetadataEnums.ExposureModes.LowSpeedMode;
+                            break;
+                        case 6:
+                            exposureMode = PhotoMetadataEnums.ExposureModes.HighSpeedMode;
+                            break;
+                        case 7:
+                            exposureMode = PhotoMetadataEnums.ExposureModes.PortraitMode;
+                            break;
+                        case 8:
+                            exposureMode = PhotoMetadataEnums.ExposureModes.LandscapeMode;
+                            break;
+                        default:
+                            exposureMode = PhotoMetadataEnums.ExposureModes.Unknown;
+                            break;
+                    }
+                }
+
+                return exposureMode;
+            }
+        }
+
+        public PhotoMetadataEnums.FlashStatus Flash
+        {
+            get
+            {
+                // Could consider retrieving Flash Mode as well (Auto, Supressed etc)
+                uint? unknownObject = this.bitmapMetadataExtender.QueryMetadataForUint(WpfProperties.ExifFlashFired);
+
+                if (unknownObject == null)
+                {
+                    return PhotoMetadataEnums.FlashStatus.NoFlash;
+                }
+                else
+                {
+                    // Convert to Array
+                    char[] flashBytes = Convert.ToString(unknownObject.Value, 2).PadLeft(8, '0').ToCharArray();
+
+                    // Reverse the order
+                    Array.Reverse(flashBytes);
+
+                    if (flashBytes[0] == '1' && flashBytes[6] == '0')
+                    {
+                        return PhotoMetadataEnums.FlashStatus.Flash;
+                    }
+                    else if (flashBytes[0] == '1' && flashBytes[6] == '1')
+                    {
+                        return PhotoMetadataEnums.FlashStatus.FlashWithRedEyeReduction;
+                    }
+                    else
+                    {
+                        return PhotoMetadataEnums.FlashStatus.NoFlash;
+                    }
+                }
+            }
+        }
+        */
+
+        /* IImageMetadata code
+        PhotoMetadataEnums.ColorRepresentation ColorRepresentation { get; }
+
+        string ExposureBias { get; }
+
+        PhotoMetadataEnums.ExposureModes ExposureMode { get; }
+
+        PhotoMetadataEnums.FlashStatus Flash { get; }
+
+        PhotoMetadataEnums.WhiteBalanceModes WhiteBalanceMode { get; }
+        */
+        #endregion
     }
 }
