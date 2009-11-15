@@ -1502,14 +1502,6 @@ namespace FotoFly
             }
         }
 
-        public Dictionary<string, object> MetadataDictionary
-        {
-            get
-            {
-                return this.GenerateMetadataDictionary(this.BitmapMetadata, string.Empty);
-            }
-        }
-
         public void Dispose()
         {
             this.Dispose(true);
@@ -1527,6 +1519,11 @@ namespace FotoFly
             GC.WaitForPendingFinalizers();
 
             this.disposed = true;
+        }
+
+        public Dictionary<string, object> MetadataDictionary()
+        {
+            return this.GenerateMetadataDictionary(this.BitmapMetadata, string.Empty);
         }
 
         private Dictionary<string, object> GenerateMetadataDictionary(BitmapMetadata metadata)
