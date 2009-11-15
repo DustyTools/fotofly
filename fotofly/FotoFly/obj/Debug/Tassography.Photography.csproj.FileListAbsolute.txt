@@ -1,5 +1,0 @@
-D:\Storage (Tassography)\Tassography-VisualStudio\Projects\Tassography.Photography\bin\Debug\Tassography.Photography.dll
-D:\Storage (Tassography)\Tassography-VisualStudio\Projects\Tassography.Photography\bin\Debug\Tassography.Photography.pdb
-D:\Storage (Tassography)\Tassography-VisualStudio\Projects\Tassography.Photography\obj\Debug\ResolveAssemblyReference.cache
-D:\Storage (Tassography)\Tassography-VisualStudio\Projects\Tassography.Photography\obj\Debug\Tassography.Photography.dll
-D:\Storage (Tassography)\Tassography-VisualStudio\Projects\Tassography.Photography\obj\Debug\Tassography.Photography.pdb
