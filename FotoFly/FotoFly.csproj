@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{156697C5-5AFD-4E4D-B96C-BC55B219907D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FotoFly</RootNamespace>
+    <AssemblyName>FotoFly</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseClasses\GenericPhotoEnums.cs" />
+    <Compile Include="BaseClasses\GenericPhotoFile.cs" />
+    <Compile Include="BitmapMetadataHelper.cs" />
+    <Compile Include="Interfaces\IPhotoMetadata.cs" />
+    <Compile Include="IPhotoMetadataTools.cs" />
+    <Compile Include="PhotoMetadata.cs" />
+    <Compile Include="Queries\ExifQueries.cs" />
+    <Compile Include="Queries\IptcQueries.cs" />
+    <Compile Include="Queries\XmpQueries.cs" />
+    <Compile Include="MetadataProperties\Address.cs" />
+    <Compile Include="Gps\GpsCoordinate.cs" />
+    <Compile Include="Gps\GpsPosition.cs" />
+    <Compile Include="JpgPhoto.cs" />
+    <Compile Include="MetadataProperties\GpsRational.cs" />
+    <Compile Include="MetadataProperties\URational.cs" />
+    <Compile Include="MetadataProperties\PhotoMetadataEnums.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MetadataProperties\Rational.cs" />
+    <Compile Include="MetadataProperties\RectangleCoordinates.cs" />
+    <Compile Include="MetadataProperties\PeopleList.cs" />
+    <Compile Include="MetadataProperties\Tag.cs" />
+    <Compile Include="MetadataProperties\TagList.cs" />
+    <Compile Include="WpfFileManager.cs" />
+    <Compile Include="WpfFileManipulator.cs" />
+    <Compile Include="WpfMetadata.cs" />
+    <Compile Include="MetadataProperties\XmpRegion.cs" />
+    <Compile Include="MetadataProperties\XmpRegionInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
