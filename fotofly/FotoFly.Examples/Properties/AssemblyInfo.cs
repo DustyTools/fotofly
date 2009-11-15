@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FotoFly.Examples")]
+[assembly: AssemblyTitle("FotoFly.JpegBackup")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Taasss")]
-[assembly: AssemblyProduct("FotoFly.Examples")]
+[assembly: AssemblyProduct("FotoFly.JpegBackup")]
 [assembly: AssemblyCopyright("Copyright © 2009")]
 [assembly: AssemblyTrademark("Taasss")]
 [assembly: AssemblyCulture("")]

@@ -232,6 +232,65 @@ namespace FotoFly
             }
         }
 
+        public static void CopyBitmapMetadata(string sourceFile, string destinationFile)
+        {
+            if (!File.Exists(sourceFile))
+            {
+                throw new Exception("SourceFile does not exist: " + sourceFile);
+            }
+            else if (!File.Exists(destinationFile))
+            {
+                throw new Exception("DestinationFile does not exist: " + destinationFile);
+            }
+
+            BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
+
+            // Create backup of the file so you can read and write to different files
+            string tempFile = destinationFile + ".tmp";
+            File.Copy(destinationFile, tempFile, true);
+
+            // Open the source file
+            using (Stream sourceStream = File.Open(sourceFile, FileMode.Open, FileAccess.Read))
+            {
+                BitmapDecoder sourceDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.None);
+
+                // Check source is has valid frames
+                if (sourceDecoder.Frames[0] != null && sourceDecoder.Frames[0].Metadata != null)
+                {
+                    // Get a clone copy of the metadata
+                    BitmapMetadata sourceMetadata = sourceDecoder.Frames[0].Metadata.Clone() as BitmapMetadata;
+
+                    // Open the temp file
+                    using (Stream tempStream = File.Open(tempFile, FileMode.Open, FileAccess.Read))
+                    {
+                        BitmapDecoder tempDecoder = BitmapDecoder.Create(tempStream, createOptions, BitmapCacheOption.None);
+
+                        // Check temp file has valid frames
+                        if (tempDecoder.Frames[0] != null && tempDecoder.Frames[0].Metadata != null)
+                        {
+                            // Open the destination file
+                            using (Stream destinationStream = File.Open(destinationFile, FileMode.Open, FileAccess.ReadWrite))
+                            {
+                                // Create a new jpeg frame, replacing the destination metadata with the source
+                                BitmapFrame destinationFrame = BitmapFrame.Create(tempDecoder.Frames[0],
+                                      tempDecoder.Frames[0].Thumbnail,
+                                      sourceMetadata,
+                                      tempDecoder.Frames[0].ColorContexts);
+
+                                // Save the file
+                                JpegBitmapEncoder destinationEncoder = new JpegBitmapEncoder();
+                                destinationEncoder.Frames.Add(destinationFrame);
+                                destinationEncoder.Save(destinationStream);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Delete the temp file
+            File.Delete(tempFile);
+        }
+
         public static void AddMetadataPadding(BitmapMetadata bitmapMetadata)
         {
             // Ensure there's enough EXIF Padding

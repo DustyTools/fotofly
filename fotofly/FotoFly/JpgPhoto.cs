@@ -14,6 +14,8 @@ namespace FotoFly
 
     public class JpgPhoto : GenericPhotoFile
     {
+        private int metadataBackupImageMaxDimension = 100;
+    
         public JpgPhoto()
         {
         }
@@ -36,7 +38,7 @@ namespace FotoFly
                 return base.Metadata;
             }
         }
-        
+
         public new bool IsFileValid
         {
             get
@@ -102,6 +104,33 @@ namespace FotoFly
                     throw new Exception("File does not exist or is not valid: " + this.FileName);
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates a small jpeg image containing a backup of all the metadata
+        /// </summary>
+        /// <param name="fileName">Filename of the file to create</param>
+        /// <param name="overwrite">If true creates a new file, if false updates an existing file</param>
+        public void CreateMetadataBackup(string destinationFileName, bool overwrite)
+        {
+            if (!File.Exists(this.FileName))
+            {
+                throw new Exception("Source file does not exist: " + this.FileName);
+            }
+            else if (File.Exists(destinationFileName) && overwrite)
+            {
+                File.Delete(destinationFileName);
+            }
+
+            // Check to see if we need to create a new image
+            if (!File.Exists(destinationFileName))
+            {
+                WpfFileManipulator wpfFileManipulator = new WpfFileManipulator();
+                wpfFileManipulator.CopyImageAndResize(this.FileName, destinationFileName, this.metadataBackupImageMaxDimension);
+            }
+
+            // Update the new files metadata
+            WpfFileManager.CopyBitmapMetadata(this.FileName, destinationFileName);
         }
 
         public List<string> CompareMetadataToFileMetadata()
