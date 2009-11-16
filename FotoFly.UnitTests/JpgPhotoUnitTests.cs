@@ -17,17 +17,21 @@
 
         public JpgPhotoUnitTests()
         {
-            this.jpgPhoto = new JpgPhoto(@"..\..\..\FotoFly.UnitTests\TestPhotos\" + TestPhotos.UnitTest1);
+            this.jpgPhoto = new JpgPhoto(@"..\..\..\~Sample Photos\" + TestPhotos.UnitTest1);
         }
 
         #region Pre & Post Test Pass Code, not currently used
         // Run code before running the first test in the class
         [ClassInitialize()]
-        public static void PreTestPassInitialize(TestContext testContext) { }
+        public static void PreTestPassInitialize(TestContext testContext)
+        {
+        }
 
         // Run code after all tests in a class have run
         [ClassCleanup()]
-        public static void PostTestPassCleanup() { }
+        public static void PostTestPassCleanup()
+        {
+        }
         #endregion
 
         /// <summary>
@@ -109,11 +113,15 @@
         #region Pre\Post Test Code
         // Run code before running each test 
         [TestInitialize()]
-        public void PreTestInitialize() { }
+        public void PreTestInitialize()
+        {
+        }
 
         // Run code after each test has run
         [TestCleanup()]
-        public void PostTestCleanup() { }
+        public void PostTestCleanup()
+        {
+        }
         #endregion
     }
 }

@@ -225,11 +225,11 @@ namespace FotoFly
             }
         }
 
-        public override bool Equals(object unknownObject)
+        public override bool Equals(object obj)
         {
-            if (unknownObject is Address)
+            if (obj is Address)
             {
-                return (unknownObject as Address).HierarchicalName == this.HierarchicalName;
+                return (obj as Address).HierarchicalName == this.HierarchicalName;
             }
 
             return false;

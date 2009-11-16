@@ -9,7 +9,7 @@ namespace FotoFly.JpegBackup
 
     public class Program
     {
-        private static string testPhotoPath = @"..\..\..\FotoFly.UnitTests\TestPhotos\";
+        private static string testPhotoPath = @"..\..\..\~Sample Photos\";
 
         [STAThread]
         public static void Main(string[] args)

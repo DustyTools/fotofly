@@ -1512,6 +1512,11 @@ namespace FotoFly
             GC.SuppressFinalize(this);
         }
 
+        public Dictionary<string, object> MetadataDictionary()
+        {
+            return this.GenerateMetadataDictionary(this.BitmapMetadata, string.Empty);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             // Force Garbage ObjCollection
@@ -1519,11 +1524,6 @@ namespace FotoFly
             GC.WaitForPendingFinalizers();
 
             this.disposed = true;
-        }
-
-        public Dictionary<string, object> MetadataDictionary()
-        {
-            return this.GenerateMetadataDictionary(this.BitmapMetadata, string.Empty);
         }
 
         private Dictionary<string, object> GenerateMetadataDictionary(BitmapMetadata metadata)

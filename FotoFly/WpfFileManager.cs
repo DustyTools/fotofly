@@ -273,9 +273,9 @@ namespace FotoFly
                             {
                                 // Create a new jpeg frame, replacing the destination metadata with the source
                                 BitmapFrame destinationFrame = BitmapFrame.Create(tempDecoder.Frames[0],
-                                      tempDecoder.Frames[0].Thumbnail,
-                                      sourceMetadata,
-                                      tempDecoder.Frames[0].ColorContexts);
+                                                                              tempDecoder.Frames[0].Thumbnail,
+                                                                              sourceMetadata,
+                                                                              tempDecoder.Frames[0].ColorContexts);
 
                                 // Save the file
                                 JpegBitmapEncoder destinationEncoder = new JpegBitmapEncoder();

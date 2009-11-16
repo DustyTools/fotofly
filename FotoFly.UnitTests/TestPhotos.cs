@@ -7,26 +7,47 @@
 
     public static class TestPhotos
     {
-        public static readonly string DigitalZoom = "DigitalZoom.JPG";
-        public static readonly string ExposureMinus1 = "Exposure-Minus1.JPG";
-        public static readonly string ExposurePlus1 = "Exposure-Plus1.JPG";
-        public static readonly string FlashAuto = "Flash-Auto.JPG";
-        public static readonly string FlashManual = "Flash-Manual.JPG";
-        public static readonly string Geotagged = "Geotagged.JPG";
-        public static readonly string ISO400 = "ISO-400.JPG";
-        public static readonly string ISOAuto = "ISO-Auto.JPG";
-        public static readonly string ModeAv = "Mode-Av.JPG";
-        public static readonly string ModeManual = "Mode-Manual.JPG";
-        public static readonly string ModeP = "Mode-P.JPG";
-        public static readonly string ModeTV = "Mode-Tv.JPG";
-        public static readonly string Position180Clockwise = "Position-180Clockwise.JPG";
-        public static readonly string Position270Clockwise = "Position-270Clockwise.JPG";
-        public static readonly string Posution90Clockwise = "Position-90Clockwise.JPG";
-        public static readonly string PositionHorizontal = "Position-Horizontal.JPG";
-        public static readonly string Regions0 = "Regions-0.JPG";
-        public static readonly string Regions1 = "Regions-1.JPG";
-        public static readonly string Regions2 = "Regions-2.JPG";
+        public static readonly string LightSourceAuto = "LightSource-Auto.jpg";
+        public static readonly string LightSourceCloudy = "LightSource-Cloudy.jpg";
+        public static readonly string LightSourceDaylight = "LightSource-Daylight.jpg";
+        public static readonly string LightSourceEvaluative = "LightSource-Evaluative.jpg";
+        public static readonly string LightSourceFlash = "LightSource-Flash.jpg";
+        public static readonly string LightSourceFlourescentH = "LightSource-FlourescentH.jpg";
+        public static readonly string LightSourceFluorescent = "LightSource-Fluorescent.jpg";
+        public static readonly string LightSourceTungsten = "LightSource-Tungsten.jpg";
+        public static readonly string LightSourceUnderwater = "LightSource-Underwater.jpg";
 
-        public static readonly string UnitTest1 = "UnitTest-1.JPG";
+        public static readonly string MeteringModeCenterWeightedAverage = "MeteringMode-CenterWeightedAverage.jpg";
+        public static readonly string MeteringModeEvaluative = "MeteringMode-Evaluative.jpg";
+        public static readonly string MeteringModeSpot = "MeteringMode-Spot.jpg";
+        
+        public static readonly string DigitalZoom = "DigitalZoom.jpg";
+
+        public static readonly string ExposureBiasMinus1 = "ExposureBias-Minus1.jpg";
+        public static readonly string ExposureBiasPlus1 = "ExposureBias-Plus1.jpg";
+        
+        public static readonly string FlashAuto = "Flash-Auto.jpg";
+        public static readonly string FlashManual = "Flash-Manual.jpg";
+        
+        public static readonly string Geotagged = "Geotagged.jpg";
+        
+        public static readonly string ISO400 = "ISO-400.jpg";
+        public static readonly string ISOAuto = "ISO-Auto.jpg";
+        
+        public static readonly string ExposureProgramAv = "ExposureProgram-Av.jpg";
+        public static readonly string ExposureProgramManual = "ExposureProgram-Manual.jpg";
+        public static readonly string ExposureProgramP = "ExposureProgram-P.jpg";
+        public static readonly string ExposureProgramTV = "ExposureProgram-Tv.jpg";
+        
+        public static readonly string Orientation180Clockwise = "Orientation-180Clockwise.jpg";
+        public static readonly string Orientation270Clockwise = "Orientation-270Clockwise.jpg";
+        public static readonly string Orientation90Clockwise = "Orientation-90Clockwise.jpg";
+        public static readonly string OrientationHorizontal = "Orientation-Horizontal.jpg";
+        
+        public static readonly string Regions0 = "Regions-0.jpg";
+        public static readonly string Regions1 = "Regions-1.jpg";
+        public static readonly string Regions2 = "Regions-2.jpg";
+
+        public static readonly string UnitTest1 = "UnitTest-1.jpg";
     }
 }
