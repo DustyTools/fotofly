@@ -49,5 +49,7 @@
         public static readonly string Regions2 = "Regions-2.jpg";
 
         public static readonly string UnitTest1 = "UnitTest-1.jpg";
+        public static readonly string UnitTest2 = "UnitTest-2.jpg";
+        public static readonly string UnitTest3 = "UnitTest-3.jpg";
     }
 }

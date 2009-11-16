@@ -24,6 +24,9 @@ namespace FotoFly
         public static readonly string BagBlock = "xmpbag";
         public static readonly string SeqBlock = "xmpseq";
 
+        //  "DateAcquired" (LPWSTR) ["http://ns.microsoft.com/photo/1.0/" (LPWSTR)]
+        public static readonly string DateAcquired = "/xmp/MicrosoftPhoto:DateAcquired";
+
         // People
         public static readonly string People = "/xmp/mediapro:People";
 

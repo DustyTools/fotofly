@@ -272,6 +272,33 @@ namespace FotoFly
         }
 
         /// <summary>
+        /// DateAquired, Microsoft Windows 7 Property
+        /// </summary>
+        public DateTime DateAquired
+        {
+            get
+            {
+                DateTime? dateAquired = this.BitmapMetadata.GetQueryAsDateTime(XmpQueries.DateAcquired);
+
+                if (dateAquired == null)
+                {
+                    return new DateTime();
+                }
+                else
+                {
+                    return dateAquired.Value;
+                }
+            }
+
+            set
+            {
+                string dateAquired = value.ToString("yyyy-MM-ddTHH:mm:ss");
+
+                this.BitmapMetadata.SetQuery(XmpQueries.DateAcquired, dateAquired);
+            }
+        }
+
+        /// <summary>
         /// DateTaken, recorded by the camera when the photo is taken
         /// </summary>
         public DateTime DateTaken

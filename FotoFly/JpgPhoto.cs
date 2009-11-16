@@ -77,6 +77,22 @@ namespace FotoFly
             }
         }
 
+        public void SaveMetadata(string fileName)
+        {
+            if (!this.IsFileValid)
+            {
+                throw new Exception("Source file does not exist or is not valid: " + fileName);
+            }
+
+            // Grab a copy of the source file, we need this for image
+            File.Copy(this.FileName, fileName, true);
+                
+            // Save filename
+            this.FileName = fileName;
+
+            this.SaveMetadata();
+        }
+
         public void SaveMetadata()
         {
             if (this.IsFileValid)
@@ -196,7 +212,7 @@ namespace FotoFly
                 IPhotoMetadataTools.CopyMetadata(base.Metadata, metadataInFile);
 
                 // Save
-                 WpfFileManager.WriteBitmapMetadata(this.FileName, metadataInFile.BitmapMetadata);
+                WpfFileManager.WriteBitmapMetadata(this.FileName, metadataInFile.BitmapMetadata);
             }
         }
     }

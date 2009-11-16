@@ -80,6 +80,13 @@ namespace FotoFly
             set;
         }
 
+        [XmlAttribute]
+        public PhotoMetadataEnums.MeteringModes MeteringMode
+        {
+            get;
+            set;
+        }
+
         [XmlElementAttribute]
         public XmpRegionInfo RegionInfo
         {
@@ -154,6 +161,13 @@ namespace FotoFly
             {
                 this.gpsPosition = value;
             }
+        }
+
+        [XmlAttribute]
+        public DateTime DateAquired
+        {
+            get;
+            set;
         }
 
         [XmlAttribute]

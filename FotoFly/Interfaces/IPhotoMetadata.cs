@@ -52,6 +52,11 @@ namespace FotoFly
         DateTime DateTaken { get; set; }
 
         /// <summary>
+        /// DateAquired, Microsoft Windows7 Property field
+        /// </summary>
+        DateTime DateAquired { get; set; }
+
+        /// <summary>
         /// DigitalZoomRatio
         /// </summary>
         double DigitalZoomRatio { get; }
@@ -85,6 +90,11 @@ namespace FotoFly
         /// ISO Speed rating 
         /// </summary>
         string Iso { get; }
+
+        /// <summary>
+        /// Metering Mode
+        /// </summary>
+        PhotoMetadataEnums.MeteringModes MeteringMode { get; }
 
         /// <summary>
         /// Rating (Ranging 0-5)
