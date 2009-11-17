@@ -65,6 +65,7 @@
     <Compile Include="IPhotoMetadataTools.cs" />
     <Compile Include="MetadataDump\MetadataDump.cs" />
     <Compile Include="MetadataDump\MetadataProperty.cs" />
+    <Compile Include="MetadataProperties\ExifDateTime.cs" />
     <Compile Include="PhotoMetadata.cs" />
     <Compile Include="Queries\ExifQueries.cs" />
     <Compile Include="Queries\IptcQueries.cs" />

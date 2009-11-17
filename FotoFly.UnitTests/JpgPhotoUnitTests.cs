@@ -3,14 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Windows.Media.Imaging;
 
     using FotoFly;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.IO;
+    using System.Windows.Media.Imaging;
 
     [TestClass]
     public class JpgPhotoUnitTests
@@ -178,6 +178,7 @@
         {
             MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.jpgPhotoTwo.FileName));
 
+            // Check total count
             Assert.AreEqual<int>(metadataDump.StringList.Count, 63);
         }
 

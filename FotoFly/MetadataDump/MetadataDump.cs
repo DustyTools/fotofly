@@ -1,4 +1,8 @@
-﻿namespace FotoFly
+﻿// <copyright file="MetadataDump.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-17</date>
+// <summary>MetadataDump</summary>
+namespace FotoFly
 {
     using System;
     using System.Collections.Generic;
@@ -114,7 +118,7 @@
             {
                 if (property.Children.Count > 0)
                 {
-                    returnValue.Add(property.Name);
+                    returnValue.Add(property.Query);
                     returnValue.AddRange(this.GenerateStringList(property.Children));
                 }
                 else

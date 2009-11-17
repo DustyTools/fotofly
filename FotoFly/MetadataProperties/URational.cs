@@ -27,6 +27,16 @@ namespace FotoFly
             this.denominator = accuracy;
         }
 
+        public int Numerator
+        {
+            get { return this.numerator; }
+        }
+
+        public int Denominator
+        {
+            get { return this.denominator; }
+        }
+
         public double ToDouble()
         {
             return Math.Round(Convert.ToDouble(this.numerator) / Convert.ToDouble(this.denominator), 3);

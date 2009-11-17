@@ -1,4 +1,8 @@
-﻿namespace FotoFly
+﻿// <copyright file="MetadataProperty.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-11-17</date>
+// <summary>MetadataProperty</summary>
+namespace FotoFly
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +17,7 @@
 
         public MetadataProperty(string name, object value)
         {
-            this.Name = name;
+            this.Query = name;
             this.ValueType = value.GetType();
             this.Children = new List<MetadataProperty>();
 
@@ -57,7 +61,7 @@
             }
         }
 
-        public string Name
+        public string Query
         {
             get; 
             set;
@@ -83,7 +87,7 @@
 
         public override string ToString()
         {
-            return this.Name + "\t" + this.Value + " (" + this.ValueType + ")";
+            return this.Query + "\t" + this.Value + " (" + this.ValueType + ")";
         }
     }
 }
