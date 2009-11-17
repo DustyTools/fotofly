@@ -12,16 +12,16 @@ namespace FotoFly
     {
         public GpsRational(double hours, double minutes, double seconds)
         {
-            this.Hours = new Rational(hours, 5);
-            this.Minutes = new Rational(minutes, 5);
-            this.Seconds = new Rational(seconds, 5);
+            this.Hours = new URational(hours, 5);
+            this.Minutes = new URational(minutes, 5);
+            this.Seconds = new URational(seconds, 5);
         }
 
-        public GpsRational(ulong[] data)
+        public GpsRational(UInt64[] data)
         {
-            this.Hours = new Rational(data[0]);
-            this.Minutes = new Rational(data[1]);
-            this.Seconds = new Rational(data[2]);
+            this.Hours = new URational(data[0]);
+            this.Minutes = new URational(data[1]);
+            this.Seconds = new URational(data[2]);
 
             ////// Check if Seconds are part of Minutes
             ////if (this.Minutes.ToDouble() != Math.Floor(this.Minutes.ToDouble()))
@@ -34,19 +34,19 @@ namespace FotoFly
             ////}
         }
 
-        public Rational Hours
+        public URational Hours
         {
             get;
             set;
         }
 
-        public Rational Minutes
+        public URational Minutes
         {
             get;
             set;
         }
 
-        public Rational Seconds
+        public URational Seconds
         {
             get;
             set;
@@ -58,15 +58,15 @@ namespace FotoFly
 
             if (secondsInMinutes)
             {
-                returnValue.Add(this.Hours.ToUlong());
-                returnValue.Add(new Rational(this.Minutes.ToDouble() + (this.Seconds.ToDouble() / 60), 5).ToUlong());
-                returnValue.Add(new Rational(0, 5).ToUlong());
+                returnValue.Add(this.Hours.ToUInt64());
+                returnValue.Add(new URational(this.Minutes.ToDouble() + (this.Seconds.ToDouble() / 60), 5).ToUInt64());
+                returnValue.Add(new URational(0, 5).ToUInt64());
             }
             else
             {
-                returnValue.Add(this.Hours.ToUlong());
-                returnValue.Add(this.Minutes.ToUlong());
-                returnValue.Add(this.Seconds.ToUlong());
+                returnValue.Add(this.Hours.ToUInt64());
+                returnValue.Add(this.Minutes.ToUInt64());
+                returnValue.Add(this.Seconds.ToUInt64());
             }
 
             return returnValue.ToArray();
@@ -82,6 +82,11 @@ namespace FotoFly
         public override string ToString()
         {
             return this.Hours.ToDouble() + " " + this.Minutes.ToDouble() + " " + this.Seconds.ToDouble() + " ";
+        }
+
+        public string ToUnformattedString()
+        {
+            return this.Hours.ToUnformattedString() + " " + this.Minutes.ToUnformattedString() + " " + this.Seconds.ToUnformattedString();
         }
     }
 }

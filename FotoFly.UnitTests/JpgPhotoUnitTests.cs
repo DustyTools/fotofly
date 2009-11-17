@@ -3,13 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Windows.Media.Imaging;
 
     using FotoFly;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.IO;
 
     [TestClass]
     public class JpgPhotoUnitTests
@@ -58,6 +59,46 @@
         }
 
         /// <summary>
+        /// WriteMetadataToFile
+        /// </summary>
+        [TestMethod]
+        public void WriteMetadataToFile()
+        {
+            // Clean up from previous test
+            if (File.Exists(this.jpgPhotoThree.FileName))
+            {
+                File.Delete(this.jpgPhotoThree.FileName);
+            }
+
+            // Test value to write
+            string testSubject = "Test " + DateTime.Now.ToString();
+
+            // Write to Photo Two
+            this.jpgPhotoTwo.Metadata.Subject = testSubject;
+
+            // Save Photo Three
+            this.jpgPhotoTwo.SaveMetadata(this.jpgPhotoThree.FileName);
+
+            // Check the file was created
+            if (!File.Exists(this.jpgPhotoThree.FileName))
+            {
+                Assert.Fail("File save failed");
+            }
+
+            // Read metadata
+            this.jpgPhotoThree.ReadMetadata();
+
+            // Check the file was created
+            if (this.jpgPhotoThree.Metadata == null)
+            {
+                Assert.Fail("Unable to read saved files metadata");
+            }
+
+            // Check the subject was set correctly
+            StringAssert.Matches(this.jpgPhotoThree.Metadata.Subject, new Regex(testSubject));
+        }
+
+        /// <summary>
         /// Check the most common metadata properties
         /// </summary>
         [TestMethod]
@@ -87,7 +128,7 @@
         /// Check Dates
         /// </summary>
         [TestMethod]
-        public void CheckDates()
+        public void CheckDateMetadata()
         {
             StringAssert.Matches(this.jpgPhotoOne.Metadata.DateDigitised.ToString(), new Regex("10/10/2009 21:46:37"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.DateTaken.ToString(), new Regex("10/10/2009 14:46:37"));
@@ -130,43 +171,14 @@
         }
 
         /// <summary>
-        /// Check Write
+        /// Check MetadataDump
         /// </summary>
         [TestMethod]
-        public void CheckWrite()
+        public void CheckMetadataDump()
         {
-            // Clean up from previous test
-            if (File.Exists(this.jpgPhotoThree.FileName))
-            {
-                File.Delete(this.jpgPhotoThree.FileName);
-            }
+            MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.jpgPhotoTwo.FileName));
 
-            // Test value to write
-            string testSubject = "Test " + DateTime.Now.ToString();
-
-            // Write to Photo Two
-            this.jpgPhotoTwo.Metadata.Subject = testSubject;
-
-            // Save Photo Three
-            this.jpgPhotoTwo.SaveMetadata(this.jpgPhotoThree.FileName);
-
-            // Check the file was created
-            if (!File.Exists(this.jpgPhotoThree.FileName))
-            {
-                Assert.Fail("File save failed");
-            }
-
-            // Read metadata
-            this.jpgPhotoThree.ReadMetadata();
-
-            // Check the file was created
-            if (this.jpgPhotoThree.Metadata == null)
-            {
-                Assert.Fail("Unable to read saved files metadata");
-            }
-
-            // Check the subject was set correctly
-            StringAssert.Matches(this.jpgPhotoThree.Metadata.Subject, new Regex(testSubject));
+            Assert.AreEqual<int>(metadataDump.StringList.Count, 63);
         }
 
         [TestCleanup()]

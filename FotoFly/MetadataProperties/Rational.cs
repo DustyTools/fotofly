@@ -30,10 +30,10 @@ namespace FotoFly
         /// Creates an Exif Rational
         /// </summary>
         /// <param name="data">A ulong typically read from exif metadata</param>
-        public Rational(ulong data)
+        public Rational(Int64 data)
         {
             this.numerator = (int)(data & 0xFFFFFFFFL);
-            this.denominator = (int)((data & 0xFFFFFFFF00000000L) >> 32);
+            this.denominator = (int)(((ulong)data & 0xFFFFFFFF00000000L) >> 32);
         }
 
         public int Numerator
@@ -50,9 +50,9 @@ namespace FotoFly
         /// Returns the Rational as a Ulong, typically used to write back to exif metadata
         /// </summary>
         /// <returns>Ulong</returns>
-        public ulong ToUlong()
+        public Int64 ToInt64()
         {
-            return ((ulong)this.numerator) | (((ulong)this.denominator) << 32);
+            return (Int64)((Int64)this.numerator) | (((Int64)this.denominator) << 32);
         }
 
         /// <summary>
@@ -80,6 +80,11 @@ namespace FotoFly
         public new string ToString()
         {
             return this.numerator.ToString() + "/" + this.denominator.ToString();
+        }
+
+        public string ToUnformattedString()
+        {
+            return this.numerator.ToString() + " / " + this.denominator.ToString() + " (" + this.ToDouble() + ")";
         }
     }
 }

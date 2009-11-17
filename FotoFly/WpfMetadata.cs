@@ -1289,7 +1289,7 @@ namespace FotoFly
                 else
                 {
                     // Keep three decimal place of precision
-                    Rational rational = new Rational(value, 3);
+                    URational urational = new URational(value, 3);
 
                     string altRef;
 
@@ -1303,7 +1303,7 @@ namespace FotoFly
                     }
 
                     this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitudeRef, altRef);
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitude, rational.ToUlong());
+                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitude, urational.ToUInt64());
                 }
             }
         }
@@ -1539,11 +1539,6 @@ namespace FotoFly
             GC.SuppressFinalize(this);
         }
 
-        public Dictionary<string, object> MetadataDictionary()
-        {
-            return this.GenerateMetadataDictionary(this.BitmapMetadata, string.Empty);
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             // Force Garbage ObjCollection
@@ -1551,51 +1546,6 @@ namespace FotoFly
             GC.WaitForPendingFinalizers();
 
             this.disposed = true;
-        }
-
-        private Dictionary<string, object> GenerateMetadataDictionary(BitmapMetadata metadata)
-        {
-            return this.GenerateMetadataDictionary(metadata, string.Empty);
-        }
-
-        private Dictionary<string, object> GenerateMetadataDictionary(BitmapMetadata metadata, string fullQuery)
-        {
-            Dictionary<string, object> returnValue = new Dictionary<string, object>();
-
-            if (metadata != null)
-            {
-                foreach (string query in metadata)
-                {
-                    string tempQuery = fullQuery + query;
-
-                    try
-                    {
-                        // query string here is relative to the previous metadata reader.
-                        object unknownObject = metadata.GetQuery(query);
-
-                        BitmapMetadata moreMetadata = unknownObject as BitmapMetadata;
-
-                        if (moreMetadata != null)
-                        {
-                            // Add all sub values
-                            foreach (KeyValuePair<string, object> keyValuePair in this.GenerateMetadataDictionary(moreMetadata, tempQuery))
-                            {
-                                returnValue.Add(keyValuePair.Key, keyValuePair.Value);
-                            }
-                        }
-                        else
-                        {
-                            returnValue.Add(tempQuery, unknownObject);
-                        }
-                    }
-                    catch
-                    {
-                        // Swallow it
-                    }
-                }
-            }
-
-            return returnValue;
         }
     }
 }

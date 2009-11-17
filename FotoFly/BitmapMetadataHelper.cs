@@ -208,9 +208,9 @@ namespace FotoFly
             }
             else
             {
-                ulong numeric;
+                Int64 numeric;
 
-                if (ulong.TryParse(unknownObject.ToString(), out numeric))
+                if (Int64.TryParse(unknownObject.ToString(), out numeric))
                 {
                     return new Rational(numeric);
                 }
