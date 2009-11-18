@@ -27,18 +27,18 @@ namespace FotoFly
             }
             else if (value is UInt64)
             {
-                this.Value = new URational((UInt64)value).ToUnformattedString();
+                this.Value = new URational((UInt64)value).ToFractionString();
                 this.ValueType = typeof(URational);
             }
             else if (value is Int64)
             {
-                this.Value = new Rational((Int64)value).ToUnformattedString();
-                this.ValueType = typeof(Rational);
+                this.Value = new SRational((Int64)value).ToFractionString();
+                this.ValueType = typeof(SRational);
             }
             else if (value is UInt64[])
             {
-                this.Value = new GpsRational((UInt64[])value).ToUnformattedString();
-                this.ValueType = typeof(GpsRational);
+                this.Value = new URationalTriplet((UInt64[])value).ToFractionString();
+                this.ValueType = typeof(URationalTriplet);
             }
             else if (value is string)
             {

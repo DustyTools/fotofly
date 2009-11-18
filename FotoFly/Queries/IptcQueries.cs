@@ -15,24 +15,24 @@ namespace FotoFly
         // See http://www.ap.org/apserver/userguide/codes.htm
 
         // Padding
-        public static readonly string Padding = "/app1/ifd/PaddingSchema:Padding";
+        public static readonly MetdataQuery Padding = new MetdataQuery("/app1/ifd/PaddingSchema:Padding", typeof(Int32));
 
         // Identifies city of object data origin according to guidelines established by the provider.
-        public static readonly string City = "/app13/irb/8bimiptc/iptc/City";
+        public static readonly MetdataQuery City = new MetdataQuery("/app13/irb/8bimiptc/iptc/City", typeof(string));
 
         // Identifies the location within a city from which the object data originates
-        public static readonly string Country = @"/app13/irb/8bimiptc/iptc/Country\/Primary Location Name";
+        public static readonly MetdataQuery Country = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Country\/Primary Location Name", typeof(string));
         
         // Identifies Province/State/County of origin according to guidelines established by the provider.
-        public static readonly string Region = @"/app13/irb/8bimiptc/iptc/Province\/State";
+        public static readonly MetdataQuery Region = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Province\/State", typeof(string));
 
         // Identifies the location within a city from which the object data originates
-        public static readonly string SubLocation = "/app13/irb/8bimiptc/iptc/Sub-location";
+        public static readonly MetdataQuery SubLocation = new MetdataQuery("/app13/irb/8bimiptc/iptc/Sub-location", typeof(string));
 
         // Copyright notice.
-        public static readonly string Copyright = @"/ifd/iptc/copyright notice";
+        public static readonly MetdataQuery Copyright = new MetdataQuery(@"/ifd/iptc/copyright notice", typeof(string));
 
         // Identification of the name of the person involved in the writing
-        public static readonly string WriterEditor = @"/ifd/iptc/writer\/editor";
+        public static readonly MetdataQuery WriterEditor = new MetdataQuery(@"/ifd/iptc/writer\/editor", typeof(string));
     }
 }

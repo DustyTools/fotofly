@@ -294,21 +294,21 @@ namespace FotoFly
         public static void AddMetadataPadding(BitmapMetadata bitmapMetadata)
         {
             // Ensure there's enough EXIF Padding
-            if (Convert.ToInt32(bitmapMetadata.GetQuery(ExifQueries.Padding)) < WpfFileManager.PaddingAmount)
+            if (bitmapMetadata.GetQuery<Int32>(ExifQueries.Padding.Query) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(ExifQueries.Padding, WpfFileManager.PaddingAmount);
+                bitmapMetadata.SetQuery(ExifQueries.Padding.Query, WpfFileManager.PaddingAmount);
             }
 
             // Ensure there's enough XMP Padding
-            if (Convert.ToInt32(bitmapMetadata.GetQuery(XmpQueries.Padding)) < WpfFileManager.PaddingAmount)
+            if (bitmapMetadata.GetQuery<Int32>(XmpQueries.Padding.Query) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(XmpQueries.Padding, WpfFileManager.PaddingAmount);
+                bitmapMetadata.SetQuery(XmpQueries.Padding.Query, WpfFileManager.PaddingAmount);
             }
 
-            // Ensure there's enough IFD Padding
-            if (Convert.ToInt32(bitmapMetadata.GetQuery(IptcQueries.Padding)) < WpfFileManager.PaddingAmount)
+            // Ensure there's enough IPTC Padding
+            if (bitmapMetadata.GetQuery<Int32>(IptcQueries.Padding.Query) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(IptcQueries.Padding, WpfFileManager.PaddingAmount);
+                bitmapMetadata.SetQuery(IptcQueries.Padding.Query, WpfFileManager.PaddingAmount);
             }
         }
 

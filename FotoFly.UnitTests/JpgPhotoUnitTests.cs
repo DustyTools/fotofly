@@ -102,7 +102,7 @@
         /// Check the most common metadata properties
         /// </summary>
         [TestMethod]
-        public void CheckSimpleMetadata()
+        public void ReadSimpleMetadata()
         {
             StringAssert.Matches(this.jpgPhotoOne.Metadata.Aperture, new Regex(@"f/9"), "Aperture");
             StringAssert.Matches(this.jpgPhotoOne.Metadata.CameraManufacturer, new Regex("Canon"), "CameraManufacturer");
@@ -128,7 +128,7 @@
         /// Check Dates
         /// </summary>
         [TestMethod]
-        public void CheckDateMetadata()
+        public void ReadDateMetadata()
         {
             StringAssert.Matches(this.jpgPhotoOne.Metadata.DateDigitised.ToString(), new Regex("10/10/2009 21:46:37"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.DateTaken.ToString(), new Regex("10/10/2009 14:46:37"));
@@ -139,7 +139,7 @@
         /// Check Gps metadata
         /// </summary>
         [TestMethod]
-        public void CheckGpsMetadata()
+        public void ReadGpsMetadata()
         {
             StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPosition.Accuracy.ToString(), new Regex("Unknown"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPosition.Altitude.ToString(), new Regex("-17.464"));
@@ -153,7 +153,7 @@
         /// Check Microsoft RegionInfo regions data
         /// </summary>
         [TestMethod]
-        public void CheckXmpRegionMetadata()
+        public void ReadXmpRegionMetadata()
         {
             if (this.jpgPhotoOne.Metadata.RegionInfo == null)
             {
@@ -174,7 +174,7 @@
         /// Check MetadataDump
         /// </summary>
         [TestMethod]
-        public void CheckMetadataDump()
+        public void ReadMetadataDump()
         {
             MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.jpgPhotoTwo.FileName));
 

@@ -25,140 +25,62 @@ namespace FotoFly
     {
         public static T GetQuery<T>(this BitmapMetadata bitmapMetadata, string query)
         {
+            // Return null if the BitmapMetadata doesn't contain the query
+            if (!bitmapMetadata.ContainsQuery(query))
+            {
+                return default(T);
+            }
+
+            // Grab object
             object unknownObject = bitmapMetadata.GetQuery(query);
 
-            if (unknownObject != null && !typeof(T).IsAssignableFrom(unknownObject.GetType()))
+            // Handle special cases
+            if (typeof(T) == typeof(SRational))
             {
+                SRational rational = new SRational((Int64)unknownObject);
+
+                // Create new Rational, casting the unknownobject as an Int64
+                return (T)Convert.ChangeType(rational, typeof(T));
+            }
+            else if (typeof(T) == typeof(URational))
+            {
+                URational urational = new URational((UInt64)unknownObject);
+
+                // Create new URational, casting the unknownobject as an UInt64
+                return (T)Convert.ChangeType(urational, typeof(T));
+            }
+            else if (typeof(T) == typeof(URationalTriplet))
+            {
+                URationalTriplet gpsRational = new URationalTriplet((UInt64[])unknownObject);
+
+                // Create new GpsRational, casting the unknownobject as an Int64[]
+                return (T)Convert.ChangeType(gpsRational, typeof(T));
+            }
+            else if (typeof(T) == typeof(ExifDateTime))
+            {
+                ExifDateTime exifDateTime = new ExifDateTime(unknownObject.ToString());
+
+                // Create new ExifDateTime, casting the unknownobject as a string
+                return (T)Convert.ChangeType(exifDateTime, typeof(T));
+            }
+            else if (typeof(T) == typeof(DateTime))
+            {
+                // Parse the object as a DateTime, stripping out the Z
+                DateTime dateTime = DateTime.Parse(((string)unknownObject).TrimEnd('Z'));
+
+                // Read as local time
+                DateTime localDateTime = new DateTime(dateTime.Ticks, DateTimeKind.Local);
+
+                // Return the date
+                return (T)Convert.ChangeType(localDateTime, typeof(T));
+            }
+            else if (!typeof(T).IsAssignableFrom(unknownObject.GetType()))
+            {
+                // Throw exception if the object is the wrong type
                 throw new System.ArgumentException("query has type " + unknownObject.GetType().ToString());
             }
 
             return (T)unknownObject;
-        }
-
-        public static UInt16? GetQueryAsUInt16(this BitmapMetadata bitmapMetadata, string query)
-        {
-            object unknownObject = bitmapMetadata.GetQuery<object>(query);
-
-            if (unknownObject != null && unknownObject is UInt16)
-            {
-                return (UInt16)unknownObject;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public static UInt32? GetQueryAsUint32(this BitmapMetadata bitmapMetadata, string query)
-        {
-            object unknownObject = bitmapMetadata.GetQuery<object>(query);
-
-            if (unknownObject != null && unknownObject is UInt32)
-            {
-                return Convert.ToUInt32(unknownObject);
-            }
-
-            return null;
-        }
-        
-        public static DateTime? GetQueryAsDateTime(this BitmapMetadata bitmapMetadata, string query)
-        {
-            // ToDo try unknownObject is string?
-            object unknownObject = bitmapMetadata.GetQuery<object>(query);
-
-            if (unknownObject == null || string.IsNullOrEmpty(unknownObject.ToString()))
-            {
-                return null;
-            }
-            else
-            {
-                try
-                {
-                    string date = (string)unknownObject;
-
-                    date = date.TrimEnd('Z');
-
-                    DateTime newDateTime = DateTime.Parse(date);
-
-                    newDateTime = new DateTime(newDateTime.Ticks, DateTimeKind.Local);
-
-                    return newDateTime;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
-
-        public static ExifDateTime GetQueryAsExifDateTime(this BitmapMetadata bitmapMetadata, string query)
-        {
-            object unknownObject = bitmapMetadata.GetQuery<object>(query);
-
-            if (string.IsNullOrEmpty(unknownObject.ToString()))
-            {
-                return new ExifDateTime(new DateTime());
-            }
-            else
-            {
-                return new ExifDateTime(unknownObject as string);
-            }
-        }
-
-        public static Rational GetQueryAsRational(this BitmapMetadata bitmapMetadata, string query)
-        {
-            object unknownObject = bitmapMetadata.GetQuery<object>(query);
-
-            if (unknownObject != null && unknownObject is Int64)
-            {
-                return new Rational((Int64)unknownObject);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public static URational GetQueryAsURational(this BitmapMetadata bitmapMetadata, string query)
-        {
-            object unknownObject = bitmapMetadata.GetQuery<object>(query);
-
-            if (unknownObject != null && unknownObject is UInt64)
-            {
-                return new URational((UInt64)unknownObject);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public static GpsRational GetQueryAsGpsRational(this BitmapMetadata bitmapMetadata, string query)
-        {
-            object unknownObject = bitmapMetadata.GetQuery<object>(query);
-
-            if (unknownObject != null && unknownObject is UInt64[])
-            {
-                return new GpsRational((UInt64[])unknownObject);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public static BitmapMetadata GetQueryAsBitmapMetadata(this BitmapMetadata bitmapMetadata, string query)
-        {
-            object unknownObject = bitmapMetadata.GetQuery<object>(query);
-
-            if (unknownObject != null && unknownObject is BitmapMetadata)
-            {
-                return (BitmapMetadata)unknownObject;
-            }
-            else
-            {
-                return null;
-            }
         }
 
         public static List<string> ConvertReadOnlyCollectionToList(this BitmapMetadata bitmapMetadata, ReadOnlyCollection<string> readyOnlyCollection)

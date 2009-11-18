@@ -8,11 +8,12 @@ namespace FotoFly
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Windows.Media.Imaging;
 
     public static class XmpQueries
     {
         // Padding used when adding properties to the File
-        public static readonly string Padding = "/xmp/PaddingSchema:Padding";
+        public static readonly MetdataQuery Padding = new MetdataQuery("/xmp/PaddingSchema:Padding", typeof(Int32));
 
         // XMP Block Types
         public static readonly string StructBlock = "xmpstruct";
@@ -25,31 +26,31 @@ namespace FotoFly
         public static readonly string SeqBlock = "xmpseq";
 
         //  "DateAcquired" (LPWSTR) ["http://ns.microsoft.com/photo/1.0/" (LPWSTR)]
-        public static readonly string DateAcquired = "/xmp/MicrosoftPhoto:DateAcquired";
+        public static readonly MetdataQuery DateAcquired = new MetdataQuery("/xmp/MicrosoftPhoto:DateAcquired", typeof(DateTime));
 
         // People
-        public static readonly string People = "/xmp/mediapro:People";
+        public static readonly MetdataQuery People = new MetdataQuery("/xmp/mediapro:People", typeof(string));
 
         // "RegionInfo" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/" (LPWSTR)]
-        public static readonly string MicrosoftRegionInfo = @"/xmp/MP:RegionInfo";
+        public static readonly MetdataQuery MicrosoftRegionInfo = new MetdataQuery(@"/xmp/MP:RegionInfo", typeof(BitmapMetadata));
 
         // MPRI:DateRegionsValid
-        public static readonly string MicrosoftRegionsLastUpdate = @"/xmp/MP:RegionInfo/MPRI:DateRegionsValid";
+        public static readonly MetdataQuery MicrosoftRegionsLastUpdate = new MetdataQuery(@"/xmp/MP:RegionInfo/MPRI:DateRegionsValid", typeof(DateTime));
 
         // "Regions" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/t/RegionInfo#" (LPWSTR)]
-        public static readonly string MicrosoftRegions = @"/xmp/MP:RegionInfo/MPRI:Regions";
+        public static readonly MetdataQuery MicrosoftRegions = new MetdataQuery(@"/xmp/MP:RegionInfo/MPRI:Regions", typeof(BitmapMetadata));
 
         // Region query, meant to be used with String.Format to replace {0} with the appropriate region
-        public static readonly string MicrosoftRegion = @"/xmp/MP:RegionInfo/MPRI:Regions/{{ulong={0}}}";
+        public static readonly MetdataQuery MicrosoftRegion = new MetdataQuery(@"/xmp/MP:RegionInfo/MPRI:Regions/{{ulong={0}}}", typeof(BitmapMetadata));
 
         // "PersonDisplayName" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/t/Region#" (LPWSTR)]
-        public static readonly string MicrosoftPersonDisplayName = @"/MPReg:PersonDisplayName";
+        public static readonly MetdataQuery MicrosoftPersonDisplayName = new MetdataQuery(@"/MPReg:PersonDisplayName", typeof(string));
 
         // "Rectangle" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/t/Region#" (LPWSTR)]
-        public static readonly string MicrosoftRectangle = @"/MPReg:Rectangle";
+        public static readonly MetdataQuery MicrosoftRectangle = new MetdataQuery(@"/MPReg:Rectangle", typeof(string));
 
         // "PersonEmailDigest" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/t/Region#" (LPWSTR)]
-        public static readonly string MicrosoftPersonEmailDigest = @"/MPReg:PersonEmailDigest";
-        public static readonly string MicrosoftPersonLiveIdCID = @"/MPReg:PersonLiveIdCID";
+        public static readonly MetdataQuery MicrosoftPersonEmailDigest = new MetdataQuery(@"/MPReg:PersonEmailDigest", typeof(string));
+        public static readonly MetdataQuery MicrosoftPersonLiveIdCID = new MetdataQuery(@"/MPReg:PersonLiveIdCID", typeof(string));
     }
 }

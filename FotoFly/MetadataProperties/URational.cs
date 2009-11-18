@@ -8,76 +8,17 @@ namespace FotoFly
     using System.Collections.Generic;
     using System.Text;
 
-    public class URational
+    public class URational : AbstractRational
     {
-        private int numerator;
-        private int denominator;
+        public URational(double numerator, int accuracy)
+            : base(numerator, accuracy)
+        {
+        }
 
         public URational(UInt64 data)
         {
-            this.numerator = (int)(data & 0xFFFFFFFFL);
-            this.denominator = (int)((data & 0xFFFFFFFF00000000L) >> 32);
-        }
-
-        public URational(double numerator, int accuracy)
-        {
-            accuracy = (int)Math.Pow(10, accuracy);
-
-            this.numerator = Convert.ToInt32(Math.Abs(numerator * accuracy));
-            this.denominator = accuracy;
-        }
-
-        public int Numerator
-        {
-            get { return this.numerator; }
-        }
-
-        public int Denominator
-        {
-            get { return this.denominator; }
-        }
-
-        public double ToDouble()
-        {
-            return Math.Round(Convert.ToDouble(this.numerator) / Convert.ToDouble(this.denominator), 3);
-        }
-
-        public double ToDouble(int decimalPlaces)
-        {
-            return Math.Round(Convert.ToDouble(this.numerator) / Convert.ToDouble(this.denominator), decimalPlaces);
-        }
-
-        /// <summary>
-        /// Returns the Rational as a Ulong, typically used to write back to exif metadata
-        /// </summary>
-        /// <returns>Ulong</returns>
-        public ulong ToUInt64()
-        {
-            return ((ulong)this.numerator) | (((ulong)this.denominator) << 32);
-        }
-
-        /// <summary>
-        /// Returns the Rational as an Integer
-        /// </summary>
-        /// <returns>Int</returns>
-        public int ToInt()
-        {
-            return Convert.ToInt32(Math.Round(Convert.ToDouble(this.numerator) / Convert.ToDouble(this.denominator)));
-        }
-
-        public byte[] ToByteArray()
-        {
-            return null;
-        }
-
-        public override string ToString()
-        {
-            return this.numerator.ToString() + "/" + this.denominator.ToString();
-        }
-
-        public string ToUnformattedString()
-        {
-            return this.numerator.ToString() + " / " + this.denominator.ToString() + " (" + this.ToDouble() + ")";
+            base.numerator = (int)(data & 0xFFFFFFFFL);
+            base.denominator = (int)((data & 0xFFFFFFFF00000000L) >> 32);
         }
     }
 }
