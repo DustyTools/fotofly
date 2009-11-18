@@ -25,7 +25,8 @@ namespace FotoFly
     {
         public static T GetQuery<T>(this BitmapMetadata bitmapMetadata, string query)
         {
-            // Return null if the BitmapMetadata doesn't contain the query
+            // Return default if the BitmapMetadata doesn't contain the query
+            // Would prefer to return null
             if (!bitmapMetadata.ContainsQuery(query))
             {
                 return default(T);
@@ -37,30 +38,34 @@ namespace FotoFly
             // Handle special cases
             if (typeof(T) == typeof(SRational))
             {
+                // Create new Rational, casting the unknownobject as an Int64
                 SRational rational = new SRational((Int64)unknownObject);
 
-                // Create new Rational, casting the unknownobject as an Int64
+                // Convert back to typeof(T)
                 return (T)Convert.ChangeType(rational, typeof(T));
             }
             else if (typeof(T) == typeof(URational))
             {
+                // Create new URational, casting the unknownobject as an UInt64
                 URational urational = new URational((UInt64)unknownObject);
 
-                // Create new URational, casting the unknownobject as an UInt64
+                // Convert back to typeof(T)
                 return (T)Convert.ChangeType(urational, typeof(T));
             }
             else if (typeof(T) == typeof(URationalTriplet))
             {
+                // Create new GpsRational, casting the unknownobject as an Int64[]
                 URationalTriplet gpsRational = new URationalTriplet((UInt64[])unknownObject);
 
-                // Create new GpsRational, casting the unknownobject as an Int64[]
+                // Convert back to typeof(T)
                 return (T)Convert.ChangeType(gpsRational, typeof(T));
             }
             else if (typeof(T) == typeof(ExifDateTime))
             {
+                // Create new ExifDateTime, casting the unknownobject as a string
                 ExifDateTime exifDateTime = new ExifDateTime(unknownObject.ToString());
 
-                // Create new ExifDateTime, casting the unknownobject as a string
+                // Convert back to typeof(T)
                 return (T)Convert.ChangeType(exifDateTime, typeof(T));
             }
             else if (typeof(T) == typeof(DateTime))
@@ -68,10 +73,10 @@ namespace FotoFly
                 // Parse the object as a DateTime, stripping out the Z
                 DateTime dateTime = DateTime.Parse(((string)unknownObject).TrimEnd('Z'));
 
-                // Read as local time
+                // Parse as local time
                 DateTime localDateTime = new DateTime(dateTime.Ticks, DateTimeKind.Local);
 
-                // Return the date
+                // Convert back to typeof(T)
                 return (T)Convert.ChangeType(localDateTime, typeof(T));
             }
             else if (!typeof(T).IsAssignableFrom(unknownObject.GetType()))
@@ -81,21 +86,6 @@ namespace FotoFly
             }
 
             return (T)unknownObject;
-        }
-
-        public static List<string> ConvertReadOnlyCollectionToList(this BitmapMetadata bitmapMetadata, ReadOnlyCollection<string> readyOnlyCollection)
-        {
-            List<string> returnValue = new List<string>();
-
-            if (readyOnlyCollection != null)
-            {
-                foreach (string tag in readyOnlyCollection)
-                {
-                    returnValue.Add(tag);
-                }
-            }
-
-            return returnValue;
         }
     }
 }
