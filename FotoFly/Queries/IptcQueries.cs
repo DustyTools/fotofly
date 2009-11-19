@@ -34,5 +34,14 @@ namespace FotoFly
 
         // Identification of the name of the person involved in the writing
         public static readonly MetdataQuery WriterEditor = new MetdataQuery(@"/ifd/iptc/writer\/editor", typeof(string));
+
+        // Unused
+        public static readonly MetdataQuery Credit = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Credit", typeof(string));
+        public static readonly MetdataQuery Urgency = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Urgency", typeof(string));
+        public static readonly MetdataQuery Sublocation = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Sub-location", typeof(string));
+        public static readonly MetdataQuery CopyrightNotice = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Copyright Notice", typeof(string));
+        public static readonly MetdataQuery Category = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Category", typeof(string));
+        public static readonly MetdataQuery SupplementalCategory = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Supplemental Category", typeof(string));
+        public static readonly MetdataQuery BylineTitle = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/By-line Title", typeof(string));
     }
 }

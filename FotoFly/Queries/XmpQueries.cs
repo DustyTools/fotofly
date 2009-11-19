@@ -52,5 +52,31 @@ namespace FotoFly
         // "PersonEmailDigest" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/t/Region#" (LPWSTR)]
         public static readonly MetdataQuery MicrosoftPersonEmailDigest = new MetdataQuery(@"/MPReg:PersonEmailDigest", typeof(string));
         public static readonly MetdataQuery MicrosoftPersonLiveIdCID = new MetdataQuery(@"/MPReg:PersonLiveIdCID", typeof(string));
+    
+        // Unused Queries
+        public static readonly MetdataQuery AuthorsPosition = new MetdataQuery("/xmp/AuthorsPosition", typeof(string));
+        public static readonly MetdataQuery Category = new MetdataQuery("/xmp/Category", typeof(string));
+        public static readonly MetdataQuery State = new MetdataQuery("/xmp/State", typeof(string));
+        public static readonly MetdataQuery Country = new MetdataQuery("/xmp/Country", typeof(string));
+        public static readonly MetdataQuery Credit = new MetdataQuery("/xmp/Credit", typeof(string));
+        public static readonly MetdataQuery Urgency = new MetdataQuery("/xmp/Urgency", typeof(string));
+        public static readonly MetdataQuery Location = new MetdataQuery("/xmp/Location", typeof(string));
+        public static readonly MetdataQuery Creators = new MetdataQuery("/xmp/creator/{ulong=0}", typeof(string));
+        public static readonly MetdataQuery Rights = new MetdataQuery("/xmp/rights/x-default", typeof(string));
+        public static readonly MetdataQuery Marked = new MetdataQuery("/xmp/Marked", typeof(string));
+        public static readonly MetdataQuery WebStatement = new MetdataQuery("/xmp/WebStatement", typeof(string));
+        public static readonly MetdataQuery IntellectualGenre = new MetdataQuery("/xmp/IntellectualGenre", typeof(string));
+        public static readonly MetdataQuery Scenes = new MetdataQuery("/xmp/Scene/{ulong=0}", typeof(string));
+        public static readonly MetdataQuery SubjectCodes = new MetdataQuery("/xmp/SubjectCode/{ulong=0}", typeof(string));
+
+        // CreatorContactInfo
+        public static readonly MetdataQuery CiAdrExtadr = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrExtadr", typeof(string));
+        public static readonly MetdataQuery CiAdrCity = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrCity", typeof(string));
+        public static readonly MetdataQuery CiAdrRegion = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrRegion", typeof(string));
+        public static readonly MetdataQuery CiAdrPcode = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrPcode", typeof(string));
+        public static readonly MetdataQuery CiAdrCtry = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrCtry", typeof(string));
+        public static readonly MetdataQuery CiTelWork = new MetdataQuery("/xmp/CreatorContactInfo/CiTelWork", typeof(string));
+        public static readonly MetdataQuery CiEmailWork = new MetdataQuery("/xmp/CreatorContactInfo/CiEmailWork", typeof(string));
+        public static readonly MetdataQuery CiUrlWork = new MetdataQuery("/xmp/CreatorContactInfo/CiUrlWork", typeof(string));
     }
 }
