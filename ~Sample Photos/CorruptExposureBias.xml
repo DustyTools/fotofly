@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PhotoMetadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Aperture="f/4" ShutterSpeed="1/60 sec." ExposureBias="0 step" FocalLength="28 mm" CameraModel="Canon EOS 5D" CameraManufacturer="Canon" MeteringMode="Unknown" DateAquired="0001-01-01T00:00:00" DateTaken="2008-02-14T18:14:26" Iso="ISO-400" Width="640" Height="480" Rating="4" Subject="" Title="Photo_20080214_656660" DigitalZoomRatio="0">
+  <RegionInfo LastUpdate="0001-01-01T00:00:00">
+    <Regions />
+  </RegionInfo>
+  <Tags>
+    <Tag FullName="Address/United States/California/San Francisco/Justin Herman Plaza" />
+    <Tag FullName="Geotagging/Info/LatLonFromAddressLookup" />
+    <Tag FullName="UTC Offset/-8" />
+  </Tags>
+  <IptcAddress HierarchicalName="United States/California/San Francisco/Justin Herman Plaza" />
+  <GpsPosition Accuracy="Unknown" Altitude="NaN" IsValidCoordinate="true" Source="Manual" SatelliteTime="2008-06-02T15:00:00">
+    <Latitude Numeric="37.795" />
+    <Longitude Numeric="-122.3939" />
+  </GpsPosition>
+  <Authors>
+    <string>Ben Vincent</string>
+  </Authors>
+</PhotoMetadata>

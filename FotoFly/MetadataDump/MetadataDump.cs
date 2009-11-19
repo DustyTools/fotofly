@@ -69,7 +69,7 @@ namespace FotoFly
             this.propertyList.AddRange(this.GeneratePropertyList(bitmapMetadata, string.Empty));
         }
 
-        private List<MetadataProperty> GeneratePropertyList(BitmapMetadata metadata, string fullQuery)
+        private List<MetadataProperty> GeneratePropertyList(BitmapMetadata metadata, string rootQuery)
         {
             List<MetadataProperty> returnValue = new List<MetadataProperty>();
 
@@ -77,26 +77,29 @@ namespace FotoFly
             {
                 foreach (string query in metadata)
                 {
-                    string tempQuery = fullQuery + query;
-
-                    try
+                    if (metadata.ContainsQuery(query))
                     {
-                        // query string here is relative to the previous metadata reader.
-                        object unknownObject = metadata.GetQuery(query);
-
-                        MetadataProperty property = new MetadataProperty(tempQuery, unknownObject);
-
-                        if (unknownObject is BitmapMetadata)
+                        try
                         {
-                            // Add all sub values
-                            property.Children.AddRange(this.GeneratePropertyList(unknownObject as BitmapMetadata, tempQuery));
-                        }
+                            // query string here is relative to the previous metadata reader.
+                            object unknownObject = metadata.GetQuery(query);
 
-                        returnValue.Add(property);
-                    }
-                    catch
-                    {
-                        // Swallow it
+                            if (unknownObject != null)
+                            {
+                                MetadataProperty property = new MetadataProperty(rootQuery + query, unknownObject);
+
+                                if (unknownObject is BitmapMetadata)
+                                {
+                                    // Add all sub values
+                                    property.Children.AddRange(this.GeneratePropertyList(unknownObject as BitmapMetadata, rootQuery + query));
+                                }
+
+                                returnValue.Add(property);
+                            }
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
             }

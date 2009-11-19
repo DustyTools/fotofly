@@ -226,32 +226,16 @@ namespace FotoFly
         /// <summary>
         /// Software used to last modify the photo
         /// </summary>
-        public List<string> CreationSoftware
+        public string CreationSoftware
         {
             get
             {
-                string[] stringArray = this.BitmapMetadata.GetQuery<string[]>(ExifQueries.CreationSoftware.Query);
-
-                if (stringArray == null)
-                {
-                    return new List<string>();
-                }
-                else
-                {
-                    return new List<string>(stringArray);
-                }
+                return this.BitmapMetadata.ApplicationName;
             }
 
             set
             {
-                if (value == null || value.Count == 0)
-                {
-                    this.BitmapMetadata.SetQuery(ExifQueries.CreationSoftware.Query, new string[] {""});
-                }
-                else
-                {
-                    this.BitmapMetadata.SetQuery(ExifQueries.CreationSoftware.Query, value.ToArray());
-                }
+                this.BitmapMetadata.ApplicationName = value;
             }
         }
 
@@ -262,7 +246,16 @@ namespace FotoFly
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<ExifDateTime>(ExifQueries.DateDigitized.Query).ToDateTime();
+                ExifDateTime exifDateTime = this.BitmapMetadata.GetQuery<ExifDateTime>(ExifQueries.DateDigitized.Query);
+
+                if (exifDateTime == null)
+                {
+                    return new DateTime();
+                }
+                else
+                {
+                    return exifDateTime.ToDateTime();
+                }
             }
 
             set
@@ -305,7 +298,7 @@ namespace FotoFly
         {
             get
             {
-                DateTime? datetimeTaken = Convert.ToDateTime(this.BitmapMetadata.DateTaken);
+                DateTime datetimeTaken = Convert.ToDateTime(this.BitmapMetadata.DateTaken);
 
                 if (datetimeTaken == null)
                 {
@@ -313,7 +306,7 @@ namespace FotoFly
                 }
                 else
                 {
-                    return datetimeTaken.Value;
+                    return datetimeTaken;
                 }
             }
 
@@ -355,24 +348,21 @@ namespace FotoFly
         {
             get
             {
-                try
-                {
-                    // TODO: This doesn't deal determine positive or negative values
-                    SRational rational = this.BitmapMetadata.GetQuery<SRational>(ExifQueries.ExposureBias.Query);
+                SRational rational = this.BitmapMetadata.GetQuery<SRational>(ExifQueries.ExposureBias.Query);
 
-                    if (rational != null)
+                if (rational != null && rational.ToInt() != 0)
+                {
+                    if (rational.ToInt() > 0)
                     {
-                        return Math.Round(rational.ToDouble(), 2) + " eV";
+                        return "+" + Math.Round(rational.ToDouble(), 1) + " step";
                     }
                     else
                     {
-                        return string.Empty;
+                        return Math.Round(rational.ToDouble(), 1) + " step";
                     }
                 }
-                catch
-                {
-                    return string.Empty;
-                }
+
+                return "0 step";
             }
         }
 
@@ -1146,7 +1136,7 @@ namespace FotoFly
         {
             get
             {
-                uint? exposureProgram = this.BitmapMetadata.GetQuery<UInt32?>(ExifQueries.ExposureProgram.Query);
+                uint? exposureProgram = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.ExposureProgram.Query);
 
                 if (exposureProgram == null)
                 {

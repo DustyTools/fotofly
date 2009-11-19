@@ -29,6 +29,13 @@ namespace FotoFly
             set;
         }
 
+        [XmlIgnore]
+        public string CreationSoftware
+        {
+            get;
+            set;
+        }
+
         [XmlAttribute]
         public string ShutterSpeed
         {

@@ -11,34 +11,49 @@ namespace FotoFly
     using System.Linq;
     using System.Text;
     using System.Windows.Media.Imaging;
+    using System.Xml.Serialization;
+    using System.Text.RegularExpressions;
 
     public class JpgPhoto : GenericPhotoFile
     {
         private int metadataBackupImageMaxDimension = 100;
     
+        /// <summary>
+        /// Class representing a Jpeg Photo
+        /// </summary>
         public JpgPhoto()
         {
         }
 
+        /// <summary>
+        /// Class representing a Jpeg Photo
+        /// </summary>
+        /// <param name="fileName">Filename</param>
         public JpgPhoto(string fileName)
         {
             this.FileName = fileName;
         }
 
-        public new PhotoMetadata Metadata
+        /// <summary>
+        /// Metadata for the Photo
+        /// </summary>
+        public PhotoMetadata Metadata
         {
             get
             {
                 // Attempt to read the Metadata if it's not already loaded
-                if (base.Metadata == null && this.IsFileValid)
+                if (base.metadata == null && this.IsFileValid)
                 {
                     this.ReadMetadata();
                 }
 
-                return base.Metadata;
+                return base.metadata;
             }
         }
 
+        /// <summary>
+        /// The filename is valid and the file exists
+        /// </summary>
         public new bool IsFileValid
         {
             get
@@ -48,6 +63,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Reads the Jpeg Metadata
+        /// </summary>
         public void ReadMetadata()
         {
             if (this.IsFileValid)
@@ -77,7 +95,11 @@ namespace FotoFly
             }
         }
 
-        public void SaveMetadata(string fileName)
+        /// <summary>
+        /// Write the changes made to the Metadata
+        /// </summary>
+        /// <param name="fileName">File to save the metadata changes to</param>
+        public void WriteMetadata(string fileName)
         {
             if (!this.IsFileValid)
             {
@@ -90,10 +112,13 @@ namespace FotoFly
             // Save filename
             this.FileName = fileName;
 
-            this.SaveMetadata();
+            this.WriteMetadata();
         }
 
-        public void SaveMetadata()
+        /// <summary>
+        /// Write the changes made to the Metadata
+        /// </summary>
+        public void WriteMetadata()
         {
             if (this.IsFileValid)
             {
@@ -101,7 +126,7 @@ namespace FotoFly
                 {
                     try
                     {
-                        this.UnhandledSaveMetadata();
+                        this.UnhandledWriteMetadata();
                     }
                     catch (Exception e)
                     {
@@ -110,7 +135,7 @@ namespace FotoFly
                 }
                 else
                 {
-                    this.UnhandledSaveMetadata();
+                    this.UnhandledWriteMetadata();
                 }
             }
             else
@@ -118,6 +143,83 @@ namespace FotoFly
                 if (this.HandleExceptions)
                 {
                     throw new Exception("File does not exist or is not valid: " + this.FileName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the Jpeg Metadata from an Xml file
+        /// </summary>
+        /// <param name="fileName"></param>
+        public void ReadMetadataFromXml(string fileName)
+        {
+            if (!File.Exists(fileName))
+            {
+                throw new Exception("File does not exist: " + fileName);
+            }
+            else
+            {
+                try
+                {
+                    using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        using (StreamReader reader = new StreamReader(fileStream))
+                        {
+                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(PhotoMetadata));
+
+                            base.metadata = xmlSerializer.Deserialize(reader) as PhotoMetadata;
+                        }
+
+                        // Try and force the file lock to be released
+                        fileStream.Close();
+                        fileStream.Dispose();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Unable to read the file: " + fileName, e);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes the Metadata to an Xml file in the same folder as the jpeg with an xml extension
+        /// </summary>
+        public void WriteMetadataToXml()
+        {
+            this.WriteMetadataToXml(Regex.Replace(this.FileName, this.FileExtension, ".xml", RegexOptions.IgnoreCase));
+        }
+
+        /// <summary>
+        /// Writes the Metadata to an Xml file
+        /// </summary>
+        /// <param name="fileName">Filename of xml output</param>
+        public void WriteMetadataToXml(string fileName)
+        {
+            if (this.Metadata == null)
+            {
+                throw new Exception("Metadata can not be read");
+            }
+            else
+            {
+                try
+                {
+                    using (FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        using (StreamWriter writer = new StreamWriter(fileStream))
+                        {
+                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(PhotoMetadata));
+                            xmlSerializer.Serialize(writer, this.Metadata);
+                        }
+
+                        // Try and force the file lock to be released
+                        fileStream.Close();
+                        fileStream.Dispose();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Unable to Serialise Metdata to File", e);
                 }
             }
         }
@@ -149,6 +251,10 @@ namespace FotoFly
             WpfFileManager.CopyBitmapMetadata(this.FileName, destinationFileName);
         }
 
+        /// <summary>
+        /// Compares the Metadata with the metadata stored in the original file
+        /// </summary>
+        /// <returns>A list of changes</returns>
         public List<string> CompareMetadataToFileMetadata()
         {
             if (!this.IsFileValid)
@@ -177,6 +283,10 @@ namespace FotoFly
             return changes;
         }
 
+        /// <summary>
+        /// Compares the Metadata with the metadata stored in the original file, with no exception handling
+        /// </summary>
+        /// <returns>A list of changes</returns>
         private List<string> UnhandledCompare()
         {
             List<string> changes;
@@ -194,13 +304,19 @@ namespace FotoFly
             return changes;
         }
 
+        /// <summary>
+        /// Read Metadata from the Jpeg file, with no expection handling
+        /// </summary>
         private void UnhandledReadMetadata()
         {
             // Read Photo Metadata
-            base.Metadata = WpfFileManager.ReadPhotoMetadata(this.FileName);
+            base.metadata = WpfFileManager.ReadPhotoMetadata(this.FileName);
         }
 
-        private void UnhandledSaveMetadata()
+        /// <summary>
+        /// Write Metadata to the Jpeg file, with no expection handling
+        /// </summary>
+        private void UnhandledWriteMetadata()
         {
             // Read existing metadata in Using block to force garbage collection
             using (WpfMetadata metadataInFile = new WpfMetadata())
@@ -209,7 +325,7 @@ namespace FotoFly
                 metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileName);
 
                 // Copy JpgMetadata across to file Metadata
-                IPhotoMetadataTools.CopyMetadata(base.Metadata, metadataInFile);
+                IPhotoMetadataTools.CopyMetadata(base.metadata, metadataInFile);
 
                 // Save
                 WpfFileManager.WriteBitmapMetadata(this.FileName, metadataInFile.BitmapMetadata);

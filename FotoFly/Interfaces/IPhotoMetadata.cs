@@ -27,6 +27,11 @@ namespace FotoFly
         string Comment { get; set; }
 
         /// <summary>
+        /// Software used to last modify the photo
+        /// </summary>
+        string CreationSoftware { get; set; }
+
+        /// <summary>
         /// Camera Manufacturer
         /// </summary>
         string CameraManufacturer { get; set; }

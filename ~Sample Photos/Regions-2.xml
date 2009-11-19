@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PhotoMetadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Aperture="f/4.9" ShutterSpeed="1/250 sec." ExposureBias="0 step" FocalLength="22.5 mm" CameraModel="Canon PowerShot S90" CameraManufacturer="Canon" MeteringMode="Pattern" DateAquired="2009-11-15T00:05:58.558-08:00" DateTaken="2009-11-08T23:35:27" Iso="ISO-100" Width="640" Height="480" Rating="3" Subject="Test Caption\Title\Subject" Title="Test Caption\Title\Subject" DigitalZoomRatio="1">
+  <RegionInfo LastUpdate="0001-01-01T00:00:00">
+    <Regions>
+      <Region RectangleString="0.287500, 0.191667, 0.182812, 0.243750" PersonDisplayName="Ben Vincent" />
+      <Region RectangleString="0.718750, 0.266667, 0.231250, 0.308333" PersonDisplayName="Lisa Schmitz" />
+    </Regions>
+  </RegionInfo>
+  <Tags />
+  <IptcAddress HierarchicalName="" />
+  <GpsPosition Accuracy="Unknown" Altitude="NaN" IsValidCoordinate="false" Source="" SatelliteTime="0001-01-01T00:00:00">
+    <Latitude Numeric="NaN" />
+    <Longitude Numeric="NaN" />
+  </GpsPosition>
+  <Authors>
+    <string>Test Author</string>
+  </Authors>
+</PhotoMetadata>

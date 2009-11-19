@@ -35,30 +35,54 @@ namespace FotoFly
             // Grab object
             object unknownObject = bitmapMetadata.GetQuery(query);
 
-            // Handle special cases
-            if (typeof(T) == typeof(SRational))
+            if (unknownObject == null)
             {
-                // Create new Rational, casting the unknownobject as an Int64
-                SRational rational = new SRational((Int64)unknownObject);
+                return default(T);
+            }
+            else if (typeof(T) == typeof(SRational))
+            {
+                if (unknownObject.GetType() == typeof(Int64))
+                {
+                    // Create new Rational, casting the unknownobject as an Int64
+                    SRational rational = new SRational((Int64)unknownObject);
 
-                // Convert back to typeof(T)
-                return (T)Convert.ChangeType(rational, typeof(T));
+                    // Convert back to typeof(T)
+                    return (T)Convert.ChangeType(rational, typeof(T));
+                }
+                else
+                {
+                    return default(T);
+                }
             }
             else if (typeof(T) == typeof(URational))
             {
-                // Create new URational, casting the unknownobject as an UInt64
-                URational urational = new URational((UInt64)unknownObject);
+                if (unknownObject.GetType() == typeof(UInt64))
+                {
+                    // Create new URational, casting the unknownobject as an UInt64
+                    URational urational = new URational((UInt64)unknownObject);
 
-                // Convert back to typeof(T)
-                return (T)Convert.ChangeType(urational, typeof(T));
+                    // Convert back to typeof(T)
+                    return (T)Convert.ChangeType(urational, typeof(T));
+                }
+                else
+                {
+                    return default(T);
+                }
             }
             else if (typeof(T) == typeof(URationalTriplet))
             {
-                // Create new GpsRational, casting the unknownobject as an Int64[]
-                URationalTriplet gpsRational = new URationalTriplet((UInt64[])unknownObject);
+                if (unknownObject.GetType() == typeof(UInt64[]))
+                {
+                    // Create new GpsRational, casting the unknownobject as an Int64[]
+                    URationalTriplet gpsRational = new URationalTriplet((UInt64[])unknownObject);
 
-                // Convert back to typeof(T)
-                return (T)Convert.ChangeType(gpsRational, typeof(T));
+                    // Convert back to typeof(T)
+                    return (T)Convert.ChangeType(gpsRational, typeof(T));
+                }
+                else
+                {
+                    return default(T);
+                }
             }
             else if (typeof(T) == typeof(ExifDateTime))
             {
@@ -78,6 +102,11 @@ namespace FotoFly
 
                 // Convert back to typeof(T)
                 return (T)Convert.ChangeType(localDateTime, typeof(T));
+            }
+            else if (typeof(T) == typeof(string))
+            {
+                // Trim the string
+                return (T)Convert.ChangeType(unknownObject.ToString().Trim(), typeof(T));
             }
             else if (!typeof(T).IsAssignableFrom(unknownObject.GetType()))
             {

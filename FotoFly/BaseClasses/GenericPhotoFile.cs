@@ -12,13 +12,7 @@ namespace FotoFly
 
     public abstract class GenericPhotoFile
     {
-        private PhotoMetadata metadata;
-
-        public PhotoMetadata Metadata
-        {
-            get { return this.metadata; }
-            set { this.metadata = value; }
-        }
+        protected PhotoMetadata metadata;
 
         public bool HandleExceptions
         {
@@ -148,12 +142,12 @@ namespace FotoFly
         public string RecommendedFileName(GenericPhotoEnums.FilenameFormats fileFormat, string fileNamePrefix)
         {
             // Throw Exception if date is not read
-            if (this.Metadata == null || this.Metadata.DateTaken == new DateTime())
+            if (this.metadata == null || this.metadata.DateTaken == new DateTime())
             {
                 throw new Exception("Metadata has not been read or it is invalid");
             }
 
-            string fileDatePart = this.Metadata.DateTaken.ToString("yyyymmdd");
+            string fileDatePart = this.metadata.DateTaken.ToString("yyyymmdd");
             string fileSequencePart = string.Empty;
             string newFileName = string.Empty;
 
@@ -161,12 +155,12 @@ namespace FotoFly
             if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddHoursMinutesSeconds)
             {
                 // Generate fileSequencePart based on HHMMss
-                fileSequencePart = this.Metadata.DateTaken.ToString("HHmmss");
+                fileSequencePart = this.metadata.DateTaken.ToString("HHmmss");
             }
             else if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddSecondsSinceMidnight)
             {
                 // Generate fileSequencePart based on seconds part
-                fileSequencePart = this.Metadata.DateTaken.TimeOfDay.TotalSeconds.ToString();
+                fileSequencePart = this.metadata.DateTaken.TimeOfDay.TotalSeconds.ToString();
             }
             else if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddSequence)
             {

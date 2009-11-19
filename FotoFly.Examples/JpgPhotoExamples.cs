@@ -27,7 +27,7 @@
 
             jpgPhoto.Metadata.Comment = "Test Comment";
 
-            jpgPhoto.SaveMetadata();
+            jpgPhoto.WriteMetadata();
         }
 
         public static void AddTag(string inputFile)
@@ -39,7 +39,7 @@
 
             jpgPhoto.Metadata.Tags.Add("Test Tag: " + DateTime.Now.ToString());
 
-            jpgPhoto.SaveMetadata();
+            jpgPhoto.WriteMetadata();
         }
 
         public static void AddRegion(string inputFile)
@@ -59,7 +59,7 @@
             jpgPhoto.Metadata.RegionInfo.Regions.Add(newRegion);
 
             // Save
-            jpgPhoto.SaveMetadata();
+            jpgPhoto.WriteMetadata();
         }
 
         public static void AddGpsCoor(string inputFile)
@@ -74,7 +74,7 @@
             jpgPhoto.Metadata.GpsPosition.Dimension = GpsPosition.Dimensions.TwoDimensional;
             jpgPhoto.Metadata.GpsPosition.Source = "GPS Test";
 
-            jpgPhoto.SaveMetadata();
+            jpgPhoto.WriteMetadata();
         }
 
         public static void GenerateFileNames(string inputFile)

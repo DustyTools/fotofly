@@ -23,9 +23,14 @@
         
         public static readonly string DigitalZoom = "DigitalZoom.jpg";
 
-        public static readonly string ExposureBiasMinus1 = "ExposureBias-Minus1.jpg";
-        public static readonly string ExposureBiasPlus1 = "ExposureBias-Plus1.jpg";
-        
+        public static readonly string ExposureBiasMinus03 = "ExposureBias-0.3.jpg";
+        public static readonly string ExposureBiasMinus10 = "ExposureBias-1.0.jpg";
+        public static readonly string ExposureBiasMinus13 = "ExposureBias-1.3.jpg";
+
+        public static readonly string ExposureBiasPlus03 = "ExposureBias+0.3.jpg";
+        public static readonly string ExposureBiasPlus10 = "ExposureBias+1.0.jpg";
+        public static readonly string ExposureBiasPlus13 = "ExposureBias+1.3.jpg";
+
         public static readonly string FlashAuto = "Flash-Auto.jpg";
         public static readonly string FlashManual = "Flash-Manual.jpg";
         
@@ -48,8 +53,16 @@
         public static readonly string Regions1 = "Regions-1.jpg";
         public static readonly string Regions2 = "Regions-2.jpg";
 
+        // Not a real file, used to save the during testing
+        public static readonly string CorruptExposureBias = "CorruptExposureBias.jpg";
+
+        // Basic Metadata
         public static readonly string UnitTest1 = "UnitTest-1.jpg";
+
+        // Contains GPS Data
         public static readonly string UnitTest2 = "UnitTest-2.jpg";
-        public static readonly string UnitTest3 = "UnitTest-3.jpg";
+        
+        // Not a real file, used to save the during testing
+        public static readonly string UnitTestX = "UnitTest-X.jpg";
     }
 }
