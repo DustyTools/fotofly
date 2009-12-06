@@ -111,7 +111,7 @@ namespace FotoFly
             else if (!typeof(T).IsAssignableFrom(unknownObject.GetType()))
             {
                 // Throw exception if the object is the wrong type
-                throw new System.ArgumentException("query has type " + unknownObject.GetType().ToString());
+                throw new System.ArgumentException("Query \"" + query + "\" has type \"" + unknownObject.GetType().ToString() + "\" not expected type \"" + typeof(T).ToString() + "\"");
             }
 
             return (T)unknownObject;

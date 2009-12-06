@@ -62,22 +62,6 @@ namespace FotoFly
             return this.GetEnumerator();
         }
 
-        public void RemoveDuplicates()
-        {
-            if (this.tags.Count > 0)
-            {
-                TagList oldTagList = new TagList();
-                oldTagList.AddRange(this);
-
-                var query = from x in this.tags
-                            orderby x.FullName
-                            select x.FullName;
-
-                this.Clear();
-                this.AddRange(query.Distinct<string>().ToList());
-            }
-        }
-
         public void Clear()
         {
             this.tags = new List<Tag>();
@@ -258,6 +242,9 @@ namespace FotoFly
 
         public object Clone()
         {
+            // Remove duplicate Tags
+            this.RemoveDuplicates();
+
             TagList cloneTagList = new TagList();
 
             foreach (Tag tag in this.tags)
@@ -271,6 +258,29 @@ namespace FotoFly
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        private void RemoveDuplicates()
+        {
+            if (this.tags.Count > 0)
+            {
+                List<string> oldTags = new List<string>();
+
+                // Grab copy of tags
+                foreach (Tag tag in this.tags)
+                {
+                    oldTags.Add(tag.FullName);
+                }
+
+                // Clear Existing data
+                this.Clear();
+
+                // Add all distinct tags
+                foreach (string tag in oldTags.Distinct().ToList())
+                {
+                    this.tags.Add(new Tag(tag));
+                }
+            }
         }
     }
 }

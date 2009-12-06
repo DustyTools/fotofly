@@ -299,7 +299,7 @@ namespace FotoFly
 
                 if (otherPosition.DegreesMinutesSecondsAltitude == this.DegreesMinutesSecondsAltitude
                     && otherPosition.SatelliteTime.Ticks == this.SatelliteTime.Ticks
-                    && otherPosition.Accuracy == this.Accuracy)
+                    && otherPosition.Source == this.Source)
                 {
                     return true;
                 }

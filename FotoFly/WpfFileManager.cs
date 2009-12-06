@@ -39,13 +39,15 @@ namespace FotoFly
                 using (Stream sourceStream = File.Open(file, FileMode.Open, FileAccess.Read))
                 {
                     // Create a decoder with no cache options set
-                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.None);
+                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.OnLoad);
 
                     // Check the contents of the file is valid
                     if (bitmapDecoder.Frames[0] != null && bitmapDecoder.Frames[0].Metadata != null)
                     {
+                        BitmapMetadata bitmapMetadata = bitmapDecoder.Frames[0].Metadata as BitmapMetadata;
+
                         // Create a new WpfMetadata class that exposes all the right fields
-                        WpfMetadata wpfMetadata = new WpfMetadata(bitmapDecoder.Frames[0].Metadata as BitmapMetadata);
+                        WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
 
                         // Copy the common metadata across using reflection tool
                         IPhotoMetadataTools.CopyMetadata(wpfMetadata, photoMetadata);

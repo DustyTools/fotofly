@@ -1016,7 +1016,7 @@ namespace FotoFly
         {
             get
             {
-                uint? subjectDistanceRange = this.BitmapMetadata.GetQuery<UInt32?>(ExifQueries.SubjectDistanceRange.Query);
+                uint? subjectDistanceRange = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.SubjectDistanceRange.Query);
 
                 if (subjectDistanceRange == null)
                 {
@@ -1096,7 +1096,7 @@ namespace FotoFly
         {
             get
             {
-                uint? lightSource = this.BitmapMetadata.GetQuery<UInt32?>(ExifQueries.LightSource.Query);
+                uint? lightSource = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.LightSource.Query);
 
                 if (lightSource == null)
                 {
