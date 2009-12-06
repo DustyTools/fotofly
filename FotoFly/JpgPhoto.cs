@@ -14,6 +14,8 @@ namespace FotoFly
     using System.Xml.Serialization;
     using System.Text.RegularExpressions;
 
+    using FotoFly.XmlTools;
+
     public class JpgPhoto : GenericPhotoFile
     {
         private int metadataBackupImageMaxDimension = 100;
@@ -202,25 +204,7 @@ namespace FotoFly
             }
             else
             {
-                try
-                {
-                    using (FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None))
-                    {
-                        using (StreamWriter writer = new StreamWriter(fileStream))
-                        {
-                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(PhotoMetadata));
-                            xmlSerializer.Serialize(writer, this.Metadata);
-                        }
-
-                        // Try and force the file lock to be released
-                        fileStream.Close();
-                        fileStream.Dispose();
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Unable to Serialise Metdata to File", e);
-                }
+                GenericSerialiser.Write<PhotoMetadata>(this.Metadata, fileName);
             }
         }
 
