@@ -189,7 +189,7 @@
         }
 
         /// <summary>
-        /// Check Microsoft RegionInfo regions data
+        /// Check Microsoft RegionInfo regions data are read correctly
         /// </summary>
         [TestMethod]
         public void ReadXmpRegionMetadata()
@@ -207,6 +207,29 @@
             StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonEmailDigest, new Regex("68A7D36853D6CBDEC05624C1516B2533F8F665E0"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonLiveIdCID, new Regex("3058747437326753075"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].RectangleString, new Regex("0.365625, 0.145833, 0.126562, 0.168750"));
+        }
+
+        /// <summary>
+        /// Check Microsoft RegionInfo regions are written correctly
+        /// </summary>
+        [TestMethod]
+        public void WriteXmpRegionMetadata()
+        {
+            string testValueSuffix = DateTime.Now.ToUniversalTime().ToString();
+
+            this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonDisplayName = "PersonDisplayName" + testValueSuffix;
+            this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonEmailDigest = "PersonEmailDigest" + testValueSuffix;
+            this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonLiveIdCID = "PersonLiveIdCID" + testValueSuffix;
+            this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].RectangleString = "RectangleString" + testValueSuffix;
+
+            this.jpgPhotoOne.WriteMetadata(this.jpgPhotoX.FileName);
+
+            this.jpgPhotoX.ReadMetadata();
+
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonDisplayName, new Regex("PersonDisplayName" + testValueSuffix));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonEmailDigest, new Regex("PersonEmailDigest" + testValueSuffix));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonLiveIdCID, new Regex("PersonLiveIdCID" + testValueSuffix));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].RectangleString, new Regex("RectangleString" + testValueSuffix));
         }
 
         /// <summary>
