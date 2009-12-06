@@ -3,14 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
 
     using FotoFly;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.IO;
-    using System.Windows.Media.Imaging;
 
     [TestClass]
     public class JpgPhotoUnitTests
@@ -110,6 +113,86 @@
 
             // Check the subject was set correctly
             StringAssert.Matches(this.jpgPhotoX.Metadata.Subject, new Regex(testSubject));
+
+            if (new FileInfo(this.jpgPhotoTwo.FileName).Length > new FileInfo(this.jpgPhotoX.FileName).Length)
+            {
+                Assert.Fail("Photo has decreased in size after saving");
+            }
+        }
+
+        /// <summary>
+        /// WriteMetadataToFile Lossless Check
+        /// </summary>
+        [TestMethod]
+        public void WriteMetadataToFileLossless()
+        {
+            string beforeFile = this.samplePhotosFolder + "WriteMetadataToFileLossless_Before.jpg";
+            string afterFile = this.samplePhotosFolder + "WriteMetadataToFileLossless_After.jpg";
+
+            // Get a copy of a file
+            File.Copy(this.jpgPhotoOne.FileName, beforeFile);
+
+            // Change some metadata
+            JpgPhoto beforePhoto = new JpgPhoto(beforeFile);
+            beforePhoto.Metadata.Subject = "Test " + DateTime.Now.ToString();
+            beforePhoto.Metadata.Comment = "Test " + DateTime.Now.ToString();
+            beforePhoto.Metadata.Copyright = "Test " + DateTime.Now.ToString();
+
+            // Save as temp file
+            beforePhoto.WriteMetadata(afterFile);
+
+            // Open Original File
+            using (Stream beforeStream = File.Open(beforeFile, FileMode.Open, FileAccess.Read))
+            {
+                // Open the Saved File
+                using (Stream afterStream = File.Open(afterFile, FileMode.Open, FileAccess.Read))
+                {
+                    // Compare every pixel to ensure it has changed
+                    BitmapSource beforeBitmap = BitmapDecoder.Create(beforeStream, BitmapCreateOptions.None, BitmapCacheOption.OnDemand).Frames[0];
+                    BitmapSource afterBitmap = BitmapDecoder.Create(afterStream, BitmapCreateOptions.None, BitmapCacheOption.OnDemand).Frames[0];
+
+                    PixelFormat pf = PixelFormats.Bgra32;
+
+                    FormatConvertedBitmap fcbOne = new FormatConvertedBitmap(beforeBitmap, pf, null, 0);
+                    FormatConvertedBitmap fcbTwo = new FormatConvertedBitmap(afterBitmap, pf, null, 0);
+
+                    GC.AddMemoryPressure(((fcbOne.Format.BitsPerPixel * (fcbOne.PixelWidth + 7)) / 8) * fcbOne.PixelHeight);
+                    GC.AddMemoryPressure(((fcbTwo.Format.BitsPerPixel * (fcbTwo.PixelWidth + 7)) / 8) * fcbTwo.PixelHeight);
+
+                    int width = fcbOne.PixelWidth;
+                    int height = fcbOne.PixelHeight;
+
+                    int bpp = pf.BitsPerPixel;
+                    int stride = (bpp * (width + 7)) / 8;
+
+                    byte[] scanline0 = new byte[stride];
+                    byte[] scanline1 = new byte[stride];
+
+                    Int32Rect lineRect = new Int32Rect(0, 0, width, 1);
+
+                    // Loop through each row
+                    for (int y = 0; y < height; y++)
+                    {
+                        lineRect.Y = y;
+
+                        fcbOne.CopyPixels(lineRect, scanline0, stride, 0);
+                        fcbTwo.CopyPixels(lineRect, scanline1, stride, 0);
+
+                        // Loop through each column
+                        for (int b = 0; b < stride; b++)
+                        {
+                            if (Math.Abs(scanline0[b] - scanline1[b]) > 0)
+                            {
+                                Assert.Fail("Saved file was not solved losslessly");
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Tidy UP
+            File.Delete(this.samplePhotosFolder + "WriteMetadataToFileLossless_Before.jpg");
+            File.Delete(this.samplePhotosFolder + "WriteMetadataToFileLossless_After.jpg");
         }
 
         /// <summary>
