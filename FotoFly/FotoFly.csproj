@@ -79,11 +79,11 @@
     <Compile Include="MetadataProperties\ExifDateTime.cs" />
     <Compile Include="MetadataProperties\SRational.cs" />
     <Compile Include="MetadataProperties\URationalTriplet.cs" />
+    <Compile Include="MetadataQueries\ExifQueries.cs" />
+    <Compile Include="MetadataQueries\IptcQueries.cs" />
+    <Compile Include="MetadataQueries\MetadataQuery.cs" />
+    <Compile Include="MetadataQueries\XmpQueries.cs" />
     <Compile Include="PhotoMetadata.cs" />
-    <Compile Include="Queries\ExifQueries.cs" />
-    <Compile Include="Queries\IptcQueries.cs" />
-    <Compile Include="Queries\MetadataQuery.cs" />
-    <Compile Include="Queries\XmpQueries.cs" />
     <Compile Include="MetadataProperties\Address.cs" />
     <Compile Include="Gps\GpsCoordinate.cs" />
     <Compile Include="Gps\GpsPosition.cs" />
