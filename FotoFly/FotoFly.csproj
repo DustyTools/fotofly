@@ -61,12 +61,16 @@
     <Compile Include="BaseClasses\GenericPhotoEnums.cs" />
     <Compile Include="BaseClasses\GenericPhotoFile.cs" />
     <Compile Include="BitmapMetadataHelper.cs" />
-    <Compile Include="GpseXchangeFormat\GpxFile.cs" />
-    <Compile Include="GpseXchangeFormat\GpxFileManager.cs" />
-    <Compile Include="GpseXchangeFormat\GpxPointNode.cs" />
-    <Compile Include="GpseXchangeFormat\GpxRootNode.cs" />
-    <Compile Include="GpseXchangeFormat\GpxSegmentNode.cs" />
-    <Compile Include="GpseXchangeFormat\GpxTrackNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxFile.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxFileManager.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxPointNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxRootNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxSegmentNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxTrackNode.cs" />
+    <Compile Include="Geotagging\GpsLookupCache\CachedResult.cs" />
+    <Compile Include="Geotagging\GpsLookupCache\CacheManager.cs" />
+    <Compile Include="Geotagging\GpsTrack.cs" />
+    <Compile Include="Geotagging\GpsTrackCache.cs" />
     <Compile Include="Interfaces\IPhotoMetadata.cs" />
     <Compile Include="IPhotoMetadataTools.cs" />
     <Compile Include="MetadataDump\MetadataDump.cs" />
@@ -97,9 +101,6 @@
     <Compile Include="MetadataProperties\XmpRegion.cs" />
     <Compile Include="MetadataProperties\XmpRegionInfo.cs" />
     <Compile Include="XmlTools\GenericSerialiser.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Geotagging\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

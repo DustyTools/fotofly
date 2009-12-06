@@ -26,16 +26,6 @@ namespace FotoFly.GpseXchangeFormat
             {
                 newGpxFile.RootNode = GenericSerialiser.Read<GpxRootNode>(fileName);
                 newGpxFile.Filename = fileName;
-
-                // Convert the File to DateTime, this represents the local date for the track
-                StringBuilder date = new StringBuilder();
-                date.Append(newGpxFile.Filename.Substring(6, 2));
-                date.Append("/");
-                date.Append(newGpxFile.Filename.Substring(4, 2));
-                date.Append("/");
-                date.Append(newGpxFile.Filename.Substring(0, 4));
-
-                newGpxFile.LocalDate = DateTime.ParseExact(date.ToString(), "dd/MM/yyyy", new CultureInfo("en-GB"));
             }
             else
             {

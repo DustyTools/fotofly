@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeotaggingUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JpgPhotoUnitTests.cs" />
     <Compile Include="TestPhotos.cs" />

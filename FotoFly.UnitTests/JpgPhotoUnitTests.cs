@@ -18,7 +18,8 @@
     [TestClass]
     public class JpgPhotoUnitTests
     {
-        private string samplePhotosFolder = @"..\..\..\~Sample Photos\";
+        private string samplePhotosFolder = @"..\..\..\~Sample Files\JpgPhotos\";
+        private string sampleMetadataXmlFolder = @"..\..\..\~Sample Files\MetadataXml\";
 
         // Basic file properties
         private JpgPhoto jpgPhotoOne;
