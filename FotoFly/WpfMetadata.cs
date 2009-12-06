@@ -808,12 +808,6 @@ namespace FotoFly
             {
                 XmpRegionInfo regionInfo = new XmpRegionInfo();
 
-                // Read Last Update Date
-                if (this.BitmapMetadata.GetQuery<DateTime?>(XmpQueries.MicrosoftRegionsLastUpdate.Query) != null)
-                {
-                    regionInfo.LastUpdate = this.BitmapMetadata.GetQuery<DateTime?>(XmpQueries.MicrosoftRegionsLastUpdate.Query).Value;
-                }
-
                 // Read Each Region
                 BitmapMetadata regionsMetadata = this.BitmapMetadata.GetQuery<BitmapMetadata>(XmpQueries.MicrosoftRegions.Query);
 
@@ -873,12 +867,6 @@ namespace FotoFly
                         this.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegionInfo.Query, new BitmapMetadata(XmpQueries.StructBlock));
                     }
 
-                    // Set LastUpdate if it's been set
-                    if (value.LastUpdate != new DateTime())
-                    {
-                        this.BitmapMetadata.SetQuery(XmpQueries.MicrosoftRegionsLastUpdate.Query, value.LastUpdate.ToUniversalTime());
-                    }
-
                     // Check for Regions Bag, if none exists, create it
                     if (!this.BitmapMetadata.ContainsQuery(XmpQueries.MicrosoftRegions.Query))
                     {
@@ -918,41 +906,41 @@ namespace FotoFly
                         // Update or clear PersonDisplayName
                         if (string.IsNullOrEmpty(xmpRegion.PersonDisplayName))
                         {
-                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonDisplayName);
+                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonDisplayName.Query);
                         }
                         else
                         {
-                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonDisplayName, xmpRegion.PersonDisplayName);
+                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonDisplayName.Query, xmpRegion.PersonDisplayName);
                         }
 
                         // Update or clear PersonEmailDigest
                         if (string.IsNullOrEmpty(xmpRegion.PersonEmailDigest))
                         {
-                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonEmailDigest);
+                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonEmailDigest.Query);
                         }
                         else
                         {
-                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonEmailDigest, xmpRegion.PersonEmailDigest);
+                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonEmailDigest.Query, xmpRegion.PersonEmailDigest);
                         }
 
                         // Update or clear PersonLiveIdCID
                         if (string.IsNullOrEmpty(xmpRegion.PersonLiveIdCID))
                         {
-                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonLiveIdCID);
+                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftPersonLiveIdCID.Query);
                         }
                         else
                         {
-                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonLiveIdCID, xmpRegion.PersonLiveIdCID);
+                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftPersonLiveIdCID.Query, xmpRegion.PersonLiveIdCID);
                         }
 
                         // Update or clear RectangleString
                         if (string.IsNullOrEmpty(xmpRegion.RectangleString))
                         {
-                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftRectangle);
+                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpQueries.MicrosoftRectangle.Query);
                         }
                         else
                         {
-                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftRectangle, xmpRegion.RectangleString);
+                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpQueries.MicrosoftRectangle.Query, xmpRegion.RectangleString);
                         }
 
                         currentRegion++;

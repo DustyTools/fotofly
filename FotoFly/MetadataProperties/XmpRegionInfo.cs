@@ -33,20 +33,13 @@ namespace FotoFly
             }
         }
 
-        [XmlAttribute]
-        public DateTime LastUpdate
-        {
-            get;
-            set;
-        }
-
         public override bool Equals(object unknownObject)
         {
             if (unknownObject is XmpRegionInfo)
             {
                 XmpRegionInfo compareRegionInfo = unknownObject as XmpRegionInfo;
 
-                if (compareRegionInfo.LastUpdate == this.LastUpdate && compareRegionInfo.Regions.Count == this.Regions.Count)
+                if (compareRegionInfo.Regions.Count == this.Regions.Count)
                 {
                     for (int i = 0; i < this.Regions.Count; i++)
                     {
@@ -69,7 +62,6 @@ namespace FotoFly
         {
             XmpRegionInfo cloneRegionInfo = new XmpRegionInfo();
             cloneRegionInfo.Regions = new List<XmpRegion>();
-            cloneRegionInfo.LastUpdate = this.LastUpdate;
 
             foreach (XmpRegion region in this.Regions)
             {
