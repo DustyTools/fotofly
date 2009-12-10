@@ -116,5 +116,68 @@ namespace FotoFly
 
             return (T)unknownObject;
         }
+
+        public static void MoveQuery(this BitmapMetadata bitmapMetadata, string sourceQuery, string destinationQuery)
+        {
+            // Check Source Query exists
+            if (bitmapMetadata.ContainsQuery(sourceQuery))
+            {
+                // Copy the Query
+                bitmapMetadata.CopyQuery(sourceQuery, destinationQuery);
+
+                // Finally remove old query
+                bitmapMetadata.RemoveQuery(sourceQuery);
+
+                // Ensure old query has been removed
+                if (!bitmapMetadata.ContainsQuery(destinationQuery))
+                {
+                    throw new Exception("Move Query Failed");
+                }
+            }
+        }
+
+        public static void CopyQuery(this BitmapMetadata bitmapMetadata, string sourceQuery, string destinationQuery)
+        {
+            // Check Source Query exists
+            if (bitmapMetadata.ContainsQuery(sourceQuery))
+            {
+                // Garb source object
+                object sourceObject = bitmapMetadata.GetQuery(sourceQuery);
+
+                // Set destination Query
+                bitmapMetadata.SetQuery(destinationQuery, sourceObject);
+
+                // Grab Destination Query
+                object destinationObject = bitmapMetadata.GetQuery(destinationQuery);
+
+                // Check Type and value.ToString() match
+                if (sourceObject.GetType() != destinationObject.GetType() || sourceObject.ToString() != destinationObject.ToString())
+                {
+                    throw new Exception("Copy Query Failed");
+                }
+            }
+        }
+
+        public static bool IsQueryOfType(this BitmapMetadata bitmapMetadata, string query, Type type)
+        {
+            // Return null if no query value
+            if (!bitmapMetadata.ContainsQuery(query))
+            {
+                return false;
+            }
+
+            // Grab object
+            object unknownObject = bitmapMetadata.GetQuery(query);
+
+            // Return null or the object type
+            if (unknownObject == null)
+            {
+                return false;
+            }
+            else
+            {
+                return unknownObject.GetType() == type;
+            }
+        }
     }
 }

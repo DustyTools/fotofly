@@ -12,6 +12,7 @@
     using System.Windows.Media.Imaging;
 
     using FotoFly;
+    using FotoFly.Geotagging;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -261,7 +262,8 @@
         [TestMethod]
         public void ReadGpsMetadata()
         {
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPosition.Accuracy.ToString(), new Regex("Unknown"));
+            Assert.AreEqual<int>(this.jpgPhotoOne.Metadata.GpsPosition.Accuracy, 0);
+
             StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPosition.DegreesMinutesSecondsAltitude, new Regex("N 037° 48' 25.00\" W 122° 25' 23.00\" -17.464m"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPosition.Source, new Regex("Garmin Dakota 20"));
 

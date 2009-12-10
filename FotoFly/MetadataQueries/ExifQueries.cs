@@ -67,7 +67,7 @@ namespace FotoFly
 
         // Short. Indicates the ISO Speed and ISO Latitude of the camera or input device as specified
         // in ISO 12232. 
-        public static readonly MetdataQuery IsoSpeedRating = new MetdataQuery("/app1/ifd/exif/subifd:{uint=34855}", typeof(Int16));
+        public static readonly MetdataQuery IsoSpeedRating = new MetdataQuery("/app1/ifd/exif/subifd:{uint=34855}", typeof(UInt16));
 
         // Ascii. The date and time when the original image data was generated. For a digital still camera
         // the date and time the picture was taken are recorded. 
@@ -181,7 +181,7 @@ namespace FotoFly
         
         // Indicates the Gps measurement mode. '2' means two-dimensional measurement and '3' means
         // three-dimensional
-        public static readonly MetdataQuery GpsMeasureMode = new MetdataQuery("/app1/ifd/Gps/subifd:{uint=10}", typeof(Int16));
+        public static readonly MetdataQuery GpsMeasureMode = new MetdataQuery("/app1/ifd/Gps/subifd:{uint=10}", typeof(Int32));
 
         // Indicates the GPS DOP (data degree of precision). An HDOP value is written during
         // two-dimensional measurement, and PDOP during three-dimensional measurement.

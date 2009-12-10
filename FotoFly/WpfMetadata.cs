@@ -24,8 +24,6 @@ namespace FotoFly
 
     public class WpfMetadata : IPhotoMetadata, IDisposable
     {
-        private bool disposed = false;
-
         public WpfMetadata()
         {
         }
@@ -393,20 +391,21 @@ namespace FotoFly
         {
             get
             {
-                UInt16? iso = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.IsoSpeedRating.Query);
+                if (this.BitmapMetadata.IsQueryOfType(ExifQueries.IsoSpeedRating.Query, ExifQueries.IsoSpeedRating.ValueType))
+                {
+                    UInt16? iso = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.IsoSpeedRating.Query);
 
-                if (iso == null)
-                {
-                    return string.Empty;
+                    if (iso == null)
+                    {
+                        return string.Empty;
+                    }
+                    else if (iso.Value > 0 && iso.Value < 10000)
+                    {
+                        return "ISO-" + iso.Value.ToString();
+                    }
                 }
-                else if (iso.Value > 0 && iso.Value < 10000)
-                {
-                    return "ISO-" + iso.Value.ToString();
-                }
-                else
-                {
-                    return string.Empty;
-                }
+
+                return string.Empty;
             }
         }
 
@@ -1387,24 +1386,21 @@ namespace FotoFly
         {
             get
             {
-                int? returnValue = this.BitmapMetadata.GetQuery<int?>(ExifQueries.GpsMeasureMode.Query);
+                if (this.BitmapMetadata.IsQueryOfType(ExifQueries.GpsMeasureMode.Query, ExifQueries.GpsMeasureMode.ValueType))
+                {
+                    int? returnValue = this.BitmapMetadata.GetQuery<int?>(ExifQueries.GpsMeasureMode.Query);
 
-                if (returnValue == null)
-                {
-                    return GpsPosition.Dimensions.NotSpecified;
+                    if (returnValue != null && returnValue.Value == 2)
+                    {
+                        return GpsPosition.Dimensions.TwoDimensional;
+                    }
+                    else if (returnValue != null && returnValue.Value == 3)
+                    {
+                        return GpsPosition.Dimensions.ThreeDimensional;
+                    }
                 }
-                else if (returnValue.Value == 2)
-                {
-                    return GpsPosition.Dimensions.TwoDimensional;
-                }
-                else if (returnValue.Value == 3)
-                {
-                    return GpsPosition.Dimensions.ThreeDimensional;
-                }
-                else
-                {
-                    return GpsPosition.Dimensions.NotSpecified;
-                }
+
+                return GpsPosition.Dimensions.NotSpecified;
             }
 
             set
@@ -1532,8 +1528,6 @@ namespace FotoFly
             // Force Garbage ObjCollection
             GC.Collect();
             GC.WaitForPendingFinalizers();
-
-            this.disposed = true;
         }
     }
 }

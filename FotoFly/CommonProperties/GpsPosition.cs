@@ -19,6 +19,20 @@ namespace FotoFly
         private GpsCoordinate longitude;
         private DateTime satelliteTime;
 
+        public enum Accuracies : int
+        {
+            Unknown = 0,
+            Country = 1,
+            Region = 2,
+            SubRegion = 3,
+            City = 4,
+            PostalCode = 5,
+            Street = 6,
+            Intersection = 7,
+            Address = 8,
+            Premise = 9
+        }
+
         public GpsPosition()
         {
             this.ResetCoordinates();
@@ -56,18 +70,8 @@ namespace FotoFly
             ThreeDimensional = 3
         }
         
-        public enum Accuracies : int
-        {
-            Unknown = 0,
-            CountryLevel,
-            RegionLevel,
-            CityLevel,
-            StreetLevel,
-            AddressLevel
-        }
-
         [XmlAttribute]
-        public Accuracies Accuracy
+        public int Accuracy
         {
             get;
             set;
@@ -282,13 +286,30 @@ namespace FotoFly
 
         public void ResetCoordinates()
         {
-            this.Accuracy = Accuracies.Unknown;
+            this.Accuracy = 0;
             this.Latitude.Numeric = double.NaN;
             this.Longitude.Numeric = double.NaN;
             this.Dimension = Dimensions.NotSpecified;
             this.Source = string.Empty;
             this.altitude = double.NaN;
             this.satelliteTime = new DateTime();
+        }
+
+        public string AccuracyAsString(GpsPosition.Accuracies accuracy)
+        {
+            Dictionary<int, string> accuracies = new Dictionary<int,string>();
+            accuracies.Add(0, "Unknown");
+            accuracies.Add(1, "Country");
+            accuracies.Add(2, "Region"); // state, province, prefecture, etc.
+            accuracies.Add(3, "Sub-Region"); // county, municipality, etc.
+            accuracies.Add(4, "City"); // city, village
+            accuracies.Add(5, "Postal code"); // zip code
+            accuracies.Add(6, "Street");
+            accuracies.Add(7, "Intersection");
+            accuracies.Add(8, "Address");
+            accuracies.Add(9, "Premise"); // building name, property name, shopping center, etc.
+
+            return accuracies[(int)accuracy];
         }
 
         public override bool Equals(object unknownObject)

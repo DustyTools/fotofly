@@ -11,10 +11,10 @@
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using FotoFly;
     using FotoFly.Geotagging;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class GeotaggingUnitTests
@@ -45,8 +45,8 @@
         [TestMethod]
         public void ReadGpxFile()
         {
-            GpsTrackCache gpsTrackManager = new GpsTrackCache();
-            gpsTrackManager.Add(GpseXchangeFormat.GpxFileManager.Read(this.samplesFolder + "GarminDakota20.gpx"));
+            ////GpsTrackLookup gpsTrackManager = new GpsTrackLookup();
+            ////gpsTrackManager.Add(GpseXchangeFormat.GpxFileManager.Read(this.samplesFolder + "GarminDakota20.gpx"));
         }
 
         #region Pre\Post Test Code
