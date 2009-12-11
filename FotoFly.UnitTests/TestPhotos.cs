@@ -7,6 +7,12 @@
 
     public static class TestPhotos
     {
+        public static readonly string MakeKodakDX4900 = "Make-KodakDX4900.jpg";
+        public static readonly string MakeNikonCoolPixP80 = "Make-NikonCoolPixP80.jpg";
+        public static readonly string MakeNikonD70 = "Make-NikonD70.jpg";
+        public static readonly string MakePentaxOptioS = "Make-PentaxOptioS.jpg";
+        public static readonly string MakeSonyDSCT30 = "Make-SonyDSCT30.jpg";
+
         public static readonly string NoPadding = "NoPadding.jpg";
 
         public static readonly string LightSourceAuto = "LightSource-Auto.jpg";

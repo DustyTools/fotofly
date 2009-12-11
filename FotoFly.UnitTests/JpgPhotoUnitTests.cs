@@ -381,6 +381,29 @@
         }
 
         /// <summary>
+        /// Read Files from different cameras
+        /// </summary>
+        [TestMethod]
+        public void ReadCameraMake()
+        {
+            // Read photos from a couple of different cameras, the aim is to ensure no expection is thrown reading the data
+            JpgPhoto photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeKodakDX4900);
+            photo.ReadMetadata();
+
+            photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeNikonCoolPixP80);
+            photo.ReadMetadata();
+
+            photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeNikonD70);
+            photo.ReadMetadata();
+
+            photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakePentaxOptioS);
+            photo.ReadMetadata();
+
+            photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeSonyDSCT30);
+            photo.ReadMetadata();
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         [TestMethod]
