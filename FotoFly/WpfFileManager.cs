@@ -22,56 +22,49 @@ namespace FotoFly
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
-    public static class WpfFileManager
+    public class WpfFileManager : IDisposable
     {
+        private bool disposed = false;
+        private Stream sourceStream;
+
+        private static BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
+
+        public WpfFileManager(string filename)
+        {
+            // Check file exists and is a valid jpg\jpeg file
+            WpfFileManager.ValidateFileIsJpeg(filename);
+
+            // Create a decoder, cache all content on load because we'll close the stream
+            this.sourceStream = File.Open(filename, FileMode.Open, FileAccess.Read);
+
+            // Create a Bitmap Decoder, loading all metadata on load
+            this.BitmapDecoder = BitmapDecoder.Create(this.sourceStream, WpfFileManager.createOptions, BitmapCacheOption.None);
+
+            // Check the contents of the file is valid
+            if (this.BitmapDecoder.Frames[0] != null && this.BitmapDecoder.Frames[0].Metadata != null)
+            {
+                // Grab the metadata
+                // If BitmapCacheOption.None then the clone will be empty of any metadata
+                this.BitmapMetadata = this.BitmapDecoder.Frames[0].Metadata as BitmapMetadata;
+            }
+            else
+            {
+                throw new Exception("No Frames of Metadata in the file:\n\n" + filename);
+            }
+        }
+
         public static readonly uint PaddingAmount = 5120;
 
-        public static PhotoMetadata ReadPhotoMetadata(string file)
+        public BitmapMetadata BitmapMetadata
         {
-            // The Metadata we'll be returning
-            PhotoMetadata photoMetadata = new PhotoMetadata();
+            get;
+            set;
+        }
 
-            try
-            {
-                BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-
-                // Open the stream, readonly
-                using (Stream sourceStream = File.Open(file, FileMode.Open, FileAccess.Read))
-                {
-                    // Create a decoder with no cache options set
-                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.OnLoad);
-
-                    // Check the contents of the file is valid
-                    if (bitmapDecoder.Frames[0] != null && bitmapDecoder.Frames[0].Metadata != null)
-                    {
-                        BitmapMetadata bitmapMetadata = bitmapDecoder.Frames[0].Metadata as BitmapMetadata;
-
-                        // Create a new WpfMetadata class that exposes all the right fields
-                        WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
-
-                        // Copy the common metadata across using reflection tool
-                        IPhotoMetadataTools.CopyMetadata(wpfMetadata, photoMetadata);
-
-                        // Manually copy across ImageHeight & ImageWidth if they are not set in metadata
-                        // This should be pretty rare but can happen if the image has been resized or manipulated and the metadata not copied across
-                        if (photoMetadata.ImageHeight == 0 || photoMetadata.ImageWidth == 0)
-                        {
-                            photoMetadata.ImageHeight = bitmapDecoder.Frames[0].PixelHeight;
-                            photoMetadata.ImageWidth = bitmapDecoder.Frames[0].PixelWidth;
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("No Frames of Metadata in the file:\n\n" + file);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Unable to read the file:\n\n", e);
-            }
-
-            return photoMetadata;
+        public BitmapDecoder BitmapDecoder
+        {
+            get;
+            set;
         }
 
         public static BitmapMetadata ReadBitmapMetadata(string file)
@@ -81,14 +74,11 @@ namespace FotoFly
 
             try
             {
-                // Open the stream, readonly
-                BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-
                 // Create a decoder, cache all content on load because we'll close the stream
                 using (Stream sourceStream = File.Open(file, FileMode.Open, FileAccess.Read))
                 {
                     // Create a Bitmap Decoder, loading all metadata on load
-                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.OnLoad);
+                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, WpfFileManager.createOptions, BitmapCacheOption.OnLoad);
 
                     // Check the contents of the file is valid
                     if (bitmapDecoder.Frames[0] != null && bitmapDecoder.Frames[0].Metadata != null)
@@ -139,10 +129,8 @@ namespace FotoFly
             // Open Source File
             using (Stream sourceStream = File.Open(sourceFileForImage, FileMode.Open, FileAccess.ReadWrite))
             {
-                BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-
                 // Create the decoder, caching is not needed because file remains open
-                BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.None);
+                BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, WpfFileManager.createOptions, BitmapCacheOption.None);
 
                 JpegBitmapEncoder jpegBitmapEncoder = new JpegBitmapEncoder();
                 jpegBitmapEncoder.Frames.Add(BitmapFrame.Create(bitmapDecoder.Frames[0], bitmapDecoder.Frames[0].Thumbnail, bitmapMetadata, bitmapDecoder.Frames[0].ColorContexts));
@@ -245,8 +233,6 @@ namespace FotoFly
                 throw new Exception("DestinationFile does not exist: " + destinationFile);
             }
 
-            BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-
             // Create backup of the file so you can read and write to different files
             string tempFile = destinationFile + ".tmp";
             File.Copy(destinationFile, tempFile, true);
@@ -254,7 +240,7 @@ namespace FotoFly
             // Open the source file
             using (Stream sourceStream = File.Open(sourceFile, FileMode.Open, FileAccess.Read))
             {
-                BitmapDecoder sourceDecoder = BitmapDecoder.Create(sourceStream, createOptions, BitmapCacheOption.None);
+                BitmapDecoder sourceDecoder = BitmapDecoder.Create(sourceStream, WpfFileManager.createOptions, BitmapCacheOption.None);
 
                 // Check source is has valid frames
                 if (sourceDecoder.Frames[0] != null && sourceDecoder.Frames[0].Metadata != null)
@@ -265,7 +251,7 @@ namespace FotoFly
                     // Open the temp file
                     using (Stream tempStream = File.Open(tempFile, FileMode.Open, FileAccess.Read))
                     {
-                        BitmapDecoder tempDecoder = BitmapDecoder.Create(tempStream, createOptions, BitmapCacheOption.None);
+                        BitmapDecoder tempDecoder = BitmapDecoder.Create(tempStream, WpfFileManager.createOptions, BitmapCacheOption.None);
 
                         // Check temp file has valid frames
                         if (tempDecoder.Frames[0] != null && tempDecoder.Frames[0].Metadata != null)
@@ -290,7 +276,7 @@ namespace FotoFly
             File.Delete(tempFile);
         }
 
-        public static void AddMetadataPadding(BitmapMetadata bitmapMetadata)
+        private static void AddMetadataPadding(BitmapMetadata bitmapMetadata)
         {
             // Ensure there's enough EXIF Padding
             if (bitmapMetadata.GetQuery<UInt32>(ExifQueries.Padding.Query) < WpfFileManager.PaddingAmount)
@@ -311,7 +297,7 @@ namespace FotoFly
             }
         }
 
-        public static void ValidateFileIsJpeg(string file)
+        private static void ValidateFileIsJpeg(string file)
         {
             // TODO: Add code to check the first bits of the file to check it really us a jpeg
             // Something like this
@@ -342,6 +328,34 @@ namespace FotoFly
             {
                 throw new Exception("The current thread is not ApartmentState.STA");
             }
+        }
+
+        public void Dispose()
+        {
+            if (!disposed)
+            {
+                this.Dispose(true);
+            }
+
+            // Take yourself off the Finalization queue 
+            // to prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Force Garbage ObjCollection
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            // Dispose of everything
+            this.BitmapMetadata = null;
+            this.BitmapDecoder = null;
+            this.sourceStream.Close();
+            this.sourceStream.Dispose();
+
+            this.disposed = true;
         }
     }
 }

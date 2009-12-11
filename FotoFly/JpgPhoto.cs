@@ -54,6 +54,23 @@ namespace FotoFly
         }
 
         /// <summary>
+        /// Custom Metadata used by FotoFly
+        /// </summary>
+        public FotoFlyMetadata ExtendedMetadata
+        {
+            get
+            {
+                // Attempt to read the Metadata if it's not already loaded
+                if (this.FotoFlyMetadata == null && this.IsFileValid)
+                {
+                    this.ReadMetadata();
+                }
+
+                return this.FotoFlyMetadata;
+            }
+        }
+
+        /// <summary>
         /// The filename is valid and the file exists
         /// </summary>
         public new bool IsFileValid
@@ -273,16 +290,22 @@ namespace FotoFly
         /// <returns>A list of changes</returns>
         private List<string> UnhandledCompare()
         {
-            List<string> changes;
+            List<string> changes = new List<string>();
 
-            // Read existing metadata in Using block to force garbage collection
-            using (WpfMetadata metadataInFile = new WpfMetadata())
+            // Read BitmapMetadata
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileName))
             {
-                // Read Metadata from File
-                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileName);
+                // Get generic Metadata
+                WpfMetadata wpfMetadata = new WpfMetadata(wpfFileManager.BitmapMetadata);
 
-                // Compate Metadata
-                IPhotoMetadataTools.CompareMetadata(this.Metadata, metadataInFile, out changes);
+                // Copy the common metadata across using reflection tool
+                IPhotoMetadataTools.CompareMetadata(wpfMetadata, this.PhotoMetadata, ref changes);
+
+                // Get FotoFly Custom Metadata
+                WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(wpfFileManager.BitmapMetadata);
+
+                // Copy the common metadata across using reflection tool
+                IPhotoMetadataTools.CompareMetadata(wpfFotoFlyMetadata, this.FotoFlyMetadata, ref changes);
             }
 
             return changes;
@@ -293,8 +316,32 @@ namespace FotoFly
         /// </summary>
         private void UnhandledReadMetadata()
         {
-            // Read Photo Metadata
-            this.PhotoMetadata = WpfFileManager.ReadPhotoMetadata(this.FileName);
+            this.PhotoMetadata = new PhotoMetadata();
+            this.FotoFlyMetadata = new FotoFlyMetadata();
+
+            // Read BitmapMetadata
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileName))
+            {
+                // Get generic Metadata
+                WpfMetadata wpfMetadata = new WpfMetadata(wpfFileManager.BitmapMetadata);
+
+                // Copy the common metadata across using reflection tool
+                IPhotoMetadataTools.CopyMetadata(wpfMetadata, this.PhotoMetadata);
+
+                // Get FotoFly Custom Metadata
+                WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(wpfFileManager.BitmapMetadata);
+
+                // Copy the common metadata across using reflection tool
+                IPhotoMetadataTools.CopyMetadata(wpfFotoFlyMetadata, this.FotoFlyMetadata);
+
+                // Manually copy across ImageHeight & ImageWidth if they are not set in metadata
+                // This should be pretty rare but can happen if the image has been resized or manipulated and the metadata not copied across
+                if (this.PhotoMetadata.ImageHeight == 0 || this.PhotoMetadata.ImageWidth == 0)
+                {
+                    this.PhotoMetadata.ImageHeight = wpfFileManager.BitmapDecoder.Frames[0].PixelHeight;
+                    this.PhotoMetadata.ImageWidth = wpfFileManager.BitmapDecoder.Frames[0].PixelWidth;
+                }
+            }
         }
 
         /// <summary>
@@ -302,17 +349,25 @@ namespace FotoFly
         /// </summary>
         private void UnhandledWriteMetadata()
         {
-            // Read existing metadata in Using block to force garbage collection
-            using (WpfMetadata metadataInFile = new WpfMetadata())
+            List<string> changes = new List<string>();
+
+            // Get original File metadata
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileName, true);
+
+            WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
+
+            // Copy JpgMetadata across to file Metadata
+            IPhotoMetadataTools.CopyMetadata(this.PhotoMetadata, wpfMetadata, ref changes);
+
+            WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(bitmapMetadata);
+
+            // Copy JpgMetadata across to file Metadata
+            IPhotoMetadataTools.CopyMetadata(this.FotoFlyMetadata, wpfFotoFlyMetadata, ref changes);
+
+            // Save if there have been changes to the Metadata
+            if (changes.Count > 0)
             {
-                // Read Metadata from File and open it for editing
-                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileName, true);
-
-                // Copy JpgMetadata across to file Metadata
-                IPhotoMetadataTools.CopyMetadata(this.PhotoMetadata, metadataInFile);
-
-                // Save
-                WpfFileManager.WriteBitmapMetadata(this.FileName, metadataInFile.BitmapMetadata);
+                WpfFileManager.WriteBitmapMetadata(this.FileName, bitmapMetadata);
             }
         }
     }

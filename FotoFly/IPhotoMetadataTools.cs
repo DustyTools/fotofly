@@ -12,28 +12,31 @@ namespace FotoFly
 
     public static class IPhotoMetadataTools
     {
-        public static void CompareMetadata(object source, object destination, out List<string> changes)
+        public static void CompareMetadata(object source, object destination, ref List<string> changes)
         {
-            IPhotoMetadataTools.UseReflection(source, destination, false, out changes);
+            IPhotoMetadataTools.UseReflection(source, destination, false, ref changes);
         }
 
-        public static void CopyMetadata(object source, object destination, out List<string> changes)
+        public static void CopyMetadata(object source, object destination, ref List<string> changes)
         {
-            IPhotoMetadataTools.UseReflection(source, destination, true, out changes);
+            IPhotoMetadataTools.UseReflection(source, destination, true, ref changes);
         }
 
         public static void CopyMetadata(object source, object destination)
         {
-            List<string> changes;
+            List<string> changes = new List<string>();
 
-            IPhotoMetadataTools.UseReflection(source, destination, true, out changes);
+            IPhotoMetadataTools.UseReflection(source, destination, true, ref changes);
         }
 
-        private static void UseReflection(object source, object destination, bool applyChanges, out List<string> changes)
+        private static void UseReflection(object source, object destination, bool applyChanges, ref List<string> changes)
         {
             // Use Reflection to copy properties of the same name and type
             // This is done to reduce the risk of overwriting data in the file
-            changes = new List<string>();
+            if (changes == null)
+            {
+                changes = new List<string>();
+            }
 
             // Loop through every property in the source
             foreach (PropertyInfo sourcePropertyInfo in source.GetType().GetProperties())

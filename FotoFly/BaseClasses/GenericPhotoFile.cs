@@ -9,6 +9,7 @@ namespace FotoFly
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Windows.Media.Imaging;
 
     public abstract class GenericPhotoFile
     {
@@ -68,6 +69,12 @@ namespace FotoFly
         }
 
         protected PhotoMetadata PhotoMetadata
+        {
+            get;
+            set;
+        }
+
+        protected FotoFlyMetadata FotoFlyMetadata
         {
             get;
             set;
