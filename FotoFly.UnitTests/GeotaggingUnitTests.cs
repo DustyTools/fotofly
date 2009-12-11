@@ -11,10 +11,10 @@
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using FotoFly;
     using FotoFly.Geotagging;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class GeotaggingUnitTests

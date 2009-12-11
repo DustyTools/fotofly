@@ -356,6 +356,31 @@
         }
 
         /// <summary>
+        /// ReadPadding
+        /// </summary>
+        [TestMethod]
+        public void ReadPadding()
+        {
+            // Load a file with no padding set
+            BitmapMetadata noPaddingBitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.NoPadding);
+
+            // Check Padding Amounts
+            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(ExifQueries.Padding.Query), null);
+            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(XmpQueries.Padding.Query), null);
+            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(IptcQueries.Padding.Query), null);
+
+            // Load a file with default padding set
+            BitmapMetadata paddingBitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.UnitTest1);
+
+            // Check Padding Amounts
+            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(ExifQueries.Padding.Query), WpfFileManager.PaddingAmount);
+            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(IptcQueries.Padding.Query), WpfFileManager.PaddingAmount);
+
+            // Don't understand why this is 0, it should be 5120
+            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(XmpQueries.Padding.Query), 0);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         [TestMethod]

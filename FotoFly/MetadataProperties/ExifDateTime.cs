@@ -45,7 +45,7 @@ namespace FotoFly
 
         public DateTime ToDateTime()
         {
-            return dateTime;
+            return this.dateTime;
         }
 
         public string ToExifString()

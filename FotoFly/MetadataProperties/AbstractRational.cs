@@ -10,9 +10,6 @@ namespace FotoFly
 
     public abstract class AbstractRational
     {
-        protected int numerator;
-        protected int denominator;
-
         public AbstractRational()
         {
         }
@@ -26,18 +23,20 @@ namespace FotoFly
         {
             accuracy = (int)Math.Pow(10, accuracy);
 
-            this.numerator = Convert.ToInt32(Math.Abs(numerator * accuracy));
-            this.denominator = accuracy;
+            this.Numerator = Convert.ToInt32(Math.Abs(numerator * accuracy));
+            this.Denominator = accuracy;
         }
 
         public int Numerator
         {
-            get { return this.numerator; }
+            get;
+            set;
         }
 
         public int Denominator
         {
-            get { return this.denominator; }
+            get;
+            set;
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace FotoFly
 
         public double ToDouble(int decimalPlaces)
         {
-            return Math.Round(Convert.ToDouble(this.numerator) / Convert.ToDouble(this.denominator), decimalPlaces);
+            return Math.Round(Convert.ToDouble(this.Numerator) / Convert.ToDouble(this.Denominator), decimalPlaces);
         }
 
         /// <summary>
@@ -60,7 +59,7 @@ namespace FotoFly
         /// <returns>Int</returns>
         public int ToInt()
         {
-            return Convert.ToInt32(Math.Round(Convert.ToDouble(this.numerator) / Convert.ToDouble(this.denominator)));
+            return Convert.ToInt32(Math.Round(Convert.ToDouble(this.Numerator) / Convert.ToDouble(this.Denominator)));
         }
 
         /// <summary>
@@ -69,7 +68,7 @@ namespace FotoFly
         /// <returns>Ulong</returns>
         public ulong ToUInt64()
         {
-            return ((ulong)this.numerator) | (((ulong)this.denominator) << 32);
+            return ((ulong)this.Numerator) | (((ulong)this.Denominator) << 32);
         }
 
         public string ToDoubleString()
@@ -79,7 +78,7 @@ namespace FotoFly
 
         public string ToFractionString()
         {
-            return this.numerator.ToString() + " / " + this.denominator.ToString() + " (" + this.ToDouble() + ")";
+            return this.Numerator.ToString() + " / " + this.Denominator.ToString() + " (" + this.ToDouble() + ")";
         }
 
         /// <summary>

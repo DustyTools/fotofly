@@ -67,6 +67,7 @@
     <Compile Include="Geotagging\GpsTrackCache.cs" />
     <Compile Include="Interfaces\IFotoFlyMetadata.cs" />
     <Compile Include="MetadataQueries\FotoFlyQueries.cs" />
+    <Compile Include="MetadataQueries\GpsQueries.cs" />
     <Compile Include="WpfFotoFlyMetadata.cs" />
     <Compile Include="Geotagging\BingMapsResolver\BingMapsResolver.cs" />
     <Compile Include="Geotagging\GeoCache\IResolverCache.cs" />

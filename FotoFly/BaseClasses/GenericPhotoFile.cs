@@ -12,8 +12,6 @@ namespace FotoFly
 
     public abstract class GenericPhotoFile
     {
-        protected PhotoMetadata metadata;
-
         public bool HandleExceptions
         {
             get;
@@ -67,6 +65,12 @@ namespace FotoFly
             {
                 return !string.IsNullOrEmpty(this.FileName) && File.Exists(this.FileName);
             }
+        }
+
+        protected PhotoMetadata PhotoMetadata
+        {
+            get;
+            set;
         }
 
         public void MoveTo(string newDirectory)
@@ -142,12 +146,12 @@ namespace FotoFly
         public string RecommendedFileName(GenericPhotoEnums.FilenameFormats fileFormat, string fileNamePrefix)
         {
             // Throw Exception if date is not read
-            if (this.metadata == null || this.metadata.DateTaken == new DateTime())
+            if (this.PhotoMetadata == null || this.PhotoMetadata.DateTaken == new DateTime())
             {
                 throw new Exception("Metadata has not been read or it is invalid");
             }
 
-            string fileDatePart = this.metadata.DateTaken.ToString("yyyymmdd");
+            string fileDatePart = this.PhotoMetadata.DateTaken.ToString("yyyymmdd");
             string fileSequencePart = string.Empty;
             string newFileName = string.Empty;
 
@@ -155,12 +159,12 @@ namespace FotoFly
             if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddHoursMinutesSeconds)
             {
                 // Generate fileSequencePart based on HHMMss
-                fileSequencePart = this.metadata.DateTaken.ToString("HHmmss");
+                fileSequencePart = this.PhotoMetadata.DateTaken.ToString("HHmmss");
             }
             else if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddSecondsSinceMidnight)
             {
                 // Generate fileSequencePart based on seconds part
-                fileSequencePart = this.metadata.DateTaken.TimeOfDay.TotalSeconds.ToString();
+                fileSequencePart = this.PhotoMetadata.DateTaken.TimeOfDay.TotalSeconds.ToString();
             }
             else if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddSequence)
             {

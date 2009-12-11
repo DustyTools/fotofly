@@ -25,7 +25,7 @@ namespace FotoFly
         public static readonly string BagBlock = "xmpbag";
         public static readonly string SeqBlock = "xmpseq";
 
-        //  "DateAcquired" (LPWSTR) ["http://ns.microsoft.com/photo/1.0/" (LPWSTR)]
+        // "DateAcquired" (LPWSTR) ["http://ns.microsoft.com/photo/1.0/" (LPWSTR)]
         public static readonly MetdataQuery DateAcquired = new MetdataQuery("/xmp/MicrosoftPhoto:DateAcquired", typeof(DateTime));
 
         // People

@@ -6,9 +6,9 @@ namespace FotoFly
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
-    using System.IO;
     using System.Windows.Media.Imaging;
 
     public class MetadataDump
@@ -66,7 +66,7 @@ namespace FotoFly
         {
             this.propertyList = new List<MetadataProperty>();
 
-            this.propertyList.AddRange(this.GeneratePropertyList(bitmapMetadata, string.Empty));
+            this.propertyList.AddRange(this.GeneratePropertyList(this.bitmapMetadata, string.Empty));
         }
 
         private List<MetadataProperty> GeneratePropertyList(BitmapMetadata metadata, string rootQuery)

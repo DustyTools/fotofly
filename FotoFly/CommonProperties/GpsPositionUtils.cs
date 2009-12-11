@@ -1,3 +1,7 @@
+// <copyright file="GpsPositionUtils.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <author>Ben Vincent</author>
+// <date>2009-12-10</date>
+// <summary>GpsPositionUtils</summary>
 namespace FotoFly
 {
     using System;

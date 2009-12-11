@@ -12,7 +12,7 @@ namespace FotoFly
     public class PhotoMetadataEnums
     {
         /// <summary>
-        ///Image orientation viewed in terms of rows and columns.
+        /// Image orientation viewed in terms of rows and columns.
         /// </summary>
         public enum Orientations : uint
         {

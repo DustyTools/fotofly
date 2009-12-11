@@ -19,20 +19,6 @@ namespace FotoFly
         private GpsCoordinate longitude;
         private DateTime satelliteTime;
 
-        public enum Accuracies : int
-        {
-            Unknown = 0,
-            Country = 1,
-            Region = 2,
-            SubRegion = 3,
-            City = 4,
-            PostalCode = 5,
-            Street = 6,
-            Intersection = 7,
-            Address = 8,
-            Premise = 9
-        }
-
         public GpsPosition()
         {
             this.ResetCoordinates();
@@ -61,6 +47,20 @@ namespace FotoFly
 
             this.Altitude = altitude;
             this.Source = string.Empty;
+        }
+
+        public enum Accuracies : int
+        {
+            Unknown = 0,
+            Country = 1,
+            Region = 2,
+            SubRegion = 3,
+            City = 4,
+            PostalCode = 5,
+            Street = 6,
+            Intersection = 7,
+            Address = 8,
+            Premise = 9
         }
 
         public enum Dimensions
@@ -297,7 +297,7 @@ namespace FotoFly
 
         public string AccuracyAsString(GpsPosition.Accuracies accuracy)
         {
-            Dictionary<int, string> accuracies = new Dictionary<int,string>();
+            Dictionary<int, string> accuracies = new Dictionary<int, string>();
             accuracies.Add(0, "Unknown");
             accuracies.Add(1, "Country");
             accuracies.Add(2, "Region"); // state, province, prefecture, etc.

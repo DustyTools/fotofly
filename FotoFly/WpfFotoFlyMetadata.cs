@@ -346,19 +346,19 @@ namespace FotoFly
             GC.SuppressFinalize(this);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Force Garbage ObjCollection
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+
         private void CreateFotoflyStruct()
         {
             if (!this.BitmapMetadata.ContainsQuery(FotoFlyQueries.FotoFlyStruct.Query))
             {
                 this.BitmapMetadata.SetQuery(FotoFlyQueries.FotoFlyStruct.Query, new BitmapMetadata(XmpQueries.StructBlock));
             }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            // Force Garbage ObjCollection
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
     }
 }

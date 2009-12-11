@@ -16,11 +16,7 @@ namespace FotoFly.Geotagging.Resolvers
         // http://code.google.com/apis/maps/documentation/geocoding/index.html
         private readonly string googleUrl = "http://maps.google.com/maps/geo?q={0},{1}&output=xml&sensor=true_or_false&key=your_api_key";
 
-        private ResolverCache resolverCache
-        {
-            get;
-            set;
-        }
+        private ResolverCache resolverCache;
 
         public void ConfigResolverCache(string cacheDirectory, string cacheName)
         {
@@ -35,7 +31,7 @@ namespace FotoFly.Geotagging.Resolvers
             {
                 string lat = gpsPosition.Latitude.ToString();
                 string lon = gpsPosition.Longitude.ToString();
-                string url = String.Format(googleUrl, lat, lon);
+                string url = String.Format(this.googleUrl, lat, lon);
 
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
                 webRequest.UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; 50iso)";

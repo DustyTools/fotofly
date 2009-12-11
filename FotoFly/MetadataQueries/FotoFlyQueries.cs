@@ -12,10 +12,8 @@ namespace FotoFly
 
     public static class FotoFlyQueries
     {
-        //
         public static readonly MetdataQuery FotoFlyStruct = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly", typeof(BitmapMetadata));
 
-        //
         public static readonly MetdataQuery UtcDate = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:UtcDate", typeof(DateTime));
 
         public static readonly MetdataQuery UtcOffset = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:UtcOffset", typeof(int));

@@ -17,8 +17,8 @@ namespace FotoFly
 
         public URational(UInt64 data)
         {
-            base.numerator = (int)(data & 0xFFFFFFFFL);
-            base.denominator = (int)((data & 0xFFFFFFFF00000000L) >> 32);
+            this.Numerator = (int)(data & 0xFFFFFFFFL);
+            this.Denominator = (int)((data & 0xFFFFFFFF00000000L) >> 32);
         }
     }
 }

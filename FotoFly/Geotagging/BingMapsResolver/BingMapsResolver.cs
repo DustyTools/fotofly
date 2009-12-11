@@ -8,6 +8,7 @@ namespace FotoFly.Geotagging.Resolvers
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Configuration;
+    using System.Diagnostics;
     using System.IO;
     using System.Net;
     using System.Security.Principal;
@@ -18,7 +19,6 @@ namespace FotoFly.Geotagging.Resolvers
 
     using FotoFly.BingMapsForEnterprise;
     using BingMaps = FotoFly.BingMapsForEnterprise;
-    using System.Diagnostics;
 
     public class BingMapsResolver : IResolverCache
     {
@@ -31,11 +31,7 @@ namespace FotoFly.Geotagging.Resolvers
         private List<string> eucountries;
         private List<string> nacountries;
 
-        private ResolverCache resolverCache
-        {
-            get;
-            set;
-        }
+        private ResolverCache resolverCache;
 
         public BingMapsResolver(string userName, string password)
         {

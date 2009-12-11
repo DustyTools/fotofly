@@ -7,6 +7,8 @@
 
     public static class TestPhotos
     {
+        public static readonly string NoPadding = "NoPadding.jpg";
+
         public static readonly string LightSourceAuto = "LightSource-Auto.jpg";
         public static readonly string LightSourceCloudy = "LightSource-Cloudy.jpg";
         public static readonly string LightSourceDaylight = "LightSource-Daylight.jpg";

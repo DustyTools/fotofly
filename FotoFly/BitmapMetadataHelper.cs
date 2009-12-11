@@ -160,24 +160,19 @@ namespace FotoFly
 
         public static bool IsQueryOfType(this BitmapMetadata bitmapMetadata, string query, Type type)
         {
+            return bitmapMetadata.GetQueryType(query) == type;
+        }
+
+        public static Type GetQueryType(this BitmapMetadata bitmapMetadata, string query)
+        {
             // Return null if no query value
             if (!bitmapMetadata.ContainsQuery(query))
             {
-                return false;
+                return null;
             }
 
-            // Grab object
-            object unknownObject = bitmapMetadata.GetQuery(query);
-
-            // Return null or the object type
-            if (unknownObject == null)
-            {
-                return false;
-            }
-            else
-            {
-                return unknownObject.GetType() == type;
-            }
+            // Return Object Type
+            return bitmapMetadata.GetQuery(query).GetType();
         }
     }
 }

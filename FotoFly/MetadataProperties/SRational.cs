@@ -21,8 +21,8 @@ namespace FotoFly
         /// <param name="data">A ulong typically read from exif metadata</param>
         public SRational(Int64 data)
         {
-            base.numerator = (int)(data & 0xFFFFFFFFL);
-            base.denominator = (int)(((ulong)data & 0xFFFFFFFF00000000L) >> 32);
+            this.Numerator = (int)(data & 0xFFFFFFFFL);
+            this.Denominator = (int)(((ulong)data & 0xFFFFFFFF00000000L) >> 32);
         }
     }
 }

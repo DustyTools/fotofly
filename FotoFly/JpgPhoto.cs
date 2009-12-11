@@ -10,9 +10,9 @@ namespace FotoFly
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Windows.Media.Imaging;
     using System.Xml.Serialization;
-    using System.Text.RegularExpressions;
 
     using FotoFly.XmlTools;
 
@@ -44,12 +44,12 @@ namespace FotoFly
             get
             {
                 // Attempt to read the Metadata if it's not already loaded
-                if (base.metadata == null && this.IsFileValid)
+                if (this.PhotoMetadata == null && this.IsFileValid)
                 {
                     this.ReadMetadata();
                 }
 
-                return base.metadata;
+                return this.PhotoMetadata;
             }
         }
 
@@ -169,7 +169,7 @@ namespace FotoFly
                         {
                             XmlSerializer xmlSerializer = new XmlSerializer(typeof(PhotoMetadata));
 
-                            base.metadata = xmlSerializer.Deserialize(reader) as PhotoMetadata;
+                            this.PhotoMetadata = xmlSerializer.Deserialize(reader) as PhotoMetadata;
                         }
 
                         // Try and force the file lock to be released
@@ -294,7 +294,7 @@ namespace FotoFly
         private void UnhandledReadMetadata()
         {
             // Read Photo Metadata
-            base.metadata = WpfFileManager.ReadPhotoMetadata(this.FileName);
+            this.PhotoMetadata = WpfFileManager.ReadPhotoMetadata(this.FileName);
         }
 
         /// <summary>
@@ -305,11 +305,11 @@ namespace FotoFly
             // Read existing metadata in Using block to force garbage collection
             using (WpfMetadata metadataInFile = new WpfMetadata())
             {
-                // Read Metadata from File
-                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileName);
+                // Read Metadata from File and open it for editing
+                metadataInFile.BitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileName, true);
 
                 // Copy JpgMetadata across to file Metadata
-                IPhotoMetadataTools.CopyMetadata(base.metadata, metadataInFile);
+                IPhotoMetadataTools.CopyMetadata(this.PhotoMetadata, metadataInFile);
 
                 // Save
                 WpfFileManager.WriteBitmapMetadata(this.FileName, metadataInFile.BitmapMetadata);

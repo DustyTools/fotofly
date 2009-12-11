@@ -1203,8 +1203,8 @@ namespace FotoFly
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitudeRef.Query, string.Empty);
-                        this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitude.Query, string.Empty);
+                        this.BitmapMetadata.SetQuery(GpsQueries.AltitudeRef.Query, string.Empty);
+                        this.BitmapMetadata.SetQuery(GpsQueries.Altitude.Query, string.Empty);
                     }
 
                     this.GpsLatitude = value.Latitude.Clone() as GpsCoordinate;
@@ -1237,8 +1237,8 @@ namespace FotoFly
             // 0 = Above sea level, 1 = Below sea level 
             get
             {
-                string gpsRef = this.BitmapMetadata.GetQuery<string>(ExifQueries.GpsAltitudeRef.Query);
-                URational urational = this.BitmapMetadata.GetQuery<URational>(ExifQueries.GpsAltitude.Query);
+                string gpsRef = this.BitmapMetadata.GetQuery<string>(GpsQueries.AltitudeRef.Query);
+                URational urational = this.BitmapMetadata.GetQuery<URational>(GpsQueries.Altitude.Query);
 
                 if (String.IsNullOrEmpty(gpsRef) || urational == null || double.IsNaN(urational.ToDouble()))
                 {
@@ -1260,8 +1260,8 @@ namespace FotoFly
                 if (double.IsNaN(value))
                 {
                     // Blank out existing values
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitudeRef.Query, string.Empty);
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitude.Query, string.Empty);
+                    this.BitmapMetadata.SetQuery(GpsQueries.AltitudeRef.Query, string.Empty);
+                    this.BitmapMetadata.SetQuery(GpsQueries.Altitude.Query, string.Empty);
                 }
                 else
                 {
@@ -1279,8 +1279,8 @@ namespace FotoFly
                         altRef = "1";
                     }
 
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitudeRef.Query, altRef);
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsAltitude.Query, urational.ToUInt64());
+                    this.BitmapMetadata.SetQuery(GpsQueries.AltitudeRef.Query, altRef);
+                    this.BitmapMetadata.SetQuery(GpsQueries.Altitude.Query, urational.ToUInt64());
                 }
             }
         }
@@ -1292,9 +1292,9 @@ namespace FotoFly
         {
             get
             {
-                string gpsRef = this.BitmapMetadata.GetQuery<string>(ExifQueries.GpsLatitudeRef.Query);
+                string gpsRef = this.BitmapMetadata.GetQuery<string>(GpsQueries.LatitudeRef.Query);
 
-                URationalTriplet gpsRational = this.BitmapMetadata.GetQuery<URationalTriplet>(ExifQueries.GpsLatitude.Query);
+                URationalTriplet gpsRational = this.BitmapMetadata.GetQuery<URationalTriplet>(GpsQueries.Latitude.Query);
 
                 if (gpsRef == null)
                 {
@@ -1318,16 +1318,16 @@ namespace FotoFly
             {
                 if (value.IsValidCoordinate)
                 {
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLatitudeRef.Query, value.Ref);
+                    this.BitmapMetadata.SetQuery(GpsQueries.LatitudeRef.Query, value.Ref);
 
                     URationalTriplet gpsRational = new URationalTriplet(value.Degrees, value.Minutes, value.Seconds);
 
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLatitude.Query, gpsRational.ToUlongArray(true));
+                    this.BitmapMetadata.SetQuery(GpsQueries.Latitude.Query, gpsRational.ToUlongArray(true));
                 }
                 else
                 {
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLatitude.Query, string.Empty);
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLatitudeRef.Query, string.Empty);
+                    this.BitmapMetadata.SetQuery(GpsQueries.Latitude.Query, string.Empty);
+                    this.BitmapMetadata.SetQuery(GpsQueries.LatitudeRef.Query, string.Empty);
                 }
             }
         }
@@ -1339,9 +1339,9 @@ namespace FotoFly
         {
             get
             {
-                string gpsRef = this.BitmapMetadata.GetQuery<string>(ExifQueries.GpsLongitudeRef.Query);
+                string gpsRef = this.BitmapMetadata.GetQuery<string>(GpsQueries.LongitudeRef.Query);
 
-                URationalTriplet gpsRational = this.BitmapMetadata.GetQuery<URationalTriplet>(ExifQueries.GpsLongitude.Query);
+                URationalTriplet gpsRational = this.BitmapMetadata.GetQuery<URationalTriplet>(GpsQueries.Longitude.Query);
 
                 if (gpsRef == null)
                 {
@@ -1365,16 +1365,16 @@ namespace FotoFly
             {
                 if (value.IsValidCoordinate)
                 {
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLongitudeRef.Query, value.Ref);
+                    this.BitmapMetadata.SetQuery(GpsQueries.LongitudeRef.Query, value.Ref);
 
                     URationalTriplet gpsRational = new URationalTriplet(value.Degrees, value.Minutes, value.Seconds);
 
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLongitude.Query, gpsRational.ToUlongArray(true));
+                    this.BitmapMetadata.SetQuery(GpsQueries.Longitude.Query, gpsRational.ToUlongArray(true));
                 }
                 else
                 {
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLongitude.Query, string.Empty);
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsLongitudeRef.Query, string.Empty);
+                    this.BitmapMetadata.SetQuery(GpsQueries.Longitude.Query, string.Empty);
+                    this.BitmapMetadata.SetQuery(GpsQueries.LongitudeRef.Query, string.Empty);
                 }
             }
         }
@@ -1386,9 +1386,9 @@ namespace FotoFly
         {
             get
             {
-                if (this.BitmapMetadata.IsQueryOfType(ExifQueries.GpsMeasureMode.Query, ExifQueries.GpsMeasureMode.ValueType))
+                if (this.BitmapMetadata.IsQueryOfType(GpsQueries.MeasureMode.Query, GpsQueries.MeasureMode.ValueType))
                 {
-                    int? returnValue = this.BitmapMetadata.GetQuery<int?>(ExifQueries.GpsMeasureMode.Query);
+                    int? returnValue = this.BitmapMetadata.GetQuery<int?>(GpsQueries.MeasureMode.Query);
 
                     if (returnValue != null && returnValue.Value == 2)
                     {
@@ -1409,15 +1409,15 @@ namespace FotoFly
                 {
                     default:
                     case GpsPosition.Dimensions.NotSpecified:
-                        this.BitmapMetadata.SetQuery(ExifQueries.GpsMeasureMode.Query, string.Empty);
+                        this.BitmapMetadata.SetQuery(GpsQueries.MeasureMode.Query, string.Empty);
                         break;
 
                     case GpsPosition.Dimensions.ThreeDimensional:
-                        this.BitmapMetadata.SetQuery(ExifQueries.GpsMeasureMode.Query, 3);
+                        this.BitmapMetadata.SetQuery(GpsQueries.MeasureMode.Query, 3);
                         break;
 
                     case GpsPosition.Dimensions.TwoDimensional:
-                        this.BitmapMetadata.SetQuery(ExifQueries.GpsMeasureMode.Query, 2);
+                        this.BitmapMetadata.SetQuery(GpsQueries.MeasureMode.Query, 2);
                         break;
                 }
             }
@@ -1432,8 +1432,8 @@ namespace FotoFly
             {
                 try
                 {
-                    URationalTriplet time = this.BitmapMetadata.GetQuery<URationalTriplet>(ExifQueries.GpsTimeStamp.Query);
-                    string date = this.BitmapMetadata.GetQuery<string>(ExifQueries.GpsDateStamp.Query);
+                    URationalTriplet time = this.BitmapMetadata.GetQuery<URationalTriplet>(GpsQueries.TimeStamp.Query);
+                    string date = this.BitmapMetadata.GetQuery<string>(GpsQueries.DateStamp.Query);
 
                     if (time != null && !string.IsNullOrEmpty(date))
                     {
@@ -1456,13 +1456,13 @@ namespace FotoFly
                     URationalTriplet time = new URationalTriplet(value.Hour, value.Minute, value.Second);
                     string date = value.ToString("yyyy:MM:dd");
 
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsDateStamp.Query, date);
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsTimeStamp.Query, time.ToUlongArray(false));
+                    this.BitmapMetadata.SetQuery(GpsQueries.DateStamp.Query, date);
+                    this.BitmapMetadata.SetQuery(GpsQueries.TimeStamp.Query, time.ToUlongArray(false));
                 }
                 else
                 {
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsDateStamp.Query, string.Empty);
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsTimeStamp.Query, string.Empty);
+                    this.BitmapMetadata.SetQuery(GpsQueries.DateStamp.Query, string.Empty);
+                    this.BitmapMetadata.SetQuery(GpsQueries.TimeStamp.Query, string.Empty);
                 }
             }
         }
@@ -1474,12 +1474,12 @@ namespace FotoFly
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(ExifQueries.GpsVersionID.Query);
+                return this.BitmapMetadata.GetQuery<string>(GpsQueries.VersionID.Query);
             }
 
             set
             {
-                this.BitmapMetadata.SetQuery(ExifQueries.GpsVersionID.Query, value);
+                this.BitmapMetadata.SetQuery(GpsQueries.VersionID.Query, value);
             }
         }
 
@@ -1490,13 +1490,13 @@ namespace FotoFly
         {
             get
             {
-                if (string.IsNullOrEmpty(this.BitmapMetadata.GetQuery<string>(ExifQueries.GpsProcessingMethod.Query)))
+                if (string.IsNullOrEmpty(this.BitmapMetadata.GetQuery<string>(GpsQueries.ProcessingMethod.Query)))
                 {
                     return "None";
                 }
                 else
                 {
-                    return this.BitmapMetadata.GetQuery<string>(ExifQueries.GpsProcessingMethod.Query);
+                    return this.BitmapMetadata.GetQuery<string>(GpsQueries.ProcessingMethod.Query);
                 }
             }
 
@@ -1504,11 +1504,11 @@ namespace FotoFly
             {
                 if (value == "None")
                 {
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsProcessingMethod.Query, string.Empty);
+                    this.BitmapMetadata.SetQuery(GpsQueries.ProcessingMethod.Query, string.Empty);
                 }
                 else
                 {
-                    this.BitmapMetadata.SetQuery(ExifQueries.GpsProcessingMethod.Query, value);
+                    this.BitmapMetadata.SetQuery(GpsQueries.ProcessingMethod.Query, value);
                 }
             }
         }

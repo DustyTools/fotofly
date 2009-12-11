@@ -6,13 +6,13 @@ namespace FotoFly.Geotagging.Resolvers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text;
 
     using FotoFly;
     using FotoFly.GpseXchangeFormat;
-    using System.Diagnostics;
 
     public class GpsTrackResolver
     {

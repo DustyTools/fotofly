@@ -52,11 +52,11 @@ namespace FotoFly
             set;
         }
 
-        public ulong[] ToUlongArray(bool cAsPartOfB)
+        public ulong[] ToUlongArray(bool casPartOfB)
         {
             List<ulong> returnValue = new List<ulong>();
 
-            if (cAsPartOfB)
+            if (casPartOfB)
             {
                 returnValue.Add(this.A.ToUInt64());
                 returnValue.Add(new URational(this.B.ToDouble() + (this.C.ToDouble() / 60), 5).ToUInt64());
