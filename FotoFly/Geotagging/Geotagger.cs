@@ -146,7 +146,7 @@ namespace FotoFly.Geotagging
             // Should only be run if the GPS Position was found using a GPS
             // The is determined by knowing the altitude, because that's not normally returned from Lookups
             // Order is: 1) Bing Maps 2) Google Maps
-            if (photo.Metadata.GpsPosition.Dimension == GpsPosition.Dimensions.ThreeDimensional)
+            if (photo.Metadata != null && photo.Metadata.GpsPosition.Dimension == GpsPosition.Dimensions.ThreeDimensional)
             {
                 // Try both Bing & Google and see which is the most accurate
                 Address address = new Address();
