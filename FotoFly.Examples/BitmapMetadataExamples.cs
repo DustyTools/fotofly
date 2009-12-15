@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Text;
     using System.Windows.Media.Imaging;
+    using FotoFly.MetadataQueries;
 
     public static class BitmapMetadataExamples
     {
@@ -166,13 +167,13 @@
                         if (regionMetadata.ContainsQuery(microsoftPersonDisplayName))
                         {
                             Console.WriteLine("PersonDisplayName:\t"
-                               + regionMetadata.GetQuery(XmpQueries.MicrosoftPersonDisplayName.Query).ToString());
+                               + regionMetadata.GetQuery(XmpMicrosoftQueries.RegionPersonDisplayName.Query).ToString());
                         }
 
                         if (regionMetadata.ContainsQuery(microsoftRectangle))
                         {
                             Console.WriteLine("Rectangle:\t\t"
-                               + regionMetadata.GetQuery(XmpQueries.MicrosoftRectangle.Query).ToString());
+                               + regionMetadata.GetQuery(XmpMicrosoftQueries.RegionRectangle.Query).ToString());
                         }
                     }
                 }
@@ -230,13 +231,13 @@
                         // If the region has a DisplayName, change the value
                         if (regionMetadata.ContainsQuery(microsoftPersonDisplayName))
                         {
-                            regionMetadata.SetQuery(XmpQueries.MicrosoftPersonDisplayName.Query, "test");
+                            regionMetadata.SetQuery(XmpMicrosoftQueries.RegionPersonDisplayName.Query, "test");
                         }
 
                         // If the region has a DisplayName, change the value
                         if (regionMetadata.ContainsQuery(microsoftRectangle))
                         {
-                            regionMetadata.SetQuery(XmpQueries.MicrosoftRectangle.Query, "test");
+                            regionMetadata.SetQuery(XmpMicrosoftQueries.RegionRectangle.Query, "test");
                         }
                     }
 

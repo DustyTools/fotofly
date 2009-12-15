@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-10</date>
 // <summary>Metadata queries for GPS metadata</summary>
-namespace FotoFly
+namespace FotoFly.MetadataQueries
 {
     using System;
     using System.Collections.Generic;

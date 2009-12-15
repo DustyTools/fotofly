@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-17</date>
 // <summary>MetadataQuery</summary>
-namespace FotoFly
+namespace FotoFly.MetadataQueries
 {
     using System;
     using System.Collections.Generic;

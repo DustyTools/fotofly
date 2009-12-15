@@ -66,8 +66,15 @@
     <Compile Include="Geotagging\GpsTrack.cs" />
     <Compile Include="Geotagging\GpsTrackCache.cs" />
     <Compile Include="Interfaces\IFotoFlyMetadata.cs" />
-    <Compile Include="MetadataQueries\FotoFlyQueries.cs" />
     <Compile Include="MetadataQueries\GpsQueries.cs" />
+    <Compile Include="MetadataQueries\XmpCoreQueries.cs" />
+    <Compile Include="MetadataQueries\XmpDublinCoreQueries.cs" />
+    <Compile Include="MetadataQueries\XmpExifQueries.cs" />
+    <Compile Include="MetadataQueries\XmpFotoFlyQueries.cs" />
+    <Compile Include="MetadataQueries\XmpIptcQueries.cs" />
+    <Compile Include="MetadataQueries\XmpMicrosoftQueries.cs" />
+    <Compile Include="MetadataQueries\XmpPhotoshopQueries.cs" />
+    <Compile Include="MetadataQueries\XmpRightsQueries.cs" />
     <Compile Include="WpfFotoFlyMetadata.cs" />
     <Compile Include="Geotagging\BingMapsResolver\BingMapsResolver.cs" />
     <Compile Include="Geotagging\GeoCache\IResolverCache.cs" />
@@ -92,7 +99,6 @@
     <Compile Include="MetadataQueries\ExifQueries.cs" />
     <Compile Include="MetadataQueries\IptcQueries.cs" />
     <Compile Include="MetadataQueries\MetadataQuery.cs" />
-    <Compile Include="MetadataQueries\XmpQueries.cs" />
     <Compile Include="BitmapMetadataHelper.cs" />
     <Compile Include="IPhotoMetadataTools.cs" />
     <Compile Include="MetadataProperties\Address.cs" />

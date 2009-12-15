@@ -1,8 +1,8 @@
-﻿// <copyright file="FotoFlyQueries.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+﻿// <copyright file="XmpFotoFlyQueries.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
-// <date>2009-12-06</date>
-// <summary>FotoFlyQueries</summary>
-namespace FotoFly
+// <date>2009-12-12</date>
+// <summary>XmpFotoFlyQueries</summary>
+namespace FotoFly.MetadataQueries
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace FotoFly
     using System.Text;
     using System.Windows.Media.Imaging;
 
-    public static class FotoFlyQueries
+    public static class XmpFotoFlyQueries
     {
         public static readonly MetdataQuery FotoFlyStruct = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly", typeof(BitmapMetadata));
 

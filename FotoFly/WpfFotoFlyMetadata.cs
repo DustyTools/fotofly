@@ -22,6 +22,8 @@ namespace FotoFly
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
+    using FotoFly.MetadataQueries;
+
     public class WpfFotoFlyMetadata : IFotoFlyMetadata, IDisposable
     {
         public WpfFotoFlyMetadata()
@@ -43,7 +45,7 @@ namespace FotoFly
         {
             get
             {
-                DateTime utcDate = this.BitmapMetadata.GetQuery<DateTime>(FotoFlyQueries.UtcDate.Query);
+                DateTime utcDate = this.BitmapMetadata.GetQuery<DateTime>(XmpFotoFlyQueries.UtcDate.Query);
 
                 if (utcDate == null)
                 {
@@ -61,13 +63,13 @@ namespace FotoFly
 
                 if (value == new DateTime())
                 {
-                    this.BitmapMetadata.RemoveQuery(FotoFlyQueries.UtcDate.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.UtcDate.Query);
                 }
                 else
                 {
                     string utcDate = value.ToString("yyyy-MM-ddTHH:mm:ss");
 
-                    this.BitmapMetadata.SetQuery(FotoFlyQueries.UtcDate.Query, utcDate);
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.UtcDate.Query, utcDate);
                 }
             }
         }
@@ -76,7 +78,7 @@ namespace FotoFly
         {
             get
             {
-                string utcOffsetString = this.BitmapMetadata.GetQuery<string>(FotoFlyQueries.UtcOffset.Query);
+                string utcOffsetString = this.BitmapMetadata.GetQuery<string>(XmpFotoFlyQueries.UtcOffset.Query);
 
                 if (string.IsNullOrEmpty(utcOffsetString))
                 {
@@ -103,11 +105,11 @@ namespace FotoFly
 
                 if (value > 12 || value < -12)
                 {
-                    this.BitmapMetadata.RemoveQuery(FotoFlyQueries.UtcOffset.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.UtcOffset.Query);
                 }
                 else
                 {
-                    this.BitmapMetadata.SetQuery(FotoFlyQueries.UtcOffset.Query, value.ToString());
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.UtcOffset.Query, value.ToString());
                 }
             }
         }
@@ -116,7 +118,7 @@ namespace FotoFly
         {
             get
             {
-                string lastEditDate = this.BitmapMetadata.GetQuery<string>(FotoFlyQueries.LastEditDate.Query);
+                string lastEditDate = this.BitmapMetadata.GetQuery<string>(XmpFotoFlyQueries.LastEditDate.Query);
 
                 if (string.IsNullOrEmpty(lastEditDate))
                 {
@@ -140,13 +142,13 @@ namespace FotoFly
 
                 if (value == new DateTime())
                 {
-                    this.BitmapMetadata.RemoveQuery(FotoFlyQueries.LastEditDate.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.LastEditDate.Query);
                 }
                 else
                 {
                     string lastEditDate = value.ToString("yyyy-MM-ddTHH:mm:ss");
 
-                    this.BitmapMetadata.SetQuery(FotoFlyQueries.LastEditDate.Query, lastEditDate);
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.LastEditDate.Query, lastEditDate);
                 }
             }
         }
@@ -155,7 +157,7 @@ namespace FotoFly
         {
             get
             {
-                string addressOfGpsLookupDate = this.BitmapMetadata.GetQuery<string>(FotoFlyQueries.AddressOfGpsLookupDate.Query);
+                string addressOfGpsLookupDate = this.BitmapMetadata.GetQuery<string>(XmpFotoFlyQueries.AddressOfGpsLookupDate.Query);
 
                 if (string.IsNullOrEmpty(addressOfGpsLookupDate))
                 {
@@ -179,13 +181,13 @@ namespace FotoFly
 
                 if (value == new DateTime())
                 {
-                    this.BitmapMetadata.RemoveQuery(FotoFlyQueries.AddressOfGpsLookupDate.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.AddressOfGpsLookupDate.Query);
                 }
                 else
                 {
                     string addressOfGpsLookupDate = value.ToString("yyyy-MM-ddTHH:mm:ss");
 
-                    this.BitmapMetadata.SetQuery(FotoFlyQueries.AddressOfGpsLookupDate.Query, addressOfGpsLookupDate);
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.AddressOfGpsLookupDate.Query, addressOfGpsLookupDate);
                 }
             }
         }
@@ -194,7 +196,7 @@ namespace FotoFly
         {
             get
             {
-                string originalCameraDate = this.BitmapMetadata.GetQuery<string>(FotoFlyQueries.OriginalCameraDate.Query);
+                string originalCameraDate = this.BitmapMetadata.GetQuery<string>(XmpFotoFlyQueries.OriginalCameraDate.Query);
 
                 if (originalCameraDate == null)
                 {
@@ -218,13 +220,13 @@ namespace FotoFly
 
                 if (value == new DateTime())
                 {
-                    this.BitmapMetadata.RemoveQuery(FotoFlyQueries.OriginalCameraDate.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.OriginalCameraDate.Query);
                 }
                 else
                 {
                     string originalCameraDate = value.ToString("yyyy-MM-ddTHH:mm:ss");
 
-                    this.BitmapMetadata.SetQuery(FotoFlyQueries.OriginalCameraDate.Query, originalCameraDate);
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.OriginalCameraDate.Query, originalCameraDate);
                 }
             }
         }
@@ -233,7 +235,7 @@ namespace FotoFly
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(FotoFlyQueries.OriginalCameraFilename.Query);
+                return this.BitmapMetadata.GetQuery<string>(XmpFotoFlyQueries.OriginalCameraFilename.Query);
             }
 
             set
@@ -242,11 +244,11 @@ namespace FotoFly
 
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.BitmapMetadata.RemoveQuery(FotoFlyQueries.OriginalCameraFilename.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.OriginalCameraFilename.Query);
                 }
                 else
                 {
-                    this.BitmapMetadata.SetQuery(FotoFlyQueries.OriginalCameraFilename.Query, value);
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.OriginalCameraFilename.Query, value);
                 }
             }
         }
@@ -255,7 +257,7 @@ namespace FotoFly
         {
             get
             {
-                string address = this.BitmapMetadata.GetQuery<string>(FotoFlyQueries.AddressOfGps.Query);
+                string address = this.BitmapMetadata.GetQuery<string>(XmpFotoFlyQueries.AddressOfGps.Query);
 
                 if (string.IsNullOrEmpty(address))
                 {
@@ -273,11 +275,11 @@ namespace FotoFly
 
                 if (value == null || !value.IsValidAddress)
                 {
-                    this.BitmapMetadata.RemoveQuery(FotoFlyQueries.AddressOfGps.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.AddressOfGps.Query);
                 }
                 else
                 {
-                    this.BitmapMetadata.SetQuery(FotoFlyQueries.AddressOfGps.Query, value.HierarchicalName);
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.AddressOfGps.Query, value.HierarchicalName);
                 }
             }
         }
@@ -286,18 +288,18 @@ namespace FotoFly
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(FotoFlyQueries.AddressOfGpsSource.Query);
+                return this.BitmapMetadata.GetQuery<string>(XmpFotoFlyQueries.AddressOfGpsSource.Query);
             }
 
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.BitmapMetadata.RemoveQuery(FotoFlyQueries.AddressOfGpsSource.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.AddressOfGpsSource.Query);
                 }
                 else
                 {
-                    this.BitmapMetadata.SetQuery(FotoFlyQueries.AddressOfGpsSource.Query, value);
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.AddressOfGpsSource.Query, value);
                 }
             }
         }
@@ -306,7 +308,7 @@ namespace FotoFly
         {
             get
             {
-                string accuracyOfGpsString = this.BitmapMetadata.GetQuery<string>(FotoFlyQueries.AccuracyOfGps.Query);
+                string accuracyOfGpsString = this.BitmapMetadata.GetQuery<string>(XmpFotoFlyQueries.AccuracyOfGps.Query);
 
                 if (!string.IsNullOrEmpty(accuracyOfGpsString))
                 {
@@ -327,11 +329,11 @@ namespace FotoFly
 
                 if (value == GpsPosition.Accuracies.Unknown)
                 {
-                    this.BitmapMetadata.RemoveQuery(FotoFlyQueries.AccuracyOfGps.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.AccuracyOfGps.Query);
                 }
                 else
                 {
-                    this.BitmapMetadata.SetQuery(FotoFlyQueries.AccuracyOfGps.Query, (int)value + "-" + value.ToString());
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.AccuracyOfGps.Query, (int)value + "-" + value.ToString());
                 }
             }
         }
@@ -355,9 +357,9 @@ namespace FotoFly
 
         private void CreateFotoflyStruct()
         {
-            if (!this.BitmapMetadata.ContainsQuery(FotoFlyQueries.FotoFlyStruct.Query))
+            if (!this.BitmapMetadata.ContainsQuery(XmpFotoFlyQueries.FotoFlyStruct.Query))
             {
-                this.BitmapMetadata.SetQuery(FotoFlyQueries.FotoFlyStruct.Query, new BitmapMetadata(XmpQueries.StructBlock));
+                this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.FotoFlyStruct.Query, new BitmapMetadata(XmpCoreQueries.StructBlock));
             }
         }
     }

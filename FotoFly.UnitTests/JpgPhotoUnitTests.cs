@@ -15,6 +15,7 @@
     using FotoFly.Geotagging;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FotoFly.MetadataQueries;
 
     [TestClass]
     public class JpgPhotoUnitTests
@@ -366,7 +367,7 @@
 
             // Check Padding Amounts
             Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(ExifQueries.Padding.Query), null);
-            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(XmpQueries.Padding.Query), null);
+            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(XmpCoreQueries.Padding.Query), null);
             Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(IptcQueries.Padding.Query), null);
 
             // Load a file with default padding set
@@ -377,7 +378,7 @@
             Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(IptcQueries.Padding.Query), WpfFileManager.PaddingAmount);
 
             // Don't understand why this is 0, it should be 5120
-            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(XmpQueries.Padding.Query), 0);
+            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(XmpCoreQueries.Padding.Query), 0);
         }
 
         /// <summary>

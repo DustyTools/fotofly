@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>IptcQueries</summary>
-namespace FotoFly
+namespace FotoFly.MetadataQueries
 {
     using System;
     using System.Collections.Generic;
@@ -43,5 +43,9 @@ namespace FotoFly
         public static readonly MetdataQuery Category = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Category", typeof(string));
         public static readonly MetdataQuery SupplementalCategory = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Supplemental Category", typeof(string));
         public static readonly MetdataQuery BylineTitle = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/By-line Title", typeof(string));
+        public static readonly MetdataQuery Byline = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/By-line", typeof(string));
+        public static readonly MetdataQuery Caption = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Caption", typeof(string));
+
+        public static readonly MetdataQuery Keywords = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Caption", typeof(string[]));
     }
 }

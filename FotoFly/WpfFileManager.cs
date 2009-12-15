@@ -21,6 +21,7 @@ namespace FotoFly
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
+    using FotoFly.MetadataQueries;
 
     public class WpfFileManager : IDisposable
     {
@@ -285,9 +286,9 @@ namespace FotoFly
             }
 
             // Ensure there's enough XMP Padding
-            if (bitmapMetadata.GetQuery<UInt32>(XmpQueries.Padding.Query) < WpfFileManager.PaddingAmount)
+            if (bitmapMetadata.GetQuery<UInt32>(XmpCoreQueries.Padding.Query) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(XmpQueries.Padding.Query, WpfFileManager.PaddingAmount);
+                bitmapMetadata.SetQuery(XmpCoreQueries.Padding.Query, WpfFileManager.PaddingAmount);
             }
 
             // Ensure there's enough IPTC Padding
