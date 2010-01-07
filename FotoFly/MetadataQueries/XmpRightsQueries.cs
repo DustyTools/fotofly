@@ -19,18 +19,18 @@ namespace FotoFly.MetadataQueries
         //  - The preferred schema namespace prefix is xmpRights
 
         // URL External Online rights management certificate.
-        public static readonly MetdataQuery Certificate = new MetdataQuery("/xmp/xmpRights:Certifcate", typeof(string));
+        public static readonly MetdataQuery<string, string> Certificate = new MetdataQuery<string, string>("/xmp/xmpRights:Certifcate");
 
         // Boolean External Indicates that this is a rights-managed resource.
-        public static readonly MetdataQuery Marked = new MetdataQuery("/xmp/xmpRights:Marked", typeof(string));
+        public static readonly MetdataQuery<string, string> Marked = new MetdataQuery<string, string>("/xmp/xmpRights:Marked");
 
         // bag ProperName External An unordered array specifying the legal owner(s) of a resource.
-        public static readonly MetdataQuery Owner = new MetdataQuery("/xmp/xmpRights:Owner", typeof(string));
+        public static readonly MetdataQuery<string, string> Owner = new MetdataQuery<string, string>("/xmp/xmpRights:Owner");
 
         // Lang Alt External Text instructions on how a resource can be legally used.
-        public static readonly MetdataQuery UsageTerms = new MetdataQuery("/xmp/xmpRights:UsageTerms", typeof(string));
+        public static readonly MetdataQuery<string, string> UsageTerms = new MetdataQuery<string, string>("/xmp/xmpRights:UsageTerms");
 
         // URL External The location of a web page describing the owner and/or rights statement for this resource.
-        public static readonly MetdataQuery WebStatement = new MetdataQuery("/xmp/xmpRights:WebStatement", typeof(string));
+        public static readonly MetdataQuery<string, string> WebStatement = new MetdataQuery<string, string>("/xmp/xmpRights:WebStatement");
     }
 }

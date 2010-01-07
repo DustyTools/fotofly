@@ -16,28 +16,28 @@ namespace FotoFly.MetadataQueries
         // “IPTC Core” Schema for XMP Version 1.0 Revision 8
 
         // Creator Contact Info
-        public static readonly MetdataQuery CreatorContactInfo = new MetdataQuery("/xmp/Iptc4xmpCore:CreatorContactInfo", typeof(string));
+        public static readonly MetdataQuery<string, string> CreatorContactInfo = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:CreatorContactInfo");
 
-        public static readonly MetdataQuery ContactInfoCiAdrCity = new MetdataQuery("/xmp/Iptc4xmpCore:CiAdrCity", typeof(string));
-        public static readonly MetdataQuery ContactInfoAdrCtry = new MetdataQuery("/xmp/Iptc4xmpCore:CiAdrCtry", typeof(string));
-        public static readonly MetdataQuery ContactInfoAdrExtadr = new MetdataQuery("/xmp/Iptc4xmpCore:CiAdrExtadr", typeof(string));
-        public static readonly MetdataQuery ContactInfoAdrPcode = new MetdataQuery("/xmp/Iptc4xmpCore:CiAdrPcode", typeof(string));
-        public static readonly MetdataQuery ContactInfoAdrRegion = new MetdataQuery("/xmp/Iptc4xmpCore:CiAdrRegion", typeof(string));
+        public static readonly MetdataQuery<string, string> ContactInfoCiAdrCity = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:CiAdrCity");
+        public static readonly MetdataQuery<string, string> ContactInfoAdrCtry = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:CiAdrCtry");
+        public static readonly MetdataQuery<string, string> ContactInfoAdrExtadr = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:CiAdrExtadr");
+        public static readonly MetdataQuery<string, string> ContactInfoAdrPcode = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:CiAdrPcode");
+        public static readonly MetdataQuery<string, string> ContactInfoAdrRegion = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:CiAdrRegion");
 
-        public static readonly MetdataQuery ContactInfoTelWork = new MetdataQuery("/xmp/Iptc4xmpCore:CiTelWork", typeof(string));
-        public static readonly MetdataQuery ContactInfoEmailWork = new MetdataQuery("/xmp/Iptc4xmpCore:CiEmailWork", typeof(string));
-        public static readonly MetdataQuery ContactInfoUrlWork = new MetdataQuery("/xmp/Iptc4xmpCore:CiUrlWork", typeof(string));
+        public static readonly MetdataQuery<string, string> ContactInfoTelWork = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:CiTelWork");
+        public static readonly MetdataQuery<string, string> ContactInfoEmailWork = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:CiEmailWork");
+        public static readonly MetdataQuery<string, string> ContactInfoUrlWork = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:CiUrlWork");
 
-        public static readonly MetdataQuery AuthorsPosition = new MetdataQuery("/xmp/Iptc4xmpCore:AuthorsPosition", typeof(string));
+        public static readonly MetdataQuery<string, string> AuthorsPosition = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:AuthorsPosition");
         
-        public static readonly MetdataQuery IntellectualGenre = new MetdataQuery("/xmp/Iptc4xmpCore:IntellectualGenre", typeof(string));
-        public static readonly MetdataQuery Location = new MetdataQuery("/xmp/Iptc4xmpCore:Location", typeof(string));
-        public static readonly MetdataQuery Scene = new MetdataQuery("/xmp/Iptc4xmpCore:Scene", typeof(string));
-        public static readonly MetdataQuery SubjectCode = new MetdataQuery("/xmp/Iptc4xmpCore:SubjectCode", typeof(string));
+        public static readonly MetdataQuery<string, string> IntellectualGenre = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:IntellectualGenre");
+        public static readonly MetdataQuery<string, string> Location = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:Location");
+        public static readonly MetdataQuery<string, string> Scene = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:Scene");
+        public static readonly MetdataQuery<string, string> SubjectCode = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:SubjectCode");
 
         // Address
-        public static readonly MetdataQuery LocationCreatedCountryName = new MetdataQuery("/xmp/Iptc4xmpExt:LocationCreatedCountryName", typeof(string));
-        public static readonly MetdataQuery LocationCreatedProvinceState = new MetdataQuery("/xmp/Iptc4xmpExt:LocationCreatedCountryName", typeof(string));
-        public static readonly MetdataQuery LocationCreatedCity = new MetdataQuery("/xmp/Iptc4xmpExt:LocationCreatedCountryName", typeof(string));
+        public static readonly MetdataQuery<string, string> LocationCreatedCountryName = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationCreatedCountryName");
+        public static readonly MetdataQuery<string, string> LocationCreatedProvinceState = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationCreatedCountryName");
+        public static readonly MetdataQuery<string, string> LocationCreatedCity = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationCreatedCountryName");
     }
 }

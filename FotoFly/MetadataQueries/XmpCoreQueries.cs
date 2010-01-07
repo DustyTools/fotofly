@@ -13,7 +13,7 @@ namespace FotoFly.MetadataQueries
     public static class XmpCoreQueries
     {
         // Padding used when adding properties to the File
-        public static readonly MetdataQuery Padding = new MetdataQuery("/xmp/PaddingSchema:Padding", typeof(Int32));
+        public static readonly MetdataQuery<Int32, int> Padding = new MetdataQuery<Int32, int>("/xmp/PaddingSchema:Padding");
 
         // XMP Block Types
         public static readonly string StructBlock = "xmpstruct";
@@ -31,32 +31,32 @@ namespace FotoFly.MetadataQueries
         // - The preferred schema namespace prefix is xmp
 
         // People
-        public static readonly MetdataQuery People = new MetdataQuery("/xmp/mediapro:People", typeof(string));
+        public static readonly MetdataQuery<string, string> People = new MetdataQuery<string, string>("/xmp/mediapro:People");
 
-        public static readonly MetdataQuery State = new MetdataQuery("/xmp/State", typeof(string));
-        public static readonly MetdataQuery Country = new MetdataQuery("/xmp/Country", typeof(string));
+        public static readonly MetdataQuery<string, string> State = new MetdataQuery<string, string>("/xmp/State");
+        public static readonly MetdataQuery<string, string> Country = new MetdataQuery<string, string>("/xmp/Country");
 
         // Unused Queries
-        public static readonly MetdataQuery AuthorsPosition = new MetdataQuery("/xmp/AuthorsPosition", typeof(string));
-        public static readonly MetdataQuery Category = new MetdataQuery("/xmp/Category", typeof(string));
-        public static readonly MetdataQuery Credit = new MetdataQuery("/xmp/Credit", typeof(string));
-        public static readonly MetdataQuery Urgency = new MetdataQuery("/xmp/Urgency", typeof(string));
-        public static readonly MetdataQuery Location = new MetdataQuery("/xmp/Location", typeof(string));
-        public static readonly MetdataQuery Creators = new MetdataQuery("/xmp/creator/{ulong=0}", typeof(string));
-        public static readonly MetdataQuery Marked = new MetdataQuery("/xmp/Marked", typeof(string));
-        public static readonly MetdataQuery WebStatement = new MetdataQuery("/xmp/WebStatement", typeof(string));
-        public static readonly MetdataQuery IntellectualGenre = new MetdataQuery("/xmp/IntellectualGenre", typeof(string));
-        public static readonly MetdataQuery Scenes = new MetdataQuery("/xmp/Scene/{ulong=0}", typeof(string));
-        public static readonly MetdataQuery SubjectCodes = new MetdataQuery("/xmp/SubjectCode/{ulong=0}", typeof(string));
+        public static readonly MetdataQuery<string, string> AuthorsPosition = new MetdataQuery<string, string>("/xmp/AuthorsPosition");
+        public static readonly MetdataQuery<string, string> Category = new MetdataQuery<string, string>("/xmp/Category");
+        public static readonly MetdataQuery<string, string> Credit = new MetdataQuery<string, string>("/xmp/Credit");
+        public static readonly MetdataQuery<string, string> Urgency = new MetdataQuery<string, string>("/xmp/Urgency");
+        public static readonly MetdataQuery<string, string> Location = new MetdataQuery<string, string>("/xmp/Location");
+        public static readonly MetdataQuery<string, string> Creators = new MetdataQuery<string, string>("/xmp/creator/{ulong=0}");
+        public static readonly MetdataQuery<string, string> Marked = new MetdataQuery<string, string>("/xmp/Marked");
+        public static readonly MetdataQuery<string, string> WebStatement = new MetdataQuery<string, string>("/xmp/WebStatement");
+        public static readonly MetdataQuery<string, string> IntellectualGenre = new MetdataQuery<string, string>("/xmp/IntellectualGenre");
+        public static readonly MetdataQuery<string, string> Scenes = new MetdataQuery<string, string>("/xmp/Scene/{ulong=0}");
+        public static readonly MetdataQuery<string, string> SubjectCodes = new MetdataQuery<string, string>("/xmp/SubjectCode/{ulong=0}");
 
         // CreatorContactInfo
-        public static readonly MetdataQuery CiAdrExtadr = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrExtadr", typeof(string));
-        public static readonly MetdataQuery CiAdrCity = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrCity", typeof(string));
-        public static readonly MetdataQuery CiAdrRegion = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrRegion", typeof(string));
-        public static readonly MetdataQuery CiAdrPcode = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrPcode", typeof(string));
-        public static readonly MetdataQuery CiAdrCtry = new MetdataQuery("/xmp/CreatorContactInfo/CiAdrCtry", typeof(string));
-        public static readonly MetdataQuery CiTelWork = new MetdataQuery("/xmp/CreatorContactInfo/CiTelWork", typeof(string));
-        public static readonly MetdataQuery CiEmailWork = new MetdataQuery("/xmp/CreatorContactInfo/CiEmailWork", typeof(string));
-        public static readonly MetdataQuery CiUrlWork = new MetdataQuery("/xmp/CreatorContactInfo/CiUrlWork", typeof(string));
+        public static readonly MetdataQuery<string, string> CiAdrExtadr = new MetdataQuery<string, string>("/xmp/CreatorContactInfo/CiAdrExtadr");
+        public static readonly MetdataQuery<string, string> CiAdrCity = new MetdataQuery<string, string>("/xmp/CreatorContactInfo/CiAdrCity");
+        public static readonly MetdataQuery<string, string> CiAdrRegion = new MetdataQuery<string, string>("/xmp/CreatorContactInfo/CiAdrRegion");
+        public static readonly MetdataQuery<string, string> CiAdrPcode = new MetdataQuery<string, string>("/xmp/CreatorContactInfo/CiAdrPcode");
+        public static readonly MetdataQuery<string, string> CiAdrCtry = new MetdataQuery<string, string>("/xmp/CreatorContactInfo/CiAdrCtry");
+        public static readonly MetdataQuery<string, string> CiTelWork = new MetdataQuery<string, string>("/xmp/CreatorContactInfo/CiTelWork");
+        public static readonly MetdataQuery<string, string> CiEmailWork = new MetdataQuery<string, string>("/xmp/CreatorContactInfo/CiEmailWork");
+        public static readonly MetdataQuery<string, string> CiUrlWork = new MetdataQuery<string, string>("/xmp/CreatorContactInfo/CiUrlWork");
     }
 }

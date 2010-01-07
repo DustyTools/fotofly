@@ -15,37 +15,37 @@ namespace FotoFly.MetadataQueries
         // See http://www.ap.org/apserver/userguide/codes.htm
 
         // Padding
-        public static readonly MetdataQuery Padding = new MetdataQuery("/app1/ifd/PaddingSchema:Padding", typeof(Int32));
+        public static readonly MetdataQuery<Int32, int> Padding = new MetdataQuery<Int32, int>("/app1/ifd/PaddingSchema:Padding");
 
         // Identifies city of object data origin according to guidelines established by the provider.
-        public static readonly MetdataQuery City = new MetdataQuery("/app13/irb/8bimiptc/iptc/City", typeof(string));
+        public static readonly MetdataQuery<string, string> City = new MetdataQuery<string, string>("/app13/irb/8bimiptc/iptc/City");
 
         // Identifies the location within a city from which the object data originates
-        public static readonly MetdataQuery Country = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Country\/Primary Location Name", typeof(string));
+        public static readonly MetdataQuery<string, string> Country = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Country\/Primary Location Name");
         
         // Identifies Province/State/County of origin according to guidelines established by the provider.
-        public static readonly MetdataQuery Region = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Province\/State", typeof(string));
+        public static readonly MetdataQuery<string, string> Region = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Province\/State");
 
         // Identifies the location within a city from which the object data originates
-        public static readonly MetdataQuery SubLocation = new MetdataQuery("/app13/irb/8bimiptc/iptc/Sub-location", typeof(string));
+        public static readonly MetdataQuery<string, string> SubLocation = new MetdataQuery<string, string>("/app13/irb/8bimiptc/iptc/Sub-location");
 
         // Copyright notice.
-        public static readonly MetdataQuery Copyright = new MetdataQuery(@"/ifd/iptc/copyright notice", typeof(string));
+        public static readonly MetdataQuery<string, string> Copyright = new MetdataQuery<string, string>(@"/ifd/iptc/copyright notice");
 
         // Identification of the name of the person involved in the writing
-        public static readonly MetdataQuery WriterEditor = new MetdataQuery(@"/ifd/iptc/writer\/editor", typeof(string));
+        public static readonly MetdataQuery<string, string> WriterEditor = new MetdataQuery<string, string>(@"/ifd/iptc/writer\/editor");
 
         // Unused
-        public static readonly MetdataQuery Credit = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Credit", typeof(string));
-        public static readonly MetdataQuery Urgency = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Urgency", typeof(string));
-        public static readonly MetdataQuery Sublocation = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Sub-location", typeof(string));
-        public static readonly MetdataQuery CopyrightNotice = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Copyright Notice", typeof(string));
-        public static readonly MetdataQuery Category = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Category", typeof(string));
-        public static readonly MetdataQuery SupplementalCategory = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Supplemental Category", typeof(string));
-        public static readonly MetdataQuery BylineTitle = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/By-line Title", typeof(string));
-        public static readonly MetdataQuery Byline = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/By-line", typeof(string));
-        public static readonly MetdataQuery Caption = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Caption", typeof(string));
+        public static readonly MetdataQuery<string, string> Credit = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Credit");
+        public static readonly MetdataQuery<string, string> Urgency = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Urgency");
+        public static readonly MetdataQuery<string, string> Sublocation = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Sub-location");
+        public static readonly MetdataQuery<string, string> CopyrightNotice = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Copyright Notice");
+        public static readonly MetdataQuery<string, string> Category = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Category");
+        public static readonly MetdataQuery<string, string> SupplementalCategory = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Supplemental Category");
+        public static readonly MetdataQuery<string, string> BylineTitle = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/By-line Title");
+        public static readonly MetdataQuery<string, string> Byline = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/By-line");
+        public static readonly MetdataQuery<string, string> Caption = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Caption");
 
-        public static readonly MetdataQuery Keywords = new MetdataQuery(@"/app13/irb/8bimiptc/iptc/Caption", typeof(string[]));
+        public static readonly MetdataQuery<string[], TagList> Keywords = new MetdataQuery<string[], TagList>(@"/app13/irb/8bimiptc/iptc/Caption");
     }
 }

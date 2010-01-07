@@ -393,7 +393,7 @@ namespace FotoFly.WpfTools
         {
             get
             {
-                if (this.BitmapMetadata.IsQueryOfType(ExifQueries.IsoSpeedRating.Query, ExifQueries.IsoSpeedRating.ValueType))
+                if (this.BitmapMetadata.IsQueryOfType(ExifQueries.IsoSpeedRating.Query, ExifQueries.IsoSpeedRating.BitmapMetadataType))
                 {
                     UInt16? iso = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.IsoSpeedRating.Query);
 
@@ -1388,7 +1388,7 @@ namespace FotoFly.WpfTools
         {
             get
             {
-                if (this.BitmapMetadata.IsQueryOfType(GpsQueries.MeasureMode.Query, GpsQueries.MeasureMode.ValueType))
+                if (this.BitmapMetadata.IsQueryOfType(GpsQueries.MeasureMode.Query, GpsQueries.MeasureMode.BitmapMetadataType))
                 {
                     int? returnValue = this.BitmapMetadata.GetQuery<int?>(GpsQueries.MeasureMode.Query);
 

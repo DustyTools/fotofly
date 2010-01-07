@@ -9,12 +9,11 @@ namespace FotoFly.MetadataQueries
     using System.Linq;
     using System.Text;
 
-    public class MetdataQuery
+    public class MetdataQuery<B, F>
     {
-        public MetdataQuery(string query, Type valueType)
+        public MetdataQuery(string query)
         {
             this.Query = query;
-            this.ValueType = valueType;
         }
 
         public string Query
@@ -23,10 +22,20 @@ namespace FotoFly.MetadataQueries
             set;
         }
 
-        public Type ValueType
+        public Type BitmapMetadataType
         {
-            get;
-            set;
+            get
+            {
+                return typeof(B);
+            }
+        }
+
+        public Type FotoFlyType
+        {
+            get
+            {
+                return typeof(F);
+            }
         }
     }
 }

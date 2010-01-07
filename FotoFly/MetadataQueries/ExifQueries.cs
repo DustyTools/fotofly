@@ -11,7 +11,7 @@ namespace FotoFly.MetadataQueries
 
     public static class ExifQueries
     {
-        public static readonly MetdataQuery Padding = new MetdataQuery("/app1/ifd/exif/PaddingSchema:Padding", typeof(Int32));
+        public static readonly MetdataQuery<Int32, int> Padding = new MetdataQuery<Int32, int>("/app1/ifd/exif/PaddingSchema:Padding");
 
         // *********************************************************************************** //
         //       Image Tags
@@ -20,119 +20,119 @@ namespace FotoFly.MetadataQueries
         // Ascii. The manufacturer of the recording equipment. This is the manufacturer of
         // the DSC, scanner, video digitizer or other equipment that generated the image.
         // When the field is left blank, it is treated as unknown. 
-        public static readonly MetdataQuery Camera = new MetdataQuery("/app1/ifd/exif:{uint=271}", typeof(string));
+        public static readonly MetdataQuery<string, string> Camera = new MetdataQuery<string, string>("/app1/ifd/exif:{uint=271}");
 
         // Ascii. The model name or model number of the equipment. This is the model name
         // or number of the DSC, scanner, video digitizer or other equipment that generated
         // the image. When the field is left blank, it is treated as unknown. 
-        public static readonly MetdataQuery CameraModel = new MetdataQuery("/app1/ifd/exif:{uint=272}", typeof(string));
+        public static readonly MetdataQuery<string, string> CameraModel = new MetdataQuery<string, string>("/app1/ifd/exif:{uint=272}");
 
         // Short
-        public static readonly MetdataQuery Orientation = new MetdataQuery("/app1/ifd/exif:{uint=274}", typeof(Int16));
+        public static readonly MetdataQuery<string[], TagList> Orientation = new MetdataQuery<string[], TagList>("/app1/ifd/exif:{uint=274}");
 
         // Rational. The number of pixels per <ResolutionUnit> in the <ImageWidth> direction.
         // When the image resolution is unknown, 72 [dpi] is designated. 
-        public static readonly MetdataQuery HorizontalResolution = new MetdataQuery("/app1/ifd/exif:{uint=282}", typeof(Int64));
+        public static readonly MetdataQuery<Int64, double> HorizontalResolution = new MetdataQuery<Int64, double>("/app1/ifd/exif:{uint=282}");
 
         // Rational. The number of pixels per <ResolutionUnit> in the <ImageLength> direction.
         // The same value as <XResolution> is designated. 
-        public static readonly MetdataQuery VerticalResolution = new MetdataQuery("/app1/ifd/exif:{uint=283}", typeof(Int64));
+        public static readonly MetdataQuery<Int64, double> VerticalResolution = new MetdataQuery<Int64, double>("/app1/ifd/exif:{uint=283}");
 
         // Short. The unit for measuring <XResolution> and <YResolution>. The same unit is used
         // for both <XResolution> and <YResolution>. If the image resolution is unknown, 2 (inches)
         // is designated. 
-        public static readonly MetdataQuery ResolutionUnit = new MetdataQuery("/app1/ifd/exif:{uint=296}", typeof(Int16));
+        public static readonly MetdataQuery<Int16, int> ResolutionUnit = new MetdataQuery<Int16, int>("/app1/ifd/exif:{uint=296}");
 
         // Ascii. This tag records the name and version of the software or firmware of the camera
         // or image input device used to generate the image. The detailed format is not specified,
         // When the field is left blank, it is treated as unknown. 
-        public static readonly MetdataQuery CreationSoftware = new MetdataQuery("/app1/ifd/exif:{uint=305}", typeof(string[]));
+        public static readonly MetdataQuery<string[], string> CreationSoftware = new MetdataQuery<string[], string>("/app1/ifd/exif:{uint=305}");
 
         // Ascii. The date and time of image creation. In Exif standard, it is the date and time the
         // file was changed. 
-        public static readonly MetdataQuery DateTaken = new MetdataQuery("/app1/ifd/exif/subifd:{uint=306}", typeof(string));
+        public static readonly MetdataQuery<string, string> DateTaken = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=306}");
 
         // *********************************************************************************** //
         //       Photo Tags
         // *********************************************************************************** //
 
         // Rational. Exposure time, given in seconds (sec). 
-        public static readonly MetdataQuery ShutterSpeed = new MetdataQuery("/app1/ifd/exif/subifd:{uint=33434}", typeof(Int64));
+        public static readonly MetdataQuery<Int64, string> ShutterSpeed = new MetdataQuery<Int64, string>("/app1/ifd/exif/subifd:{uint=33434}");
 
         // Rational. The F number. 
-        public static readonly MetdataQuery Aperture = new MetdataQuery("/app1/ifd/exif/subifd:{uint=33437}", typeof(Int64));
+        public static readonly MetdataQuery<Int64, string> Aperture = new MetdataQuery<Int64, string>("/app1/ifd/exif/subifd:{uint=33437}");
 
         // Short. The class of the program used by the camera to set exposure when the picture is taken. 
-        public static readonly MetdataQuery ExposureProgram = new MetdataQuery("/app1/ifd/exif/subifd:{uint=34850}", typeof(Int16));
+        public static readonly MetdataQuery<Int16, string> ExposureProgram = new MetdataQuery<Int16, string>("/app1/ifd/exif/subifd:{uint=34850}");
 
         // Short. Indicates the ISO Speed and ISO Latitude of the camera or input device as specified
         // in ISO 12232. 
-        public static readonly MetdataQuery IsoSpeedRating = new MetdataQuery("/app1/ifd/exif/subifd:{uint=34855}", typeof(UInt16));
+        public static readonly MetdataQuery<UInt16, string> IsoSpeedRating = new MetdataQuery<UInt16, string>("/app1/ifd/exif/subifd:{uint=34855}");
 
         // Ascii. The date and time when the original image data was generated. For a digital still camera
         // the date and time the picture was taken are recorded. 
-        public static readonly MetdataQuery DateTakenOther = new MetdataQuery("/app1/ifd/exif/subifd:{uint=36867}", typeof(string));
+        public static readonly MetdataQuery<string, string> DateTakenOther = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=36867}");
 
         // Ascii. The date and time when the image was stored as digital data. 
-        public static readonly MetdataQuery DateDigitized = new MetdataQuery("/app1/ifd/exif/subifd:{uint=36868}", typeof(string));
+        public static readonly MetdataQuery<string, string> DateDigitized = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=36868}");
 
         // SRational. The exposure bias. The units is the APEX value. Ordinarily it is given
         // in the range of -99.99 to 99.99. 
-        public static readonly MetdataQuery ExposureBias = new MetdataQuery("/app1/ifd/exif/subifd:{uint=37380}", typeof(Int64));
+        public static readonly MetdataQuery<Int64, string> ExposureBias = new MetdataQuery<Int64, string>("/app1/ifd/exif/subifd:{uint=37380}");
 
         // Short
-        public static readonly MetdataQuery MeteringMode = new MetdataQuery("/app1/ifd/exif/subifd:{uint=37383}", typeof(Int16));
+        public static readonly MetdataQuery<Int16, string> MeteringMode = new MetdataQuery<Int16, string>("/app1/ifd/exif/subifd:{uint=37383}");
 
         // Short. The kind of light source. 
-        public static readonly MetdataQuery LightSource = new MetdataQuery("/app1/ifd/exif/subifd:{uint=37384}", typeof(Int16));
+        public static readonly MetdataQuery<Int16, string> LightSource = new MetdataQuery<Int16, string>("/app1/ifd/exif/subifd:{uint=37384}");
 
         // Short. This tag is recorded when an image is taken using a strobe light (flash)
-        public static readonly MetdataQuery FlashFired = new MetdataQuery("/app1/ifd/exif/subifd:{uint=37385}", typeof(Int16));
+        public static readonly MetdataQuery<Int16, string> FlashFired = new MetdataQuery<Int16, string>("/app1/ifd/exif/subifd:{uint=37385}");
 
         // Rational The actual focal length of the lens, in mm. Conversion is not made to
         // the focal length of a 35 mm film camera. 
-        public static readonly MetdataQuery FocalLenght = new MetdataQuery("/app1/ifd/exif/subifd:{uint=37386}", typeof(Int64));
+        public static readonly MetdataQuery<Int64, string> FocalLenght = new MetdataQuery<Int64, string>("/app1/ifd/exif/subifd:{uint=37386}");
 
         // Short The color space information tag is always recorded as the color space specifier.
         // Normally sRGB is used to define the color space based on the PC monitor conditions and
         // environment. If a color space other than sRGB is used, Uncalibrated is set. Image data
         // recorded as Uncalibrated can be treated as sRGB when it is converted to FlashPix. 
-        public static readonly MetdataQuery ColorRepresentation = new MetdataQuery("/app1/ifd/exif/subifd:{uint=40961}", typeof(Int16));
+        public static readonly MetdataQuery<Int16, string> ColorRepresentation = new MetdataQuery<Int16, string>("/app1/ifd/exif/subifd:{uint=40961}");
 
         // Short
-        public static readonly MetdataQuery ExposureMode = new MetdataQuery("/app1/ifd/exif/subifd:{uint=41986}", typeof(Int16));
+        public static readonly MetdataQuery<Int16, string> ExposureMode = new MetdataQuery<Int16, string>("/app1/ifd/exif/subifd:{uint=41986}");
 
         // Short
-        public static readonly MetdataQuery WhiteBalance = new MetdataQuery("/app1/ifd/exif/subifd:{uint=41987}", typeof(Int16));
+        public static readonly MetdataQuery<Int16, string> WhiteBalance = new MetdataQuery<Int16, string>("/app1/ifd/exif/subifd:{uint=41987}");
 
         // Rational. This tag indicates the digital zoom ratio when the image was shot. If the
         // numerator of the recorded value is 0, this indicates that digital zoom was not used. 
-        public static readonly MetdataQuery DigitalZoomRatio = new MetdataQuery("/app1/ifd/exif/subifd:{uint=41988}", typeof(Int64));
+        public static readonly MetdataQuery<Int64, string> DigitalZoomRatio = new MetdataQuery<Int64, string>("/app1/ifd/exif/subifd:{uint=41988}");
 
         // Short
-        public static readonly MetdataQuery SubjectDistanceRange = new MetdataQuery("/app1/ifd/exif/subifd:{uint=41996}", typeof(Int16));
+        public static readonly MetdataQuery<Int16, string> SubjectDistanceRange = new MetdataQuery<Int16, string>("/app1/ifd/exif/subifd:{uint=41996}");
 
         // *********************************************************************************** //
         //       Iop Tags
         // *********************************************************************************** //
 
         // Ascii. RelatedImageFileFormat
-        public static readonly MetdataQuery ImageFileFormat = new MetdataQuery("/app1/ifd/exif:{uint=4096}", typeof(string));
+        public static readonly MetdataQuery<string, string> ImageFileFormat = new MetdataQuery<string, string>("/app1/ifd/exif:{uint=4096}");
 
         // Long. Image width
-        public static readonly MetdataQuery ImageWidth = new MetdataQuery("/app1/ifd/exif:{uint=4097}", typeof(Int32));
+        public static readonly MetdataQuery<Int32, string> ImageWidth = new MetdataQuery<Int32, string>("/app1/ifd/exif:{uint=4097}");
 
         // Long. Image height
-        public static readonly MetdataQuery ImageHeight = new MetdataQuery("/app1/ifd/exif:{uint=4098}", typeof(Int32));
+        public static readonly MetdataQuery<Int32, string> ImageHeight = new MetdataQuery<Int32, string>("/app1/ifd/exif:{uint=4098}");
 
         // *********************************************************************************** //
         //       Iop Tags
         // *********************************************************************************** //
 
         // Rational. Horizontal Thumbnail Resolution
-        public static readonly MetdataQuery ThumbnailHorizontalResolution = new MetdataQuery("/App1/{uint=1}/{uint=282}", typeof(Int64));
+        public static readonly MetdataQuery<Int64, string> ThumbnailHorizontalResolution = new MetdataQuery<Int64, string>("/App1/{uint=1}/{uint=282}");
 
         // Rational. Vertical Thumbnail Resolution
-        public static readonly MetdataQuery ThumbnailVerticalResolution = new MetdataQuery("/App1/{uint=1}/{uint=283}", typeof(Int64));
+        public static readonly MetdataQuery<Int64, string> ThumbnailVerticalResolution = new MetdataQuery<Int64, string>("/App1/{uint=1}/{uint=283}");
     }
 }

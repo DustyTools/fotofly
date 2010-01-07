@@ -18,48 +18,48 @@ namespace FotoFly.MetadataQueries
         //  - The preferred schema namespace prefix is photoshop
 
         // Text: By-line title.
-        public static readonly MetdataQuery AuthorsPosition = new MetdataQuery("/xmp/photoshop:AuthorsPosition", typeof(string));
+        public static readonly MetdataQuery<string, string> AuthorsPosition = new MetdataQuery<string, string>("/xmp/photoshop:AuthorsPosition");
 
         // ProperName: Writer/editor
-        public static readonly MetdataQuery CaptionWriter = new MetdataQuery("/xmp/photoshop:CaptionWriter", typeof(string));
+        public static readonly MetdataQuery<string, string> CaptionWriter = new MetdataQuery<string, string>("/xmp/photoshop:CaptionWriter");
 
         // Text : Category. Limited to 3 7-bit ASCII characters.
-        public static readonly MetdataQuery Category = new MetdataQuery("/xmp/photoshop:Category", typeof(string));
+        public static readonly MetdataQuery<string, string> Category = new MetdataQuery<string, string>("/xmp/photoshop:Category");
 
         // Text : City.
-        public static readonly MetdataQuery City = new MetdataQuery("/xmp/photoshop:City", typeof(string));
+        public static readonly MetdataQuery<string, string> City = new MetdataQuery<string, string>("/xmp/photoshop:City");
 
         // Text : Country/primary location.
-        public static readonly MetdataQuery Country = new MetdataQuery("/xmp/photoshop:Country", typeof(string));
+        public static readonly MetdataQuery<string, string> Country = new MetdataQuery<string, string>("/xmp/photoshop:Country");
 
         // Text : Credit.
-        public static readonly MetdataQuery Credit = new MetdataQuery("/xmp/photoshop:Credit", typeof(string));
+        public static readonly MetdataQuery<string, string> Credit = new MetdataQuery<string, string>("/xmp/photoshop:Credit");
 
         // Date: The date the intellectual content of the document was created (rather than the creation date of the
         // physical representation), following IIM conventions. For example, a photo taken during the American
         // Civil War would have a creation date during that epoch (1861-1865) rather than the date the photo
         // was digitized for archiving.
-        public static readonly MetdataQuery DateCreated = new MetdataQuery("/xmp/photoshop:DateCreated", typeof(string));
+        public static readonly MetdataQuery<string, string> DateCreated = new MetdataQuery<string, string>("/xmp/photoshop:DateCreated");
 
         // Text : Headline.
-        public static readonly MetdataQuery Headline = new MetdataQuery("/xmp/photoshop:Headline", typeof(string));
+        public static readonly MetdataQuery<string, string> Headline = new MetdataQuery<string, string>("/xmp/photoshop:Headline");
 
         // Text : Special instructions.
-        public static readonly MetdataQuery Instructions = new MetdataQuery("/xmp/photoshop:Instructions", typeof(string));
+        public static readonly MetdataQuery<string, string> Instructions = new MetdataQuery<string, string>("/xmp/photoshop:Instructions");
 
         // Text : Source.
-        public static readonly MetdataQuery Source = new MetdataQuery("/xmp/photoshop:Source", typeof(string));
+        public static readonly MetdataQuery<string, string> Source = new MetdataQuery<string, string>("/xmp/photoshop:Source");
 
         // Text : Province/state.
-        public static readonly MetdataQuery State = new MetdataQuery("/xmp/photoshop:State", typeof(string));
+        public static readonly MetdataQuery<string, string> State = new MetdataQuery<string, string>("/xmp/photoshop:State");
 
         // Bag : Supplemental category
-        public static readonly MetdataQuery SupplementalCategories = new MetdataQuery("/xmp/photoshop:SupplementalCategories", typeof(string));
+        public static readonly MetdataQuery<string, string> SupplementalCategories = new MetdataQuery<string, string>("/xmp/photoshop:SupplementalCategories");
 
         // Text: External Original transmission reference.
-        public static readonly MetdataQuery TransmissionReference = new MetdataQuery("/xmp/photoshop:TransmissionReferenceText", typeof(string));
+        public static readonly MetdataQuery<string, string> TransmissionReference = new MetdataQuery<string, string>("/xmp/photoshop:TransmissionReferenceText");
 
         // Integer : Urgency. Valid range is 1-8.
-        public static readonly MetdataQuery Urgency = new MetdataQuery("/xmp/photoshop:Urgency", typeof(string));
+        public static readonly MetdataQuery<string, string> Urgency = new MetdataQuery<string, string>("/xmp/photoshop:Urgency");
     }
 }

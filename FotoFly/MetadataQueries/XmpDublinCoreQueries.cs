@@ -18,48 +18,48 @@ namespace FotoFly.MetadataQueries
         // The preferred schema namespace prefix is dc
 
         // BAG: Contributors to the resource (other than the authors).
-        public static readonly MetdataQuery Contributor = new MetdataQuery("/xmp/dc:contributor", typeof(string));
+        public static readonly MetdataQuery<string, string> Contributor = new MetdataQuery<string, string>("/xmp/dc:contributor");
 
         // Text: The extent or scope of the resource.
-        public static readonly MetdataQuery Coverage = new MetdataQuery("/xmp/dc:coverage", typeof(string));
+        public static readonly MetdataQuery<string, string> Coverage = new MetdataQuery<string, string>("/xmp/dc:coverage");
 
         // Seq: The authors of the resource (listed in order of precedence, if significant).
-        public static readonly MetdataQuery Creator = new MetdataQuery("/xmp/dc:creator/", typeof(string[]));
+        public static readonly MetdataQuery<string[], string> Creator = new MetdataQuery<string[], string>("/xmp/dc:creator/");
 
         // Seq: Date(s) that something interesting happened to the resource
-        public static readonly MetdataQuery Date = new MetdataQuery("/xmp/dc:date", typeof(string));
+        public static readonly MetdataQuery<string, string> Date = new MetdataQuery<string, string>("/xmp/dc:date");
 
         // Lang Alt: A textual description of the content of the resource. Multiple values may be present for different languages.
-        public static readonly MetdataQuery Description = new MetdataQuery("/xmp/dc:description", typeof(string));
+        public static readonly MetdataQuery<string, string> Description = new MetdataQuery<string, string>("/xmp/dc:description");
 
         // MIMEType: The file format used when saving the resource. Tools an applications should set this property to the save format of the data. It may include appropriate qualifiers.
-        public static readonly MetdataQuery Format = new MetdataQuery("/xmp/dc:format/", typeof(string));
+        public static readonly MetdataQuery<string, string> Format = new MetdataQuery<string, string>("/xmp/dc:format/");
 
         // Text: Unique identifier of the resource.
-        public static readonly MetdataQuery Identifier = new MetdataQuery("/xmp/dc:identifier/", typeof(string));
+        public static readonly MetdataQuery<string, string> Identifier = new MetdataQuery<string, string>("/xmp/dc:identifier/");
 
         // Bag: An unordered array specifying the languages used in the resource.
-        public static readonly MetdataQuery Language = new MetdataQuery("/xmp/dc:language/", typeof(string));
+        public static readonly MetdataQuery<string, string> Language = new MetdataQuery<string, string>("/xmp/dc:language/");
 
         // Bag: Publishers.
-        public static readonly MetdataQuery Publisher = new MetdataQuery("/xmp/dc:publisher/", typeof(string));
+        public static readonly MetdataQuery<string, string> Publisher = new MetdataQuery<string, string>("/xmp/dc:publisher/");
 
         // Text: Relationships to other documents.
-        public static readonly MetdataQuery Relation = new MetdataQuery("/xmp/dc:relation/", typeof(string));
+        public static readonly MetdataQuery<string, string> Relation = new MetdataQuery<string, string>("/xmp/dc:relation/");
 
         // Lang Alt: Informal rights statement, selected by language.
-        public static readonly MetdataQuery Rights = new MetdataQuery("/xmp/dc:rights", typeof(string));
+        public static readonly MetdataQuery<string, string> Rights = new MetdataQuery<string, string>("/xmp/dc:rights");
 
         // Text: Unique identifier of the work from which this resource was derived.
-        public static readonly MetdataQuery Source = new MetdataQuery("/xmp/dc:source", typeof(string));
+        public static readonly MetdataQuery<string, string> Source = new MetdataQuery<string, string>("/xmp/dc:source");
 
         // Bag: An unordered array of descriptive phrases or keywords that specify the topic of the content of the resource.
-        public static readonly MetdataQuery Subject = new MetdataQuery("/xmp/dc:subject", typeof(string));
+        public static readonly MetdataQuery<string, string> Subject = new MetdataQuery<string, string>("/xmp/dc:subject");
 
         // Lang Alt: The title of the document, or the name given to the resource. Typically, it will be a name by which the resource is formally known.
-        public static readonly MetdataQuery Title = new MetdataQuery("/xmp/dc:title", typeof(string));
+        public static readonly MetdataQuery<string, string> Title = new MetdataQuery<string, string>("/xmp/dc:title");
 
         // Bag: A document type; for example, novel, poem, or working paper.
-        public static readonly MetdataQuery Type = new MetdataQuery("/xmp/dc:type", typeof(string));
+        public static readonly MetdataQuery<string, string> Type = new MetdataQuery<string, string>("/xmp/dc:type");
     }
 }

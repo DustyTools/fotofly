@@ -12,26 +12,26 @@ namespace FotoFly.MetadataQueries
 
     public static class XmpFotoFlyQueries
     {
-        public static readonly MetdataQuery FotoFlyStruct = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly", typeof(BitmapMetadata));
+        public static readonly MetdataQuery<BitmapMetadata, FotoFlyMetadata> FotoFlyStruct = new MetdataQuery<BitmapMetadata, FotoFlyMetadata>(@"/xmp/http\:\/\/ns.fotofly:FotoFly");
 
-        public static readonly MetdataQuery UtcDate = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:UtcDate", typeof(DateTime));
+        public static readonly MetdataQuery<string, DateTime> UtcDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:UtcDate");
 
-        public static readonly MetdataQuery UtcOffset = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:UtcOffset", typeof(int));
+        public static readonly MetdataQuery<string, double?> UtcOffset = new MetdataQuery<string, double?>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:UtcOffset");
 
-        public static readonly MetdataQuery LastEditDate = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:LastEditDate", typeof(DateTime));
+        public static readonly MetdataQuery<string, DateTime> LastEditDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:LastEditDate");
 
-        public static readonly MetdataQuery OriginalCameraFilename = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:OriginalCameraFilename", typeof(string));
+        public static readonly MetdataQuery<string, string> OriginalCameraFilename = new MetdataQuery<string, string>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:OriginalCameraFilename");
 
-        public static readonly MetdataQuery OriginalCameraDate = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:OriginalCameraDate", typeof(DateTime));
+        public static readonly MetdataQuery<string, DateTime> OriginalCameraDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:OriginalCameraDate");
 
-        public static readonly MetdataQuery AccuracyOfGps = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:AccuracyOfGps", typeof(int));
+        public static readonly MetdataQuery<string, string> AccuracyOfGps = new MetdataQuery<string, string>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:AccuracyOfGps");
 
-        public static readonly MetdataQuery AddressOfGpsLookupDate = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:AddressOfGpsLookupDate", typeof(DateTime));
+        public static readonly MetdataQuery<string, DateTime> AddressOfGpsLookupDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:AddressOfGpsLookupDate");
 
-        public static readonly MetdataQuery AddressOfGpsSource = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:AddressOfGpsSource", typeof(string));
+        public static readonly MetdataQuery<string, string> AddressOfGpsSource = new MetdataQuery<string, string>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:AddressOfGpsSource");
 
-        public static readonly MetdataQuery AddressOfGps = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:AddressOfGps", typeof(string));
+        public static readonly MetdataQuery<string, Address> AddressOfGps = new MetdataQuery<string, Address>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:AddressOfGps");
 
-        public static readonly MetdataQuery Address = new MetdataQuery(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:Address", typeof(string));
+        public static readonly MetdataQuery<string, Address> Address = new MetdataQuery<string, Address>(@"/xmp/http\:\/\/ns.fotofly:FotoFly/http\:\/\/ns.fotofly:Address");
     }
 }
