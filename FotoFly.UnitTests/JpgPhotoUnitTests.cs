@@ -13,6 +13,7 @@
 
     using FotoFly;
     using FotoFly.Geotagging;
+    using FotoFly.WpfTools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using FotoFly.MetadataQueries;
@@ -65,7 +66,7 @@
             }
             catch
             {
-                Assert.Fail("Metadata could not be read (" + this.jpgPhotoOne.FileName + ")");
+                Assert.Fail("Metadata could not be read (" + this.jpgPhotoOne.FileFullName + ")");
             }
 
             try
@@ -74,7 +75,7 @@
             }
             catch
             {
-                Assert.Fail("Metadata could not be read (" + this.jpgPhotoTwo.FileName + ")");
+                Assert.Fail("Metadata could not be read (" + this.jpgPhotoTwo.FileFullName + ")");
             }
         }
 
@@ -85,9 +86,9 @@
         public void WriteMetadataToFile()
         {
             // Clean up from previous test
-            if (File.Exists(this.jpgPhotoX.FileName))
+            if (File.Exists(this.jpgPhotoX.FileFullName))
             {
-                File.Delete(this.jpgPhotoX.FileName);
+                File.Delete(this.jpgPhotoX.FileFullName);
             }
 
             // Test value to write
@@ -97,10 +98,10 @@
             this.jpgPhotoTwo.Metadata.Subject = testSubject;
 
             // Save Photo Three
-            this.jpgPhotoTwo.WriteMetadata(this.jpgPhotoX.FileName);
+            this.jpgPhotoTwo.WriteMetadata(this.jpgPhotoX.FileFullName);
 
             // Check the file was created
-            if (!File.Exists(this.jpgPhotoX.FileName))
+            if (!File.Exists(this.jpgPhotoX.FileFullName))
             {
                 Assert.Fail("File save failed");
             }
@@ -117,7 +118,7 @@
             // Check the subject was set correctly
             StringAssert.Matches(this.jpgPhotoX.Metadata.Subject, new Regex(testSubject));
 
-            if (new FileInfo(this.jpgPhotoTwo.FileName).Length > new FileInfo(this.jpgPhotoX.FileName).Length)
+            if (new FileInfo(this.jpgPhotoTwo.FileFullName).Length > new FileInfo(this.jpgPhotoX.FileFullName).Length)
             {
                 Assert.Fail("Photo has decreased in size after saving");
             }
@@ -133,7 +134,7 @@
             string afterFile = this.samplePhotosFolder + "WriteMetadataToFileLossless_After.jpg";
 
             // Get a copy of a file
-            File.Copy(this.jpgPhotoOne.FileName, beforeFile);
+            File.Copy(this.jpgPhotoOne.FileFullName, beforeFile);
 
             // Change some metadata
             JpgPhoto beforePhoto = new JpgPhoto(beforeFile);
@@ -309,7 +310,7 @@
             this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonLiveIdCID = "PersonLiveIdCID" + testValueSuffix;
             this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].RectangleString = "RectangleString" + testValueSuffix;
 
-            this.jpgPhotoOne.WriteMetadata(this.jpgPhotoX.FileName);
+            this.jpgPhotoOne.WriteMetadata(this.jpgPhotoX.FileFullName);
 
             this.jpgPhotoX.ReadMetadata();
 
@@ -325,7 +326,7 @@
         [TestMethod]
         public void ReadMetadataDump()
         {
-            MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.jpgPhotoTwo.FileName));
+            MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.jpgPhotoTwo.FileFullName));
 
             // Check total count
             Assert.AreEqual<int>(metadataDump.StringList.Count, 63);
@@ -429,9 +430,9 @@
         public void PostTestCleanup()
         {
             // Clean up
-            if (File.Exists(this.jpgPhotoX.FileName))
+            if (File.Exists(this.jpgPhotoX.FileFullName))
             {
-                File.Delete(this.jpgPhotoX.FileName);
+                File.Delete(this.jpgPhotoX.FileFullName);
             }
         }
 

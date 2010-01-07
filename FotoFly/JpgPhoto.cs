@@ -14,6 +14,7 @@ namespace FotoFly
     using System.Windows.Media.Imaging;
     using System.Xml.Serialization;
 
+    using FotoFly.WpfTools;
     using FotoFly.XmlTools;
 
     public class JpgPhoto : GenericPhotoFile
@@ -33,7 +34,7 @@ namespace FotoFly
         /// <param name="fileName">Filename</param>
         public JpgPhoto(string fileName)
         {
-            this.FileName = fileName;
+            this.SetFileName(fileName);
         }
 
         /// <summary>
@@ -44,29 +45,29 @@ namespace FotoFly
             get
             {
                 // Attempt to read the Metadata if it's not already loaded
-                if (this.PhotoMetadata == null && this.IsFileValid)
+                if (this.InternalPhotoMetadata == null && this.IsFileValid)
                 {
                     this.ReadMetadata();
                 }
 
-                return this.PhotoMetadata;
+                return this.InternalPhotoMetadata;
             }
         }
 
         /// <summary>
         /// Custom Metadata used by FotoFly
         /// </summary>
-        public FotoFlyMetadata ExtendedMetadata
+        public FotoFlyMetadata FotoFlyMetadata
         {
             get
             {
                 // Attempt to read the Metadata if it's not already loaded
-                if (this.FotoFlyMetadata == null && this.IsFileValid)
+                if (this.InternalFotoFlyMetadata == null && this.IsFileValid)
                 {
                     this.ReadMetadata();
                 }
 
-                return this.FotoFlyMetadata;
+                return this.InternalFotoFlyMetadata;
             }
         }
 
@@ -97,7 +98,7 @@ namespace FotoFly
                     }
                     catch (Exception e)
                     {
-                        throw new Exception("Error reading Metadata: " + this.FileName, e);
+                        throw new Exception("Error reading Metadata: " + this.FileFullName, e);
                     }
                 }
                 else
@@ -109,7 +110,7 @@ namespace FotoFly
             {
                 if (this.HandleExceptions)
                 {
-                    throw new Exception("File does not exist or is not valid: " + this.FileName);
+                    throw new Exception("File does not exist or is not valid: " + this.FileFullName);
                 }
             }
         }
@@ -126,10 +127,10 @@ namespace FotoFly
             }
 
             // Grab a copy of the source file, we need this for image
-            File.Copy(this.FileName, fileName, true);
+            File.Copy(this.FileFullName, fileName, true);
                 
             // Save filename
-            this.FileName = fileName;
+            this.SetFileName(fileName);
 
             this.WriteMetadata();
         }
@@ -149,7 +150,7 @@ namespace FotoFly
                     }
                     catch (Exception e)
                     {
-                        throw new Exception("Error saving metadata: " + this.FileName, e);
+                        throw new Exception("Error saving metadata: " + this.FileFullName, e);
                     }
                 }
                 else
@@ -161,7 +162,7 @@ namespace FotoFly
             {
                 if (this.HandleExceptions)
                 {
-                    throw new Exception("File does not exist or is not valid: " + this.FileName);
+                    throw new Exception("File does not exist or is not valid: " + this.FileFullName);
                 }
             }
         }
@@ -172,21 +173,23 @@ namespace FotoFly
         /// <param name="fileName"></param>
         public void ReadMetadataFromXml(string fileName)
         {
-            if (!File.Exists(fileName))
+            this.SetFileName(fileName);
+
+            if (!File.Exists(this.FileFullName))
             {
-                throw new Exception("File does not exist: " + fileName);
+                throw new Exception("File does not exist: " + this.FileFullName);
             }
             else
             {
                 try
                 {
-                    using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (FileStream fileStream = new FileStream(this.FileFullName, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         using (StreamReader reader = new StreamReader(fileStream))
                         {
                             XmlSerializer xmlSerializer = new XmlSerializer(typeof(PhotoMetadata));
 
-                            this.PhotoMetadata = xmlSerializer.Deserialize(reader) as PhotoMetadata;
+                            this.InternalPhotoMetadata = xmlSerializer.Deserialize(reader) as PhotoMetadata;
                         }
 
                         // Try and force the file lock to be released
@@ -196,7 +199,7 @@ namespace FotoFly
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Unable to read the file: " + fileName, e);
+                    throw new Exception("Unable to read the file: " + this.FileFullName, e);
                 }
             }
         }
@@ -206,7 +209,7 @@ namespace FotoFly
         /// </summary>
         public void WriteMetadataToXml()
         {
-            this.WriteMetadataToXml(Regex.Replace(this.FileName, this.FileExtension, ".xml", RegexOptions.IgnoreCase));
+            this.WriteMetadataToXml(Regex.Replace(this.FileFullName, this.FileExtension, ".xml", RegexOptions.IgnoreCase));
         }
 
         /// <summary>
@@ -232,9 +235,9 @@ namespace FotoFly
         /// <param name="overwrite">If true creates a new file, if false updates an existing file</param>
         public void CreateMetadataBackup(string destinationFileName, bool overwrite)
         {
-            if (!File.Exists(this.FileName))
+            if (!File.Exists(this.FileFullName))
             {
-                throw new Exception("Source file does not exist: " + this.FileName);
+                throw new Exception("Source file does not exist: " + this.FileFullName);
             }
             else if (File.Exists(destinationFileName) && overwrite)
             {
@@ -245,11 +248,11 @@ namespace FotoFly
             if (!File.Exists(destinationFileName))
             {
                 WpfFileManipulator wpfFileManipulator = new WpfFileManipulator();
-                wpfFileManipulator.CopyImageAndResize(this.FileName, destinationFileName, this.metadataBackupImageMaxDimension);
+                wpfFileManipulator.CopyImageAndResize(this.FileFullName, destinationFileName, this.metadataBackupImageMaxDimension);
             }
 
             // Update the new files metadata
-            WpfFileManager.CopyBitmapMetadata(this.FileName, destinationFileName);
+            WpfFileManager.CopyBitmapMetadata(this.FileFullName, destinationFileName);
         }
 
         /// <summary>
@@ -260,7 +263,7 @@ namespace FotoFly
         {
             if (!this.IsFileValid)
             {
-                throw new Exception("File does not exist or is not valid: " + this.FileName);
+                throw new Exception("File does not exist or is not valid: " + this.FileFullName);
             }
 
             List<string> changes;
@@ -273,7 +276,7 @@ namespace FotoFly
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Error reading metadata: " + this.FileName, e);
+                    throw new Exception("Error reading metadata: " + this.FileFullName, e);
                 }
             }
             else
@@ -293,13 +296,13 @@ namespace FotoFly
             List<string> changes = new List<string>();
 
             // Read BitmapMetadata
-            using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileName))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileFullName))
             {
                 // Get generic Metadata
                 WpfMetadata wpfMetadata = new WpfMetadata(wpfFileManager.BitmapMetadata);
 
                 // Copy the common metadata across using reflection tool
-                IPhotoMetadataTools.CompareMetadata(wpfMetadata, this.PhotoMetadata, ref changes);
+                IPhotoMetadataTools.CompareMetadata(wpfMetadata, this.InternalPhotoMetadata, ref changes);
 
                 // Get FotoFly Custom Metadata
                 WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(wpfFileManager.BitmapMetadata);
@@ -308,7 +311,12 @@ namespace FotoFly
                 IPhotoMetadataTools.CompareMetadata(wpfFotoFlyMetadata, this.FotoFlyMetadata, ref changes);
             }
 
-            return changes;
+            // Sort
+            var query = from x in changes
+                        orderby x
+                        select x;
+
+            return query.ToList();
         }
 
         /// <summary>
@@ -316,17 +324,17 @@ namespace FotoFly
         /// </summary>
         private void UnhandledReadMetadata()
         {
-            this.PhotoMetadata = new PhotoMetadata();
-            this.FotoFlyMetadata = new FotoFlyMetadata();
+            this.InternalPhotoMetadata = new PhotoMetadata();
+            this.InternalFotoFlyMetadata = new FotoFlyMetadata();
 
             // Read BitmapMetadata
-            using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileName))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileFullName))
             {
                 // Get generic Metadata
                 WpfMetadata wpfMetadata = new WpfMetadata(wpfFileManager.BitmapMetadata);
 
                 // Copy the common metadata across using reflection tool
-                IPhotoMetadataTools.CopyMetadata(wpfMetadata, this.PhotoMetadata);
+                IPhotoMetadataTools.CopyMetadata(wpfMetadata, this.InternalPhotoMetadata);
 
                 // Get FotoFly Custom Metadata
                 WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(wpfFileManager.BitmapMetadata);
@@ -336,10 +344,10 @@ namespace FotoFly
 
                 // Manually copy across ImageHeight & ImageWidth if they are not set in metadata
                 // This should be pretty rare but can happen if the image has been resized or manipulated and the metadata not copied across
-                if (this.PhotoMetadata.ImageHeight == 0 || this.PhotoMetadata.ImageWidth == 0)
+                if (this.InternalPhotoMetadata.ImageHeight == 0 || this.InternalPhotoMetadata.ImageWidth == 0)
                 {
-                    this.PhotoMetadata.ImageHeight = wpfFileManager.BitmapDecoder.Frames[0].PixelHeight;
-                    this.PhotoMetadata.ImageWidth = wpfFileManager.BitmapDecoder.Frames[0].PixelWidth;
+                    this.InternalPhotoMetadata.ImageHeight = wpfFileManager.BitmapDecoder.Frames[0].PixelHeight;
+                    this.InternalPhotoMetadata.ImageWidth = wpfFileManager.BitmapDecoder.Frames[0].PixelWidth;
                 }
             }
         }
@@ -352,12 +360,12 @@ namespace FotoFly
             List<string> changes = new List<string>();
 
             // Get original File metadata
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileName, true);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileFullName, true);
 
             WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
 
             // Copy JpgMetadata across to file Metadata
-            IPhotoMetadataTools.CopyMetadata(this.PhotoMetadata, wpfMetadata, ref changes);
+            IPhotoMetadataTools.CopyMetadata(this.InternalPhotoMetadata, wpfMetadata, ref changes);
 
             WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(bitmapMetadata);
 
@@ -367,7 +375,12 @@ namespace FotoFly
             // Save if there have been changes to the Metadata
             if (changes.Count > 0)
             {
-                WpfFileManager.WriteBitmapMetadata(this.FileName, bitmapMetadata);
+                // Set the Last Edit Date
+                this.FotoFlyMetadata.LastEditDate = DateTime.Now;
+                wpfFotoFlyMetadata.LastEditDate = this.FotoFlyMetadata.LastEditDate;
+
+                // Write changes
+                WpfFileManager.WriteBitmapMetadata(this.FileFullName, bitmapMetadata);
             }
         }
     }

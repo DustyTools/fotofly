@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>Class for manipulating images</summary>
-namespace FotoFly
+namespace FotoFly.WpfTools
 {
     using System;
     using System.Drawing;

@@ -12,6 +12,7 @@
     using System.Windows.Media.Imaging;
 
     using FotoFly;
+    using FotoFly.WpfTools;
     using FotoFly.Geotagging;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -74,7 +75,7 @@
             Assert.AreEqual<DateTime>(wpfFotoFlyMetadata.OriginalCameraDate, testDate);
             Assert.AreEqual<string>(wpfFotoFlyMetadata.OriginalCameraFilename, "img_123.jpg");
             Assert.AreEqual<DateTime>(wpfFotoFlyMetadata.UtcDate, testDate);
-            Assert.AreEqual<double>(wpfFotoFlyMetadata.UtcOffset, 5);
+            Assert.AreEqual<double>(wpfFotoFlyMetadata.UtcOffset.Value, 5);
 
             if (File.Exists(this.samplesFolder + TestPhotos.UnitTestX))
             {

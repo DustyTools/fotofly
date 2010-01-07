@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>Class for reading and writing BitmapMetadata</summary>
-namespace FotoFly
+namespace FotoFly.WpfTools
 {
     using System;
     using System.Collections;
@@ -333,7 +333,7 @@ namespace FotoFly
 
         public void Dispose()
         {
-            if (!disposed)
+            if (!this.disposed)
             {
                 this.Dispose(true);
             }

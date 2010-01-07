@@ -33,7 +33,7 @@ namespace FotoFly
             this.Latitude.Numeric = latitude;
             this.Longitude.Numeric = longitude;
             this.Altitude = double.NaN;
-            this.Source = string.Empty;
+            this.Source = null;
         }
 
         public GpsPosition(GpsCoordinate latitude, GpsCoordinate longitude, double altitude)
@@ -46,7 +46,7 @@ namespace FotoFly
             this.Longitude.Numeric = longitude.Numeric;
 
             this.Altitude = altitude;
-            this.Source = string.Empty;
+            this.Source = null;
         }
 
         public enum Accuracies : int
@@ -290,7 +290,7 @@ namespace FotoFly
             this.Latitude.Numeric = double.NaN;
             this.Longitude.Numeric = double.NaN;
             this.Dimension = Dimensions.NotSpecified;
-            this.Source = string.Empty;
+            this.Source = null;
             this.altitude = double.NaN;
             this.satelliteTime = new DateTime();
         }

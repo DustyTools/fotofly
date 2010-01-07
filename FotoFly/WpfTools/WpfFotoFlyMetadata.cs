@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-06</date>
 // <summary>WpfFotoFlyMetadata Class</summary>
-namespace FotoFly
+namespace FotoFly.WpfTools
 {
     using System;
     using System.Collections;
@@ -74,7 +74,7 @@ namespace FotoFly
             }
         }
 
-        public double UtcOffset
+        public double? UtcOffset
         {
             get
             {
@@ -82,7 +82,7 @@ namespace FotoFly
 
                 if (string.IsNullOrEmpty(utcOffsetString))
                 {
-                    return 0;
+                    return null;
                 }
                 else
                 {
@@ -90,7 +90,7 @@ namespace FotoFly
 
                     if (utcOffset > 12 || utcOffset < -12)
                     {
-                        return 0;
+                        return null;
                     }
                     else
                     {
@@ -280,6 +280,37 @@ namespace FotoFly
                 else
                 {
                     this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.AddressOfGps.Query, value.HierarchicalName);
+                }
+            }
+        }
+
+        public Address Address
+        {
+            get
+            {
+                string address = this.BitmapMetadata.GetQuery<string>(XmpFotoFlyQueries.Address.Query);
+
+                if (string.IsNullOrEmpty(address))
+                {
+                    return new Address();
+                }
+                else
+                {
+                    return new Address(address);
+                }
+            }
+
+            set
+            {
+                this.CreateFotoflyStruct();
+
+                if (value == null || !value.IsValidAddress)
+                {
+                    this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.Address.Query);
+                }
+                else
+                {
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.Address.Query, value.HierarchicalName);
                 }
             }
         }

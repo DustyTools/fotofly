@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>WpfMetadata Class</summary>
-namespace FotoFly
+namespace FotoFly.WpfTools
 {
     using System;
     using System.Collections;
@@ -21,6 +21,7 @@ namespace FotoFly
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
+
     using FotoFly.MetadataQueries;
 
     public class WpfMetadata : IPhotoMetadata, IDisposable
@@ -1493,7 +1494,7 @@ namespace FotoFly
             {
                 if (string.IsNullOrEmpty(this.BitmapMetadata.GetQuery<string>(GpsQueries.ProcessingMethod.Query)))
                 {
-                    return "None";
+                    return null;
                 }
                 else
                 {
@@ -1503,9 +1504,9 @@ namespace FotoFly
 
             set
             {
-                if (value == "None")
+                if (string.IsNullOrEmpty(value) || value == "None")
                 {
-                    this.BitmapMetadata.SetQuery(GpsQueries.ProcessingMethod.Query, string.Empty);
+                    this.BitmapMetadata.RemoveQuery(GpsQueries.ProcessingMethod.Query);
                 }
                 else
                 {

@@ -227,7 +227,7 @@ namespace FotoFly
             return new ReadOnlyCollection<string>(tagsAsStrings);
         }
 
-        public new string ToString()
+        public override string ToString()
         {
             StringBuilder toString = new StringBuilder();
 

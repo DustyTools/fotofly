@@ -13,7 +13,7 @@ namespace FotoFly
     {
         DateTime UtcDate { get; set; }
 
-        double UtcOffset { get; set; }
+        double? UtcOffset { get; set; }
 
         DateTime LastEditDate { get; set; }
 
@@ -24,6 +24,8 @@ namespace FotoFly
         DateTime AddressOfGpsLookupDate { get; set; }
 
         Address AddressOfGps { get; set; }
+
+        Address Address { get; set; }
 
         string AddressOfGpsSource { get; set; }
 

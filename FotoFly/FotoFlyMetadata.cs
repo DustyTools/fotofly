@@ -16,22 +16,55 @@ namespace FotoFly
         {
         }
 
+        [XmlAttribute]
         public DateTime UtcDate { get; set; }
 
-        public double UtcOffset { get; set; }
+        [XmlElement]
+        public double? UtcOffset { get; set; }
 
+        public bool IsUtcOffsetSet
+        {
+            get
+            {
+                return this.UtcOffset != null;
+            }
+        }
+
+        [XmlAttribute]
         public DateTime LastEditDate { get; set; }
-        
+
+        [XmlAttribute]
         public DateTime AddressOfGpsLookupDate { get; set; }
 
+        [XmlAttribute]
         public DateTime OriginalCameraDate { get; set; }
 
+        [XmlAttribute]
         public string OriginalCameraFilename { get; set; }
 
         public Address AddressOfGps { get; set; }
 
+        public Address Address { get; set; }
+
+        [XmlAttribute]
         public string AddressOfGpsSource { get; set; }
 
+        [XmlAttribute]
         public GpsPosition.Accuracies AccuracyOfGps { get; set; }
+
+        public bool IsUtcOffsetCorrect(DateTime dateTaken)
+        {
+            if (this.UtcOffset == null || this.UtcDate == null)
+            {
+                return false;
+            }
+            else
+            {
+                double utcOffsetInMins = this.UtcOffset.Value * 60;
+                double dateGapInMins = new TimeSpan(dateTaken.Ticks - this.UtcDate.Ticks).TotalMinutes;
+
+                return utcOffsetInMins == dateGapInMins;
+            }
+        }
     }
 }

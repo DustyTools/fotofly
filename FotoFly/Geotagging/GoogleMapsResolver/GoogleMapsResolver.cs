@@ -13,6 +13,8 @@ namespace FotoFly.Geotagging.Resolvers
 
     public class GoogleMapsResolver : IResolverCache
     {
+        public static readonly string SourceName = "Google Maps";
+
         // http://code.google.com/apis/maps/documentation/geocoding/index.html
         private readonly string googleUrl = "http://maps.google.com/maps/geo?q={0},{1}&output=xml&sensor=true_or_false&key=your_api_key";
 

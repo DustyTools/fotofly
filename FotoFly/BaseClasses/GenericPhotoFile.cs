@@ -9,6 +9,7 @@ namespace FotoFly
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Windows.Media.Imaging;
 
     public abstract class GenericPhotoFile
@@ -19,7 +20,68 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// The full file name of the file, including path
+        /// </summary>
+        public string FileFullName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The name of the file, excluding the extension and path
+        /// </summary>
         public string FileName
+        {
+            get
+            {
+                if (this.IsFileValid && this.FileExists)
+                {
+                    return Regex.Replace(new FileInfo(this.FileFullName).Name, this.FileExtension, string.Empty, RegexOptions.IgnoreCase);
+                }
+                else
+                {
+                    throw new Exception("FileFullName is not valid");
+                }
+            }
+        }
+
+        /// <summary>
+        /// The Extension of the file with preceeding full stop
+        /// </summary>
+        public string FileExtension
+        {
+            get
+            {
+                if (this.IsFileValid)
+                {
+                    return new FileInfo(this.FileFullName).Extension.ToLower();
+                }
+                else
+                {
+                    throw new Exception("FileFullName is not valid");
+                }
+            }
+        }
+
+        public bool IsFileValid
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(this.FileFullName);
+            }
+        }
+
+        public bool FileExists
+        {
+            get
+            {
+                return File.Exists(this.FileFullName);
+            }
+        }
+
+        public List<string> SecondaryFiles
         {
             get;
             set;
@@ -45,36 +107,18 @@ namespace FotoFly
             }
         }
 
-        public string FileExtension
+        public GenericPhotoFile()
         {
-            get
-            {
-                if (this.IsFileValid)
-                {
-                    return new FileInfo(this.FileName).Extension.ToLower();
-                }
-                else
-                {
-                    throw new Exception("Filename is not valid");
-                }
-            }
+            this.SecondaryFiles = new List<string>();
         }
 
-        public bool IsFileValid
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(this.FileName) && File.Exists(this.FileName);
-            }
-        }
-
-        protected PhotoMetadata PhotoMetadata
+        protected PhotoMetadata InternalPhotoMetadata
         {
             get;
             set;
         }
 
-        protected FotoFlyMetadata FotoFlyMetadata
+        protected FotoFlyMetadata InternalFotoFlyMetadata
         {
             get;
             set;
@@ -89,7 +133,7 @@ namespace FotoFly
         {
             if (this.IsFileValid)
             {
-                FileInfo currentFile = new FileInfo(this.FileName);
+                FileInfo currentFile = new FileInfo(this.FileFullName);
                 FileInfo newName = new FileInfo(newDirectory + currentFile.Name);
 
                 if (newName.Exists && overWriteExistingFile)
@@ -105,29 +149,111 @@ namespace FotoFly
             }
         }
 
-        public void RenameFile(string newFileName)
+        public void RenameFile(string newFileName, bool renameSecondary)
         {
-            this.RenameFile(newFileName, false);
-        }
-
-        public void RenameFile(string newFileName, bool overWriteExistingFile)
-        {
-            if (this.IsFileValid)
+            // Ensure new name parameter type is correct
+            if (newFileName.Contains(@"/"))
             {
-                FileInfo currentFile = new FileInfo(this.FileName);
+                throw new ArgumentException("New filename shouldn't contain a path");
+            }
+            else if (newFileName.EndsWith(this.FileExtension))
+            {
+                throw new ArgumentException("New filename shouldn't include an extension");
+            }
+            else if (newFileName == this.FileName)
+            {
+                // Nothing to do
+                return;
+            }
 
-                newFileName = currentFile.DirectoryName + newFileName;
+            if (this.IsFileValid && this.FileExists)
+            {
+                // Build list of files to rename (old name, new name)
+                Dictionary<string, string> filesToRename = new Dictionary<string, string>();
 
-                if (File.Exists(newFileName) && overWriteExistingFile)
+                // Add the base file name
+                filesToRename.Add(this.FileFullName, Regex.Replace(this.FileFullName, Regex.Escape(this.FileName), newFileName, RegexOptions.IgnoreCase));
+                
+                // Add all secondary filenames
+                foreach (string file in this.SecondaryFiles)
                 {
-                    File.Delete(newFileName);
+                    filesToRename.Add(file, Regex.Replace(file, Regex.Escape(this.FileName), newFileName, RegexOptions.IgnoreCase));
                 }
 
-                currentFile.MoveTo(newFileName);
+                // Check source files don't already exist
+                foreach (KeyValuePair<string, string> file in filesToRename)
+                {
+                    if (File.Exists(file.Value))
+                    {
+                        throw new Exception("File already exists");
+                    }
+                }
+
+                // Flag to determine if all files copied successfully
+                bool success = true;
+
+                // Try to rename all files
+                foreach (KeyValuePair<string, string> file in filesToRename)
+                {
+                    try
+                    {
+                        File.Move(file.Key, file.Value);
+                    }
+                    catch
+                    {
+                        success = false;
+                        break;
+                    }
+                }
+
+                // If not successful rewind
+                if (!success)
+                {
+                    // Try and rename all files back to thier original name
+                    foreach (KeyValuePair<string, string> file in filesToRename)
+                    {
+                        if (File.Exists(file.Value))
+                        {
+                            try
+                            {
+                                File.Move(file.Value, file.Key);
+                            }
+                            catch
+                            {
+                                throw new Exception("Unable to rollback from failed rename");
+                            }
+                        }
+                    }
+
+                    throw new Exception("Unable to rename, rollback successful");
+                }
+
+                // Update all metadata
+                this.FileFullName = filesToRename.First().Value;
+
+                this.SecondaryFiles.Clear();
+
+                // Skip the first file (it's the name file)
+                foreach (KeyValuePair<string, string> file in filesToRename.Skip(1))
+                {
+                    this.SecondaryFiles.Add(file.Value);
+                }
             }
             else
             {
                 throw new Exception("Filename is not valid");
+            }
+        }
+
+        public void FindSecondaryFiles(string directoryName)
+        {
+            // Only search for files if the main photo is valid
+            if (this.IsFileValid)
+            {
+                foreach (string file in Directory.GetFiles(directoryName, this.FileName + ".*"))
+                {
+                    this.SecondaryFiles.Add(file);
+                }
             }
         }
 
@@ -135,13 +261,68 @@ namespace FotoFly
         {
             if (this.IsFileValid)
             {
-                FileInfo currentFile = new FileInfo(this.FileName);
+                FileInfo currentFile = new FileInfo(this.FileFullName);
 
                 currentFile.Delete();
             }
             else
             {
                 throw new Exception("Filename is not valid");
+            }
+        }
+
+        public bool IsFileNameCorrect(GenericPhotoEnums.FilenameFormats fileFormat)
+        {
+            return this.IsFileNameCorrect(fileFormat, string.Empty);
+        }
+
+        public bool IsFileNameCorrect(GenericPhotoEnums.FilenameFormats fileFormat, string fileNamePrefix)
+        {
+            // Throw Exception if date is not read
+            if (this.InternalPhotoMetadata == null || this.InternalPhotoMetadata.DateTaken == new DateTime())
+            {
+                throw new Exception("Metadata has not been read or it is invalid");
+            }
+
+            string fileDatePart = this.InternalPhotoMetadata.DateTaken.ToString("yyyyMMdd");
+            string fileSequencePart = string.Empty;
+
+            // Calculate yyyymmddSequence
+            if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddSequence)
+            {
+                // Add Prefix if one is defined
+                // Return true of the date part is correct
+                // TODO Should also try and validate the last part is a number
+                if (string.IsNullOrEmpty(fileNamePrefix))
+                {
+                    return this.FileName.StartsWith(fileDatePart + "_");
+                }
+                else
+                {
+                    return this.FileName.StartsWith(fileNamePrefix + "_" + fileDatePart + "_");
+                }
+            }
+            
+            if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddHoursMinutesSeconds)
+            {
+                // Generate fileSequencePart based on HHMMss
+                fileSequencePart = this.InternalPhotoMetadata.DateTaken.ToString("HHmmss");
+            }
+            else if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddSecondsSinceMidnight)
+            {
+                // Generate fileSequencePart based on seconds part
+                // Pad to 5 digits
+                fileSequencePart = this.InternalPhotoMetadata.DateTaken.TimeOfDay.TotalSeconds.ToString().PadLeft(5, '0');
+            }
+
+            // Check filename starts with the the correct pattern
+            if (string.IsNullOrEmpty(fileNamePrefix))
+            {
+                return this.FileName.StartsWith(fileDatePart + "_" + fileSequencePart);
+            }
+            else
+            {
+                return this.FileName.StartsWith(fileNamePrefix + "_" + fileDatePart + "_" + fileSequencePart);
             }
         }
 
@@ -153,52 +334,106 @@ namespace FotoFly
         public string RecommendedFileName(GenericPhotoEnums.FilenameFormats fileFormat, string fileNamePrefix)
         {
             // Throw Exception if date is not read
-            if (this.PhotoMetadata == null || this.PhotoMetadata.DateTaken == new DateTime())
+            if (this.InternalPhotoMetadata == null || this.InternalPhotoMetadata.DateTaken == null || this.InternalPhotoMetadata.DateTaken == new DateTime())
             {
                 throw new Exception("Metadata has not been read or it is invalid");
             }
 
-            string fileDatePart = this.PhotoMetadata.DateTaken.ToString("yyyymmdd");
+            string fileDatePart = this.InternalPhotoMetadata.DateTaken.ToString("yyyyMMdd");
             string fileSequencePart = string.Empty;
+            int fileIncrement = 0;
+
+            // File name is blank which should fail the first Exists check
             string newFileName = string.Empty;
+
+            // Calculate yyyymmddSequence
+            if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddSequence)
+            {
+                // Generate fileSequencePart based on sequence, try looping until filename doesn't exist
+                while (true)
+                {
+                    fileIncrement++;
+
+                    // Add Prefix if one is defined
+                    if (string.IsNullOrEmpty(fileNamePrefix))
+                    {
+                        newFileName = fileDatePart + "_" + fileIncrement;
+                    }
+                    else
+                    {
+                        newFileName = fileNamePrefix + "_" + fileDatePart + "_" + fileIncrement;
+                    }
+
+                    if (!File.Exists(this.FileFullName.Replace(this.FileName, newFileName)))
+                    {
+                        break;
+                    }
+                }
+
+                return newFileName;
+            }
 
             // Set the right SequencePart
             if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddHoursMinutesSeconds)
             {
                 // Generate fileSequencePart based on HHMMss
-                fileSequencePart = this.PhotoMetadata.DateTaken.ToString("HHmmss");
+                fileSequencePart = this.InternalPhotoMetadata.DateTaken.ToString("HHmmss");
             }
             else if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddSecondsSinceMidnight)
             {
                 // Generate fileSequencePart based on seconds part
-                fileSequencePart = this.PhotoMetadata.DateTaken.TimeOfDay.TotalSeconds.ToString();
+                // Pad to 5 digits
+                fileSequencePart = this.InternalPhotoMetadata.DateTaken.TimeOfDay.TotalSeconds.ToString().PadLeft(5, '0');
             }
-            else if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddSequence)
-            {
-                int increment = 0;
 
-                // Generate fileSequencePart based on sequence, try looping until filename doesn't exist
-                while (File.Exists(newFileName))
+            // Generate filename and loop until no file exists with the same name
+            while (true)
+            {
+                // Add Prefix if one is defined
+                if (string.IsNullOrEmpty(fileNamePrefix))
                 {
-                    increment++;
+                    newFileName = fileDatePart + "_" + fileSequencePart + fileIncrement;
                 }
-                
-                fileSequencePart = increment.ToString();
+                else
+                {
+                    newFileName = fileNamePrefix + "_" + fileDatePart + "_" + fileSequencePart + fileIncrement;
+                }
 
-                newFileName = fileNamePrefix + "_" + fileDatePart + "_" + increment + this.FileExtension;
-            }
+                if (!File.Exists(this.FileFullName.Replace(this.FileName, newFileName)))
+                {
+                    break;
+                }
 
-            // Add Prefix if one is defined
-            if (string.IsNullOrEmpty(fileNamePrefix))
-            {
-                newFileName = fileDatePart + "_" + fileSequencePart + this.FileExtension;
-            }
-            else
-            {
-                newFileName = fileNamePrefix + "_" + fileDatePart + "_" + fileSequencePart + this.FileExtension;
+                fileIncrement++;
             }
 
             return newFileName;
+        }
+
+        /// <summary>
+        /// Sets filename, ensuring it has a full path, defaulting to the working directory
+        /// </summary>
+        /// <param name="fileName"></param>
+        protected void SetFileName(string fileName)
+        {
+            // Save the filename
+            this.FileFullName = this.GetFullFileName(fileName);
+        }
+
+        protected string GetFullFileName(string fileName)
+        {
+            string fullFileName = fileName;
+
+            // Regex for a valid file path
+            Regex validPath = new Regex(@"^(([a-zA-Z]\:)|(\\))(\\{1}|((\\{1})[^\\]([^/:*?<>""|]*))+)$");
+
+            // Check filename includes a path
+            if (!validPath.IsMatch(fullFileName))
+            {
+                fullFileName = Directory.GetCurrentDirectory() + "\\" + fullFileName.TrimStart('\\');
+            }
+
+            return fullFileName;
         }
     }
 }

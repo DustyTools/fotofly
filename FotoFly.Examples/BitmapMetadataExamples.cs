@@ -7,7 +7,9 @@
     using System.Linq;
     using System.Text;
     using System.Windows.Media.Imaging;
+
     using FotoFly.MetadataQueries;
+    using FotoFly.WpfTools;
 
     public static class BitmapMetadataExamples
     {

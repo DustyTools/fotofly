@@ -25,6 +25,26 @@ namespace FotoFly.Geotagging
         {
         }
 
+        public bool IsManualCacheConfigured
+        {
+            get { return this.manualCache != null; }
+        }
+
+        public bool IsBingMapsResolverConfigured
+        {
+            get { return this.bingMapsResolver != null; }
+        }
+
+        public bool IsGoogleMapsResolverConfigured
+        {
+            get { return this.googleMapsResolver != null; }
+        }
+
+        public bool IsGpsTracksResolverConfigured
+        {
+            get { return this.gpsTrackResolver != null; }
+        }
+
         public void ConfigureManualCache(string cacheDirectory)
         {
             this.manualCache = new ResolverCache(cacheDirectory, "Manual");
@@ -44,30 +64,54 @@ namespace FotoFly.Geotagging
 
         public void ConfigureGpsTracksResolver(List<string> gpxTrackFiles, string trackSource, int toleranceInMeters, int toleranceInMinutes)
         {
-            this.gpsTrackResolver = new GpsTrackResolver();
-            this.gpsTrackResolver.ToleranceInMeters = toleranceInMeters;
-            this.gpsTrackResolver.ToleranceInMinutes = toleranceInMinutes;
-            this.gpsTrackResolver.GpsTrackSource = trackSource;
-
-            foreach (string gpxTrackFile in gpxTrackFiles)
+            // Only setup if we have valid tracks
+            if (gpxTrackFiles != null && gpxTrackFiles.Count != 0)
             {
-                this.gpsTrackResolver.Add(GpxFileManager.Read(gpxTrackFile));
+                this.gpsTrackResolver = new GpsTrackResolver();
+                this.gpsTrackResolver.ToleranceInMeters = toleranceInMeters;
+                this.gpsTrackResolver.ToleranceInMinutes = toleranceInMinutes;
+                this.gpsTrackResolver.GpsTrackSource = trackSource;
+
+                foreach (string gpxTrackFile in gpxTrackFiles)
+                {
+                    this.gpsTrackResolver.Add(GpxFileManager.Read(gpxTrackFile));
+                }
             }
+        }
+
+        public GpsPosition FindGpsPosition(DateTime utcDate)
+        {
+            if (this.IsGpsTracksResolverConfigured)
+            {
+                if (utcDate == null || utcDate == new DateTime())
+                {
+                    throw new Exception("FotoFlyMetadata.UtcDate must be set Gps Tracks are UTC based");
+                }
+
+                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(utcDate);
+
+                if (gpsPosition != null && gpsPosition.IsValidCoordinate)
+                {
+                    return gpsPosition;
+                }
+            }
+
+            return new GpsPosition();
         }
 
         public void FindGpsPosition(JpgPhoto photo)
         {
-            this.FindGpsPosition(photo, 0);
-        }
-
-        public void FindGpsPosition(JpgPhoto photo, int utcOffset)
-        {
             // Order is 1) Gps Track 2) Bing Maps 4) Manual Cache
 
             // Use Gps Tracks if Configured
-            if (!photo.Metadata.GpsPosition.IsValidCoordinate && this.gpsTrackResolver != null)
+            if (!photo.Metadata.GpsPosition.IsValidCoordinate && this.IsGpsTracksResolverConfigured)
             {
-                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(photo.Metadata.DateTaken.AddHours(utcOffset));
+                if (photo.FotoFlyMetadata.UtcDate == null || photo.FotoFlyMetadata.UtcDate == new DateTime())
+                {
+                    throw new Exception("FotoFlyMetadata.UtcDate must be set Gps Tracks are UTC based");
+                }
+
+                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(photo.FotoFlyMetadata.UtcDate);
 
                 if (gpsPosition != null && gpsPosition.IsValidCoordinate)
                 {
@@ -83,7 +127,7 @@ namespace FotoFly.Geotagging
                 GpsPosition manualResult = new GpsPosition();
 
                 // Use Bing if Configured
-                if (this.bingMapsResolver != null)
+                if (this.IsBingMapsResolverConfigured)
                 {
                     // Check Bing
                     // Cycle through the address, start as accurate as possible
@@ -105,7 +149,7 @@ namespace FotoFly.Geotagging
                 }
 
                 // Use Cache if Configured
-                if (this.manualCache != null)
+                if (this.IsManualCacheConfigured)
                 {
                     // Check Cache
                     // Cycle through the address, start as accurate as possible
@@ -114,7 +158,7 @@ namespace FotoFly.Geotagging
                         // Query Cache
                         manualResult = this.manualCache.FindGpsPosition(photo.Metadata.IptcAddress.AddressTruncated(i));
 
-                        if (manualResult.IsValidCoordinate)
+                        if (manualResult != null && manualResult.IsValidCoordinate)
                         {
                             manualResult.Accuracy = i;
                             break;
@@ -148,23 +192,27 @@ namespace FotoFly.Geotagging
             // Order is: 1) Bing Maps 2) Google Maps
             if (photo.Metadata != null && photo.Metadata.GpsPosition.Dimension == GpsPosition.Dimensions.ThreeDimensional)
             {
-                // Try both Bing & Google and see which is the most accurate
-                Address address = new Address();
-
                 // Use Bing if configured
-                if (!address.IsValidAddress && this.bingMapsResolver != null)
+                if (!photo.FotoFlyMetadata.AddressOfGps.IsValidAddress && this.IsBingMapsResolverConfigured)
                 {
-                    address = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPosition, photo.Metadata.IptcAddress.Country);
+                    photo.FotoFlyMetadata.AddressOfGps = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPosition, photo.Metadata.IptcAddress.Country);
+                    photo.FotoFlyMetadata.AddressOfGpsLookupDate = DateTime.Now;
+                    photo.FotoFlyMetadata.AddressOfGpsSource = BingMapsResolver.SourceName;
                 }
 
                 // Use Google if configured
-                if (!address.IsValidAddress && this.googleMapsResolver != null)
+                if (!photo.FotoFlyMetadata.AddressOfGps.IsValidAddress && this.IsGoogleMapsResolverConfigured)
                 {
-                    address = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPosition);
+                    photo.FotoFlyMetadata.AddressOfGps = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPosition);
+                    photo.FotoFlyMetadata.AddressOfGpsLookupDate = DateTime.Now;
+                    photo.FotoFlyMetadata.AddressOfGpsSource = GoogleMapsResolver.SourceName;
                 }
 
-                if (address.IsValidAddress)
+                if (!photo.FotoFlyMetadata.AddressOfGps.IsValidAddress)
                 {
+                    photo.FotoFlyMetadata.AddressOfGps = new Address();
+                    photo.FotoFlyMetadata.AddressOfGpsLookupDate = new DateTime();
+                    photo.FotoFlyMetadata.AddressOfGpsSource = null;
                 }
             }
         }

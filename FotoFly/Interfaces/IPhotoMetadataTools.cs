@@ -55,7 +55,7 @@ namespace FotoFly
                 PropertyInfo destinationPropertyInfo = destinationProperty.FirstOrDefault();
 
                 // Check if there's a matching property in the destination
-                if (destinationPropertyInfo != null)
+                if (destinationPropertyInfo != null && destinationPropertyInfo.CanWrite)
                 {
                     object destinationValue = destinationPropertyInfo.GetValue(destination, null);
 
@@ -84,11 +84,11 @@ namespace FotoFly
                         }
 
                         StringBuilder change = new StringBuilder();
-                        change.Append(sourceName);
+                        change.Append(destination.GetType().Name + "." + sourceName);
                         change.Append(" (From:'");
-                        change.Append(destinationValue);
+                        change.Append(sourceValue == null ? "{null}" : sourceValue);
                         change.Append("' To: '");
-                        change.Append(sourceValue); 
+                        change.Append(destinationValue == null ? "{null}" : destinationValue);
                         change.Append("')");
 
                         changes.Add(change.ToString());

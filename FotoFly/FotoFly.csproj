@@ -66,6 +66,7 @@
     <Compile Include="Geotagging\GpsTrack.cs" />
     <Compile Include="Geotagging\GpsTrackCache.cs" />
     <Compile Include="Interfaces\IFotoFlyMetadata.cs" />
+    <Compile Include="Interfaces\IPhotoMetadataTools.cs" />
     <Compile Include="MetadataQueries\GpsQueries.cs" />
     <Compile Include="MetadataQueries\XmpCoreQueries.cs" />
     <Compile Include="MetadataQueries\XmpDublinCoreQueries.cs" />
@@ -75,7 +76,6 @@
     <Compile Include="MetadataQueries\XmpMicrosoftQueries.cs" />
     <Compile Include="MetadataQueries\XmpPhotoshopQueries.cs" />
     <Compile Include="MetadataQueries\XmpRightsQueries.cs" />
-    <Compile Include="WpfFotoFlyMetadata.cs" />
     <Compile Include="Geotagging\BingMapsResolver\BingMapsResolver.cs" />
     <Compile Include="Geotagging\GeoCache\IResolverCache.cs" />
     <Compile Include="Geotagging\GeoCache\ResolverCache.cs" />
@@ -99,8 +99,6 @@
     <Compile Include="MetadataQueries\ExifQueries.cs" />
     <Compile Include="MetadataQueries\IptcQueries.cs" />
     <Compile Include="MetadataQueries\MetadataQuery.cs" />
-    <Compile Include="BitmapMetadataHelper.cs" />
-    <Compile Include="IPhotoMetadataTools.cs" />
     <Compile Include="MetadataProperties\Address.cs" />
     <Compile Include="CommonProperties\GpsCoordinate.cs" />
     <Compile Include="CommonProperties\GpsPosition.cs" />
@@ -119,10 +117,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="WpfTools\BitmapMetadataHelper.cs" />
+    <Compile Include="WpfTools\WpfFileManager.cs" />
+    <Compile Include="WpfTools\WpfFileManipulator.cs" />
+    <Compile Include="WpfTools\WpfFotoFlyMetadata.cs" />
+    <Compile Include="WpfTools\WpfMetadata.cs" />
     <Compile Include="XmlTools\GenericSerialiser.cs" />
-    <Compile Include="WpfFileManager.cs" />
-    <Compile Include="WpfFileManipulator.cs" />
-    <Compile Include="WpfMetadata.cs" />
     <Compile Include="MetadataProperties\XmpRegion.cs" />
     <Compile Include="MetadataProperties\XmpRegionInfo.cs" />
   </ItemGroup>
