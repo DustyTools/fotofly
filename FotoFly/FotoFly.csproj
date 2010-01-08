@@ -67,6 +67,9 @@
     <Compile Include="Geotagging\GpsTrackCache.cs" />
     <Compile Include="Interfaces\IFotoFlyMetadata.cs" />
     <Compile Include="Interfaces\IPhotoMetadataTools.cs" />
+    <Compile Include="JpgPhotoTools.cs" />
+    <Compile Include="MetadataProperties\ImageRegion.cs" />
+    <Compile Include="MetadataProperties\ImageRegionInfo.cs" />
     <Compile Include="MetadataQueries\GpsQueries.cs" />
     <Compile Include="MetadataQueries\XmpCoreQueries.cs" />
     <Compile Include="MetadataQueries\XmpDublinCoreQueries.cs" />
@@ -123,8 +126,6 @@
     <Compile Include="WpfTools\WpfFotoFlyMetadata.cs" />
     <Compile Include="WpfTools\WpfMetadata.cs" />
     <Compile Include="XmlTools\GenericSerialiser.cs" />
-    <Compile Include="MetadataProperties\XmpRegion.cs" />
-    <Compile Include="MetadataProperties\XmpRegionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

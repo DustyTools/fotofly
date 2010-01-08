@@ -85,10 +85,10 @@ namespace FotoFly
 
                         StringBuilder change = new StringBuilder();
                         change.Append(destination.GetType().Name + "." + sourceName);
-                        change.Append(" (From:'");
-                        change.Append(sourceValue == null ? "{null}" : sourceValue);
-                        change.Append("' To: '");
-                        change.Append(destinationValue == null ? "{null}" : destinationValue);
+                        change.Append(" ('");
+                        change.Append(sourceValue == null ? "{null}" : (sourceValue.ToString() == string.Empty ? "{empty}" : sourceValue));
+                        change.Append("' vs '");
+                        change.Append(destinationValue == null ? "{null}" : (destinationValue.ToString() == string.Empty ? "{empty}" : destinationValue));
                         change.Append("')");
 
                         changes.Add(change.ToString());

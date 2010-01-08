@@ -18,17 +18,17 @@ namespace FotoFly.MetadataQueries
         public static readonly MetdataQuery<string, DateTime> DateAcquired = new MetdataQuery<string, DateTime>("/xmp/MicrosoftPhoto:DateAcquired");
 
         // "RegionInfo" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/" (LPWSTR)]
-        public static readonly MetdataQuery<BitmapMetadata, XmpRegionInfo> RegionInfo = new MetdataQuery<BitmapMetadata, XmpRegionInfo>(@"/xmp/MP:RegionInfo");
+        public static readonly MetdataQuery<BitmapMetadata, ImageRegionInfo> RegionInfo = new MetdataQuery<BitmapMetadata, ImageRegionInfo>(@"/xmp/MP:RegionInfo");
 
         // MPRI:DateRegionsValid
         // Does not appear to be ever used
         public static readonly MetdataQuery<string, DateTime> RegionsLastUpdate = new MetdataQuery<string, DateTime>(@"/xmp/MP:RegionInfo/MPRI:DateRegionsValid");
 
         // "Regions" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/t/RegionInfo#" (LPWSTR)]
-        public static readonly MetdataQuery<BitmapMetadata, List<XmpRegion>> Regions = new MetdataQuery<BitmapMetadata, List<XmpRegion>>(@"/xmp/MP:RegionInfo/MPRI:Regions");
+        public static readonly MetdataQuery<BitmapMetadata, List<ImageRegion>> Regions = new MetdataQuery<BitmapMetadata, List<ImageRegion>>(@"/xmp/MP:RegionInfo/MPRI:Regions");
 
         // Region query, meant to be used with String.Format to replace {0} with the appropriate region
-        public static readonly MetdataQuery<BitmapMetadata, XmpRegion> Region = new MetdataQuery<BitmapMetadata, XmpRegion>(@"/xmp/MP:RegionInfo/MPRI:Regions/{{ulong={0}}}");
+        public static readonly MetdataQuery<BitmapMetadata, ImageRegion> Region = new MetdataQuery<BitmapMetadata, ImageRegion>(@"/xmp/MP:RegionInfo/MPRI:Regions/{{ulong={0}}}");
 
         // "PersonDisplayName" (LPWSTR) ["http://ns.microsoft.com/photo/1.2/t/Region#" (LPWSTR)]
         public static readonly MetdataQuery<string, string> RegionPersonDisplayName = new MetdataQuery<string, string>(@"/MPReg:PersonDisplayName");

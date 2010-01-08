@@ -10,18 +10,23 @@ namespace FotoFly
     using System.Text;
     using System.Xml.Serialization;
 
+    /// <summary>
+    /// Class representing Industry Standard Metadata
+    /// </summary>
     public class PhotoMetadata : IPhotoMetadata
     {
-        private XmpRegionInfo regionInfo;
-        private GpsPosition gpsPosition;
-        private PeopleList authors;
-        private TagList tags;
-        private Address iptcAddress;
-
         public PhotoMetadata()
         {
+            this.RegionInfo = new ImageRegionInfo();
+            this.GpsPosition = new GpsPosition();
+            this.Authors = new PeopleList();
+            this.Tags = new TagList();
+            this.IptcAddress = new Address();
         }
 
+        /// <summary>
+        /// Aperture
+        /// </summary>
         [XmlAttribute]
         public string Aperture
         {
@@ -29,6 +34,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Software used to last modify the photo
+        /// </summary>
         [XmlIgnore]
         public string CreationSoftware
         {
@@ -36,6 +44,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Shutter Speed
+        /// </summary>
         [XmlAttribute]
         public string ShutterSpeed
         {
@@ -43,6 +54,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Shutter Speed and Aperture (Readonly)
+        /// </summary>
         [XmlIgnore]
         public string ShutterSpeedAndAperture
         {
@@ -52,6 +66,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Exposure Bias
+        /// </summary>
         [XmlAttribute]
         public string ExposureBias
         {
@@ -59,6 +76,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Focal Length
+        /// </summary>
         [XmlAttribute]
         public string FocalLength
         {
@@ -66,6 +86,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Copyright owner of the photo
+        /// </summary>
         [XmlAttribute]
         public string Copyright
         {
@@ -73,6 +96,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Camera Model, normally includes camera Manufacturer
+        /// </summary>
         [XmlAttribute]
         public string CameraModel
         {
@@ -80,6 +106,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Camera Manufacturer
+        /// </summary>
         [XmlAttribute]
         public string CameraManufacturer
         {
@@ -87,6 +116,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Metering Mode
+        /// </summary>
         [XmlAttribute]
         public PhotoMetadataEnums.MeteringModes MeteringMode
         {
@@ -94,82 +126,49 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Microsoft Region Info extension which provides data on regions in the photo
+        /// </summary>
         [XmlElementAttribute]
-        public XmpRegionInfo RegionInfo
+        public ImageRegionInfo RegionInfo
         {
-            get
-            {
-                if (this.regionInfo == null)
-                {
-                    this.regionInfo = new XmpRegionInfo();
-                }
-
-                return this.regionInfo;
-            }
-
-            set
-            {
-                this.regionInfo = value;
-            }
+            get;
+            set;
         }
 
+        /// <summary>
+        /// List of Tags, sometimes known as Keywords
+        /// </summary>
         [XmlArray]
         public TagList Tags
         {
-            get
-            {
-                if (this.tags == null)
-                {
-                    this.tags = new TagList();
-                }
-
-                return this.tags;
-            }
-
-            set
-            {
-                this.tags = value;
-            }
+            get;
+            set;
         }
 
+        /// <summary>
+        /// Iptc Address (Only stored as ASCII)
+        /// </summary>
         [XmlElementAttribute]
         public Address IptcAddress
         {
-            get
-            {
-                if (this.iptcAddress == null)
-                {
-                    this.iptcAddress = new Address();
-                }
-
-                return this.iptcAddress;
-            }
-
-            set
-            {
-                this.iptcAddress = value;
-            }
+            get;
+            set;
         }
 
+        /// <summary>
+        /// Gps Position
+        /// </summary>
         [XmlElementAttribute]
         public GpsPosition GpsPosition
         {
-            get
-            {
-                if (this.gpsPosition == null)
-                {
-                    this.gpsPosition = new GpsPosition();
-                }
-
-                return this.gpsPosition;
-            }
-
-            set
-            {
-                this.gpsPosition = value;
-            }
+            get;
+            set;
         }
 
+        /// <summary>
+        /// DateAquired, Microsoft Windows7 Property field
+        /// </summary>
         [XmlAttribute]
         public DateTime DateAquired
         {
@@ -177,6 +176,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// DateTaken, recorded by the camera when the photo is taken
+        /// </summary>
         [XmlAttribute]
         public DateTime DateTaken
         {
@@ -184,6 +186,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// ISO Speed rating 
+        /// </summary>
         [XmlAttribute]
         public string Iso
         {
@@ -191,6 +196,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Image Width measured in Pixels
+        /// </summary>
         [XmlAttribute("Width")]
         public int ImageWidth
         {
@@ -198,6 +206,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Image Height measured in Pixels
+        /// </summary>
         [XmlAttribute("Height")]
         public int ImageHeight
         {
@@ -205,6 +216,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Rating (Ranging 0-5)
+        /// </summary>
         [XmlAttribute]
         public int Rating
         {
@@ -212,6 +226,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Subject, not often used by software, Title should be used in most cases
+        /// </summary>
         [XmlAttribute]
         public string Subject
         {
@@ -229,24 +246,18 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// List of Authors, also known as Photographer
+        /// </summary>
         public PeopleList Authors
         {
-            get
-            {
-                if (this.authors == null)
-                {
-                    this.authors = new PeopleList();
-                }
-
-                return this.authors;
-            }
-
-            set
-            {
-                this.authors = value;
-            }
+            get;
+            set;
         }
 
+        /// <summary>
+        /// Comment, also known as Description
+        /// </summary>
         [XmlAttribute]
         public string Comment
         {
@@ -254,6 +265,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// DateDigitized, recorded by the camera when the photo is taken
+        /// </summary>
         [XmlIgnore]
         public DateTime DateDigitised
         {
@@ -261,6 +275,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// List of People stored in Region (Readonly)
+        /// </summary>
         [XmlIgnore]
         public PeopleList People
         {
@@ -268,7 +285,7 @@ namespace FotoFly
             {
                 PeopleList people = new PeopleList();
 
-                foreach (XmpRegion region in this.RegionInfo.Regions)
+                foreach (ImageRegion region in this.RegionInfo.Regions)
                 {
                     people.Add(region.PersonDisplayName);
                 }
@@ -277,6 +294,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Orientation of the Image (Readonly)
+        /// </summary>
         [XmlIgnore]
         public PhotoMetadataEnums.ImageOrientations Orientation
         {
@@ -294,6 +314,9 @@ namespace FotoFly
             }
         }
 
+        /// <summary>
+        /// Vertical Resolution of main photo
+        /// </summary>
         [XmlIgnore]
         public int VerticalResolution
         {
@@ -301,6 +324,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// Horizontal Resolution of main photo
+        /// </summary>
         [XmlIgnore]
         public int HorizontalResolution
         {
@@ -308,6 +334,9 @@ namespace FotoFly
             set;
         }
 
+        /// <summary>
+        /// DigitalZoomRatio
+        /// </summary>
         [XmlAttribute]
         public double DigitalZoomRatio
         {

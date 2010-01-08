@@ -36,7 +36,7 @@ namespace FotoFly
         {
             get
             {
-                if (this.IsFileValid && this.FileExists)
+                if (this.IsFileNameValid && this.FileExists)
                 {
                     return Regex.Replace(new FileInfo(this.FileFullName).Name, this.FileExtension, string.Empty, RegexOptions.IgnoreCase);
                 }
@@ -54,7 +54,7 @@ namespace FotoFly
         {
             get
             {
-                if (this.IsFileValid)
+                if (this.IsFileNameValid)
                 {
                     return new FileInfo(this.FileFullName).Extension.ToLower();
                 }
@@ -65,7 +65,7 @@ namespace FotoFly
             }
         }
 
-        public bool IsFileValid
+        public bool IsFileNameValid
         {
             get
             {
@@ -131,7 +131,7 @@ namespace FotoFly
 
         public void MoveTo(string newDirectory, bool overWriteExistingFile)
         {
-            if (this.IsFileValid)
+            if (this.IsFileNameValid)
             {
                 FileInfo currentFile = new FileInfo(this.FileFullName);
                 FileInfo newName = new FileInfo(newDirectory + currentFile.Name);
@@ -166,7 +166,7 @@ namespace FotoFly
                 return;
             }
 
-            if (this.IsFileValid && this.FileExists)
+            if (this.IsFileNameValid && this.FileExists)
             {
                 // Build list of files to rename (old name, new name)
                 Dictionary<string, string> filesToRename = new Dictionary<string, string>();
@@ -247,8 +247,13 @@ namespace FotoFly
 
         public void FindSecondaryFiles(string directoryName)
         {
+            if (!Directory.Exists(directoryName))
+            {
+                throw new Exception("Directory not found: " + directoryName);
+            }
+
             // Only search for files if the main photo is valid
-            if (this.IsFileValid)
+            if (this.IsFileNameValid)
             {
                 foreach (string file in Directory.GetFiles(directoryName, this.FileName + ".*"))
                 {
@@ -259,7 +264,7 @@ namespace FotoFly
 
         public void Delete()
         {
-            if (this.IsFileValid)
+            if (this.IsFileNameValid)
             {
                 FileInfo currentFile = new FileInfo(this.FileFullName);
 

@@ -1,7 +1,7 @@
-﻿// <copyright file="XmpRegion.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+﻿// <copyright file="ImageRegion.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
-// <summary>XmpRegion</summary>
+// <summary>ImageRegion</summary>
 namespace FotoFly
 {
     using System;
@@ -10,18 +10,18 @@ namespace FotoFly
     using System.Text;
     using System.Xml.Serialization;
 
-    public class XmpRegion : ICloneable
+    public class ImageRegion : ICloneable
     {
-        public XmpRegion()
+        public ImageRegion()
         {
         }
 
-        public XmpRegion(string personDisplayName)
+        public ImageRegion(string personDisplayName)
         {
             this.PersonDisplayName = personDisplayName;
         }
 
-        public XmpRegion(string personDisplayName, string rectangleString, string personEmailDigest, string personLiveIdCID)
+        public ImageRegion(string personDisplayName, string rectangleString, string personEmailDigest, string personLiveIdCID)
         {
             this.RectangleString = rectangleString;
             this.PersonDisplayName = personDisplayName;
@@ -94,9 +94,9 @@ namespace FotoFly
 
         public override bool Equals(object unknownObject)
         {
-            if (unknownObject is XmpRegion)
+            if (unknownObject is ImageRegion)
             {
-                XmpRegion compareRegion = unknownObject as XmpRegion;
+                ImageRegion compareRegion = unknownObject as ImageRegion;
 
                 if (compareRegion.PersonDisplayName == this.PersonDisplayName
                     && compareRegion.PersonEmailDigest == this.PersonEmailDigest
@@ -112,7 +112,7 @@ namespace FotoFly
 
         public object Clone()
         {
-            XmpRegion cloneRegion = new XmpRegion();
+            ImageRegion cloneRegion = new ImageRegion();
             cloneRegion.RectangleString = this.RectangleString;
             cloneRegion.PersonLiveIdCID = this.PersonLiveIdCID;
             cloneRegion.PersonEmailDigest = this.PersonEmailDigest;

@@ -109,7 +109,7 @@ namespace FotoFly
         /// <summary>
         /// Microsoft Region Info extension which provides data on regions in the photo
         /// </summary>
-        XmpRegionInfo RegionInfo { get; set; }
+        ImageRegionInfo RegionInfo { get; set; }
 
         /// <summary>
         /// Shutter Speed
@@ -142,7 +142,7 @@ namespace FotoFly
         GpsPosition GpsPosition { get; set; }
 
         /// <summary>
-        /// Iptc Address
+        /// Iptc Address (Only stored as ASCII)
         /// </summary>
         Address IptcAddress { get; set; }
     }

@@ -1,7 +1,7 @@
-﻿// <copyright file="XmpRegionInfo.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+﻿// <copyright file="ImageRegionInfo.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
-// <summary>XmpRegionInfo</summary>
+// <summary>ImageRegionInfo</summary>
 namespace FotoFly
 {
     using System;
@@ -10,18 +10,18 @@ namespace FotoFly
     using System.Text;
     using System.Xml.Serialization;
 
-    public class XmpRegionInfo : ICloneable
+    public class ImageRegionInfo : ICloneable
     {
-        private List<XmpRegion> regions;
+        private List<ImageRegion> regions;
 
         [XmlArrayItem("Region")]
-        public List<XmpRegion> Regions
+        public List<ImageRegion> Regions
         {
             get
             {
                 if (this.regions == null)
                 {
-                    this.regions = new List<XmpRegion>();
+                    this.regions = new List<ImageRegion>();
                 }
 
                 return this.regions;
@@ -35,9 +35,9 @@ namespace FotoFly
 
         public override bool Equals(object unknownObject)
         {
-            if (unknownObject is XmpRegionInfo)
+            if (unknownObject is ImageRegionInfo)
             {
-                XmpRegionInfo compareRegionInfo = unknownObject as XmpRegionInfo;
+                ImageRegionInfo compareRegionInfo = unknownObject as ImageRegionInfo;
 
                 if (compareRegionInfo.Regions.Count == this.Regions.Count)
                 {
@@ -60,12 +60,12 @@ namespace FotoFly
 
         public object Clone()
         {
-            XmpRegionInfo cloneRegionInfo = new XmpRegionInfo();
-            cloneRegionInfo.Regions = new List<XmpRegion>();
+            ImageRegionInfo cloneRegionInfo = new ImageRegionInfo();
+            cloneRegionInfo.Regions = new List<ImageRegion>();
 
-            foreach (XmpRegion region in this.Regions)
+            foreach (ImageRegion region in this.Regions)
             {
-                cloneRegionInfo.Regions.Add(region.Clone() as XmpRegion);
+                cloneRegionInfo.Regions.Add(region.Clone() as ImageRegion);
             }
 
             return cloneRegionInfo;

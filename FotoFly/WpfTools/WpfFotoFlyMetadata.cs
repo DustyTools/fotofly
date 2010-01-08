@@ -88,7 +88,10 @@ namespace FotoFly.WpfTools
                 {
                     double utcOffset = Convert.ToDouble(utcOffsetString);
 
-                    if (utcOffset > 12 || utcOffset < -12)
+                    // Max range is -12 to +14
+                    // UTC-12 = Baker Island, Howland Island
+                    // UTC+14 = Kiribati
+                    if (utcOffset > 14 || utcOffset < -12)
                     {
                         return null;
                     }
@@ -103,9 +106,17 @@ namespace FotoFly.WpfTools
             {
                 this.CreateFotoflyStruct();
 
-                if (value > 12 || value < -12)
+                // Max range is -12 to +14
+                // UTC-12 = Baker Island, Howland Island
+                // UTC+14 = Kiribati
+                if (value > 14 || value < -12)
                 {
                     this.BitmapMetadata.RemoveQuery(XmpFotoFlyQueries.UtcOffset.Query);
+                }
+                else if (value > 0)
+                {
+                    // Prepend postive values with a plus sign
+                    this.BitmapMetadata.SetQuery(XmpFotoFlyQueries.UtcOffset.Query, "+" + value.ToString());
                 }
                 else
                 {

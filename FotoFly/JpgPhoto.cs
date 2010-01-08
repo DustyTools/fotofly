@@ -19,8 +19,6 @@ namespace FotoFly
 
     public class JpgPhoto : GenericPhotoFile
     {
-        private int metadataBackupImageMaxDimension = 100;
-    
         /// <summary>
         /// Class representing a Jpeg Photo
         /// </summary>
@@ -38,14 +36,14 @@ namespace FotoFly
         }
 
         /// <summary>
-        /// Metadata for the Photo
+        /// Industry Standard Metadata
         /// </summary>
         public PhotoMetadata Metadata
         {
             get
             {
                 // Attempt to read the Metadata if it's not already loaded
-                if (this.InternalPhotoMetadata == null && this.IsFileValid)
+                if (this.InternalPhotoMetadata == null && this.IsFileNameValid)
                 {
                     this.ReadMetadata();
                 }
@@ -62,7 +60,7 @@ namespace FotoFly
             get
             {
                 // Attempt to read the Metadata if it's not already loaded
-                if (this.InternalFotoFlyMetadata == null && this.IsFileValid)
+                if (this.InternalFotoFlyMetadata == null && this.IsFileNameValid)
                 {
                     this.ReadMetadata();
                 }
@@ -74,12 +72,12 @@ namespace FotoFly
         /// <summary>
         /// The filename is valid and the file exists
         /// </summary>
-        public new bool IsFileValid
+        public new bool IsFileNameValid
         {
             get
             {
                 // Compliment Base checks with file extension checks
-                return base.IsFileValid && this.ImageType == GenericPhotoEnums.ImageTypes.Jpeg;
+                return base.IsFileNameValid && this.ImageType == GenericPhotoEnums.ImageTypes.Jpeg;
             }
         }
 
@@ -88,7 +86,7 @@ namespace FotoFly
         /// </summary>
         public void ReadMetadata()
         {
-            if (this.IsFileValid)
+            if (this.IsFileNameValid)
             {
                 if (this.HandleExceptions)
                 {
@@ -121,7 +119,7 @@ namespace FotoFly
         /// <param name="fileName">File to save the metadata changes to</param>
         public void WriteMetadata(string fileName)
         {
-            if (!this.IsFileValid)
+            if (!this.IsFileNameValid)
             {
                 throw new Exception("Source file does not exist or is not valid: " + fileName);
             }
@@ -140,7 +138,7 @@ namespace FotoFly
         /// </summary>
         public void WriteMetadata()
         {
-            if (this.IsFileValid)
+            if (this.IsFileNameValid)
             {
                 if (this.HandleExceptions)
                 {
@@ -226,97 +224,6 @@ namespace FotoFly
             {
                 GenericSerialiser.Write<PhotoMetadata>(this.Metadata, fileName);
             }
-        }
-
-        /// <summary>
-        /// Creates a small jpeg image containing a backup of all the metadata
-        /// </summary>
-        /// <param name="fileName">Filename of the file to create</param>
-        /// <param name="overwrite">If true creates a new file, if false updates an existing file</param>
-        public void CreateMetadataBackup(string destinationFileName, bool overwrite)
-        {
-            if (!File.Exists(this.FileFullName))
-            {
-                throw new Exception("Source file does not exist: " + this.FileFullName);
-            }
-            else if (File.Exists(destinationFileName) && overwrite)
-            {
-                File.Delete(destinationFileName);
-            }
-
-            // Check to see if we need to create a new image
-            if (!File.Exists(destinationFileName))
-            {
-                WpfFileManipulator wpfFileManipulator = new WpfFileManipulator();
-                wpfFileManipulator.CopyImageAndResize(this.FileFullName, destinationFileName, this.metadataBackupImageMaxDimension);
-            }
-
-            // Update the new files metadata
-            WpfFileManager.CopyBitmapMetadata(this.FileFullName, destinationFileName);
-        }
-
-        /// <summary>
-        /// Compares the Metadata with the metadata stored in the original file
-        /// </summary>
-        /// <returns>A list of changes</returns>
-        public List<string> CompareMetadataToFileMetadata()
-        {
-            if (!this.IsFileValid)
-            {
-                throw new Exception("File does not exist or is not valid: " + this.FileFullName);
-            }
-
-            List<string> changes;
-
-            if (this.HandleExceptions)
-            {
-                try
-                {
-                    changes = this.UnhandledCompare();
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Error reading metadata: " + this.FileFullName, e);
-                }
-            }
-            else
-            {
-                changes = this.UnhandledCompare();
-            }
-
-            return changes;
-        }
-
-        /// <summary>
-        /// Compares the Metadata with the metadata stored in the original file, with no exception handling
-        /// </summary>
-        /// <returns>A list of changes</returns>
-        private List<string> UnhandledCompare()
-        {
-            List<string> changes = new List<string>();
-
-            // Read BitmapMetadata
-            using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileFullName))
-            {
-                // Get generic Metadata
-                WpfMetadata wpfMetadata = new WpfMetadata(wpfFileManager.BitmapMetadata);
-
-                // Copy the common metadata across using reflection tool
-                IPhotoMetadataTools.CompareMetadata(wpfMetadata, this.InternalPhotoMetadata, ref changes);
-
-                // Get FotoFly Custom Metadata
-                WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(wpfFileManager.BitmapMetadata);
-
-                // Copy the common metadata across using reflection tool
-                IPhotoMetadataTools.CompareMetadata(wpfFotoFlyMetadata, this.FotoFlyMetadata, ref changes);
-            }
-
-            // Sort
-            var query = from x in changes
-                        orderby x
-                        select x;
-
-            return query.ToList();
         }
 
         /// <summary>

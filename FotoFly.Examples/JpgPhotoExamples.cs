@@ -51,7 +51,7 @@
             jpgPhoto.ReadMetadata();
 
             // Create new Region
-            XmpRegion newRegion = new XmpRegion();
+            ImageRegion newRegion = new ImageRegion();
             newRegion.PersonDisplayName = "Ben Vincent";
             newRegion.RectangleString = "0.1, 0.1, 0.1, 0.1";
 
