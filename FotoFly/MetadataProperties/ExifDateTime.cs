@@ -18,7 +18,11 @@ namespace FotoFly
 
         public ExifDateTime(string exifString)
         {
-            if (exifString != null && exifString.Length == 19)
+            // Default to new Datetime
+            this.dateTime = new DateTime();
+
+            // Check the string is valid in the format "YYYY:MM:DD HH:mm:ss"
+            if (!string.IsNullOrEmpty(exifString) && exifString.Length == 19 && exifString != "0000:00:00 00:00:00")
             {
                 StringBuilder formattedDate = new StringBuilder();
                 formattedDate.Append(exifString.Substring(0, 4)); // year
@@ -33,13 +37,13 @@ namespace FotoFly
                 formattedDate.Append(":");
                 formattedDate.Append(exifString.Substring(17, 2)); // second
 
-                DateTime newDateTime = DateTime.Parse(formattedDate.ToString());
+                DateTime newDateTime;
 
-                this.dateTime = new DateTime(newDateTime.Ticks, DateTimeKind.Local);
-            }
-            else
-            {
-                this.dateTime = new DateTime();
+                // Try parsing as DateTime
+                if (DateTime.TryParse(formattedDate.ToString(), out newDateTime))
+                {
+                    this.dateTime = new DateTime(newDateTime.Ticks, DateTimeKind.Local);
+                }
             }
         }
 
