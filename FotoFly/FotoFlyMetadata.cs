@@ -30,6 +30,30 @@ namespace FotoFly
             }
         }
 
+        public bool IsAddressOfGpsSet
+        {
+            get
+            {
+                return this.AddressOfGps.IsValidAddress;
+            }
+        }
+
+        public bool IsUtcDateSet
+        {
+            get
+            {
+                return this.UtcDate != new DateTime();
+            }
+        }
+
+        public bool IsOriginalCameraDateSet
+        {
+            get
+            {
+                return this.OriginalCameraDate != new DateTime();
+            }
+        }
+
         [XmlAttribute]
         public DateTime LastEditDate { get; set; }
 
