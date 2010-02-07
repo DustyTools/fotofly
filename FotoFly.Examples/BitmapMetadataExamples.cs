@@ -19,7 +19,7 @@
 
             WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
 
-            Debug.WriteLine(wpfMetadata.GpsDateTimeStamp);
+            Debug.WriteLine(wpfMetadata.ExifGpsDateTimeStamp);
         }
 
         public static void WriteMetadata(string inputFile)

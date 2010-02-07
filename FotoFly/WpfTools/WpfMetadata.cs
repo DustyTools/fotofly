@@ -1184,13 +1184,63 @@ namespace FotoFly.WpfTools
         {
             get
             {
+                // If Exif and IPTC is set but different, throw an exception
+                if (this.ExifGpsPosition.IsValidCoordinate && this.IptcGpsPosition.IsValidCoordinate && !this.IptcGpsPosition.Equals(this.GpsPosition))
+                {
+                    // If Exif and IPTC are set but different, throw an exception
+                    throw new Exception("IPTC & EXIF GpsPosition are both valid but different");
+                }
+                else if (this.ExifGpsPosition.IsValidCoordinate)
+                {
+                    return this.ExifGpsPosition;
+                }
+                else if (this.IptcGpsPosition.IsValidCoordinate)
+                {
+                    return this.IptcGpsPosition;
+                }
+                else
+                {
+                    return new GpsPosition();
+                }
+            }
+
+            set
+            {
+                // Save coordinate to Exif & Iptc
+                this.ExifGpsPosition = value;
+                this.IptcGpsPosition = value;
+            }
+        }
+
+        /// <summary>
+        /// GpsPosition stored in IPTC
+        /// </summary>
+        public GpsPosition IptcGpsPosition
+        {
+            get
+            {
+                return new GpsPosition();
+            }
+
+            set
+            {
+            }
+        }
+
+        /// <summary>
+        /// GpsPosition 
+        /// </summary>
+        public GpsPosition ExifGpsPosition
+        {
+            get
+            {
                 GpsPosition gpsPosition = new GpsPosition();
-                gpsPosition.Latitude = this.GpsLatitude.Clone() as GpsCoordinate;
-                gpsPosition.Longitude = this.GpsLongitude.Clone() as GpsCoordinate;
-                gpsPosition.Altitude = this.GpsAltitude;
-                gpsPosition.Source = this.GpsProcessingMethod;
-                gpsPosition.Dimension = this.GpsMeasureMode;
-                gpsPosition.SatelliteTime = this.GpsDateTimeStamp;
+                gpsPosition.Latitude = this.ExifGpsLatitude.Clone() as GpsCoordinate;
+                gpsPosition.Longitude = this.ExifGpsLongitude.Clone() as GpsCoordinate;
+                gpsPosition.Altitude = this.ExifGpsAltitude;
+                gpsPosition.Source = this.ExifGpsProcessingMethod;
+                gpsPosition.Dimension = this.ExifGpsMeasureMode;
+                gpsPosition.SatelliteTime = this.ExifGpsDateTimeStamp;
 
                 return gpsPosition;
             }
@@ -1201,7 +1251,7 @@ namespace FotoFly.WpfTools
                 {
                     if (value.Dimension == GpsPosition.Dimensions.ThreeDimensional)
                     {
-                        this.GpsAltitude = value.Altitude;
+                        this.ExifGpsAltitude = value.Altitude;
                     }
                     else
                     {
@@ -1209,23 +1259,23 @@ namespace FotoFly.WpfTools
                         this.BitmapMetadata.SetQuery(GpsQueries.Altitude.Query, string.Empty);
                     }
 
-                    this.GpsLatitude = value.Latitude.Clone() as GpsCoordinate;
-                    this.GpsLongitude = value.Longitude.Clone() as GpsCoordinate;
-                    this.GpsDateTimeStamp = value.SatelliteTime;
-                    this.GpsMeasureMode = value.Dimension;
-                    this.GpsProcessingMethod = value.Source;
-                    this.GpsVersionID = "2200";
+                    this.ExifGpsLatitude = value.Latitude.Clone() as GpsCoordinate;
+                    this.ExifGpsLongitude = value.Longitude.Clone() as GpsCoordinate;
+                    this.ExifGpsDateTimeStamp = value.SatelliteTime;
+                    this.ExifGpsMeasureMode = value.Dimension;
+                    this.ExifGpsProcessingMethod = value.Source;
+                    this.ExifGpsVersionID = "2200";
                 }
                 else
                 {
                     // Clear all properties
-                    this.GpsAltitude = double.NaN;
-                    this.GpsLatitude = new GpsCoordinate();
-                    this.GpsLongitude = new GpsCoordinate();
-                    this.GpsDateTimeStamp = new DateTime();
-                    this.GpsProcessingMethod = string.Empty;
-                    this.GpsVersionID = string.Empty;
-                    this.GpsMeasureMode = GpsPosition.Dimensions.NotSpecified;
+                    this.ExifGpsAltitude = double.NaN;
+                    this.ExifGpsLatitude = new GpsCoordinate();
+                    this.ExifGpsLongitude = new GpsCoordinate();
+                    this.ExifGpsDateTimeStamp = new DateTime();
+                    this.ExifGpsProcessingMethod = string.Empty;
+                    this.ExifGpsVersionID = string.Empty;
+                    this.ExifGpsMeasureMode = GpsPosition.Dimensions.NotSpecified;
                 }
             }
         }
@@ -1233,7 +1283,7 @@ namespace FotoFly.WpfTools
         /// <summary>
         /// Gps Altitude
         /// </summary>
-        public double GpsAltitude
+        public double ExifGpsAltitude
         {
             // Altitude is expressed as one RATIONAL count. The reference unit is meters
             // 0 = Above sea level, 1 = Below sea level 
@@ -1290,7 +1340,7 @@ namespace FotoFly.WpfTools
         /// <summary>
         /// Gps Latitude
         /// </summary>
-        public GpsCoordinate GpsLatitude
+        public GpsCoordinate ExifGpsLatitude
         {
             get
             {
@@ -1337,7 +1387,7 @@ namespace FotoFly.WpfTools
         /// <summary>
         /// Gps Longitude
         /// </summary>
-        public GpsCoordinate GpsLongitude
+        public GpsCoordinate ExifGpsLongitude
         {
             get
             {
@@ -1384,7 +1434,7 @@ namespace FotoFly.WpfTools
         /// <summary>
         /// Gps Measure Mode
         /// </summary>
-        public GpsPosition.Dimensions GpsMeasureMode
+        public GpsPosition.Dimensions ExifGpsMeasureMode
         {
             get
             {
@@ -1428,7 +1478,7 @@ namespace FotoFly.WpfTools
         /// <summary>
         /// Gps Time stamp
         /// </summary>
-        public DateTime GpsDateTimeStamp
+        public DateTime ExifGpsDateTimeStamp
         {
             get
             {
@@ -1472,7 +1522,7 @@ namespace FotoFly.WpfTools
         /// <summary>
         /// Gps Version ID
         /// </summary>
-        public string GpsVersionID
+        public string ExifGpsVersionID
         {
             get
             {
@@ -1488,7 +1538,7 @@ namespace FotoFly.WpfTools
         /// <summary>
         /// Gps Processing Mode
         /// </summary>
-        public string GpsProcessingMethod
+        public string ExifGpsProcessingMethod
         {
             get
             {
