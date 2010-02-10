@@ -23,10 +23,10 @@ namespace FotoFly.JpegBackup
             BitmapMetadataExamples.WriteMetadata(Program.testPhotoPath + TestPhotos.Regions0);
             BitmapMetadataExamples.CreateWLPGRegions(Program.testPhotoPath + TestPhotos.Regions0);
             BitmapMetadataExamples.UpdateWLPGRegions(Program.testPhotoPath + TestPhotos.Regions0);
-            BitmapMetadataExamples.ReadGpsAltitude(Program.testPhotoPath + TestPhotos.Geotagged);
-            BitmapMetadataExamples.ReadGpsLatitude(Program.testPhotoPath + TestPhotos.Geotagged);
-            BitmapMetadataExamples.ReadIPTCAddres(Program.testPhotoPath + TestPhotos.Geotagged);
-            BitmapMetadataExamples.RemoveIPTCAddres(Program.testPhotoPath + TestPhotos.Geotagged);
+            BitmapMetadataExamples.ReadGpsAltitude(Program.testPhotoPath + TestPhotos.GeotaggedExif1);
+            BitmapMetadataExamples.ReadGpsLatitude(Program.testPhotoPath + TestPhotos.GeotaggedExif1);
+            BitmapMetadataExamples.ReadIPTCAddres(Program.testPhotoPath + TestPhotos.GeotaggedExif1);
+            BitmapMetadataExamples.RemoveIPTCAddres(Program.testPhotoPath + TestPhotos.GeotaggedExif1);
 
             // JpgPhoto Examples:
             // JpgPhoto for managing Jpg files and their metadata

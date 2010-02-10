@@ -41,9 +41,15 @@
 
         public static readonly string FlashAuto = "Flash-Auto.jpg";
         public static readonly string FlashManual = "Flash-Manual.jpg";
-        
-        public static readonly string Geotagged = "Geotagged.jpg";
-        
+
+        public static readonly string GeotaggedExif1 = "GeotaggedExif1.jpg";
+
+        public static readonly string GeotaggedXmp1 = "GeotaggedXmp1.jpg";
+        public static readonly string GeotaggedXmp2 = "GeotaggedXmp2.jpg";
+        public static readonly string GeotaggedXmp3 = "GeotaggedXmp3.jpg";
+        public static readonly string GeotaggedXmp4 = "GeotaggedXmp4.jpg";
+        public static readonly string GeotaggedXmp5 = "GeotaggedXmp5.jpg";
+
         public static readonly string ISO400 = "ISO-400.jpg";
         public static readonly string ISOAuto = "ISO-Auto.jpg";
         
