@@ -7,8 +7,8 @@
     <ProjectGuid>{07809749-5636-48BA-ADD3-8C95757DADC2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FotoFly.UnitTests</RootNamespace>
-    <AssemblyName>FotoFly.UnitTests</AssemblyName>
+    <RootNamespace>Fotofly.UnitTests</RootNamespace>
+    <AssemblyName>Fotofly.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -53,9 +53,9 @@
     <Compile Include="TestPhotos.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FotoFly\FotoFly.csproj">
+    <ProjectReference Include="..\FotoFly\Fotofly.csproj">
       <Project>{156697C5-5AFD-4E4D-B96C-BC55B219907D}</Project>
-      <Name>FotoFly</Name>
+      <Name>Fotofly</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -1,11 +1,11 @@
-namespace FotoFly.JpegBackup
+namespace Fotofly.JpegBackup
 {
     using System;
     using System.Diagnostics;
     using System.Text.RegularExpressions;
     using System.Windows.Media.Imaging;
 
-    using FotoFly.UnitTests;
+    using Fotofly.UnitTests;
 
     public class Program
     {

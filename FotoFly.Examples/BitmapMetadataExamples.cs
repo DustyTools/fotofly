@@ -1,4 +1,4 @@
-﻿namespace FotoFly.JpegBackup
+﻿namespace Fotofly.JpegBackup
 {
     using System;
     using System.Collections.Generic;
@@ -8,8 +8,8 @@
     using System.Text;
     using System.Windows.Media.Imaging;
 
-    using FotoFly.MetadataQueries;
-    using FotoFly.WpfTools;
+    using Fotofly.MetadataQueries;
+    using Fotofly.WpfTools;
 
     public static class BitmapMetadataExamples
     {

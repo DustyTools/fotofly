@@ -8,8 +8,8 @@
     <ProjectGuid>{156697C5-5AFD-4E4D-B96C-BC55B219907D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FotoFly</RootNamespace>
-    <AssemblyName>FotoFly</AssemblyName>
+    <RootNamespace>Fotofly</RootNamespace>
+    <AssemblyName>Fotofly</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -122,7 +122,6 @@
     </Compile>
     <Compile Include="WpfTools\BitmapMetadataHelper.cs" />
     <Compile Include="WpfTools\WpfFileManager.cs" />
-    <Compile Include="WpfTools\WpfFileManipulator.cs" />
     <Compile Include="WpfTools\WpfFotoFlyMetadata.cs" />
     <Compile Include="WpfTools\WpfMetadata.cs" />
     <Compile Include="XmlTools\GenericSerialiser.cs" />

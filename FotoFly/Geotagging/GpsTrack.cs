@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-05</date>
 // <summary>Class that represents a Generic Gps Track</summary>
-namespace FotoFly.Geotagging
+namespace Fotofly.Geotagging
 {
     using System;
     using System.Collections.Generic;

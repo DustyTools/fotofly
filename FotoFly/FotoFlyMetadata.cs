@@ -1,8 +1,8 @@
-// <copyright file="FotoFlyMetadata.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <copyright file="FotoflyMetadata.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
 // <date>2009-12-06</date>
-// <summary>FotoFlyMetadata</summary>
-namespace FotoFly
+// <summary>FotoflyMetadata</summary>
+namespace Fotofly
 {
     using System;
     using System.Collections.Generic;
@@ -10,9 +10,9 @@ namespace FotoFly
     using System.Text;
     using System.Xml.Serialization;
 
-    public class FotoFlyMetadata : IFotoFlyMetadata
+    public class FotoflyMetadata : IFotoflyMetadata
     {
-        public FotoFlyMetadata()
+        public FotoflyMetadata()
         {
         }
 

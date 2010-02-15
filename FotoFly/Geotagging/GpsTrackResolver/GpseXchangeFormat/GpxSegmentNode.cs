@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-05</date>
 // <summary>Class that represents a Gpx Segment Node</summary>
-namespace FotoFly.GpseXchangeFormat
+namespace Fotofly.GpseXchangeFormat
 {
     using System;
     using System.Collections.Generic;

@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-05</date>
 // <summary>Class that reads and writes Gpx Files</summary>
-namespace FotoFly.GpseXchangeFormat
+namespace Fotofly.GpseXchangeFormat
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace FotoFly.GpseXchangeFormat
     using System.Xml;
     using System.Xml.Serialization;
 
-    using FotoFly.XmlTools;
+    using Fotofly.XmlTools;
 
     public static class GpxFileManager
     {

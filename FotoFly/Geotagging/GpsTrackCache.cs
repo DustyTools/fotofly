@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-05</date>
 // <summary>Class that represents a GpsTrackManager</summary>
-namespace FotoFly.Geotagging
+namespace Fotofly.Geotagging
 {
     using System;
     using System.Collections.Generic;
@@ -10,8 +10,8 @@ namespace FotoFly.Geotagging
     using System.Linq;
     using System.Text;
 
-    using FotoFly;
-    using FotoFly.GpseXchangeFormat;
+    using Fotofly;
+    using Fotofly.GpseXchangeFormat;
 
     public class GpsTrackCache
     {

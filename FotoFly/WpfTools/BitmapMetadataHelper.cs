@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>Static Class that provides extension methods to BitmapMetadata</summary>
-namespace FotoFly.WpfTools
+namespace Fotofly.WpfTools
 {
     using System;
     using System.Collections;
@@ -144,8 +144,11 @@ namespace FotoFly.WpfTools
                 // Garb source object
                 object sourceObject = bitmapMetadata.GetQuery(sourceQuery);
 
+                // Remove destination Query
+                bitmapMetadata.RemoveQuery(sourceQuery);
+
                 // Set destination Query
-                bitmapMetadata.SetQuery(destinationQuery, sourceObject);
+                bitmapMetadata.SetQuery(destinationQuery, sourceObject.ToString());
 
                 // Grab Destination Query
                 object destinationObject = bitmapMetadata.GetQuery(destinationQuery);

@@ -1,4 +1,4 @@
-﻿namespace FotoFly.UnitTests
+﻿namespace Fotofly.UnitTests
 {
     using System;
     using System.Collections.Generic;
@@ -11,12 +11,12 @@
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
-    using FotoFly;
-    using FotoFly.Geotagging;
-    using FotoFly.WpfTools;
+    using Fotofly;
+    using Fotofly.Geotagging;
+    using Fotofly.WpfTools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using FotoFly.MetadataQueries;
+    using Fotofly.MetadataQueries;
 
     [TestClass]
     public class JpgPhotoUnitTests

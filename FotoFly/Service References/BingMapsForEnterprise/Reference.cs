@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FotoFly.BingMapsForEnterprise {
+namespace Fotofly.BingMapsForEnterprise {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -20,42 +20,42 @@ namespace FotoFly.BingMapsForEnterprise {
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetVersionInfoResponse GetVersionInfo(FotoFly.BingMapsForEnterprise.GetVersionInfoRequest request);
+        Fotofly.BingMapsForEnterprise.GetVersionInfoResponse GetVersionInfo(Fotofly.BingMapsForEnterprise.GetVersionInfoRequest request);
         
         // CODEGEN: Generating message contract since message GetCountryRegionInfoRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/GetCountryRegionInfo", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetCountryRegionInfoResponse GetCountryRegionInfo(FotoFly.BingMapsForEnterprise.GetCountryRegionInfoRequest request);
+        Fotofly.BingMapsForEnterprise.GetCountryRegionInfoResponse GetCountryRegionInfo(Fotofly.BingMapsForEnterprise.GetCountryRegionInfoRequest request);
         
         // CODEGEN: Generating message contract since message GetEntityTypesRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/GetEntityTypes", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetEntityTypesResponse GetEntityTypes(FotoFly.BingMapsForEnterprise.GetEntityTypesRequest request);
+        Fotofly.BingMapsForEnterprise.GetEntityTypesResponse GetEntityTypes(Fotofly.BingMapsForEnterprise.GetEntityTypesRequest request);
         
         // CODEGEN: Generating message contract since message GetDataSourceInfoRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/GetDataSourceInfo", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetDataSourceInfoResponse GetDataSourceInfo(FotoFly.BingMapsForEnterprise.GetDataSourceInfoRequest request);
+        Fotofly.BingMapsForEnterprise.GetDataSourceInfoResponse GetDataSourceInfo(Fotofly.BingMapsForEnterprise.GetDataSourceInfoRequest request);
         
         // CODEGEN: Generating message contract since message GetGreatCircleDistancesRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/GetGreatCircleDistances", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetGreatCircleDistancesResponse GetGreatCircleDistances(FotoFly.BingMapsForEnterprise.GetGreatCircleDistancesRequest request);
+        Fotofly.BingMapsForEnterprise.GetGreatCircleDistancesResponse GetGreatCircleDistances(Fotofly.BingMapsForEnterprise.GetGreatCircleDistancesRequest request);
         
         // CODEGEN: Generating message contract since message GetClientTokenRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/GetClientToken", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetClientTokenResponse GetClientToken(FotoFly.BingMapsForEnterprise.GetClientTokenRequest request);
+        Fotofly.BingMapsForEnterprise.GetClientTokenResponse GetClientToken(Fotofly.BingMapsForEnterprise.GetClientTokenRequest request);
     }
     
     /// <remarks/>
@@ -5364,15 +5364,15 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetVersionInfoRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
         
         public GetVersionInfoRequest() {
         }
         
-        public GetVersionInfoRequest(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader) {
+        public GetVersionInfoRequest(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader) {
             this.CustomerInfoHeader = CustomerInfoHeader;
             this.UserInfoHeader = UserInfoHeader;
         }
@@ -5400,10 +5400,10 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetCountryRegionInfoRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
         public int[] entityIDs;
@@ -5411,7 +5411,7 @@ namespace FotoFly.BingMapsForEnterprise {
         public GetCountryRegionInfoRequest() {
         }
         
-        public GetCountryRegionInfoRequest(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, int[] entityIDs) {
+        public GetCountryRegionInfoRequest(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, int[] entityIDs) {
             this.CustomerInfoHeader = CustomerInfoHeader;
             this.UserInfoHeader = UserInfoHeader;
             this.entityIDs = entityIDs;
@@ -5440,10 +5440,10 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetEntityTypesRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
         public string dataSourceName;
@@ -5451,7 +5451,7 @@ namespace FotoFly.BingMapsForEnterprise {
         public GetEntityTypesRequest() {
         }
         
-        public GetEntityTypesRequest(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, string dataSourceName) {
+        public GetEntityTypesRequest(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, string dataSourceName) {
             this.CustomerInfoHeader = CustomerInfoHeader;
             this.UserInfoHeader = UserInfoHeader;
             this.dataSourceName = dataSourceName;
@@ -5480,10 +5480,10 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetDataSourceInfoRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
         public string[] dataSourceNames;
@@ -5491,7 +5491,7 @@ namespace FotoFly.BingMapsForEnterprise {
         public GetDataSourceInfoRequest() {
         }
         
-        public GetDataSourceInfoRequest(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, string[] dataSourceNames) {
+        public GetDataSourceInfoRequest(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, string[] dataSourceNames) {
             this.CustomerInfoHeader = CustomerInfoHeader;
             this.UserInfoHeader = UserInfoHeader;
             this.dataSourceNames = dataSourceNames;
@@ -5520,10 +5520,10 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetGreatCircleDistancesRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
         public LatLong[] latLongs;
@@ -5531,7 +5531,7 @@ namespace FotoFly.BingMapsForEnterprise {
         public GetGreatCircleDistancesRequest() {
         }
         
-        public GetGreatCircleDistancesRequest(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, LatLong[] latLongs) {
+        public GetGreatCircleDistancesRequest(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, LatLong[] latLongs) {
             this.CustomerInfoHeader = CustomerInfoHeader;
             this.UserInfoHeader = UserInfoHeader;
             this.latLongs = latLongs;
@@ -5560,18 +5560,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetClientTokenRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.TokenSpecification specification;
+        public Fotofly.BingMapsForEnterprise.TokenSpecification specification;
         
         public GetClientTokenRequest() {
         }
         
-        public GetClientTokenRequest(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, FotoFly.BingMapsForEnterprise.TokenSpecification specification) {
+        public GetClientTokenRequest(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, Fotofly.BingMapsForEnterprise.TokenSpecification specification) {
             this.CustomerInfoHeader = CustomerInfoHeader;
             this.UserInfoHeader = UserInfoHeader;
             this.specification = specification;
@@ -5595,12 +5595,12 @@ namespace FotoFly.BingMapsForEnterprise {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public interface CommonServiceSoapChannel : FotoFly.BingMapsForEnterprise.CommonServiceSoap, System.ServiceModel.IClientChannel {
+    public interface CommonServiceSoapChannel : Fotofly.BingMapsForEnterprise.CommonServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public partial class CommonServiceSoapClient : System.ServiceModel.ClientBase<FotoFly.BingMapsForEnterprise.CommonServiceSoap>, FotoFly.BingMapsForEnterprise.CommonServiceSoap {
+    public partial class CommonServiceSoapClient : System.ServiceModel.ClientBase<Fotofly.BingMapsForEnterprise.CommonServiceSoap>, Fotofly.BingMapsForEnterprise.CommonServiceSoap {
         
         public CommonServiceSoapClient() {
         }
@@ -5622,85 +5622,85 @@ namespace FotoFly.BingMapsForEnterprise {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetVersionInfoResponse FotoFly.BingMapsForEnterprise.CommonServiceSoap.GetVersionInfo(FotoFly.BingMapsForEnterprise.GetVersionInfoRequest request) {
+        Fotofly.BingMapsForEnterprise.GetVersionInfoResponse Fotofly.BingMapsForEnterprise.CommonServiceSoap.GetVersionInfo(Fotofly.BingMapsForEnterprise.GetVersionInfoRequest request) {
             return base.Channel.GetVersionInfo(request);
         }
         
-        public VersionInfo[] GetVersionInfo(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader) {
-            FotoFly.BingMapsForEnterprise.GetVersionInfoRequest inValue = new FotoFly.BingMapsForEnterprise.GetVersionInfoRequest();
+        public VersionInfo[] GetVersionInfo(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader) {
+            Fotofly.BingMapsForEnterprise.GetVersionInfoRequest inValue = new Fotofly.BingMapsForEnterprise.GetVersionInfoRequest();
             inValue.CustomerInfoHeader = CustomerInfoHeader;
             inValue.UserInfoHeader = UserInfoHeader;
-            FotoFly.BingMapsForEnterprise.GetVersionInfoResponse retVal = ((FotoFly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetVersionInfo(inValue);
+            Fotofly.BingMapsForEnterprise.GetVersionInfoResponse retVal = ((Fotofly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetVersionInfo(inValue);
             return retVal.GetVersionInfoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetCountryRegionInfoResponse FotoFly.BingMapsForEnterprise.CommonServiceSoap.GetCountryRegionInfo(FotoFly.BingMapsForEnterprise.GetCountryRegionInfoRequest request) {
+        Fotofly.BingMapsForEnterprise.GetCountryRegionInfoResponse Fotofly.BingMapsForEnterprise.CommonServiceSoap.GetCountryRegionInfo(Fotofly.BingMapsForEnterprise.GetCountryRegionInfoRequest request) {
             return base.Channel.GetCountryRegionInfo(request);
         }
         
-        public CountryRegionInfo[] GetCountryRegionInfo(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, int[] entityIDs) {
-            FotoFly.BingMapsForEnterprise.GetCountryRegionInfoRequest inValue = new FotoFly.BingMapsForEnterprise.GetCountryRegionInfoRequest();
+        public CountryRegionInfo[] GetCountryRegionInfo(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, int[] entityIDs) {
+            Fotofly.BingMapsForEnterprise.GetCountryRegionInfoRequest inValue = new Fotofly.BingMapsForEnterprise.GetCountryRegionInfoRequest();
             inValue.CustomerInfoHeader = CustomerInfoHeader;
             inValue.UserInfoHeader = UserInfoHeader;
             inValue.entityIDs = entityIDs;
-            FotoFly.BingMapsForEnterprise.GetCountryRegionInfoResponse retVal = ((FotoFly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetCountryRegionInfo(inValue);
+            Fotofly.BingMapsForEnterprise.GetCountryRegionInfoResponse retVal = ((Fotofly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetCountryRegionInfo(inValue);
             return retVal.GetCountryRegionInfoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetEntityTypesResponse FotoFly.BingMapsForEnterprise.CommonServiceSoap.GetEntityTypes(FotoFly.BingMapsForEnterprise.GetEntityTypesRequest request) {
+        Fotofly.BingMapsForEnterprise.GetEntityTypesResponse Fotofly.BingMapsForEnterprise.CommonServiceSoap.GetEntityTypes(Fotofly.BingMapsForEnterprise.GetEntityTypesRequest request) {
             return base.Channel.GetEntityTypes(request);
         }
         
-        public EntityType[] GetEntityTypes(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, string dataSourceName) {
-            FotoFly.BingMapsForEnterprise.GetEntityTypesRequest inValue = new FotoFly.BingMapsForEnterprise.GetEntityTypesRequest();
+        public EntityType[] GetEntityTypes(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, string dataSourceName) {
+            Fotofly.BingMapsForEnterprise.GetEntityTypesRequest inValue = new Fotofly.BingMapsForEnterprise.GetEntityTypesRequest();
             inValue.CustomerInfoHeader = CustomerInfoHeader;
             inValue.UserInfoHeader = UserInfoHeader;
             inValue.dataSourceName = dataSourceName;
-            FotoFly.BingMapsForEnterprise.GetEntityTypesResponse retVal = ((FotoFly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetEntityTypes(inValue);
+            Fotofly.BingMapsForEnterprise.GetEntityTypesResponse retVal = ((Fotofly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetEntityTypes(inValue);
             return retVal.GetEntityTypesResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetDataSourceInfoResponse FotoFly.BingMapsForEnterprise.CommonServiceSoap.GetDataSourceInfo(FotoFly.BingMapsForEnterprise.GetDataSourceInfoRequest request) {
+        Fotofly.BingMapsForEnterprise.GetDataSourceInfoResponse Fotofly.BingMapsForEnterprise.CommonServiceSoap.GetDataSourceInfo(Fotofly.BingMapsForEnterprise.GetDataSourceInfoRequest request) {
             return base.Channel.GetDataSourceInfo(request);
         }
         
-        public DataSource[] GetDataSourceInfo(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, string[] dataSourceNames) {
-            FotoFly.BingMapsForEnterprise.GetDataSourceInfoRequest inValue = new FotoFly.BingMapsForEnterprise.GetDataSourceInfoRequest();
+        public DataSource[] GetDataSourceInfo(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, string[] dataSourceNames) {
+            Fotofly.BingMapsForEnterprise.GetDataSourceInfoRequest inValue = new Fotofly.BingMapsForEnterprise.GetDataSourceInfoRequest();
             inValue.CustomerInfoHeader = CustomerInfoHeader;
             inValue.UserInfoHeader = UserInfoHeader;
             inValue.dataSourceNames = dataSourceNames;
-            FotoFly.BingMapsForEnterprise.GetDataSourceInfoResponse retVal = ((FotoFly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetDataSourceInfo(inValue);
+            Fotofly.BingMapsForEnterprise.GetDataSourceInfoResponse retVal = ((Fotofly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetDataSourceInfo(inValue);
             return retVal.GetDataSourceInfoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetGreatCircleDistancesResponse FotoFly.BingMapsForEnterprise.CommonServiceSoap.GetGreatCircleDistances(FotoFly.BingMapsForEnterprise.GetGreatCircleDistancesRequest request) {
+        Fotofly.BingMapsForEnterprise.GetGreatCircleDistancesResponse Fotofly.BingMapsForEnterprise.CommonServiceSoap.GetGreatCircleDistances(Fotofly.BingMapsForEnterprise.GetGreatCircleDistancesRequest request) {
             return base.Channel.GetGreatCircleDistances(request);
         }
         
-        public double[] GetGreatCircleDistances(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, LatLong[] latLongs) {
-            FotoFly.BingMapsForEnterprise.GetGreatCircleDistancesRequest inValue = new FotoFly.BingMapsForEnterprise.GetGreatCircleDistancesRequest();
+        public double[] GetGreatCircleDistances(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, LatLong[] latLongs) {
+            Fotofly.BingMapsForEnterprise.GetGreatCircleDistancesRequest inValue = new Fotofly.BingMapsForEnterprise.GetGreatCircleDistancesRequest();
             inValue.CustomerInfoHeader = CustomerInfoHeader;
             inValue.UserInfoHeader = UserInfoHeader;
             inValue.latLongs = latLongs;
-            FotoFly.BingMapsForEnterprise.GetGreatCircleDistancesResponse retVal = ((FotoFly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetGreatCircleDistances(inValue);
+            Fotofly.BingMapsForEnterprise.GetGreatCircleDistancesResponse retVal = ((Fotofly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetGreatCircleDistances(inValue);
             return retVal.GetGreatCircleDistancesResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetClientTokenResponse FotoFly.BingMapsForEnterprise.CommonServiceSoap.GetClientToken(FotoFly.BingMapsForEnterprise.GetClientTokenRequest request) {
+        Fotofly.BingMapsForEnterprise.GetClientTokenResponse Fotofly.BingMapsForEnterprise.CommonServiceSoap.GetClientToken(Fotofly.BingMapsForEnterprise.GetClientTokenRequest request) {
             return base.Channel.GetClientToken(request);
         }
         
-        public string GetClientToken(FotoFly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, FotoFly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, FotoFly.BingMapsForEnterprise.TokenSpecification specification) {
-            FotoFly.BingMapsForEnterprise.GetClientTokenRequest inValue = new FotoFly.BingMapsForEnterprise.GetClientTokenRequest();
+        public string GetClientToken(Fotofly.BingMapsForEnterprise.CustomerInfoHeader CustomerInfoHeader, Fotofly.BingMapsForEnterprise.UserInfoHeader UserInfoHeader, Fotofly.BingMapsForEnterprise.TokenSpecification specification) {
+            Fotofly.BingMapsForEnterprise.GetClientTokenRequest inValue = new Fotofly.BingMapsForEnterprise.GetClientTokenRequest();
             inValue.CustomerInfoHeader = CustomerInfoHeader;
             inValue.UserInfoHeader = UserInfoHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.GetClientTokenResponse retVal = ((FotoFly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetClientToken(inValue);
+            Fotofly.BingMapsForEnterprise.GetClientTokenResponse retVal = ((Fotofly.BingMapsForEnterprise.CommonServiceSoap)(this)).GetClientToken(inValue);
             return retVal.GetClientTokenResult;
         }
     }
@@ -5714,63 +5714,63 @@ namespace FotoFly.BingMapsForEnterprise {
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.FindResponse Find(FotoFly.BingMapsForEnterprise.FindRequest request);
+        Fotofly.BingMapsForEnterprise.FindResponse Find(Fotofly.BingMapsForEnterprise.FindRequest request);
         
         // CODEGEN: Generating message contract since message FindAddressRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/FindAddress", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.FindAddressResponse FindAddress(FotoFly.BingMapsForEnterprise.FindAddressRequest request);
+        Fotofly.BingMapsForEnterprise.FindAddressResponse FindAddress(Fotofly.BingMapsForEnterprise.FindAddressRequest request);
         
         // CODEGEN: Generating message contract since message ParseAddressRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/ParseAddress", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.ParseAddressResponse ParseAddress(FotoFly.BingMapsForEnterprise.ParseAddressRequest request);
+        Fotofly.BingMapsForEnterprise.ParseAddressResponse ParseAddress(Fotofly.BingMapsForEnterprise.ParseAddressRequest request);
         
         // CODEGEN: Generating message contract since message GetLocationInfoRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/GetLocationInfo", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetLocationInfoResponse GetLocationInfo(FotoFly.BingMapsForEnterprise.GetLocationInfoRequest request);
+        Fotofly.BingMapsForEnterprise.GetLocationInfoResponse GetLocationInfo(Fotofly.BingMapsForEnterprise.GetLocationInfoRequest request);
         
         // CODEGEN: Generating message contract since message FindNearbyRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/FindNearby", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.FindNearbyResponse FindNearby(FotoFly.BingMapsForEnterprise.FindNearbyRequest request);
+        Fotofly.BingMapsForEnterprise.FindNearbyResponse FindNearby(Fotofly.BingMapsForEnterprise.FindNearbyRequest request);
         
         // CODEGEN: Generating message contract since message FindByPropertyRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/FindByProperty", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.FindByPropertyResponse FindByProperty(FotoFly.BingMapsForEnterprise.FindByPropertyRequest request);
+        Fotofly.BingMapsForEnterprise.FindByPropertyResponse FindByProperty(Fotofly.BingMapsForEnterprise.FindByPropertyRequest request);
         
         // CODEGEN: Generating message contract since message FindByIDRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/FindByID", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.FindByIDResponse FindByID(FotoFly.BingMapsForEnterprise.FindByIDRequest request);
+        Fotofly.BingMapsForEnterprise.FindByIDResponse FindByID(Fotofly.BingMapsForEnterprise.FindByIDRequest request);
         
         // CODEGEN: Generating message contract since message FindNearRouteRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/FindNearRoute", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.FindNearRouteResponse FindNearRoute(FotoFly.BingMapsForEnterprise.FindNearRouteRequest request);
+        Fotofly.BingMapsForEnterprise.FindNearRouteResponse FindNearRoute(Fotofly.BingMapsForEnterprise.FindNearRouteRequest request);
         
         // CODEGEN: Generating message contract since message FindPolygonRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/FindPolygon", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.FindPolygonResponse FindPolygon(FotoFly.BingMapsForEnterprise.FindPolygonRequest request);
+        Fotofly.BingMapsForEnterprise.FindPolygonResponse FindPolygon(Fotofly.BingMapsForEnterprise.FindPolygonRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -5779,18 +5779,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindSpecification specification;
+        public Fotofly.BingMapsForEnterprise.FindSpecification specification;
         
         public FindRequest() {
         }
         
-        public FindRequest(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindSpecification specification) {
+        public FindRequest(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindSpecification specification) {
             this.CustomerInfoFindHeader = CustomerInfoFindHeader;
             this.UserInfoFindHeader = UserInfoFindHeader;
             this.specification = specification;
@@ -5803,12 +5803,12 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindResults FindResult;
+        public Fotofly.BingMapsForEnterprise.FindResults FindResult;
         
         public FindResponse() {
         }
         
-        public FindResponse(FotoFly.BingMapsForEnterprise.FindResults FindResult) {
+        public FindResponse(Fotofly.BingMapsForEnterprise.FindResults FindResult) {
             this.FindResult = FindResult;
         }
     }
@@ -5819,18 +5819,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindAddressRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindAddressSpecification specification;
+        public Fotofly.BingMapsForEnterprise.FindAddressSpecification specification;
         
         public FindAddressRequest() {
         }
         
-        public FindAddressRequest(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindAddressSpecification specification) {
+        public FindAddressRequest(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindAddressSpecification specification) {
             this.CustomerInfoFindHeader = CustomerInfoFindHeader;
             this.UserInfoFindHeader = UserInfoFindHeader;
             this.specification = specification;
@@ -5843,12 +5843,12 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindAddressResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindResults FindAddressResult;
+        public Fotofly.BingMapsForEnterprise.FindResults FindAddressResult;
         
         public FindAddressResponse() {
         }
         
-        public FindAddressResponse(FotoFly.BingMapsForEnterprise.FindResults FindAddressResult) {
+        public FindAddressResponse(Fotofly.BingMapsForEnterprise.FindResults FindAddressResult) {
             this.FindAddressResult = FindAddressResult;
         }
     }
@@ -5859,10 +5859,10 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class ParseAddressRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
         public string inputAddress;
@@ -5873,7 +5873,7 @@ namespace FotoFly.BingMapsForEnterprise {
         public ParseAddressRequest() {
         }
         
-        public ParseAddressRequest(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, string inputAddress, string countryRegion) {
+        public ParseAddressRequest(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, string inputAddress, string countryRegion) {
             this.CustomerInfoFindHeader = CustomerInfoFindHeader;
             this.UserInfoFindHeader = UserInfoFindHeader;
             this.inputAddress = inputAddress;
@@ -5887,12 +5887,12 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class ParseAddressResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.Address ParseAddressResult;
+        public Fotofly.BingMapsForEnterprise.Address ParseAddressResult;
         
         public ParseAddressResponse() {
         }
         
-        public ParseAddressResponse(FotoFly.BingMapsForEnterprise.Address ParseAddressResult) {
+        public ParseAddressResponse(Fotofly.BingMapsForEnterprise.Address ParseAddressResult) {
             this.ParseAddressResult = ParseAddressResult;
         }
     }
@@ -5903,24 +5903,24 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetLocationInfoRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.LatLong location;
+        public Fotofly.BingMapsForEnterprise.LatLong location;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=1)]
         public string dataSourceName;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=2)]
-        public FotoFly.BingMapsForEnterprise.GetInfoOptions options;
+        public Fotofly.BingMapsForEnterprise.GetInfoOptions options;
         
         public GetLocationInfoRequest() {
         }
         
-        public GetLocationInfoRequest(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.LatLong location, string dataSourceName, FotoFly.BingMapsForEnterprise.GetInfoOptions options) {
+        public GetLocationInfoRequest(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.LatLong location, string dataSourceName, Fotofly.BingMapsForEnterprise.GetInfoOptions options) {
             this.CustomerInfoFindHeader = CustomerInfoFindHeader;
             this.UserInfoFindHeader = UserInfoFindHeader;
             this.location = location;
@@ -5951,18 +5951,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindNearbyRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindNearbySpecification specification;
+        public Fotofly.BingMapsForEnterprise.FindNearbySpecification specification;
         
         public FindNearbyRequest() {
         }
         
-        public FindNearbyRequest(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindNearbySpecification specification) {
+        public FindNearbyRequest(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindNearbySpecification specification) {
             this.CustomerInfoFindHeader = CustomerInfoFindHeader;
             this.UserInfoFindHeader = UserInfoFindHeader;
             this.specification = specification;
@@ -5975,12 +5975,12 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindNearbyResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindResults FindNearbyResult;
+        public Fotofly.BingMapsForEnterprise.FindResults FindNearbyResult;
         
         public FindNearbyResponse() {
         }
         
-        public FindNearbyResponse(FotoFly.BingMapsForEnterprise.FindResults FindNearbyResult) {
+        public FindNearbyResponse(Fotofly.BingMapsForEnterprise.FindResults FindNearbyResult) {
             this.FindNearbyResult = FindNearbyResult;
         }
     }
@@ -5991,18 +5991,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindByPropertyRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindByPropertySpecification specification;
+        public Fotofly.BingMapsForEnterprise.FindByPropertySpecification specification;
         
         public FindByPropertyRequest() {
         }
         
-        public FindByPropertyRequest(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindByPropertySpecification specification) {
+        public FindByPropertyRequest(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindByPropertySpecification specification) {
             this.CustomerInfoFindHeader = CustomerInfoFindHeader;
             this.UserInfoFindHeader = UserInfoFindHeader;
             this.specification = specification;
@@ -6015,12 +6015,12 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindByPropertyResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindResults FindByPropertyResult;
+        public Fotofly.BingMapsForEnterprise.FindResults FindByPropertyResult;
         
         public FindByPropertyResponse() {
         }
         
-        public FindByPropertyResponse(FotoFly.BingMapsForEnterprise.FindResults FindByPropertyResult) {
+        public FindByPropertyResponse(Fotofly.BingMapsForEnterprise.FindResults FindByPropertyResult) {
             this.FindByPropertyResult = FindByPropertyResult;
         }
     }
@@ -6031,18 +6031,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindByIDRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindByIDSpecification specification;
+        public Fotofly.BingMapsForEnterprise.FindByIDSpecification specification;
         
         public FindByIDRequest() {
         }
         
-        public FindByIDRequest(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindByIDSpecification specification) {
+        public FindByIDRequest(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindByIDSpecification specification) {
             this.CustomerInfoFindHeader = CustomerInfoFindHeader;
             this.UserInfoFindHeader = UserInfoFindHeader;
             this.specification = specification;
@@ -6055,12 +6055,12 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindByIDResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindResults FindByIDResult;
+        public Fotofly.BingMapsForEnterprise.FindResults FindByIDResult;
         
         public FindByIDResponse() {
         }
         
-        public FindByIDResponse(FotoFly.BingMapsForEnterprise.FindResults FindByIDResult) {
+        public FindByIDResponse(Fotofly.BingMapsForEnterprise.FindResults FindByIDResult) {
             this.FindByIDResult = FindByIDResult;
         }
     }
@@ -6071,18 +6071,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindNearRouteRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindNearRouteSpecification specification;
+        public Fotofly.BingMapsForEnterprise.FindNearRouteSpecification specification;
         
         public FindNearRouteRequest() {
         }
         
-        public FindNearRouteRequest(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindNearRouteSpecification specification) {
+        public FindNearRouteRequest(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindNearRouteSpecification specification) {
             this.CustomerInfoFindHeader = CustomerInfoFindHeader;
             this.UserInfoFindHeader = UserInfoFindHeader;
             this.specification = specification;
@@ -6095,12 +6095,12 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindNearRouteResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindResults FindNearRouteResult;
+        public Fotofly.BingMapsForEnterprise.FindResults FindNearRouteResult;
         
         public FindNearRouteResponse() {
         }
         
-        public FindNearRouteResponse(FotoFly.BingMapsForEnterprise.FindResults FindNearRouteResult) {
+        public FindNearRouteResponse(Fotofly.BingMapsForEnterprise.FindResults FindNearRouteResult) {
             this.FindNearRouteResult = FindNearRouteResult;
         }
     }
@@ -6111,18 +6111,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindPolygonRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindPolygonSpecification specification;
+        public Fotofly.BingMapsForEnterprise.FindPolygonSpecification specification;
         
         public FindPolygonRequest() {
         }
         
-        public FindPolygonRequest(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindPolygonSpecification specification) {
+        public FindPolygonRequest(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindPolygonSpecification specification) {
             this.CustomerInfoFindHeader = CustomerInfoFindHeader;
             this.UserInfoFindHeader = UserInfoFindHeader;
             this.specification = specification;
@@ -6135,23 +6135,23 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class FindPolygonResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.FindResults FindPolygonResult;
+        public Fotofly.BingMapsForEnterprise.FindResults FindPolygonResult;
         
         public FindPolygonResponse() {
         }
         
-        public FindPolygonResponse(FotoFly.BingMapsForEnterprise.FindResults FindPolygonResult) {
+        public FindPolygonResponse(Fotofly.BingMapsForEnterprise.FindResults FindPolygonResult) {
             this.FindPolygonResult = FindPolygonResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public interface FindServiceSoapChannel : FotoFly.BingMapsForEnterprise.FindServiceSoap, System.ServiceModel.IClientChannel {
+    public interface FindServiceSoapChannel : Fotofly.BingMapsForEnterprise.FindServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public partial class FindServiceSoapClient : System.ServiceModel.ClientBase<FotoFly.BingMapsForEnterprise.FindServiceSoap>, FotoFly.BingMapsForEnterprise.FindServiceSoap {
+    public partial class FindServiceSoapClient : System.ServiceModel.ClientBase<Fotofly.BingMapsForEnterprise.FindServiceSoap>, Fotofly.BingMapsForEnterprise.FindServiceSoap {
         
         public FindServiceSoapClient() {
         }
@@ -6173,131 +6173,131 @@ namespace FotoFly.BingMapsForEnterprise {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.FindResponse FotoFly.BingMapsForEnterprise.FindServiceSoap.Find(FotoFly.BingMapsForEnterprise.FindRequest request) {
+        Fotofly.BingMapsForEnterprise.FindResponse Fotofly.BingMapsForEnterprise.FindServiceSoap.Find(Fotofly.BingMapsForEnterprise.FindRequest request) {
             return base.Channel.Find(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.FindResults Find(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindSpecification specification) {
-            FotoFly.BingMapsForEnterprise.FindRequest inValue = new FotoFly.BingMapsForEnterprise.FindRequest();
+        public Fotofly.BingMapsForEnterprise.FindResults Find(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindSpecification specification) {
+            Fotofly.BingMapsForEnterprise.FindRequest inValue = new Fotofly.BingMapsForEnterprise.FindRequest();
             inValue.CustomerInfoFindHeader = CustomerInfoFindHeader;
             inValue.UserInfoFindHeader = UserInfoFindHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.FindResponse retVal = ((FotoFly.BingMapsForEnterprise.FindServiceSoap)(this)).Find(inValue);
+            Fotofly.BingMapsForEnterprise.FindResponse retVal = ((Fotofly.BingMapsForEnterprise.FindServiceSoap)(this)).Find(inValue);
             return retVal.FindResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.FindAddressResponse FotoFly.BingMapsForEnterprise.FindServiceSoap.FindAddress(FotoFly.BingMapsForEnterprise.FindAddressRequest request) {
+        Fotofly.BingMapsForEnterprise.FindAddressResponse Fotofly.BingMapsForEnterprise.FindServiceSoap.FindAddress(Fotofly.BingMapsForEnterprise.FindAddressRequest request) {
             return base.Channel.FindAddress(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.FindResults FindAddress(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindAddressSpecification specification) {
-            FotoFly.BingMapsForEnterprise.FindAddressRequest inValue = new FotoFly.BingMapsForEnterprise.FindAddressRequest();
+        public Fotofly.BingMapsForEnterprise.FindResults FindAddress(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindAddressSpecification specification) {
+            Fotofly.BingMapsForEnterprise.FindAddressRequest inValue = new Fotofly.BingMapsForEnterprise.FindAddressRequest();
             inValue.CustomerInfoFindHeader = CustomerInfoFindHeader;
             inValue.UserInfoFindHeader = UserInfoFindHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.FindAddressResponse retVal = ((FotoFly.BingMapsForEnterprise.FindServiceSoap)(this)).FindAddress(inValue);
+            Fotofly.BingMapsForEnterprise.FindAddressResponse retVal = ((Fotofly.BingMapsForEnterprise.FindServiceSoap)(this)).FindAddress(inValue);
             return retVal.FindAddressResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.ParseAddressResponse FotoFly.BingMapsForEnterprise.FindServiceSoap.ParseAddress(FotoFly.BingMapsForEnterprise.ParseAddressRequest request) {
+        Fotofly.BingMapsForEnterprise.ParseAddressResponse Fotofly.BingMapsForEnterprise.FindServiceSoap.ParseAddress(Fotofly.BingMapsForEnterprise.ParseAddressRequest request) {
             return base.Channel.ParseAddress(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.Address ParseAddress(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, string inputAddress, string countryRegion) {
-            FotoFly.BingMapsForEnterprise.ParseAddressRequest inValue = new FotoFly.BingMapsForEnterprise.ParseAddressRequest();
+        public Fotofly.BingMapsForEnterprise.Address ParseAddress(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, string inputAddress, string countryRegion) {
+            Fotofly.BingMapsForEnterprise.ParseAddressRequest inValue = new Fotofly.BingMapsForEnterprise.ParseAddressRequest();
             inValue.CustomerInfoFindHeader = CustomerInfoFindHeader;
             inValue.UserInfoFindHeader = UserInfoFindHeader;
             inValue.inputAddress = inputAddress;
             inValue.countryRegion = countryRegion;
-            FotoFly.BingMapsForEnterprise.ParseAddressResponse retVal = ((FotoFly.BingMapsForEnterprise.FindServiceSoap)(this)).ParseAddress(inValue);
+            Fotofly.BingMapsForEnterprise.ParseAddressResponse retVal = ((Fotofly.BingMapsForEnterprise.FindServiceSoap)(this)).ParseAddress(inValue);
             return retVal.ParseAddressResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetLocationInfoResponse FotoFly.BingMapsForEnterprise.FindServiceSoap.GetLocationInfo(FotoFly.BingMapsForEnterprise.GetLocationInfoRequest request) {
+        Fotofly.BingMapsForEnterprise.GetLocationInfoResponse Fotofly.BingMapsForEnterprise.FindServiceSoap.GetLocationInfo(Fotofly.BingMapsForEnterprise.GetLocationInfoRequest request) {
             return base.Channel.GetLocationInfo(request);
         }
         
-        public Location[] GetLocationInfo(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.LatLong location, string dataSourceName, FotoFly.BingMapsForEnterprise.GetInfoOptions options) {
-            FotoFly.BingMapsForEnterprise.GetLocationInfoRequest inValue = new FotoFly.BingMapsForEnterprise.GetLocationInfoRequest();
+        public Location[] GetLocationInfo(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.LatLong location, string dataSourceName, Fotofly.BingMapsForEnterprise.GetInfoOptions options) {
+            Fotofly.BingMapsForEnterprise.GetLocationInfoRequest inValue = new Fotofly.BingMapsForEnterprise.GetLocationInfoRequest();
             inValue.CustomerInfoFindHeader = CustomerInfoFindHeader;
             inValue.UserInfoFindHeader = UserInfoFindHeader;
             inValue.location = location;
             inValue.dataSourceName = dataSourceName;
             inValue.options = options;
-            FotoFly.BingMapsForEnterprise.GetLocationInfoResponse retVal = ((FotoFly.BingMapsForEnterprise.FindServiceSoap)(this)).GetLocationInfo(inValue);
+            Fotofly.BingMapsForEnterprise.GetLocationInfoResponse retVal = ((Fotofly.BingMapsForEnterprise.FindServiceSoap)(this)).GetLocationInfo(inValue);
             return retVal.GetLocationInfoResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.FindNearbyResponse FotoFly.BingMapsForEnterprise.FindServiceSoap.FindNearby(FotoFly.BingMapsForEnterprise.FindNearbyRequest request) {
+        Fotofly.BingMapsForEnterprise.FindNearbyResponse Fotofly.BingMapsForEnterprise.FindServiceSoap.FindNearby(Fotofly.BingMapsForEnterprise.FindNearbyRequest request) {
             return base.Channel.FindNearby(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.FindResults FindNearby(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindNearbySpecification specification) {
-            FotoFly.BingMapsForEnterprise.FindNearbyRequest inValue = new FotoFly.BingMapsForEnterprise.FindNearbyRequest();
+        public Fotofly.BingMapsForEnterprise.FindResults FindNearby(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindNearbySpecification specification) {
+            Fotofly.BingMapsForEnterprise.FindNearbyRequest inValue = new Fotofly.BingMapsForEnterprise.FindNearbyRequest();
             inValue.CustomerInfoFindHeader = CustomerInfoFindHeader;
             inValue.UserInfoFindHeader = UserInfoFindHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.FindNearbyResponse retVal = ((FotoFly.BingMapsForEnterprise.FindServiceSoap)(this)).FindNearby(inValue);
+            Fotofly.BingMapsForEnterprise.FindNearbyResponse retVal = ((Fotofly.BingMapsForEnterprise.FindServiceSoap)(this)).FindNearby(inValue);
             return retVal.FindNearbyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.FindByPropertyResponse FotoFly.BingMapsForEnterprise.FindServiceSoap.FindByProperty(FotoFly.BingMapsForEnterprise.FindByPropertyRequest request) {
+        Fotofly.BingMapsForEnterprise.FindByPropertyResponse Fotofly.BingMapsForEnterprise.FindServiceSoap.FindByProperty(Fotofly.BingMapsForEnterprise.FindByPropertyRequest request) {
             return base.Channel.FindByProperty(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.FindResults FindByProperty(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindByPropertySpecification specification) {
-            FotoFly.BingMapsForEnterprise.FindByPropertyRequest inValue = new FotoFly.BingMapsForEnterprise.FindByPropertyRequest();
+        public Fotofly.BingMapsForEnterprise.FindResults FindByProperty(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindByPropertySpecification specification) {
+            Fotofly.BingMapsForEnterprise.FindByPropertyRequest inValue = new Fotofly.BingMapsForEnterprise.FindByPropertyRequest();
             inValue.CustomerInfoFindHeader = CustomerInfoFindHeader;
             inValue.UserInfoFindHeader = UserInfoFindHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.FindByPropertyResponse retVal = ((FotoFly.BingMapsForEnterprise.FindServiceSoap)(this)).FindByProperty(inValue);
+            Fotofly.BingMapsForEnterprise.FindByPropertyResponse retVal = ((Fotofly.BingMapsForEnterprise.FindServiceSoap)(this)).FindByProperty(inValue);
             return retVal.FindByPropertyResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.FindByIDResponse FotoFly.BingMapsForEnterprise.FindServiceSoap.FindByID(FotoFly.BingMapsForEnterprise.FindByIDRequest request) {
+        Fotofly.BingMapsForEnterprise.FindByIDResponse Fotofly.BingMapsForEnterprise.FindServiceSoap.FindByID(Fotofly.BingMapsForEnterprise.FindByIDRequest request) {
             return base.Channel.FindByID(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.FindResults FindByID(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindByIDSpecification specification) {
-            FotoFly.BingMapsForEnterprise.FindByIDRequest inValue = new FotoFly.BingMapsForEnterprise.FindByIDRequest();
+        public Fotofly.BingMapsForEnterprise.FindResults FindByID(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindByIDSpecification specification) {
+            Fotofly.BingMapsForEnterprise.FindByIDRequest inValue = new Fotofly.BingMapsForEnterprise.FindByIDRequest();
             inValue.CustomerInfoFindHeader = CustomerInfoFindHeader;
             inValue.UserInfoFindHeader = UserInfoFindHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.FindByIDResponse retVal = ((FotoFly.BingMapsForEnterprise.FindServiceSoap)(this)).FindByID(inValue);
+            Fotofly.BingMapsForEnterprise.FindByIDResponse retVal = ((Fotofly.BingMapsForEnterprise.FindServiceSoap)(this)).FindByID(inValue);
             return retVal.FindByIDResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.FindNearRouteResponse FotoFly.BingMapsForEnterprise.FindServiceSoap.FindNearRoute(FotoFly.BingMapsForEnterprise.FindNearRouteRequest request) {
+        Fotofly.BingMapsForEnterprise.FindNearRouteResponse Fotofly.BingMapsForEnterprise.FindServiceSoap.FindNearRoute(Fotofly.BingMapsForEnterprise.FindNearRouteRequest request) {
             return base.Channel.FindNearRoute(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.FindResults FindNearRoute(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindNearRouteSpecification specification) {
-            FotoFly.BingMapsForEnterprise.FindNearRouteRequest inValue = new FotoFly.BingMapsForEnterprise.FindNearRouteRequest();
+        public Fotofly.BingMapsForEnterprise.FindResults FindNearRoute(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindNearRouteSpecification specification) {
+            Fotofly.BingMapsForEnterprise.FindNearRouteRequest inValue = new Fotofly.BingMapsForEnterprise.FindNearRouteRequest();
             inValue.CustomerInfoFindHeader = CustomerInfoFindHeader;
             inValue.UserInfoFindHeader = UserInfoFindHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.FindNearRouteResponse retVal = ((FotoFly.BingMapsForEnterprise.FindServiceSoap)(this)).FindNearRoute(inValue);
+            Fotofly.BingMapsForEnterprise.FindNearRouteResponse retVal = ((Fotofly.BingMapsForEnterprise.FindServiceSoap)(this)).FindNearRoute(inValue);
             return retVal.FindNearRouteResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.FindPolygonResponse FotoFly.BingMapsForEnterprise.FindServiceSoap.FindPolygon(FotoFly.BingMapsForEnterprise.FindPolygonRequest request) {
+        Fotofly.BingMapsForEnterprise.FindPolygonResponse Fotofly.BingMapsForEnterprise.FindServiceSoap.FindPolygon(Fotofly.BingMapsForEnterprise.FindPolygonRequest request) {
             return base.Channel.FindPolygon(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.FindResults FindPolygon(FotoFly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, FotoFly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, FotoFly.BingMapsForEnterprise.FindPolygonSpecification specification) {
-            FotoFly.BingMapsForEnterprise.FindPolygonRequest inValue = new FotoFly.BingMapsForEnterprise.FindPolygonRequest();
+        public Fotofly.BingMapsForEnterprise.FindResults FindPolygon(Fotofly.BingMapsForEnterprise.CustomerInfoFindHeader CustomerInfoFindHeader, Fotofly.BingMapsForEnterprise.UserInfoFindHeader UserInfoFindHeader, Fotofly.BingMapsForEnterprise.FindPolygonSpecification specification) {
+            Fotofly.BingMapsForEnterprise.FindPolygonRequest inValue = new Fotofly.BingMapsForEnterprise.FindPolygonRequest();
             inValue.CustomerInfoFindHeader = CustomerInfoFindHeader;
             inValue.UserInfoFindHeader = UserInfoFindHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.FindPolygonResponse retVal = ((FotoFly.BingMapsForEnterprise.FindServiceSoap)(this)).FindPolygon(inValue);
+            Fotofly.BingMapsForEnterprise.FindPolygonResponse retVal = ((Fotofly.BingMapsForEnterprise.FindServiceSoap)(this)).FindPolygon(inValue);
             return retVal.FindPolygonResult;
         }
     }
@@ -6311,14 +6311,14 @@ namespace FotoFly.BingMapsForEnterprise {
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.CalculateSimpleRouteResponse CalculateSimpleRoute(FotoFly.BingMapsForEnterprise.CalculateSimpleRouteRequest request);
+        Fotofly.BingMapsForEnterprise.CalculateSimpleRouteResponse CalculateSimpleRoute(Fotofly.BingMapsForEnterprise.CalculateSimpleRouteRequest request);
         
         // CODEGEN: Generating message contract since message CalculateRouteRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/CalculateRoute", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.CalculateRouteResponse CalculateRoute(FotoFly.BingMapsForEnterprise.CalculateRouteRequest request);
+        Fotofly.BingMapsForEnterprise.CalculateRouteResponse CalculateRoute(Fotofly.BingMapsForEnterprise.CalculateRouteRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -6327,10 +6327,10 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class CalculateSimpleRouteRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
         public LatLong[] latLongs;
@@ -6339,12 +6339,12 @@ namespace FotoFly.BingMapsForEnterprise {
         public string dataSourceName;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=2)]
-        public FotoFly.BingMapsForEnterprise.SegmentPreference preference;
+        public Fotofly.BingMapsForEnterprise.SegmentPreference preference;
         
         public CalculateSimpleRouteRequest() {
         }
         
-        public CalculateSimpleRouteRequest(FotoFly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader, FotoFly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader, LatLong[] latLongs, string dataSourceName, FotoFly.BingMapsForEnterprise.SegmentPreference preference) {
+        public CalculateSimpleRouteRequest(Fotofly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader, Fotofly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader, LatLong[] latLongs, string dataSourceName, Fotofly.BingMapsForEnterprise.SegmentPreference preference) {
             this.CustomerInfoRouteHeader = CustomerInfoRouteHeader;
             this.UserInfoRouteHeader = UserInfoRouteHeader;
             this.latLongs = latLongs;
@@ -6359,12 +6359,12 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class CalculateSimpleRouteResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.Route CalculateSimpleRouteResult;
+        public Fotofly.BingMapsForEnterprise.Route CalculateSimpleRouteResult;
         
         public CalculateSimpleRouteResponse() {
         }
         
-        public CalculateSimpleRouteResponse(FotoFly.BingMapsForEnterprise.Route CalculateSimpleRouteResult) {
+        public CalculateSimpleRouteResponse(Fotofly.BingMapsForEnterprise.Route CalculateSimpleRouteResult) {
             this.CalculateSimpleRouteResult = CalculateSimpleRouteResult;
         }
     }
@@ -6375,18 +6375,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class CalculateRouteRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.RouteSpecification specification;
+        public Fotofly.BingMapsForEnterprise.RouteSpecification specification;
         
         public CalculateRouteRequest() {
         }
         
-        public CalculateRouteRequest(FotoFly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader, FotoFly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader, FotoFly.BingMapsForEnterprise.RouteSpecification specification) {
+        public CalculateRouteRequest(Fotofly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader, Fotofly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader, Fotofly.BingMapsForEnterprise.RouteSpecification specification) {
             this.CustomerInfoRouteHeader = CustomerInfoRouteHeader;
             this.UserInfoRouteHeader = UserInfoRouteHeader;
             this.specification = specification;
@@ -6399,23 +6399,23 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class CalculateRouteResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.Route CalculateRouteResult;
+        public Fotofly.BingMapsForEnterprise.Route CalculateRouteResult;
         
         public CalculateRouteResponse() {
         }
         
-        public CalculateRouteResponse(FotoFly.BingMapsForEnterprise.Route CalculateRouteResult) {
+        public CalculateRouteResponse(Fotofly.BingMapsForEnterprise.Route CalculateRouteResult) {
             this.CalculateRouteResult = CalculateRouteResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public interface RouteServiceSoapChannel : FotoFly.BingMapsForEnterprise.RouteServiceSoap, System.ServiceModel.IClientChannel {
+    public interface RouteServiceSoapChannel : Fotofly.BingMapsForEnterprise.RouteServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public partial class RouteServiceSoapClient : System.ServiceModel.ClientBase<FotoFly.BingMapsForEnterprise.RouteServiceSoap>, FotoFly.BingMapsForEnterprise.RouteServiceSoap {
+    public partial class RouteServiceSoapClient : System.ServiceModel.ClientBase<Fotofly.BingMapsForEnterprise.RouteServiceSoap>, Fotofly.BingMapsForEnterprise.RouteServiceSoap {
         
         public RouteServiceSoapClient() {
         }
@@ -6437,32 +6437,32 @@ namespace FotoFly.BingMapsForEnterprise {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.CalculateSimpleRouteResponse FotoFly.BingMapsForEnterprise.RouteServiceSoap.CalculateSimpleRoute(FotoFly.BingMapsForEnterprise.CalculateSimpleRouteRequest request) {
+        Fotofly.BingMapsForEnterprise.CalculateSimpleRouteResponse Fotofly.BingMapsForEnterprise.RouteServiceSoap.CalculateSimpleRoute(Fotofly.BingMapsForEnterprise.CalculateSimpleRouteRequest request) {
             return base.Channel.CalculateSimpleRoute(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.Route CalculateSimpleRoute(FotoFly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader, FotoFly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader, LatLong[] latLongs, string dataSourceName, FotoFly.BingMapsForEnterprise.SegmentPreference preference) {
-            FotoFly.BingMapsForEnterprise.CalculateSimpleRouteRequest inValue = new FotoFly.BingMapsForEnterprise.CalculateSimpleRouteRequest();
+        public Fotofly.BingMapsForEnterprise.Route CalculateSimpleRoute(Fotofly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader, Fotofly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader, LatLong[] latLongs, string dataSourceName, Fotofly.BingMapsForEnterprise.SegmentPreference preference) {
+            Fotofly.BingMapsForEnterprise.CalculateSimpleRouteRequest inValue = new Fotofly.BingMapsForEnterprise.CalculateSimpleRouteRequest();
             inValue.CustomerInfoRouteHeader = CustomerInfoRouteHeader;
             inValue.UserInfoRouteHeader = UserInfoRouteHeader;
             inValue.latLongs = latLongs;
             inValue.dataSourceName = dataSourceName;
             inValue.preference = preference;
-            FotoFly.BingMapsForEnterprise.CalculateSimpleRouteResponse retVal = ((FotoFly.BingMapsForEnterprise.RouteServiceSoap)(this)).CalculateSimpleRoute(inValue);
+            Fotofly.BingMapsForEnterprise.CalculateSimpleRouteResponse retVal = ((Fotofly.BingMapsForEnterprise.RouteServiceSoap)(this)).CalculateSimpleRoute(inValue);
             return retVal.CalculateSimpleRouteResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.CalculateRouteResponse FotoFly.BingMapsForEnterprise.RouteServiceSoap.CalculateRoute(FotoFly.BingMapsForEnterprise.CalculateRouteRequest request) {
+        Fotofly.BingMapsForEnterprise.CalculateRouteResponse Fotofly.BingMapsForEnterprise.RouteServiceSoap.CalculateRoute(Fotofly.BingMapsForEnterprise.CalculateRouteRequest request) {
             return base.Channel.CalculateRoute(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.Route CalculateRoute(FotoFly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader, FotoFly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader, FotoFly.BingMapsForEnterprise.RouteSpecification specification) {
-            FotoFly.BingMapsForEnterprise.CalculateRouteRequest inValue = new FotoFly.BingMapsForEnterprise.CalculateRouteRequest();
+        public Fotofly.BingMapsForEnterprise.Route CalculateRoute(Fotofly.BingMapsForEnterprise.CustomerInfoRouteHeader CustomerInfoRouteHeader, Fotofly.BingMapsForEnterprise.UserInfoRouteHeader UserInfoRouteHeader, Fotofly.BingMapsForEnterprise.RouteSpecification specification) {
+            Fotofly.BingMapsForEnterprise.CalculateRouteRequest inValue = new Fotofly.BingMapsForEnterprise.CalculateRouteRequest();
             inValue.CustomerInfoRouteHeader = CustomerInfoRouteHeader;
             inValue.UserInfoRouteHeader = UserInfoRouteHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.CalculateRouteResponse retVal = ((FotoFly.BingMapsForEnterprise.RouteServiceSoap)(this)).CalculateRoute(inValue);
+            Fotofly.BingMapsForEnterprise.CalculateRouteResponse retVal = ((Fotofly.BingMapsForEnterprise.RouteServiceSoap)(this)).CalculateRoute(inValue);
             return retVal.CalculateRouteResult;
         }
     }
@@ -6476,35 +6476,35 @@ namespace FotoFly.BingMapsForEnterprise {
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetMapResponse GetMap(FotoFly.BingMapsForEnterprise.GetMapRequest request);
+        Fotofly.BingMapsForEnterprise.GetMapResponse GetMap(Fotofly.BingMapsForEnterprise.GetMapRequest request);
         
         // CODEGEN: Generating message contract since message ConvertToPointRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/ConvertToPoint", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.ConvertToPointResponse ConvertToPoint(FotoFly.BingMapsForEnterprise.ConvertToPointRequest request);
+        Fotofly.BingMapsForEnterprise.ConvertToPointResponse ConvertToPoint(Fotofly.BingMapsForEnterprise.ConvertToPointRequest request);
         
         // CODEGEN: Generating message contract since message ConvertToLatLongRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/ConvertToLatLong", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.ConvertToLatLongResponse ConvertToLatLong(FotoFly.BingMapsForEnterprise.ConvertToLatLongRequest request);
+        Fotofly.BingMapsForEnterprise.ConvertToLatLongResponse ConvertToLatLong(Fotofly.BingMapsForEnterprise.ConvertToLatLongRequest request);
         
         // CODEGEN: Generating message contract since message GetBestMapViewRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/GetBestMapView", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetBestMapViewResponse GetBestMapView(FotoFly.BingMapsForEnterprise.GetBestMapViewRequest request);
+        Fotofly.BingMapsForEnterprise.GetBestMapViewResponse GetBestMapView(Fotofly.BingMapsForEnterprise.GetBestMapViewRequest request);
         
         // CODEGEN: Generating message contract since message GetLineDriveMapRequest has headers
         [System.ServiceModel.OperationContractAttribute(Action="http://s.mappoint.net/mappoint-30/GetLineDriveMap", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MapPointConstants))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(FindResult[]))]
-        FotoFly.BingMapsForEnterprise.GetLineDriveMapResponse GetLineDriveMap(FotoFly.BingMapsForEnterprise.GetLineDriveMapRequest request);
+        Fotofly.BingMapsForEnterprise.GetLineDriveMapResponse GetLineDriveMap(Fotofly.BingMapsForEnterprise.GetLineDriveMapRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -6513,18 +6513,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetMapRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.MapSpecification specification;
+        public Fotofly.BingMapsForEnterprise.MapSpecification specification;
         
         public GetMapRequest() {
         }
         
-        public GetMapRequest(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, FotoFly.BingMapsForEnterprise.MapSpecification specification) {
+        public GetMapRequest(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, Fotofly.BingMapsForEnterprise.MapSpecification specification) {
             this.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             this.UserInfoRenderHeader = UserInfoRenderHeader;
             this.specification = specification;
@@ -6553,16 +6553,16 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class ConvertToPointRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
         public LatLong[] latLong;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=1)]
-        public FotoFly.BingMapsForEnterprise.MapView view;
+        public Fotofly.BingMapsForEnterprise.MapView view;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=2)]
         public int width;
@@ -6573,7 +6573,7 @@ namespace FotoFly.BingMapsForEnterprise {
         public ConvertToPointRequest() {
         }
         
-        public ConvertToPointRequest(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, LatLong[] latLong, FotoFly.BingMapsForEnterprise.MapView view, int width, int height) {
+        public ConvertToPointRequest(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, LatLong[] latLong, Fotofly.BingMapsForEnterprise.MapView view, int width, int height) {
             this.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             this.UserInfoRenderHeader = UserInfoRenderHeader;
             this.latLong = latLong;
@@ -6605,16 +6605,16 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class ConvertToLatLongRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
         public PixelCoord[] pixels;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=1)]
-        public FotoFly.BingMapsForEnterprise.MapView view;
+        public Fotofly.BingMapsForEnterprise.MapView view;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=2)]
         public int width;
@@ -6625,7 +6625,7 @@ namespace FotoFly.BingMapsForEnterprise {
         public ConvertToLatLongRequest() {
         }
         
-        public ConvertToLatLongRequest(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, PixelCoord[] pixels, FotoFly.BingMapsForEnterprise.MapView view, int width, int height) {
+        public ConvertToLatLongRequest(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, PixelCoord[] pixels, Fotofly.BingMapsForEnterprise.MapView view, int width, int height) {
             this.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             this.UserInfoRenderHeader = UserInfoRenderHeader;
             this.pixels = pixels;
@@ -6657,10 +6657,10 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetBestMapViewRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
         public Location[] locations;
@@ -6671,7 +6671,7 @@ namespace FotoFly.BingMapsForEnterprise {
         public GetBestMapViewRequest() {
         }
         
-        public GetBestMapViewRequest(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, Location[] locations, string dataSourceName) {
+        public GetBestMapViewRequest(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, Location[] locations, string dataSourceName) {
             this.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             this.UserInfoRenderHeader = UserInfoRenderHeader;
             this.locations = locations;
@@ -6685,12 +6685,12 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetBestMapViewResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.MapViewRepresentations GetBestMapViewResult;
+        public Fotofly.BingMapsForEnterprise.MapViewRepresentations GetBestMapViewResult;
         
         public GetBestMapViewResponse() {
         }
         
-        public GetBestMapViewResponse(FotoFly.BingMapsForEnterprise.MapViewRepresentations GetBestMapViewResult) {
+        public GetBestMapViewResponse(Fotofly.BingMapsForEnterprise.MapViewRepresentations GetBestMapViewResult) {
             this.GetBestMapViewResult = GetBestMapViewResult;
         }
     }
@@ -6701,18 +6701,18 @@ namespace FotoFly.BingMapsForEnterprise {
     public partial class GetLineDriveMapRequest {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader;
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://s.mappoint.net/mappoint-30/")]
-        public FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
+        public Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://s.mappoint.net/mappoint-30/", Order=0)]
-        public FotoFly.BingMapsForEnterprise.LineDriveMapSpecification specification;
+        public Fotofly.BingMapsForEnterprise.LineDriveMapSpecification specification;
         
         public GetLineDriveMapRequest() {
         }
         
-        public GetLineDriveMapRequest(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, FotoFly.BingMapsForEnterprise.LineDriveMapSpecification specification) {
+        public GetLineDriveMapRequest(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, Fotofly.BingMapsForEnterprise.LineDriveMapSpecification specification) {
             this.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             this.UserInfoRenderHeader = UserInfoRenderHeader;
             this.specification = specification;
@@ -6736,12 +6736,12 @@ namespace FotoFly.BingMapsForEnterprise {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public interface RenderServiceSoapChannel : FotoFly.BingMapsForEnterprise.RenderServiceSoap, System.ServiceModel.IClientChannel {
+    public interface RenderServiceSoapChannel : Fotofly.BingMapsForEnterprise.RenderServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public partial class RenderServiceSoapClient : System.ServiceModel.ClientBase<FotoFly.BingMapsForEnterprise.RenderServiceSoap>, FotoFly.BingMapsForEnterprise.RenderServiceSoap {
+    public partial class RenderServiceSoapClient : System.ServiceModel.ClientBase<Fotofly.BingMapsForEnterprise.RenderServiceSoap>, Fotofly.BingMapsForEnterprise.RenderServiceSoap {
         
         public RenderServiceSoapClient() {
         }
@@ -6763,79 +6763,79 @@ namespace FotoFly.BingMapsForEnterprise {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetMapResponse FotoFly.BingMapsForEnterprise.RenderServiceSoap.GetMap(FotoFly.BingMapsForEnterprise.GetMapRequest request) {
+        Fotofly.BingMapsForEnterprise.GetMapResponse Fotofly.BingMapsForEnterprise.RenderServiceSoap.GetMap(Fotofly.BingMapsForEnterprise.GetMapRequest request) {
             return base.Channel.GetMap(request);
         }
         
-        public MapImage[] GetMap(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, FotoFly.BingMapsForEnterprise.MapSpecification specification) {
-            FotoFly.BingMapsForEnterprise.GetMapRequest inValue = new FotoFly.BingMapsForEnterprise.GetMapRequest();
+        public MapImage[] GetMap(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, Fotofly.BingMapsForEnterprise.MapSpecification specification) {
+            Fotofly.BingMapsForEnterprise.GetMapRequest inValue = new Fotofly.BingMapsForEnterprise.GetMapRequest();
             inValue.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             inValue.UserInfoRenderHeader = UserInfoRenderHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.GetMapResponse retVal = ((FotoFly.BingMapsForEnterprise.RenderServiceSoap)(this)).GetMap(inValue);
+            Fotofly.BingMapsForEnterprise.GetMapResponse retVal = ((Fotofly.BingMapsForEnterprise.RenderServiceSoap)(this)).GetMap(inValue);
             return retVal.GetMapResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.ConvertToPointResponse FotoFly.BingMapsForEnterprise.RenderServiceSoap.ConvertToPoint(FotoFly.BingMapsForEnterprise.ConvertToPointRequest request) {
+        Fotofly.BingMapsForEnterprise.ConvertToPointResponse Fotofly.BingMapsForEnterprise.RenderServiceSoap.ConvertToPoint(Fotofly.BingMapsForEnterprise.ConvertToPointRequest request) {
             return base.Channel.ConvertToPoint(request);
         }
         
-        public PixelCoord[] ConvertToPoint(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, LatLong[] latLong, FotoFly.BingMapsForEnterprise.MapView view, int width, int height) {
-            FotoFly.BingMapsForEnterprise.ConvertToPointRequest inValue = new FotoFly.BingMapsForEnterprise.ConvertToPointRequest();
+        public PixelCoord[] ConvertToPoint(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, LatLong[] latLong, Fotofly.BingMapsForEnterprise.MapView view, int width, int height) {
+            Fotofly.BingMapsForEnterprise.ConvertToPointRequest inValue = new Fotofly.BingMapsForEnterprise.ConvertToPointRequest();
             inValue.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             inValue.UserInfoRenderHeader = UserInfoRenderHeader;
             inValue.latLong = latLong;
             inValue.view = view;
             inValue.width = width;
             inValue.height = height;
-            FotoFly.BingMapsForEnterprise.ConvertToPointResponse retVal = ((FotoFly.BingMapsForEnterprise.RenderServiceSoap)(this)).ConvertToPoint(inValue);
+            Fotofly.BingMapsForEnterprise.ConvertToPointResponse retVal = ((Fotofly.BingMapsForEnterprise.RenderServiceSoap)(this)).ConvertToPoint(inValue);
             return retVal.ConvertToPointResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.ConvertToLatLongResponse FotoFly.BingMapsForEnterprise.RenderServiceSoap.ConvertToLatLong(FotoFly.BingMapsForEnterprise.ConvertToLatLongRequest request) {
+        Fotofly.BingMapsForEnterprise.ConvertToLatLongResponse Fotofly.BingMapsForEnterprise.RenderServiceSoap.ConvertToLatLong(Fotofly.BingMapsForEnterprise.ConvertToLatLongRequest request) {
             return base.Channel.ConvertToLatLong(request);
         }
         
-        public LatLong[] ConvertToLatLong(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, PixelCoord[] pixels, FotoFly.BingMapsForEnterprise.MapView view, int width, int height) {
-            FotoFly.BingMapsForEnterprise.ConvertToLatLongRequest inValue = new FotoFly.BingMapsForEnterprise.ConvertToLatLongRequest();
+        public LatLong[] ConvertToLatLong(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, PixelCoord[] pixels, Fotofly.BingMapsForEnterprise.MapView view, int width, int height) {
+            Fotofly.BingMapsForEnterprise.ConvertToLatLongRequest inValue = new Fotofly.BingMapsForEnterprise.ConvertToLatLongRequest();
             inValue.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             inValue.UserInfoRenderHeader = UserInfoRenderHeader;
             inValue.pixels = pixels;
             inValue.view = view;
             inValue.width = width;
             inValue.height = height;
-            FotoFly.BingMapsForEnterprise.ConvertToLatLongResponse retVal = ((FotoFly.BingMapsForEnterprise.RenderServiceSoap)(this)).ConvertToLatLong(inValue);
+            Fotofly.BingMapsForEnterprise.ConvertToLatLongResponse retVal = ((Fotofly.BingMapsForEnterprise.RenderServiceSoap)(this)).ConvertToLatLong(inValue);
             return retVal.ConvertToLatLongResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetBestMapViewResponse FotoFly.BingMapsForEnterprise.RenderServiceSoap.GetBestMapView(FotoFly.BingMapsForEnterprise.GetBestMapViewRequest request) {
+        Fotofly.BingMapsForEnterprise.GetBestMapViewResponse Fotofly.BingMapsForEnterprise.RenderServiceSoap.GetBestMapView(Fotofly.BingMapsForEnterprise.GetBestMapViewRequest request) {
             return base.Channel.GetBestMapView(request);
         }
         
-        public FotoFly.BingMapsForEnterprise.MapViewRepresentations GetBestMapView(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, Location[] locations, string dataSourceName) {
-            FotoFly.BingMapsForEnterprise.GetBestMapViewRequest inValue = new FotoFly.BingMapsForEnterprise.GetBestMapViewRequest();
+        public Fotofly.BingMapsForEnterprise.MapViewRepresentations GetBestMapView(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, Location[] locations, string dataSourceName) {
+            Fotofly.BingMapsForEnterprise.GetBestMapViewRequest inValue = new Fotofly.BingMapsForEnterprise.GetBestMapViewRequest();
             inValue.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             inValue.UserInfoRenderHeader = UserInfoRenderHeader;
             inValue.locations = locations;
             inValue.dataSourceName = dataSourceName;
-            FotoFly.BingMapsForEnterprise.GetBestMapViewResponse retVal = ((FotoFly.BingMapsForEnterprise.RenderServiceSoap)(this)).GetBestMapView(inValue);
+            Fotofly.BingMapsForEnterprise.GetBestMapViewResponse retVal = ((Fotofly.BingMapsForEnterprise.RenderServiceSoap)(this)).GetBestMapView(inValue);
             return retVal.GetBestMapViewResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        FotoFly.BingMapsForEnterprise.GetLineDriveMapResponse FotoFly.BingMapsForEnterprise.RenderServiceSoap.GetLineDriveMap(FotoFly.BingMapsForEnterprise.GetLineDriveMapRequest request) {
+        Fotofly.BingMapsForEnterprise.GetLineDriveMapResponse Fotofly.BingMapsForEnterprise.RenderServiceSoap.GetLineDriveMap(Fotofly.BingMapsForEnterprise.GetLineDriveMapRequest request) {
             return base.Channel.GetLineDriveMap(request);
         }
         
-        public LineDriveMapImage[] GetLineDriveMap(FotoFly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, FotoFly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, FotoFly.BingMapsForEnterprise.LineDriveMapSpecification specification) {
-            FotoFly.BingMapsForEnterprise.GetLineDriveMapRequest inValue = new FotoFly.BingMapsForEnterprise.GetLineDriveMapRequest();
+        public LineDriveMapImage[] GetLineDriveMap(Fotofly.BingMapsForEnterprise.CustomerInfoRenderHeader CustomerInfoRenderHeader, Fotofly.BingMapsForEnterprise.UserInfoRenderHeader UserInfoRenderHeader, Fotofly.BingMapsForEnterprise.LineDriveMapSpecification specification) {
+            Fotofly.BingMapsForEnterprise.GetLineDriveMapRequest inValue = new Fotofly.BingMapsForEnterprise.GetLineDriveMapRequest();
             inValue.CustomerInfoRenderHeader = CustomerInfoRenderHeader;
             inValue.UserInfoRenderHeader = UserInfoRenderHeader;
             inValue.specification = specification;
-            FotoFly.BingMapsForEnterprise.GetLineDriveMapResponse retVal = ((FotoFly.BingMapsForEnterprise.RenderServiceSoap)(this)).GetLineDriveMap(inValue);
+            Fotofly.BingMapsForEnterprise.GetLineDriveMapResponse retVal = ((Fotofly.BingMapsForEnterprise.RenderServiceSoap)(this)).GetLineDriveMap(inValue);
             return retVal.GetLineDriveMapResult;
         }
     }

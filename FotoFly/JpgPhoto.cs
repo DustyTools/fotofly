@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>JpgPhoto</summary>
-namespace FotoFly
+namespace Fotofly
 {
     using System;
     using System.Collections.Generic;
@@ -14,8 +14,8 @@ namespace FotoFly
     using System.Windows.Media.Imaging;
     using System.Xml.Serialization;
 
-    using FotoFly.WpfTools;
-    using FotoFly.XmlTools;
+    using Fotofly.WpfTools;
+    using Fotofly.XmlTools;
 
     public class JpgPhoto : GenericPhotoFile
     {
@@ -53,19 +53,19 @@ namespace FotoFly
         }
 
         /// <summary>
-        /// Custom Metadata used by FotoFly
+        /// Custom Metadata used by Fotofly
         /// </summary>
-        public FotoFlyMetadata FotoFlyMetadata
+        public FotoflyMetadata FotoflyMetadata
         {
             get
             {
                 // Attempt to read the Metadata if it's not already loaded
-                if (this.InternalFotoFlyMetadata == null && this.IsFileNameValid)
+                if (this.InternalFotoflyMetadata == null && this.IsFileNameValid)
                 {
                     this.ReadMetadata();
                 }
 
-                return this.InternalFotoFlyMetadata;
+                return this.InternalFotoflyMetadata;
             }
         }
 
@@ -232,7 +232,8 @@ namespace FotoFly
         private void UnhandledReadMetadata()
         {
             this.InternalPhotoMetadata = new PhotoMetadata();
-            this.InternalFotoFlyMetadata = new FotoFlyMetadata();
+            this.InternalFotoflyMetadata = new FotoflyMetadata();
+            bool containsOldNamespaceMetadata = false;
 
             // Read BitmapMetadata
             using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileFullName))
@@ -243,11 +244,14 @@ namespace FotoFly
                 // Copy the common metadata across using reflection tool
                 IPhotoMetadataTools.CopyMetadata(wpfMetadata, this.InternalPhotoMetadata);
 
-                // Get FotoFly Custom Metadata
-                WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(wpfFileManager.BitmapMetadata);
+                // Get Fotofly Custom Metadata
+                WpfFotoflyMetadata wpfFotoflyMetadata = new WpfFotoflyMetadata(wpfFileManager.BitmapMetadata);
 
+                // Check there's data for the old FotoFly namespace
+                containsOldNamespaceMetadata = wpfFotoflyMetadata.ContainsOldNamespaceMetadata;
+                
                 // Copy the common metadata across using reflection tool
-                IPhotoMetadataTools.CopyMetadata(wpfFotoFlyMetadata, this.FotoFlyMetadata);
+                IPhotoMetadataTools.CopyMetadata(wpfFotoflyMetadata, this.FotoflyMetadata);
 
                 // Manually copy across ImageHeight & ImageWidth if they are not set in metadata
                 // This should be pretty rare but can happen if the image has been resized or manipulated and the metadata not copied across
@@ -256,6 +260,12 @@ namespace FotoFly
                     this.InternalPhotoMetadata.ImageHeight = wpfFileManager.BitmapDecoder.Frames[0].PixelHeight;
                     this.InternalPhotoMetadata.ImageWidth = wpfFileManager.BitmapDecoder.Frames[0].PixelWidth;
                 }
+            }
+
+            // Force a save, which will migrate the metadata
+            if (containsOldNamespaceMetadata)
+            {
+                this.UnhandledWriteMetadata();
             }
         }
 
@@ -274,17 +284,17 @@ namespace FotoFly
             // Copy JpgMetadata across to file Metadata
             IPhotoMetadataTools.CopyMetadata(this.InternalPhotoMetadata, wpfMetadata, ref changes);
 
-            WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(bitmapMetadata);
+            WpfFotoflyMetadata wpfFotoflyMetadata = new WpfFotoflyMetadata(bitmapMetadata);
 
             // Copy JpgMetadata across to file Metadata
-            IPhotoMetadataTools.CopyMetadata(this.FotoFlyMetadata, wpfFotoFlyMetadata, ref changes);
+            IPhotoMetadataTools.CopyMetadata(this.FotoflyMetadata, wpfFotoflyMetadata, ref changes);
 
             // Save if there have been changes to the Metadata
             if (changes.Count > 0)
             {
                 // Set the Last Edit Date
-                this.FotoFlyMetadata.LastEditDate = DateTime.Now;
-                wpfFotoFlyMetadata.LastEditDate = this.FotoFlyMetadata.LastEditDate;
+                this.FotoflyMetadata.LastEditDate = DateTime.Now;
+                wpfFotoflyMetadata.LastEditDate = this.FotoflyMetadata.LastEditDate;
 
                 // Write changes
                 WpfFileManager.WriteBitmapMetadata(this.FileFullName, bitmapMetadata);

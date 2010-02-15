@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-10</date>
 // <summary>GpsPositionUtils</summary>
-namespace FotoFly
+namespace Fotofly
 {
     using System;
     using System.Collections.Generic;

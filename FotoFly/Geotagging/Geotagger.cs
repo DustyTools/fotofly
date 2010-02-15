@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-06</date>
 // <summary>Class for Geotagging Photos</summary>
-namespace FotoFly.Geotagging
+namespace Fotofly.Geotagging
 {
     using System;
     using System.Collections.Generic;
@@ -10,8 +10,8 @@ namespace FotoFly.Geotagging
     using System.Linq;
     using System.Text;
 
-    using FotoFly.Geotagging.Resolvers;
-    using FotoFly.GpseXchangeFormat;
+    using Fotofly.Geotagging.Resolvers;
+    using Fotofly.GpseXchangeFormat;
 
     public class Geotagger
     {
@@ -85,7 +85,7 @@ namespace FotoFly.Geotagging
             {
                 if (utcDate == null || utcDate == new DateTime())
                 {
-                    throw new Exception("FotoFlyMetadata.UtcDate must be set Gps Tracks are UTC based");
+                    throw new Exception("FotoflyMetadata.UtcDate must be set Gps Tracks are UTC based");
                 }
 
                 GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(utcDate);
@@ -106,12 +106,12 @@ namespace FotoFly.Geotagging
             // Use Gps Tracks if Configured
             if (!photo.Metadata.GpsPosition.IsValidCoordinate && this.IsGpsTracksResolverConfigured)
             {
-                if (photo.FotoFlyMetadata.UtcDate == null || photo.FotoFlyMetadata.UtcDate == new DateTime())
+                if (photo.FotoflyMetadata.UtcDate == null || photo.FotoflyMetadata.UtcDate == new DateTime())
                 {
-                    throw new Exception("FotoFlyMetadata.UtcDate must be set Gps Tracks are UTC based");
+                    throw new Exception("FotoflyMetadata.UtcDate must be set Gps Tracks are UTC based");
                 }
 
-                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(photo.FotoFlyMetadata.UtcDate);
+                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(photo.FotoflyMetadata.UtcDate);
 
                 if (gpsPosition != null && gpsPosition.IsValidCoordinate)
                 {
@@ -193,26 +193,26 @@ namespace FotoFly.Geotagging
             if (photo.Metadata != null && photo.Metadata.GpsPosition.Dimension == GpsPosition.Dimensions.ThreeDimensional)
             {
                 // Use Bing if configured
-                if (!photo.FotoFlyMetadata.AddressOfGps.IsValidAddress && this.IsBingMapsResolverConfigured)
+                if (!photo.FotoflyMetadata.AddressOfGps.IsValidAddress && this.IsBingMapsResolverConfigured)
                 {
-                    photo.FotoFlyMetadata.AddressOfGps = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPosition, photo.Metadata.IptcAddress.Country);
-                    photo.FotoFlyMetadata.AddressOfGpsLookupDate = DateTime.Now;
-                    photo.FotoFlyMetadata.AddressOfGpsSource = BingMapsResolver.SourceName;
+                    photo.FotoflyMetadata.AddressOfGps = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPosition, photo.Metadata.IptcAddress.Country);
+                    photo.FotoflyMetadata.AddressOfGpsLookupDate = DateTime.Now;
+                    photo.FotoflyMetadata.AddressOfGpsSource = BingMapsResolver.SourceName;
                 }
 
                 // Use Google if configured
-                if (!photo.FotoFlyMetadata.AddressOfGps.IsValidAddress && this.IsGoogleMapsResolverConfigured)
+                if (!photo.FotoflyMetadata.AddressOfGps.IsValidAddress && this.IsGoogleMapsResolverConfigured)
                 {
-                    photo.FotoFlyMetadata.AddressOfGps = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPosition);
-                    photo.FotoFlyMetadata.AddressOfGpsLookupDate = DateTime.Now;
-                    photo.FotoFlyMetadata.AddressOfGpsSource = GoogleMapsResolver.SourceName;
+                    photo.FotoflyMetadata.AddressOfGps = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPosition);
+                    photo.FotoflyMetadata.AddressOfGpsLookupDate = DateTime.Now;
+                    photo.FotoflyMetadata.AddressOfGpsSource = GoogleMapsResolver.SourceName;
                 }
 
-                if (!photo.FotoFlyMetadata.AddressOfGps.IsValidAddress)
+                if (!photo.FotoflyMetadata.AddressOfGps.IsValidAddress)
                 {
-                    photo.FotoFlyMetadata.AddressOfGps = new Address();
-                    photo.FotoFlyMetadata.AddressOfGpsLookupDate = new DateTime();
-                    photo.FotoFlyMetadata.AddressOfGpsSource = null;
+                    photo.FotoflyMetadata.AddressOfGps = new Address();
+                    photo.FotoflyMetadata.AddressOfGpsLookupDate = new DateTime();
+                    photo.FotoflyMetadata.AddressOfGpsSource = null;
                 }
             }
         }

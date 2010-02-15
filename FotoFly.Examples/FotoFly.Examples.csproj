@@ -7,8 +7,8 @@
     <ProjectGuid>{045AA83C-1045-4AEC-9827-49747C843112}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FotoFly.Examples</RootNamespace>
-    <AssemblyName>FotoFly.Examples</AssemblyName>
+    <RootNamespace>Fotofly.Examples</RootNamespace>
+    <AssemblyName>Fotofly.Examples</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -108,13 +108,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FotoFly.UnitTests\FotoFly.UnitTests.csproj">
+    <ProjectReference Include="..\FotoFly.UnitTests\Fotofly.UnitTests.csproj">
       <Project>{07809749-5636-48BA-ADD3-8C95757DADC2}</Project>
-      <Name>FotoFly.UnitTests</Name>
+      <Name>Fotofly.UnitTests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FotoFly\FotoFly.csproj">
+    <ProjectReference Include="..\FotoFly\Fotofly.csproj">
       <Project>{156697C5-5AFD-4E4D-B96C-BC55B219907D}</Project>
-      <Name>FotoFly</Name>
+      <Name>Fotofly</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

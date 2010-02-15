@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-06</date>
 // <summary>Class to retrieve Addresses from Bing using GPS Position</summary>
-namespace FotoFly.Geotagging.Resolvers
+namespace Fotofly.Geotagging.Resolvers
 {
     using System;
     using System.Collections.Generic;
@@ -17,8 +17,8 @@ namespace FotoFly.Geotagging.Resolvers
     using System.Web.Services.Protocols;
     using System.Xml;
 
-    using FotoFly.BingMapsForEnterprise;
-    using BingMaps = FotoFly.BingMapsForEnterprise;
+    using Fotofly.BingMapsForEnterprise;
+    using BingMaps = Fotofly.BingMapsForEnterprise;
 
     public class BingMapsResolver : IResolverCache
     {
@@ -63,9 +63,9 @@ namespace FotoFly.Geotagging.Resolvers
             this.resolverCache = new ResolverCache(cacheDirectory, cacheName);
         }
 
-        public FotoFly.Address FindAddress(GpsPosition gps, string country)
+        public Fotofly.Address FindAddress(GpsPosition gps, string country)
         {
-            FotoFly.Address returnValue = new FotoFly.Address();
+            Fotofly.Address returnValue = new Fotofly.Address();
 
             // Set the LatLong
             LatLong latLong = new LatLong();
@@ -106,7 +106,7 @@ namespace FotoFly.Geotagging.Resolvers
             return returnValue;
         }
 
-        public GpsPosition FindGpsPosition(FotoFly.Address addressToLookup)
+        public GpsPosition FindGpsPosition(Fotofly.Address addressToLookup)
         {
             GpsPosition returnValue = new GpsPosition();
 

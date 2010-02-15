@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>Tag</summary>
-namespace FotoFly
+namespace Fotofly
 {
     using System;
     using System.Collections.Generic;

@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-06</date>
 // <summary>Class that manages cached GPS results</summary>
-namespace FotoFly.Geotagging.Resolvers
+namespace Fotofly.Geotagging.Resolvers
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace FotoFly.Geotagging.Resolvers
 
     public class ResolverCache
     {
-        private readonly string filePrefix = "FotoFlyGeoCache-";
+        private readonly string filePrefix = "FotoflyGeoCache-";
 
         private string cacheDirectory;
         private string cacheSuffixName;

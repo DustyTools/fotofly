@@ -2,14 +2,14 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-06</date>
 // <summary>Record stored in from Gps Cache</summary>
-namespace FotoFly.Geotagging.Resolvers
+namespace Fotofly.Geotagging.Resolvers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
 
-    using FotoFly;
+    using Fotofly;
 
     public class GeoCacheRecord
     {

@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-06</date>
 // <summary>Class to retrieve Addresses from Google using GPS Position</summary>
-namespace FotoFly.Geotagging.Resolvers
+namespace Fotofly.Geotagging.Resolvers
 {
     using System;
     using System.Collections.Generic;

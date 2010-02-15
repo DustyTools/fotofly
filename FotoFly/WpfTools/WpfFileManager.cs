@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>Class for reading and writing BitmapMetadata</summary>
-namespace FotoFly.WpfTools
+namespace Fotofly.WpfTools
 {
     using System;
     using System.Collections;
@@ -21,7 +21,7 @@ namespace FotoFly.WpfTools
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using FotoFly.MetadataQueries;
+    using Fotofly.MetadataQueries;
 
     public class WpfFileManager : IDisposable
     {

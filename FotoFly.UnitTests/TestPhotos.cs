@@ -1,4 +1,4 @@
-﻿namespace FotoFly.UnitTests
+﻿namespace Fotofly.UnitTests
 {
     using System;
     using System.Collections.Generic;

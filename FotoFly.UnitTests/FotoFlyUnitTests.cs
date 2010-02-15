@@ -1,4 +1,4 @@
-﻿namespace FotoFly.UnitTests
+﻿namespace Fotofly.UnitTests
 {
     using System;
     using System.Collections.Generic;
@@ -11,18 +11,18 @@
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
-    using FotoFly;
-    using FotoFly.WpfTools;
-    using FotoFly.Geotagging;
+    using Fotofly;
+    using Fotofly.WpfTools;
+    using Fotofly.Geotagging;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class FotoFlyUnitTests
+    public class FotoflyUnitTests
     {
         private string samplesFolder = @"..\..\..\~Sample Files\JpgPhotos\";
 
-        public FotoFlyUnitTests()
+        public FotoflyUnitTests()
         {
         }
 
@@ -44,38 +44,38 @@
         /// Check test photo can be read and metadata loaded into memory
         /// </summary>
         [TestMethod]
-        public void ReadAndWriteFotoFlyMetadata()
+        public void ReadAndWriteFotoflyMetadata()
         {
             BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplesFolder + TestPhotos.UnitTest1);
 
             DateTime testDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
-            WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(bitmapMetadata);
-            wpfFotoFlyMetadata.AccuracyOfGps = GpsPosition.Accuracies.Region;
-            wpfFotoFlyMetadata.AddressOfGps = new Address("United States/California/San Francisco/Mission Street");
-            wpfFotoFlyMetadata.AddressOfGpsLookupDate = testDate;
-            wpfFotoFlyMetadata.AddressOfGpsSource = "Bing Maps for Enterprise";
-            wpfFotoFlyMetadata.LastEditDate = testDate;
-            wpfFotoFlyMetadata.OriginalCameraDate = testDate;
-            wpfFotoFlyMetadata.OriginalCameraFilename = "img_123.jpg";
-            wpfFotoFlyMetadata.UtcDate = testDate;
-            wpfFotoFlyMetadata.UtcOffset = 5;
+            WpfFotoflyMetadata wpfFotoflyMetadata = new WpfFotoflyMetadata(bitmapMetadata);
+            wpfFotoflyMetadata.AccuracyOfGps = GpsPosition.Accuracies.Region;
+            wpfFotoflyMetadata.AddressOfGps = new Address("United States/California/San Francisco/Mission Street");
+            wpfFotoflyMetadata.AddressOfGpsLookupDate = testDate;
+            wpfFotoflyMetadata.AddressOfGpsSource = "Bing Maps for Enterprise";
+            wpfFotoflyMetadata.LastEditDate = testDate;
+            wpfFotoflyMetadata.OriginalCameraDate = testDate;
+            wpfFotoflyMetadata.OriginalCameraFilename = "img_123.jpg";
+            wpfFotoflyMetadata.UtcDate = testDate;
+            wpfFotoflyMetadata.UtcOffset = 5;
 
             WpfFileManager.WriteBitmapMetadata(this.samplesFolder + TestPhotos.UnitTestX, bitmapMetadata, this.samplesFolder + TestPhotos.UnitTest1);
 
             bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplesFolder + TestPhotos.UnitTestX);
 
-            wpfFotoFlyMetadata = new WpfFotoFlyMetadata(bitmapMetadata);
+            wpfFotoflyMetadata = new WpfFotoflyMetadata(bitmapMetadata);
 
-            Assert.AreEqual<GpsPosition.Accuracies>(wpfFotoFlyMetadata.AccuracyOfGps, GpsPosition.Accuracies.Region);
-            Assert.AreEqual<Address>(wpfFotoFlyMetadata.AddressOfGps, new Address("United States/California/San Francisco/Mission Street"));
-            Assert.AreEqual<DateTime>(wpfFotoFlyMetadata.AddressOfGpsLookupDate, testDate);
-            Assert.AreEqual<string>(wpfFotoFlyMetadata.AddressOfGpsSource, "Bing Maps for Enterprise");
-            Assert.AreEqual<DateTime>(wpfFotoFlyMetadata.LastEditDate, testDate);
-            Assert.AreEqual<DateTime>(wpfFotoFlyMetadata.OriginalCameraDate, testDate);
-            Assert.AreEqual<string>(wpfFotoFlyMetadata.OriginalCameraFilename, "img_123.jpg");
-            Assert.AreEqual<DateTime>(wpfFotoFlyMetadata.UtcDate, testDate);
-            Assert.AreEqual<double>(wpfFotoFlyMetadata.UtcOffset.Value, 5);
+            Assert.AreEqual<GpsPosition.Accuracies>(wpfFotoflyMetadata.AccuracyOfGps, GpsPosition.Accuracies.Region);
+            Assert.AreEqual<Address>(wpfFotoflyMetadata.AddressOfGps, new Address("United States/California/San Francisco/Mission Street"));
+            Assert.AreEqual<DateTime>(wpfFotoflyMetadata.AddressOfGpsLookupDate, testDate);
+            Assert.AreEqual<string>(wpfFotoflyMetadata.AddressOfGpsSource, "Bing Maps for Enterprise");
+            Assert.AreEqual<DateTime>(wpfFotoflyMetadata.LastEditDate, testDate);
+            Assert.AreEqual<DateTime>(wpfFotoflyMetadata.OriginalCameraDate, testDate);
+            Assert.AreEqual<string>(wpfFotoflyMetadata.OriginalCameraFilename, "img_123.jpg");
+            Assert.AreEqual<DateTime>(wpfFotoflyMetadata.UtcDate, testDate);
+            Assert.AreEqual<double>(wpfFotoflyMetadata.UtcOffset.Value, 5);
 
             if (File.Exists(this.samplesFolder + TestPhotos.UnitTestX))
             {

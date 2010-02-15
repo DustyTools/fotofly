@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2010-01-07</date>
 // <summary>JpgPhotoTools</summary>
-namespace FotoFly
+namespace Fotofly
 {
     using System;
     using System.Collections.Generic;
@@ -17,8 +17,8 @@ namespace FotoFly
     using System.Windows.Media.Imaging;
     using System.Xml.Serialization;
 
-    using FotoFly.WpfTools;
-    using FotoFly.XmlTools;
+    using Fotofly.WpfTools;
+    using Fotofly.XmlTools;
 
     public static class JpgPhotoTools
     {
@@ -105,11 +105,11 @@ namespace FotoFly
                 // Copy the common metadata across using reflection tool
                 IPhotoMetadataTools.CompareMetadata(photo.Metadata, wpfMetadata, ref changes);
 
-                // Get FotoFly Custom Metadata
-                WpfFotoFlyMetadata wpfFotoFlyMetadata = new WpfFotoFlyMetadata(wpfFileManager.BitmapMetadata);
+                // Get Fotofly Custom Metadata
+                WpfFotoflyMetadata wpfFotoflyMetadata = new WpfFotoflyMetadata(wpfFileManager.BitmapMetadata);
 
                 // Copy the common metadata across using reflection tool
-                IPhotoMetadataTools.CompareMetadata(photo.FotoFlyMetadata, wpfFotoFlyMetadata, ref changes);
+                IPhotoMetadataTools.CompareMetadata(photo.FotoflyMetadata, wpfFotoflyMetadata, ref changes);
             }
 
             // Sort

@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-06</date>
 // <summary>Interface to enforce consistent use of ResolverCache</summary>
-namespace FotoFly.Geotagging.Resolvers
+namespace Fotofly.Geotagging.Resolvers
 {
     public interface IResolverCache
     {

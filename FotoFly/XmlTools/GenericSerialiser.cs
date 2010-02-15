@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-10</date>
 // <summary>GenericSerialiser</summary>
-namespace FotoFly.XmlTools
+namespace Fotofly.XmlTools
 {
     using System;
     using System.Collections.Generic;

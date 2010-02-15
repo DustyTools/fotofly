@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>GenericPhotoFile Abstract Class</summary>
-namespace FotoFly
+namespace Fotofly
 {
     using System;
     using System.Collections.Generic;
@@ -118,7 +118,7 @@ namespace FotoFly
             set;
         }
 
-        protected FotoFlyMetadata InternalFotoFlyMetadata
+        protected FotoflyMetadata InternalFotoflyMetadata
         {
             get;
             set;

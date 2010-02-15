@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-12-05</date>
 // <summary>Class that represents a GpsTrackManager</summary>
-namespace FotoFly.Geotagging.Resolvers
+namespace Fotofly.Geotagging.Resolvers
 {
     using System;
     using System.Collections.Generic;
@@ -11,8 +11,8 @@ namespace FotoFly.Geotagging.Resolvers
     using System.Linq;
     using System.Text;
 
-    using FotoFly;
-    using FotoFly.GpseXchangeFormat;
+    using Fotofly;
+    using Fotofly.GpseXchangeFormat;
 
     public class GpsTrackResolver
     {
