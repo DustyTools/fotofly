@@ -15,9 +15,114 @@ namespace Fotofly.MetadataQueries
         // - The schema name is http://ns.adobe.com/exif/1.0/
         // - The preferred schema namespace prefix is exif
 
-        // TODO
+        // exif:GPSVersionID Text Internal GPS tag 0, 0x00. A decimal encoding of each of
+        // the four EXIF bytes with period separators. The current value is “2.0.0.0”.
+        public static readonly MetdataQuery<string, string> GpsVersionID = new MetdataQuery<string, string>("/xmp/exif:GPSVersionID");
+        
+        // GPS Latitude & GPSLongitude
+        // * A Text value in the form “DDD,MM,SSk” or “DDD,MM.mmk”, where:
+        // – DDD is a number of degrees
+        // – MM is a number of minutes
+        // – SS is a number of seconds
+        // – mm is a fraction of minutes
+        // – k is a single character N, S, E, or W indicating a direction (north, south, east, west)
+        // Leading zeros are not necesary for the for DDD, MM, and SS values. The DDD,MM.mmk form
+        // should be used when any of the native EXIF component rational values has a denonimator
+        // other than 1. There can be any number of fractional digits.
 
+        // exif:GPSLatitude GPSCoordinate Internal GPS tag 2, 0x02 (position) and 1, 0x01 (North/South). Indicates latitude.
+        public static readonly MetdataQuery<string, string> GpsLatitude = new MetdataQuery<string, string>("/xmp/exif:GPSLatitude");
+        
+        // exif:GPSLongitude GPSCoordinate Internal GPS tag 4, 0x04 (position) and 3, 0x03 (East/West). Indicates longitude.
+        public static readonly MetdataQuery<string, string> GpsLongitude = new MetdataQuery<string, string>("/xmp/exif:GPSLongitude");
+        
+        // exif:GPSAltitudeRef Closed Choice of Integer Internal GPS tag 5, 0x5. Indicates whether the altitude is
+        // above or below sea level: 0 = Above sea level 1 = Below sea level
+        public static readonly MetdataQuery<string, int> GpsAltitudeRef = new MetdataQuery<string, int>("/xmp/exif:GPSAltitudeRef");
+
+        // exif:GPSAltitude Rational Internal GPS tag 6, 0x06. Indicates altitude in meters.
+        public static readonly MetdataQuery<string, int> GpsAltitude = new MetdataQuery<string, int>("/xmp/exif:GPSAltitude");
+
+        // exif:GPSTimeStamp Date Internal GPS tag 29 (date), 0x1D, and, and GPS tag 7
+        // (time), 0x07. Time stamp of GPS data, in Coordinated Universal Time. NOTE: The GPSDateStamp tag is new in EXIF
+        // 2.2. The GPS timestamp in EXIF 2.1 does not include a date. If not present, the date component for the XMP should
+        // be taken from exif:DateTimeOriginal, or if that is also lacking from exif:DateTimeDigitized. If no date is
+        // available, do not write exif:GPSTimeStamp to XMP.
+        public static readonly MetdataQuery<string, DateTime> GpsTimeStamp = new MetdataQuery<string, DateTime>("/xmp/exif:GPSTimeStamp");
+
+        // exif:GPSSatellites Text Internal GPS tag 8, 0x08. Satellite information, format is unspecified.
+        public static readonly MetdataQuery<string, string> GpsSatellites = new MetdataQuery<string, string>("/xmp/exif:GPSSatellites");
+
+        // exif:GPSStatus Closed Choice of Text Internal GPS tag 9, 0x09. Status of GPS receiver at
+        // image creation time: A = measurement in progress V = measurement is interoperability
+        public static readonly MetdataQuery<string, string> GpsStatus = new MetdataQuery<string, string>("/xmp/exif:GPSStatus");
+
+        // exif:GPSMeasureMode Text Internal GPS tag 10, 0x0A. GPS measurement mode,
+        // Text type: 2 = two-dimensional measurement 3 = three-dimensional measurement
+        public static readonly MetdataQuery<string, GpsPosition.Dimensions> GpsMeasureMode = new MetdataQuery<string, GpsPosition.Dimensions>("/xmp/exif:GPSMeasureMode");
+
+        // exif:GPSDOP Rational Internal GPS tag 11, 0x0B. Degree of precision for GPS data.
+        public static readonly MetdataQuery<string, string> GpsDOP = new MetdataQuery<string, string>("/xmp/exif:GPSDOP");
+        
+        // exif:GPSSpeedRef Closed Choice of Text Internal GPS tag 12, 0x0C. Units used to speed
+        // measurement: K = kilometers per hour M = miles per hour N = knots
+        public static readonly MetdataQuery<string, string> GpsSpeedRef = new MetdataQuery<string, string>("/xmp/exif:GPSSpeedRef");
+
+        // exif:GPSSpeed Rational Internal GPS tag 13, 0x0D. Speed of GPS receiver movement.
+        public static readonly MetdataQuery<string, string> GpsSpeed = new MetdataQuery<string, string>("/xmp/exif:GPSSpeed");
+        
+        // exif:GPSTrackRef Closed Choice of Text Internal GPS tag 14, 0x0E. Reference for movement
+        // direction: T = true direction M = magnetic direction
+        public static readonly MetdataQuery<string, string> GpsTrackRef = new MetdataQuery<string, string>("/xmp/exif:GPSTrackRef");
+        
+        // exif:GPSTrack Rational Internal GPS tag 15, 0x0F. Direction of GPS movement, values range from 0 to 359.99.
+        public static readonly MetdataQuery<string, string> GpsTrack = new MetdataQuery<string, string>("/xmp/exif:GPSTrack");
+        
+        // exif:GPSImgDirectionRef Closed Choice of Text Internal GPS tag 16, 0x10. Reference for movement
+        // direction: T = true direction M = magnetic direction
+        public static readonly MetdataQuery<string, string> GpsImgDirectionRef = new MetdataQuery<string, string>("/xmp/exif:GPSImgDirectionRef");
+
+        // exif:GPSImgDirection Rational Internal GPS tag 17, 0x11. Direction of image when
+        // captured, values range from 0 to 359.99.
+        public static readonly MetdataQuery<string, string> GpsImgDirection = new MetdataQuery<string, string>("/xmp/exif:GPSImgDirection");
+        
+        // exif:GPSMapDatum Text Internal GPS tag 18, 0x12. Geodetic survey data.
+        public static readonly MetdataQuery<string, string> GpsMapDatum = new MetdataQuery<string, string>("/xmp/exif:GPSMapDatum");
+
+        // exif:GPSDestLatitude GPSCoordinate Internal GPS tag 20, 0x14 (position) and 19, 0x13 (North/South). Indicates destination latitude.
+        public static readonly MetdataQuery<string, string> GpsDestLatitude = new MetdataQuery<string, string>("/xmp/exif:GPSDestLatitude");
+
+        // exif:GPSDestLongitude GPSCoordinate Internal GPS tag 22, 0x16 (position) and 21, 0x15 (East/West). Indicates destination longitude.
+        public static readonly MetdataQuery<string, string> GpsDestLongitude = new MetdataQuery<string, string>("/xmp/exif:GPSDestLongitude");
+        
+        // exif:GPSDestBearingRef Closed Choice of Text Internal GPS tag 23, 0x17. Reference for movement
+        // direction: T = true direction M = magnetic direction
+        public static readonly MetdataQuery<string, string> GpsDestBearingRef = new MetdataQuery<string, string>("/xmp/exif:GPSDestBearingRef");
+
+        // exif:GPSDestBearing Rational Internal GPS tag 24, 0x18. Destination bearing, values from 0 to 359.99.
+        public static readonly MetdataQuery<string, string> GpsDestBearing = new MetdataQuery<string, string>("/xmp/exif:GPSDestBearing");
+        
+        // exif:GPSDestDistanceRef Closed Choice of Text Internal GPS tag 25, 0x19. Units used for speed
+        // measurement: K = kilometers M = miles N = knots
+        public static readonly MetdataQuery<string, string> GpsDestDistanceRef = new MetdataQuery<string, string>("/xmp/exif:GPSDestDistanceRef");
+
+        // exif:GPSDestDistance Rational Internal GPS tag 26, 0x1A. Distance to destination.
+        public static readonly MetdataQuery<string, string> GpsDestDistance = new MetdataQuery<string, string>("/xmp/exif:GPSDestDistance");
+        
+        // exif:GPSProcessingMethod Text Internal GPS tag 27, 0x1B. A character string recording
+        // the name of the method used for location finding.
+        public static readonly MetdataQuery<string, string> GpsProcessingMethod = new MetdataQuery<string, string>("/xmp/exif:GPSProcessingMethod");
+
+        // exif:GPSAreaInformation Text Internal GPS tag 28, 0x1C. A character string recording the name of the GPS area.
+        public static readonly MetdataQuery<string, string> GpsAreaInformation = new MetdataQuery<string, string>("/xmp/exif:GPSAreaInformation");
+        
+        // exif:GPSDifferential Closed choice of Integer Internal GPS tag 30, 0x1E. Indicates whether differential
+        // correction is applied to the GPS receiver: 0 = Without correction 1 = Correction applied
+        public static readonly MetdataQuery<string, string> GpsDifferential = new MetdataQuery<string, string>("/xmp/exif:GPSDifferential");
+    
         /*
+        TODO:
+        
         exif:ExifVersion Closed Choice
         of Text
         Internal EXIF tag 36864, 0x9000. EXIF version number.
@@ -279,120 +384,6 @@ namespace Fotofly.MetadataQueries
         uniquely to each image. It is recorded as a 32
         character ASCII string, equivalent to
         hexadecimal notation and 128-bit fixed length.
-        exif:GPSVersionID Text Internal GPS tag 0, 0x00. A decimal encoding of each of
-        the four EXIF bytes with period separators. The
-        current value is “2.0.0.0”.
-
-         * 
-         * A Text value in the form “DDD,MM,SSk” or “DDD,MM.mmk”, where:
-        – DDD is a number of degrees
-        – MM is a number of minutes
-        – SS is a number of seconds
-        – mm is a fraction of minutes
-        – k is a single character N, S, E, or W indicating a direction (north, south, east, west)
-        Leading zeros are not necesary for the for DDD, MM, and SS values. The DDD,MM.mmk form
-        should be used when any of the native EXIF component rational values has a denonimator
-        other than 1. There can be any number of fractional digits.
-         * 
-         * exif:GPSLatitude GPSCoordinate Internal GPS tag 2, 0x02 (position) and 1, 0x01
-        (North/South). Indicates latitude.
-        exif:GPSLongitude GPSCoordinate Internal GPS tag 4, 0x04 (position) and 3, 0x03
-        (East/West). Indicates longitude.
-         * 
-         * exif:GPSAltitudeRef Closed Choice
-        of Integer
-        Internal GPS tag 5, 0x5. Indicates whether the altitude is
-        above or below sea level:
-        0 = Above sea level
-        1 = Below sea level
-        exif:GPSAltitude Rational Internal GPS tag 6, 0x06. Indicates altitude in meters.
-        exif:GPSTimeStamp Date Internal GPS tag 29 (date), 0x1D, and, and GPS tag 7
-        (time), 0x07. Time stamp of GPS data, in
-        Coordinated Universal Time.
-        NOTE: The GPSDateStamp tag is new in EXIF
-        2.2. The GPS timestamp in EXIF 2.1
-        does not include a date. If not present,
-        the date component for the XMP should
-        be taken from
-        exif:DateTimeOriginal, or if that is
-        also lacking from
-        exif:DateTimeDigitized. If no date is
-        available, do not write
-        exif:GPSTimeStamp to XMP.
-        exif:GPSSatellites Text Internal GPS tag 8, 0x08. Satellite information, format is
-        unspecified.
-        exif:GPSStatus Closed Choice
-        of Text
-        Internal GPS tag 9, 0x09. Status of GPS receiver at
-        image creation time:
-        A = measurement in progress
-        V = measurement is interoperability
-        exif:GPSMeasureMode Text Internal GPS tag 10, 0x0A. GPS measurement mode,
-        Text type:
-        2 = two-dimensional measurement
-        3 = three-dimensional measurement
-        exif:GPSDOP Rational Internal GPS tag 11, 0x0B. Degree of precision for GPS
-        data.
-        exif:GPSSpeedRef Closed Choice
-        of Text
-        Internal GPS tag 12, 0x0C. Units used to speed
-        measurement:
-        K = kilometers per hour
-        M = miles per hour
-        N = knots
-        exif:GPSSpeed Rational Internal GPS tag 13, 0x0D. Speed of GPS receiver
-        movement.
-         * 
-         *
-         * 
-         * exif:GPSTrackRef Closed Choice
-        of Text
-        Internal GPS tag 14, 0x0E. Reference for movement
-        direction:
-        T = true direction
-        M = magnetic direction
-        exif:GPSTrack Rational Internal GPS tag 15, 0x0F. Direction of GPS movement,
-        values range from 0 to 359.99.
-        exif:GPSImgDirectionRef Closed Choice
-        of Text
-        Internal GPS tag 16, 0x10. Reference for movement
-        direction:
-        T = true direction
-        M = magnetic direction
-        exif:GPSImgDirection Rational Internal GPS tag 17, 0x11. Direction of image when
-        captured, values range from 0 to 359.99.
-        exif:GPSMapDatum Text Internal GPS tag 18, 0x12. Geodetic survey data.
-        exif:GPSDestLatitude GPSCoordinate Internal GPS tag 20, 0x14 (position) and 19, 0x13
-        (North/South). Indicates destination latitude.
-        exif:GPSDestLongitude GPSCoordinate Internal GPS tag 22, 0x16 (position) and 21, 0x15
-        (East/West). Indicates destination longitude.
-        exif:GPSDestBearingRef Closed Choice
-        of Text
-        Internal GPS tag 23, 0x17. Reference for movement
-        direction:
-        T = true direction
-        M = magnetic direction
-        exif:GPSDestBearing Rational Internal GPS tag 24, 0x18. Destination bearing, values
-        from 0 to 359.99.
-        exif:GPSDestDistanceRef Closed Choice
-        of Text
-        Internal GPS tag 25, 0x19. Units used for speed
-        measurement:
-        K = kilometers
-        M = miles
-        N = knots
-        exif:GPSDestDistance Rational Internal GPS tag 26, 0x1A. Distance to destination.
-        exif:GPSProcessingMethod Text Internal GPS tag 27, 0x1B. A character string recording
-        the name of the method used for location
-        finding.
-        exif:GPSAreaInformation Text Internal GPS tag 28, 0x1C. A character string recording
-        the name of the GPS area.
-         * exif:GPSDifferential Closed choice
-        of Integer
-        Internal GPS tag 30, 0x1E. Indicates whether differential
-        correction is applied to the GPS receiver:
-        0 = Without correction
-        1 = Correction applied
-         */
+        */
     }
 }

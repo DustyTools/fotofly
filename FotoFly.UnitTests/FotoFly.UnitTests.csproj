@@ -46,7 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FotoFlyUnitTests.cs" />
+    <Compile Include="BitmapMetadataUnitTests.cs" />
     <Compile Include="GeotaggingUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JpgPhotoUnitTests.cs" />

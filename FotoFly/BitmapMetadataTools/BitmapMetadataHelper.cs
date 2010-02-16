@@ -2,7 +2,7 @@
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
 // <summary>Static Class that provides extension methods to BitmapMetadata</summary>
-namespace Fotofly.WpfTools
+namespace Fotofly.BitmapMetadataTools
 {
     using System;
     using System.Collections;

@@ -8,8 +8,9 @@
     using System.Text;
     using System.Windows.Media.Imaging;
 
+    using Fotofly.BitmapMetadataTools;
+    using Fotofly.MetadataProviders;
     using Fotofly.MetadataQueries;
-    using Fotofly.WpfTools;
 
     public static class BitmapMetadataExamples
     {
@@ -17,9 +18,9 @@
         {
             BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile);
 
-            WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
+            FileMetadata wpfMetadata = new FileMetadata(bitmapMetadata);
 
-            Debug.WriteLine(wpfMetadata.ExifGpsDateTimeStamp);
+            Debug.WriteLine(wpfMetadata.ExifProvider.Aperture);
         }
 
         public static void WriteMetadata(string inputFile)
@@ -28,8 +29,8 @@
 
             BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
 
-            WpfMetadata wpfMetadata = new WpfMetadata(bitmapMetadata);
-            wpfMetadata.IptcCountry = "United States";
+            FileMetadata wpfMetadata = new FileMetadata(bitmapMetadata);
+            wpfMetadata.IptcProvider.Country = "United States";
 
             WpfFileManager.WriteBitmapMetadata("BitmapMetadataExamples.WriteMetadata.jpg", bitmapMetadata);
         }

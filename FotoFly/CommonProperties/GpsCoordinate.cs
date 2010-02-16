@@ -43,6 +43,15 @@ namespace Fotofly
             this.isRefPositive = isRefPositive;
         }
 
+        public GpsCoordinate(LatOrLons coorType, bool isRefPositive, double degrees, double minutes)
+        {
+            this.LatOrLon = coorType;
+            this.isRefPositive = isRefPositive;
+            this.Degrees = Math.Round(degrees, 0);
+            this.Minutes = Math.Round(minutes, 0);
+            this.Seconds = 0;
+        }
+
         public GpsCoordinate(LatOrLons coorType, bool isRefPositive, double degrees, double minutes, double seconds)
         {
             this.LatOrLon = coorType;

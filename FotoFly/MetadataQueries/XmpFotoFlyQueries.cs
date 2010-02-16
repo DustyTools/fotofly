@@ -12,7 +12,7 @@ namespace Fotofly.MetadataQueries
 
     public static class XmpFotoflyQueries
     {
-        public static readonly MetdataQuery<BitmapMetadata, FotoflyMetadata> FotoflyStruct = new MetdataQuery<BitmapMetadata, FotoflyMetadata>(@"/xmp/http\:\/\/ns.fotofly:Fotofly");
+        public static readonly MetdataQuery<BitmapMetadata, BitmapMetadata> FotoflyStruct = new MetdataQuery<BitmapMetadata, BitmapMetadata>(@"/xmp/http\:\/\/ns.fotofly:Fotofly");
 
         public static readonly MetdataQuery<string, DateTime> UtcDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:UtcDate");
 

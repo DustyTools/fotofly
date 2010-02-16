@@ -61,15 +61,24 @@
   <ItemGroup>
     <Compile Include="BaseClasses\GenericPhotoEnums.cs" />
     <Compile Include="BaseClasses\GenericPhotoFile.cs" />
+    <Compile Include="BitmapMetadataTools\BitmapMetadataHelper.cs" />
+    <Compile Include="BitmapMetadataTools\WpfFileManager.cs" />
     <Compile Include="CommonProperties\GpsPositionUtils.cs" />
-    <Compile Include="FotoFlyMetadata.cs" />
     <Compile Include="Geotagging\GpsTrack.cs" />
     <Compile Include="Geotagging\GpsTrackCache.cs" />
-    <Compile Include="Interfaces\IFotoFlyMetadata.cs" />
-    <Compile Include="Interfaces\IPhotoMetadataTools.cs" />
     <Compile Include="JpgPhotoTools.cs" />
     <Compile Include="MetadataProperties\ImageRegion.cs" />
     <Compile Include="MetadataProperties\ImageRegionInfo.cs" />
+    <Compile Include="MetadataProviders\BaseProvider.cs" />
+    <Compile Include="MetadataProviders\ExifProvider.cs" />
+    <Compile Include="MetadataProviders\FileMetadata.cs" />
+    <Compile Include="MetadataProviders\GpsProvider.cs" />
+    <Compile Include="MetadataProviders\IptcProvider.cs" />
+    <Compile Include="MetadataProviders\XmpCoreProvider.cs" />
+    <Compile Include="MetadataProviders\XmpExifProvider.cs" />
+    <Compile Include="MetadataProviders\XmpFotoflyProvider.cs" />
+    <Compile Include="MetadataProviders\XmpMicrosoftProvider.cs" />
+    <Compile Include="MetadataProviders\XmpRightsProvider.cs" />
     <Compile Include="MetadataQueries\GpsQueries.cs" />
     <Compile Include="MetadataQueries\XmpCoreQueries.cs" />
     <Compile Include="MetadataQueries\XmpDublinCoreQueries.cs" />
@@ -93,7 +102,6 @@
     <Compile Include="Geotagging\GpsTrackResolver\GpseXchangeFormat\GpxTrackNode.cs" />
     <Compile Include="Geotagging\GpsTrackResolver\GpsTrackMatch.cs" />
     <Compile Include="Geotagging\GpsTrackResolver\GpsTrackResolver.cs" />
-    <Compile Include="Interfaces\IPhotoMetadata.cs" />
     <Compile Include="JpgPhoto.cs" />
     <Compile Include="MetadataDump\MetadataDump.cs" />
     <Compile Include="MetadataDump\MetadataProperty.cs" />
@@ -109,6 +117,7 @@
     <Compile Include="MetadataProperties\URationalTriplet.cs" />
     <Compile Include="MetadataProperties\URational.cs" />
     <Compile Include="MetadataProperties\PhotoMetadataEnums.cs" />
+    <Compile Include="PhotoMetadataTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MetadataProperties\SRational.cs" />
     <Compile Include="MetadataProperties\RectangleCoordinates.cs" />
@@ -120,10 +129,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="WpfTools\BitmapMetadataHelper.cs" />
-    <Compile Include="WpfTools\WpfFileManager.cs" />
-    <Compile Include="WpfTools\WpfFotoFlyMetadata.cs" />
-    <Compile Include="WpfTools\WpfMetadata.cs" />
     <Compile Include="XmlTools\GenericSerialiser.cs" />
   </ItemGroup>
   <ItemGroup>

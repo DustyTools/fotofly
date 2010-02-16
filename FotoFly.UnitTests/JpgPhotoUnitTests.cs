@@ -13,10 +13,10 @@
 
     using Fotofly;
     using Fotofly.Geotagging;
-    using Fotofly.WpfTools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Fotofly.MetadataQueries;
+    using Fotofly.BitmapMetadataTools;
 
     [TestClass]
     public class JpgPhotoUnitTests
@@ -329,7 +329,7 @@
             MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.jpgPhotoTwo.FileFullName));
 
             // Check total count
-            Assert.AreEqual<int>(metadataDump.StringList.Count, 63);
+            Assert.AreEqual<int>(metadataDump.StringList.Count, 71);
         }
 
         /// <summary>
@@ -367,9 +367,9 @@
             BitmapMetadata noPaddingBitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.NoPadding);
 
             // Check Padding Amounts
-            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(ExifQueries.Padding.Query), null);
+            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(ExifQueries.Padding.Query).ToString(), "5120");
             Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(XmpCoreQueries.Padding.Query), null);
-            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(IptcQueries.Padding.Query), null);
+            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(IptcQueries.Padding.Query).ToString(), "5120");
 
             // Load a file with default padding set
             BitmapMetadata paddingBitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.UnitTest1);

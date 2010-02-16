@@ -17,7 +17,7 @@ namespace Fotofly
     using System.Windows.Media.Imaging;
     using System.Xml.Serialization;
 
-    using Fotofly.WpfTools;
+    using Fotofly.BitmapMetadataTools;
     using Fotofly.XmlTools;
 
     public static class JpgPhotoTools
@@ -99,17 +99,17 @@ namespace Fotofly
             // Read BitmapMetadata
             using (WpfFileManager wpfFileManager = new WpfFileManager(photo.FileFullName))
             {
-                // Get generic Metadata
-                WpfMetadata wpfMetadata = new WpfMetadata(wpfFileManager.BitmapMetadata);
+                ////// Get generic Metadata
+                ////ExifMetadata wpfMetadata = new ExifMetadata(wpfFileManager.BitmapMetadata);
 
-                // Copy the common metadata across using reflection tool
-                IPhotoMetadataTools.CompareMetadata(photo.Metadata, wpfMetadata, ref changes);
+                ////// Copy the common metadata across using reflection tool
+                ////IPhotoMetadataTools.CompareMetadata(photo.Metadata, wpfMetadata, ref changes);
 
-                // Get Fotofly Custom Metadata
-                WpfFotoflyMetadata wpfFotoflyMetadata = new WpfFotoflyMetadata(wpfFileManager.BitmapMetadata);
+                ////// Get Fotofly Custom Metadata
+                ////WpfFotoflyMetadata wpfFotoflyMetadata = new WpfFotoflyMetadata(wpfFileManager.BitmapMetadata);
 
-                // Copy the common metadata across using reflection tool
-                IPhotoMetadataTools.CompareMetadata(photo.FotoflyMetadata, wpfFotoflyMetadata, ref changes);
+                ////// Copy the common metadata across using reflection tool
+                ////IPhotoMetadataTools.CompareMetadata(photo.Metadata, wpfFotoflyMetadata, ref changes);
             }
 
             // Sort

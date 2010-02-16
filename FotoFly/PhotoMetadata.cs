@@ -13,7 +13,7 @@ namespace Fotofly
     /// <summary>
     /// Class representing Industry Standard Metadata
     /// </summary>
-    public class PhotoMetadata : IPhotoMetadata
+    public class PhotoMetadata
     {
         public PhotoMetadata()
         {
@@ -21,7 +21,8 @@ namespace Fotofly
             this.GpsPosition = new GpsPosition();
             this.Authors = new PeopleList();
             this.Tags = new TagList();
-            this.IptcAddress = new Address();
+            this.Address = new Address();
+            this.AddressOfGps = new Address();
         }
 
         /// <summary>
@@ -141,16 +142,6 @@ namespace Fotofly
         /// </summary>
         [XmlArray]
         public TagList Tags
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Iptc Address (Only stored as ASCII)
-        /// </summary>
-        [XmlElementAttribute]
-        public Address IptcAddress
         {
             get;
             set;
@@ -342,6 +333,85 @@ namespace Fotofly
         {
             get;
             set;
+        }
+
+        [XmlAttribute]
+        public DateTime UtcDate { get; set; }
+
+        [XmlElement]
+        public double? UtcOffset { get; set; }
+
+        [XmlAttribute]
+        public DateTime LastEditDate { get; set; }
+
+        [XmlAttribute]
+        public DateTime AddressOfGpsLookupDate { get; set; }
+
+        [XmlAttribute]
+        public DateTime OriginalCameraDate { get; set; }
+
+        [XmlAttribute]
+        public string OriginalCameraFilename { get; set; }
+
+        public Address AddressOfGps { get; set; }
+
+        public Address Address { get; set; }
+
+        [XmlAttribute]
+        public string AddressOfGpsSource { get; set; }
+
+        [XmlAttribute]
+        public GpsPosition.Accuracies AccuracyOfGps { get; set; }
+
+        [XmlIgnore]
+        public bool IsUtcOffsetSet
+        {
+            get
+            {
+                return this.UtcOffset != null;
+            }
+        }
+
+        [XmlIgnore]
+        public bool IsAddressOfGpsSet
+        {
+            get
+            {
+                return this.AddressOfGps.IsValidAddress;
+            }
+        }
+
+        [XmlIgnore]
+        public bool IsUtcDateSet
+        {
+            get
+            {
+                return this.UtcDate != new DateTime();
+            }
+        }
+
+        [XmlIgnore]
+        public bool IsOriginalCameraDateSet
+        {
+            get
+            {
+                return this.OriginalCameraDate != new DateTime();
+            }
+        }
+
+        public bool IsUtcOffsetCorrect(DateTime dateTaken)
+        {
+            if (this.UtcOffset == null || this.UtcDate == null)
+            {
+                return false;
+            }
+            else
+            {
+                double utcOffsetInMins = this.UtcOffset.Value * 60;
+                double dateGapInMins = new TimeSpan(dateTaken.Ticks - this.UtcDate.Ticks).TotalMinutes;
+
+                return utcOffsetInMins == dateGapInMins;
+            }
         }
     }
 }

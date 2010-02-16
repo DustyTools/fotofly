@@ -1,49 +1,28 @@
-// <copyright file="WpfFotoflyMetadata.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <copyright file="XmpFotoflyProvider.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
-// <date>2009-12-06</date>
-// <summary>WpfFotoflyMetadata Class</summary>
-namespace Fotofly.WpfTools
+// <date>2010-02-15</date>
+// <summary>XmpFotoflyProvider Class</summary>
+namespace Fotofly.MetadataProviders
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using System.Diagnostics;
     using System.Drawing;
-    using System.Drawing.Imaging;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
     using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Threading;
-    using System.Windows;
-    using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
+    using Fotofly.BitmapMetadataTools;
     using Fotofly.MetadataQueries;
 
-    public class WpfFotoflyMetadata : IFotoflyMetadata, IDisposable
+    public class XmpFotoflyProvider : BaseProvider, IDisposable
     {
-        public WpfFotoflyMetadata()
+        public XmpFotoflyProvider(BitmapMetadata bitmapMetadata)
+            : base(bitmapMetadata)
         {
-        }
-
-        public WpfFotoflyMetadata(BitmapMetadata bitmapMetadata)
-        {
-            this.BitmapMetadata = bitmapMetadata;
-
-            if (!this.BitmapMetadata.IsFrozen && this.ContainsOldNamespaceMetadata)
+            if (this.BitmapMetadata.ContainsQuery(XmpFotoflyQueries.FotoflyStruct.Query.Replace(":Fotofly", ":FotoFly")))
             {
                 this.MigrateXmpNamespace();
             }
-        }
-
-        public BitmapMetadata BitmapMetadata
-        {
-            get;
-            set;
         }
 
         public DateTime UtcDate
@@ -385,51 +364,33 @@ namespace Fotofly.WpfTools
             }
         }
 
-        public bool ContainsOldNamespaceMetadata
-        {
-            get
-            {
-                return this.BitmapMetadata.ContainsQuery(XmpFotoflyQueries.FotoflyStruct.Query.Replace(":Fotofly", ":FotoFly"));
-            }
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-
-            // Take yourself off the Finalization queue 
-            // to prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            // Force Garbage ObjCollection
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
-
         private void MigrateXmpNamespace()
         {
-            // Migrate older naming schema to new
-            // Create a new Struct
-            this.BitmapMetadata.SetQuery(XmpFotoflyQueries.FotoflyStruct.Query, new BitmapMetadata(XmpCoreQueries.StructBlock));
+            if (this.BitmapMetadata.IsFrozen)
+            {
+                throw new Exception("This file has been saved with a previous version of Fotofly (v0.5 or earlier) and the data needs to be migrated. Use the XmpFotoflyProvider.MigrateXmpNamespace() Method to migrate data.");
+            }
+            else
+            {
+                // Migrate older naming schema to new
+                // Create a new Struct
+                this.BitmapMetadata.SetQuery(XmpFotoflyQueries.FotoflyStruct.Query, new BitmapMetadata(XmpCoreQueries.StructBlock));
 
-            // Move all Metadata
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AccuracyOfGps.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.AccuracyOfGps.Query);
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.Address.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.Address.Query);
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AddressOfGps.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.AddressOfGps.Query);
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AddressOfGpsLookupDate.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.AddressOfGpsLookupDate.Query);
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AddressOfGpsSource.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.AddressOfGpsSource.Query);
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.LastEditDate.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.LastEditDate.Query);
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.OriginalCameraDate.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.OriginalCameraDate.Query);
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.OriginalCameraFilename.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.OriginalCameraFilename.Query);
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.UtcDate.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.UtcDate.Query);
-            this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.UtcOffset.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.UtcOffset.Query);
+                // Move all Metadata
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AccuracyOfGps.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.AccuracyOfGps.Query);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.Address.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.Address.Query);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AddressOfGps.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.AddressOfGps.Query);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AddressOfGpsLookupDate.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.AddressOfGpsLookupDate.Query);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AddressOfGpsSource.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.AddressOfGpsSource.Query);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.LastEditDate.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.LastEditDate.Query);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.OriginalCameraDate.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.OriginalCameraDate.Query);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.OriginalCameraFilename.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.OriginalCameraFilename.Query);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.UtcDate.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.UtcDate.Query);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.UtcOffset.Query.Replace(":Fotofly", ":FotoFly"), XmpFotoflyQueries.UtcOffset.Query);
 
-            // Remove the old struct
-            this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.FotoflyStruct.Query.Replace(":Fotofly", ":FotoFly"));
+                // Remove the old struct
+                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.FotoflyStruct.Query.Replace(":Fotofly", ":FotoFly"));
+            }
         }
 
         private void CreateFotoflyStruct()

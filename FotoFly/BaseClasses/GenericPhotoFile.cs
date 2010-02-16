@@ -48,6 +48,24 @@ namespace Fotofly
         }
 
         /// <summary>
+        /// The Last Modified date of the file
+        /// </summary>
+        public DateTime FileLastModified
+        {
+            get
+            {
+                if (this.IsFileNameValid)
+                {
+                    return new FileInfo(this.FileFullName).LastWriteTime;
+                }
+                else
+                {
+                    throw new Exception("FileFullName is not valid");
+                }
+            }
+        }
+
+        /// <summary>
         /// The Extension of the file with preceeding full stop
         /// </summary>
         public string FileExtension
@@ -118,7 +136,7 @@ namespace Fotofly
             set;
         }
 
-        protected FotoflyMetadata InternalFotoflyMetadata
+        protected PhotoMetadata InternalPhotoMetadataInFile
         {
             get;
             set;

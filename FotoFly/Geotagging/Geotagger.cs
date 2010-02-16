@@ -85,7 +85,7 @@ namespace Fotofly.Geotagging
             {
                 if (utcDate == null || utcDate == new DateTime())
                 {
-                    throw new Exception("FotoflyMetadata.UtcDate must be set Gps Tracks are UTC based");
+                    throw new Exception("Metadata.UtcDate must be set Gps Tracks are UTC based");
                 }
 
                 GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(utcDate);
@@ -106,12 +106,12 @@ namespace Fotofly.Geotagging
             // Use Gps Tracks if Configured
             if (!photo.Metadata.GpsPosition.IsValidCoordinate && this.IsGpsTracksResolverConfigured)
             {
-                if (photo.FotoflyMetadata.UtcDate == null || photo.FotoflyMetadata.UtcDate == new DateTime())
+                if (photo.Metadata.UtcDate == null || photo.Metadata.UtcDate == new DateTime())
                 {
-                    throw new Exception("FotoflyMetadata.UtcDate must be set Gps Tracks are UTC based");
+                    throw new Exception("Metadata.UtcDate must be set Gps Tracks are UTC based");
                 }
 
-                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(photo.FotoflyMetadata.UtcDate);
+                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(photo.Metadata.UtcDate);
 
                 if (gpsPosition != null && gpsPosition.IsValidCoordinate)
                 {
@@ -131,10 +131,10 @@ namespace Fotofly.Geotagging
                 {
                     // Check Bing
                     // Cycle through the address, start as accurate as possible
-                    for (int i = photo.Metadata.IptcAddress.HierarchicalNameLength; i > 0; i--)
+                    for (int i = photo.Metadata.Address.HierarchicalNameLength; i > 0; i--)
                     {
                         // Query Bing
-                        bingResult = this.bingMapsResolver.FindGpsPosition(photo.Metadata.IptcAddress.AddressTruncated(i));
+                        bingResult = this.bingMapsResolver.FindGpsPosition(photo.Metadata.Address.AddressTruncated(i));
 
                         if (bingResult.IsValidCoordinate)
                         {
@@ -153,10 +153,10 @@ namespace Fotofly.Geotagging
                 {
                     // Check Cache
                     // Cycle through the address, start as accurate as possible
-                    for (int i = photo.Metadata.IptcAddress.HierarchicalNameLength; i > 0; i--)
+                    for (int i = photo.Metadata.Address.HierarchicalNameLength; i > 0; i--)
                     {
                         // Query Cache
-                        manualResult = this.manualCache.FindGpsPosition(photo.Metadata.IptcAddress.AddressTruncated(i));
+                        manualResult = this.manualCache.FindGpsPosition(photo.Metadata.Address.AddressTruncated(i));
 
                         if (manualResult != null && manualResult.IsValidCoordinate)
                         {
@@ -182,6 +182,9 @@ namespace Fotofly.Geotagging
                 {
                     photo.Metadata.GpsPosition = bingResult;
                 }
+
+                // save Accuracy to Xmp because there's no standard for Exif
+                //// photo.Metadata.AccuracyOfGps = photo.Metadata.GpsPosition.Accuracy;
             }
         }
 
@@ -193,26 +196,26 @@ namespace Fotofly.Geotagging
             if (photo.Metadata != null && photo.Metadata.GpsPosition.Dimension == GpsPosition.Dimensions.ThreeDimensional)
             {
                 // Use Bing if configured
-                if (!photo.FotoflyMetadata.AddressOfGps.IsValidAddress && this.IsBingMapsResolverConfigured)
+                if (!photo.Metadata.AddressOfGps.IsValidAddress && this.IsBingMapsResolverConfigured)
                 {
-                    photo.FotoflyMetadata.AddressOfGps = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPosition, photo.Metadata.IptcAddress.Country);
-                    photo.FotoflyMetadata.AddressOfGpsLookupDate = DateTime.Now;
-                    photo.FotoflyMetadata.AddressOfGpsSource = BingMapsResolver.SourceName;
+                    photo.Metadata.AddressOfGps = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPosition, photo.Metadata.Address.Country);
+                    photo.Metadata.AddressOfGpsLookupDate = DateTime.Now;
+                    photo.Metadata.AddressOfGpsSource = BingMapsResolver.SourceName;
                 }
 
                 // Use Google if configured
-                if (!photo.FotoflyMetadata.AddressOfGps.IsValidAddress && this.IsGoogleMapsResolverConfigured)
+                if (!photo.Metadata.AddressOfGps.IsValidAddress && this.IsGoogleMapsResolverConfigured)
                 {
-                    photo.FotoflyMetadata.AddressOfGps = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPosition);
-                    photo.FotoflyMetadata.AddressOfGpsLookupDate = DateTime.Now;
-                    photo.FotoflyMetadata.AddressOfGpsSource = GoogleMapsResolver.SourceName;
+                    photo.Metadata.AddressOfGps = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPosition);
+                    photo.Metadata.AddressOfGpsLookupDate = DateTime.Now;
+                    photo.Metadata.AddressOfGpsSource = GoogleMapsResolver.SourceName;
                 }
 
-                if (!photo.FotoflyMetadata.AddressOfGps.IsValidAddress)
+                if (!photo.Metadata.AddressOfGps.IsValidAddress)
                 {
-                    photo.FotoflyMetadata.AddressOfGps = new Address();
-                    photo.FotoflyMetadata.AddressOfGpsLookupDate = new DateTime();
-                    photo.FotoflyMetadata.AddressOfGpsSource = null;
+                    photo.Metadata.AddressOfGps = new Address();
+                    photo.Metadata.AddressOfGpsLookupDate = new DateTime();
+                    photo.Metadata.AddressOfGpsSource = null;
                 }
             }
         }
