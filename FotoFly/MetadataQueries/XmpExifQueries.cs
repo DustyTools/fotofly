@@ -48,7 +48,7 @@ namespace Fotofly.MetadataQueries
         // 2.2. The GPS timestamp in EXIF 2.1 does not include a date. If not present, the date component for the XMP should
         // be taken from exif:DateTimeOriginal, or if that is also lacking from exif:DateTimeDigitized. If no date is
         // available, do not write exif:GPSTimeStamp to XMP.
-        public static readonly MetdataQuery<string, DateTime> GpsTimeStamp = new MetdataQuery<string, DateTime>("/xmp/exif:GPSTimeStamp");
+        public static readonly MetdataQuery<string, DateTime> GpsDateTimeStamp = new MetdataQuery<string, DateTime>("/xmp/exif:GPSTimeStamp");
 
         // exif:GPSSatellites Text Internal GPS tag 8, 0x08. Satellite information, format is unspecified.
         public static readonly MetdataQuery<string, string> GpsSatellites = new MetdataQuery<string, string>("/xmp/exif:GPSSatellites");

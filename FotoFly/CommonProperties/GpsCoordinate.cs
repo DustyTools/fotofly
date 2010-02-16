@@ -47,18 +47,18 @@ namespace Fotofly
         {
             this.LatOrLon = coorType;
             this.isRefPositive = isRefPositive;
-            this.Degrees = Math.Round(degrees, 0);
-            this.Minutes = Math.Round(minutes, 0);
-            this.Seconds = 0;
+            this.degrees = Math.Round(degrees, 0);
+            this.minutes = Math.Floor(minutes);
+            this.seconds = Math.Round((minutes - this.Minutes) * 60.0, 1);
         }
 
         public GpsCoordinate(LatOrLons coorType, bool isRefPositive, double degrees, double minutes, double seconds)
         {
             this.LatOrLon = coorType;
             this.isRefPositive = isRefPositive;
-            this.Degrees = Math.Round(degrees, 0);
-            this.Minutes = Math.Round(minutes, 0);
-            this.Seconds = Math.Round(seconds, 0);
+            this.degrees = Math.Round(degrees, 0);
+            this.minutes = Math.Round(minutes, 0);
+            this.seconds = Math.Round(seconds, 0);
         }
 
         public enum LatOrLons

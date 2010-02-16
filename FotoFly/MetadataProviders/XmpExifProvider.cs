@@ -142,7 +142,7 @@ namespace Fotofly.MetadataProviders
 
                             if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
                             {
-                                return new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, isRefPositive, degrees, minutes, 0);
+                                return new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, isRefPositive, degrees, minutes);
                             }
                         }
                         else if (splitString.Length == 3)
@@ -184,9 +184,6 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                // Format
-                // “DDD,MM,SSk” or “DDD,MM.mmk”
-                //  51,55,84N or 51,55.6784N
                 string gpsLongitudeString = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsLongitude.Query);
 
                 // Do basic validation, 3 is minimum length
@@ -198,7 +195,7 @@ namespace Fotofly.MetadataProviders
                     // Check the reference is valid
                     if (longitudeRefString == "E" || longitudeRefString == "W")
                     {
-                        bool isRefPositive = longitudeRefString == "N" ? true : false;
+                        bool isRefPositive = longitudeRefString == "E" ? true : false;
 
                         // Stripe off the reference
                         gpsLongitudeString = gpsLongitudeString.Replace(longitudeRefString, string.Empty);
@@ -213,7 +210,7 @@ namespace Fotofly.MetadataProviders
 
                             if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
                             {
-                                return new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, isRefPositive, degrees, minutes, 0);
+                                return new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, isRefPositive, degrees, minutes);
                             }
                         }
                         else if (splitString.Length == 3)
@@ -255,11 +252,24 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                return new DateTime();
+                // Format 2010-02-01T22:02:34+01:00
+                DateTime gpsDateTimeStamp = this.BitmapMetadata.GetQuery<DateTime>(XmpExifQueries.GpsDateTimeStamp.Query);
+                
+                return gpsDateTimeStamp;
             }
 
             set
             {
+                if (value != null && value != new DateTime())
+                {
+                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDateTimeStamp.Query);
+                }
+                else
+                {
+                    string gpsDateTimeStamp = value.ToString("z");
+
+                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsDateTimeStamp.Query, gpsDateTimeStamp);
+                }
             }
         }
 
