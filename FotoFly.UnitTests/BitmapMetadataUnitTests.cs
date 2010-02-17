@@ -81,6 +81,10 @@
 
             Assert.AreEqual<GpsCoordinate>(gpsProvider.Latitude, new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, true, 37, 48.41667));
             Assert.AreEqual<GpsCoordinate>(gpsProvider.Longitude, new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, false, 122, 25.38333));
+            Assert.AreEqual<string>(gpsProvider.DateTimeStamp.ToString("u"), "2009-10-10 21:46:24Z");
+            Assert.AreEqual<Double>(gpsProvider.Altitude, -17.464);
+            Assert.AreEqual<GpsPosition.Dimensions>(gpsProvider.MeasureMode, GpsPosition.Dimensions.ThreeDimensional);
+            Assert.AreEqual<string>(gpsProvider.VersionID, "2200");
         }
         
         /// <summary>
@@ -96,25 +100,28 @@
             Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLongitude, new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, true, 4, 26.6922));
             Assert.AreEqual<double>(xmpExifProvider.GpsAltitude, Double.NaN);
             Assert.AreEqual<string>(xmpExifProvider.GpsVersionID, "2.2.0.0");
-            //// Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("z"), "2010-02-01T22:02:34+01:00");
+            Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 13:02:34Z");
 
             // Expected 51° 55.7057 N 4° 26.9547 E
             xmpExifProvider = new XmpExifProvider(WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.GeotaggedXmp2));
 
             Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLatitude, new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, true, 51, 55.7057));
             Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLongitude, new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, true, 4, 26.9547));
+            Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 13:25:12Z");
 
             // Expected 51° 55.6767 N 4° 27.2393 E
             xmpExifProvider = new XmpExifProvider(WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.GeotaggedXmp3));
 
             Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLatitude, new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, true, 51, 55.6767));
             Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLongitude, new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, true, 4, 27.2393));
+            Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 14:35:07Z");
 
             // Expected: GPSAltitude 2/1 GPSLatitude 51,55.4804N GPSLongitude 4,27,9E
             xmpExifProvider = new XmpExifProvider(WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.GeotaggedXmp4));
 
             Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLatitude, new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, true, 51, 55.4804));
             Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLongitude, new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, true, 4, 27, 9));
+            Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 14:00:52Z");
         }
 
         #region Pre & Post Test Pass Code, not currently used
