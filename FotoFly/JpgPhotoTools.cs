@@ -82,42 +82,5 @@ namespace Fotofly
             // Update the new files metadata
             WpfFileManager.CopyBitmapMetadata(photo.FileFullName, destinationFileName);
         }
-
-        /// <summary>
-        /// Compares the Metadata with the metadata stored in the original file
-        /// </summary>
-        /// <returns>A list of changes</returns>
-        public static List<string> CompareMetadataToFileMetadata(JpgPhoto photo)
-        {
-            if (!photo.IsFileNameValid)
-            {
-                throw new Exception("File does not exist or is not valid: " + photo.FileFullName);
-            }
-
-            List<string> changes = new List<string>();
-
-            // Read BitmapMetadata
-            using (WpfFileManager wpfFileManager = new WpfFileManager(photo.FileFullName))
-            {
-                ////// Get generic Metadata
-                ////ExifMetadata wpfMetadata = new ExifMetadata(wpfFileManager.BitmapMetadata);
-
-                ////// Copy the common metadata across using reflection tool
-                ////IPhotoMetadataTools.CompareMetadata(photo.Metadata, wpfMetadata, ref changes);
-
-                ////// Get Fotofly Custom Metadata
-                ////WpfFotoflyMetadata wpfFotoflyMetadata = new WpfFotoflyMetadata(wpfFileManager.BitmapMetadata);
-
-                ////// Copy the common metadata across using reflection tool
-                ////IPhotoMetadataTools.CompareMetadata(photo.Metadata, wpfFotoflyMetadata, ref changes);
-            }
-
-            // Sort
-            var query = from x in changes
-                        orderby x
-                        select x;
-
-            return query.ToList();
-        }
     }
 }

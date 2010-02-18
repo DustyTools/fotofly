@@ -36,26 +36,51 @@ namespace Fotofly
             this.Numeric = numeric;
         }
 
-        public GpsCoordinate(LatOrLons coorType, bool isRefPositive, double numeric)
+        public GpsCoordinate(GpsCoordinate.LatitudeRef latitudeRef, double numeric)
         {
-            this.LatOrLon = coorType;
+            this.LatOrLon = LatOrLons.Latitude;
             this.Numeric = numeric;
-            this.isRefPositive = isRefPositive;
+            this.isRefPositive = latitudeRef == LatitudeRef.North ? true : false;
         }
 
-        public GpsCoordinate(LatOrLons coorType, bool isRefPositive, double degrees, double minutes)
+        public GpsCoordinate(GpsCoordinate.LongitudeRef longitudeRef, double numeric)
         {
-            this.LatOrLon = coorType;
-            this.isRefPositive = isRefPositive;
+            this.LatOrLon = LatOrLons.Longitude;
+            this.Numeric = numeric;
+            this.isRefPositive = longitudeRef == LongitudeRef.East ? true : false;
+        }
+
+        public GpsCoordinate(GpsCoordinate.LatitudeRef latitudeRef, double degrees, double minutes)
+        {
+            this.LatOrLon = LatOrLons.Latitude;
+            this.isRefPositive = latitudeRef == LatitudeRef.North ? true : false;
             this.degrees = Math.Round(degrees, 0);
             this.minutes = Math.Floor(minutes);
             this.seconds = Math.Round((minutes - this.Minutes) * 60.0, 1);
         }
 
-        public GpsCoordinate(LatOrLons coorType, bool isRefPositive, double degrees, double minutes, double seconds)
+        public GpsCoordinate(GpsCoordinate.LongitudeRef longitudeRef, double degrees, double minutes)
         {
-            this.LatOrLon = coorType;
-            this.isRefPositive = isRefPositive;
+            this.LatOrLon = LatOrLons.Longitude;
+            this.isRefPositive = longitudeRef == LongitudeRef.East ? true : false;
+            this.degrees = Math.Round(degrees, 0);
+            this.minutes = Math.Floor(minutes);
+            this.seconds = Math.Round((minutes - this.Minutes) * 60.0, 1);
+        }
+
+        public GpsCoordinate(GpsCoordinate.LatitudeRef latitudeRef, double degrees, double minutes, double seconds)
+        {
+            this.LatOrLon = LatOrLons.Latitude;
+            this.isRefPositive = latitudeRef == LatitudeRef.North ? true : false;
+            this.degrees = Math.Round(degrees, 0);
+            this.minutes = Math.Round(minutes, 0);
+            this.seconds = Math.Round(seconds, 0);
+        }
+
+        public GpsCoordinate(GpsCoordinate.LongitudeRef longitudeRef, double degrees, double minutes, double seconds)
+        {
+            this.LatOrLon = LatOrLons.Longitude;
+            this.isRefPositive = longitudeRef == LongitudeRef.East ? true : false;
             this.degrees = Math.Round(degrees, 0);
             this.minutes = Math.Round(minutes, 0);
             this.seconds = Math.Round(seconds, 0);
@@ -66,6 +91,20 @@ namespace Fotofly
             NotSpecified,
             Latitude,
             Longitude
+        }
+
+        public enum LatitudeRef
+        {
+            NotSpecified,
+            North,
+            South
+        }
+
+        public enum LongitudeRef
+        {
+            NotSpecified,
+            East,
+            West
         }
 
         [XmlAttribute]
@@ -202,7 +241,7 @@ namespace Fotofly
         }
 
         [XmlIgnore]
-        public string Ref
+        public char Ref
         {
             // ASCII 'E' indicates east longitude, and 'W' is west longitude
             // ASCII 'N' indicates north latitude, and 'S' is south latitude
@@ -210,36 +249,35 @@ namespace Fotofly
             {
                 if (this.LatOrLon == LatOrLons.Latitude && this.isRefPositive)
                 {
-                    return "N";
+                    return 'N';
                 }
                 else if (this.LatOrLon == LatOrLons.Latitude && !this.isRefPositive)
                 {
-                    return "S";
+                    return 'S';
                 }
                 else if (this.LatOrLon == LatOrLons.Longitude && this.isRefPositive)
                 {
-                    return "E";
+                    return 'E';
                 }
                 else
                 {
-                    return "W";
+                    return 'W';
                 }
             }
 
             set
             {
-                // Take the incoming count and work out if the numberic should be positive or negative
-                value = value.ToUpper();
+                value = value.ToString().ToUpper().ToCharArray()[0];
 
-                if (String.IsNullOrEmpty(value))
+                if (String.IsNullOrEmpty(value.ToString()))
                 {
                     this.isRefPositive = true;
                 }
-                else if (value == "N" || value == "E")
+                else if (value == 'N' || value == 'E')
                 {
                     this.isRefPositive = true;
                 }
-                else if (value == "S" || value == "W")
+                else if (value == 'S' || value == 'W')
                 {
                     this.isRefPositive = false;
                 }
@@ -292,7 +330,24 @@ namespace Fotofly
 
         public object Clone()
         {
-            return new GpsCoordinate(this.LatOrLon, this.isRefPositive, this.Degrees, this.Minutes, this.Seconds);
+            if (this.LatOrLon == LatOrLons.Latitude && this.isRefPositive)
+            {
+                return new GpsCoordinate(GpsCoordinate.LatitudeRef.North, this.Degrees, this.Minutes, this.Seconds);
+            }
+            else if (this.LatOrLon == LatOrLons.Latitude)
+            {
+                return new GpsCoordinate(GpsCoordinate.LatitudeRef.South, this.Degrees, this.Minutes, this.Seconds);
+            }
+            else if (this.LatOrLon == LatOrLons.Longitude && this.isRefPositive)
+            {
+                return new GpsCoordinate(GpsCoordinate.LongitudeRef.East, this.Degrees, this.Minutes, this.Seconds);
+            }
+            else if (this.LatOrLon == LatOrLons.Longitude)
+            {
+                return new GpsCoordinate(GpsCoordinate.LongitudeRef.West, this.Degrees, this.Minutes, this.Seconds);
+            }
+
+            return new GpsCoordinate();
         }
 
         public override int GetHashCode()

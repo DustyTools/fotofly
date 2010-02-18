@@ -314,6 +314,8 @@ namespace Fotofly.BitmapMetadataTools
             {
                 throw new Exception(@"File does not have the extension jpg or jpeg: " + fileInfo.FullName);
             }
+
+            fileInfo = null;
         }
 
         private static void ValidateThreadingModel()

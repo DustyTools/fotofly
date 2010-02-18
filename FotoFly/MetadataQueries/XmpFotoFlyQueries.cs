@@ -32,6 +32,7 @@ namespace Fotofly.MetadataQueries
 
         public static readonly MetdataQuery<string, Address> AddressOfGps = new MetdataQuery<string, Address>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:AddressOfGps");
 
+        // Old no longer used
         public static readonly MetdataQuery<string, Address> Address = new MetdataQuery<string, Address>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:Address");
     }
 }

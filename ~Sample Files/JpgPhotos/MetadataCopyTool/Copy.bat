@@ -1,1 +1,2 @@
-ImageMetadataCopy.exe -source:"024Plattegrond.jpg" -destination:"GeotaggedXMP5.jpg"
+Copy ImageSource.jpg Output.jpg
+ImageMetadataCopy.exe -source:"Source.jpg" -destination:"Output.jpg"

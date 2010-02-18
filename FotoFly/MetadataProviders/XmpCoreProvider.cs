@@ -40,7 +40,10 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                this.BitmapMetadata.Subject = value;
+                if (this.ValueHasChanged(value, this.Subject))
+                {
+                    this.BitmapMetadata.Subject = value;
+                }
             }
         }
 
@@ -56,7 +59,10 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                this.BitmapMetadata.Keywords = new ReadOnlyCollection<string>(value.ToReadOnlyCollection());
+                if (this.ValueHasChanged(value, this.Tags))
+                {
+                    this.BitmapMetadata.Keywords = new ReadOnlyCollection<string>(value.ToReadOnlyCollection());
+                }
             }
         }
 
@@ -83,11 +89,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (value == null)
-                {
-                    this.BitmapMetadata.Comment = string.Empty;
-                }
-                else
+                if (this.ValueHasChanged(value, this.Comment))
                 {
                     this.BitmapMetadata.Comment = value;
                 }

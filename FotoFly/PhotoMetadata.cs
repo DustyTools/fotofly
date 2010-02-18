@@ -342,7 +342,7 @@ namespace Fotofly
         public double? UtcOffset { get; set; }
 
         [XmlAttribute]
-        public DateTime LastEditDate { get; set; }
+        public DateTime FotoflyLastEditDate { get; set; }
 
         [XmlAttribute]
         public DateTime AddressOfGpsLookupDate { get; set; }

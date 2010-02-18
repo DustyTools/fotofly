@@ -42,9 +42,12 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                string dateAquired = value.ToString("yyyy-MM-ddTHH:mm:ss");
+                if (!value.Equals(this.DateAquired))
+                {
+                    string dateAquired = value.ToString("yyyy-MM-ddTHH:mm:ss");
 
-                this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.DateAcquired.Query, dateAquired);
+                    this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.DateAcquired.Query, dateAquired);
+                }
             }
         }
 
@@ -102,105 +105,108 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                // This method is distructive, it deletes all existing regions
-                // In place editing would be complicated because each region doesn't have a unique IDs
-                // In theory the new data is based on the existing data so nothing should be lost
-                // Except where new properties exist that aren't in the XMPRegion class
-
-                // Delete RegionInfo if there's no Regions
-                if (value != null && value.Regions.Count > 0)
+                if (!value.Equals(this.RegionInfo))
                 {
-                    // Check for RegionInfo Struct, if none exists, create it
-                    if (!this.BitmapMetadata.ContainsQuery(XmpMicrosoftQueries.RegionInfo.Query))
-                    {
-                        this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.RegionInfo.Query, new BitmapMetadata(XmpCoreQueries.StructBlock));
-                    }
+                    // This method is distructive, it deletes all existing regions
+                    // In place editing would be complicated because each region doesn't have a unique IDs
+                    // In theory the new data is based on the existing data so nothing should be lost
+                    // Except where new properties exist that aren't in the XMPRegion class
 
-                    // Check for Regions Bag, if none exists, create it
-                    if (!this.BitmapMetadata.ContainsQuery(XmpMicrosoftQueries.Regions.Query))
+                    // Delete RegionInfo if there's no Regions
+                    if (value != null && value.Regions.Count > 0)
                     {
-                        this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.Regions.Query, new BitmapMetadata(XmpCoreQueries.BagBlock));
-                    }
+                        // Check for RegionInfo Struct, if none exists, create it
+                        if (!this.BitmapMetadata.ContainsQuery(XmpMicrosoftQueries.RegionInfo.Query))
+                        {
+                            this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.RegionInfo.Query, new BitmapMetadata(XmpCoreQueries.StructBlock));
+                        }
 
-                    // If Region count has changed, clear our existing regions and create empty regions
-                    if (value.Regions.Count != this.RegionInfo.Regions.Count)
-                    {
-                        // Delete any 'extra' regions
-                        for (int i = value.Regions.Count; i < this.RegionInfo.Regions.Count; i++)
+                        // Check for Regions Bag, if none exists, create it
+                        if (!this.BitmapMetadata.ContainsQuery(XmpMicrosoftQueries.Regions.Query))
+                        {
+                            this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.Regions.Query, new BitmapMetadata(XmpCoreQueries.BagBlock));
+                        }
+
+                        // If Region count has changed, clear our existing regions and create empty regions
+                        if (value.Regions.Count != this.RegionInfo.Regions.Count)
+                        {
+                            // Delete any 'extra' regions
+                            for (int i = value.Regions.Count; i < this.RegionInfo.Regions.Count; i++)
+                            {
+                                // Build query for current region
+                                string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpMicrosoftQueries.Region.Query, i.ToString());
+
+                                this.BitmapMetadata.RemoveQuery(currentRegionQuery);
+                            }
+
+                            // Add any additional regions
+                            for (int i = this.RegionInfo.Regions.Count; i < value.Regions.Count; i++)
+                            {
+                                // Build query for current region
+                                string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpMicrosoftQueries.Region.Query, i.ToString());
+
+                                this.BitmapMetadata.SetQuery(currentRegionQuery, new BitmapMetadata(XmpCoreQueries.StructBlock));
+                            }
+                        }
+
+                        int currentRegion = 0;
+
+                        // Loop through each Region
+                        foreach (ImageRegion region in value.Regions)
                         {
                             // Build query for current region
-                            string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpMicrosoftQueries.Region.Query, i.ToString());
+                            string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpMicrosoftQueries.Region.Query, currentRegion);
 
-                            this.BitmapMetadata.RemoveQuery(currentRegionQuery);
-                        }
+                            // Update or clear PersonDisplayName
+                            if (string.IsNullOrEmpty(region.PersonDisplayName))
+                            {
+                                this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonDisplayName.Query);
+                            }
+                            else
+                            {
+                                this.BitmapMetadata.SetQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonDisplayName.Query, region.PersonDisplayName);
+                            }
 
-                        // Add any additional regions
-                        for (int i = this.RegionInfo.Regions.Count; i < value.Regions.Count; i++)
-                        {
-                            // Build query for current region
-                            string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpMicrosoftQueries.Region.Query, i.ToString());
+                            // Update or clear PersonEmailDigest
+                            if (string.IsNullOrEmpty(region.PersonEmailDigest))
+                            {
+                                this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonEmailDigest.Query);
+                            }
+                            else
+                            {
+                                this.BitmapMetadata.SetQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonEmailDigest.Query, region.PersonEmailDigest);
+                            }
 
-                            this.BitmapMetadata.SetQuery(currentRegionQuery, new BitmapMetadata(XmpCoreQueries.StructBlock));
+                            // Update or clear PersonLiveIdCID
+                            if (string.IsNullOrEmpty(region.PersonLiveIdCID))
+                            {
+                                this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonLiveIdCID.Query);
+                            }
+                            else
+                            {
+                                this.BitmapMetadata.SetQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonLiveIdCID.Query, region.PersonLiveIdCID);
+                            }
+
+                            // Update or clear RectangleString
+                            if (string.IsNullOrEmpty(region.RectangleString))
+                            {
+                                this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpMicrosoftQueries.RegionRectangle.Query);
+                            }
+                            else
+                            {
+                                this.BitmapMetadata.SetQuery(currentRegionQuery + XmpMicrosoftQueries.RegionRectangle.Query, region.RectangleString);
+                            }
+
+                            currentRegion++;
                         }
                     }
-
-                    int currentRegion = 0;
-
-                    // Loop through each Region
-                    foreach (ImageRegion region in value.Regions)
+                    else
                     {
-                        // Build query for current region
-                        string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpMicrosoftQueries.Region.Query, currentRegion);
-
-                        // Update or clear PersonDisplayName
-                        if (string.IsNullOrEmpty(region.PersonDisplayName))
+                        // Delete existing RegionInfos, deletes all child data
+                        if (this.BitmapMetadata.ContainsQuery(XmpMicrosoftQueries.RegionInfo.Query))
                         {
-                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonDisplayName.Query);
+                            this.BitmapMetadata.RemoveQuery(XmpMicrosoftQueries.RegionInfo.Query);
                         }
-                        else
-                        {
-                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonDisplayName.Query, region.PersonDisplayName);
-                        }
-
-                        // Update or clear PersonEmailDigest
-                        if (string.IsNullOrEmpty(region.PersonEmailDigest))
-                        {
-                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonEmailDigest.Query);
-                        }
-                        else
-                        {
-                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonEmailDigest.Query, region.PersonEmailDigest);
-                        }
-
-                        // Update or clear PersonLiveIdCID
-                        if (string.IsNullOrEmpty(region.PersonLiveIdCID))
-                        {
-                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonLiveIdCID.Query);
-                        }
-                        else
-                        {
-                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpMicrosoftQueries.RegionPersonLiveIdCID.Query, region.PersonLiveIdCID);
-                        }
-
-                        // Update or clear RectangleString
-                        if (string.IsNullOrEmpty(region.RectangleString))
-                        {
-                            this.BitmapMetadata.RemoveQuery(currentRegionQuery + XmpMicrosoftQueries.RegionRectangle.Query);
-                        }
-                        else
-                        {
-                            this.BitmapMetadata.SetQuery(currentRegionQuery + XmpMicrosoftQueries.RegionRectangle.Query, region.RectangleString);
-                        }
-
-                        currentRegion++;
-                    }
-                }
-                else
-                {
-                    // Delete existing RegionInfos, deletes all child data
-                    if (this.BitmapMetadata.ContainsQuery(XmpMicrosoftQueries.RegionInfo.Query))
-                    {
-                        this.BitmapMetadata.RemoveQuery(XmpMicrosoftQueries.RegionInfo.Query);
                     }
                 }
             }
@@ -220,13 +226,16 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (value >= 0 || value <= 5)
+                if (!value.Equals(this.Rating))
                 {
-                    this.BitmapMetadata.Rating = value;
-                }
-                else
-                {
-                    throw new Exception("Invalid Rating");
+                    if (value >= 0 || value <= 5)
+                    {
+                        this.BitmapMetadata.Rating = value;
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid Rating");
+                    }
                 }
             }
         }

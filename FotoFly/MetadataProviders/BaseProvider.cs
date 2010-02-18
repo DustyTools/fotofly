@@ -39,5 +39,23 @@ namespace Fotofly.MetadataProviders
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
+
+        protected bool ValueHasChanged(object source, object destination)
+        {
+            if (source == null && destination == null)
+            {
+                return false;
+            }
+            else if (source == null && destination != null)
+            {
+                return true;
+            }
+            else if (source != null && destination == null)
+            {
+                return true;
+            }
+
+            return !source.Equals(destination);
+        }
     }
 }

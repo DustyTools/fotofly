@@ -69,7 +69,14 @@ namespace Fotofly
             TwoDimensional = 2,
             ThreeDimensional = 3
         }
-        
+
+        public enum AltitudeRef
+        {
+            NotSpecified,
+            AboveSeaLevel,
+            BelowSeaLevel
+        }
+
         [XmlAttribute]
         public int Accuracy
         {

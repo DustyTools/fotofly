@@ -43,13 +43,16 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (value == null)
+                if (!value.Equals(this.Copyright))
                 {
-                    this.BitmapMetadata.Copyright = string.Empty;
-                }
-                else
-                {
-                    this.BitmapMetadata.Copyright = value;
+                    if (value == null)
+                    {
+                        this.BitmapMetadata.Copyright = string.Empty;
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.Copyright = value;
+                    }
                 }
             }
         }

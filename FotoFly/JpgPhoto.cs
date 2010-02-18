@@ -56,7 +56,7 @@ namespace Fotofly
         /// <summary>
         /// Metadata as stored in the file
         /// </summary>
-        public PhotoMetadata MetadataInFile
+        private PhotoMetadata MetadataInFile
         {
             get
             {
@@ -228,6 +228,30 @@ namespace Fotofly
         }
 
         /// <summary>
+        /// Compares the Metadata with the metadata stored in the original file
+        /// </summary>
+        /// <returns>A list of changes</returns>
+        public List<string> CompareMetadataToFileMetadata()
+        {
+            if (!this.IsFileNameValid)
+            {
+                throw new Exception("File does not exist or is not valid: " + this.FileFullName);
+            }
+
+            List<string> changes = new List<string>();
+
+            // Compare the two
+            PhotoMetadataTools.CompareMetadata(this.Metadata, this.MetadataInFile, ref changes);
+
+            // Sort
+            var query = from x in changes
+                        orderby x
+                        select x;
+
+            return query.ToList();
+        }
+
+        /// <summary>
         /// Read Metadata from the Jpeg file, with no expection handling
         /// </summary>
         private void UnhandledReadMetadata()
@@ -260,7 +284,7 @@ namespace Fotofly
             if (changes.Count > 0)
             {
                 // Set the Last Edit Date
-                this.Metadata.LastEditDate = DateTime.Now;
+                this.Metadata.FotoflyLastEditDate = DateTime.Now;
 
                 // Read
                 BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileFullName, true);

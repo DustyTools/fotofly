@@ -54,6 +54,17 @@ namespace Fotofly
 
             photoMetadata.Rating = fileMetadata.XmpMicrosoftProvider.Rating;
 
+            // Retreive Fotofly Data
+            photoMetadata.AccuracyOfGps = fileMetadata.XmpFotoflyProvider.AccuracyOfGps;
+            photoMetadata.AddressOfGps = fileMetadata.XmpFotoflyProvider.AddressOfGps;
+            photoMetadata.AddressOfGpsLookupDate = fileMetadata.XmpFotoflyProvider.AddressOfGpsLookupDate;
+            photoMetadata.AddressOfGpsSource = fileMetadata.XmpFotoflyProvider.AddressOfGpsSource;
+            photoMetadata.FotoflyLastEditDate = fileMetadata.XmpFotoflyProvider.LastEditDate;
+            photoMetadata.OriginalCameraDate = fileMetadata.XmpFotoflyProvider.OriginalCameraDate;
+            photoMetadata.OriginalCameraFilename = fileMetadata.XmpFotoflyProvider.OriginalCameraFilename;
+            photoMetadata.UtcDate = fileMetadata.XmpFotoflyProvider.UtcDate;
+            photoMetadata.UtcOffset = fileMetadata.XmpFotoflyProvider.UtcOffset;
+
             // GPS
             // Check Exif, then XMP
             if (fileMetadata.GpsProvider.GpsPosition.IsValidCoordinate)
@@ -102,6 +113,17 @@ namespace Fotofly
             fileMetadata.XmpCoreProvider.Subject = photoMetadata.Subject;
             fileMetadata.XmpCoreProvider.Tags = photoMetadata.Tags;
             fileMetadata.ExifProvider.Title = photoMetadata.Title;
+
+            // Save Fotofly Data
+            fileMetadata.XmpFotoflyProvider.AccuracyOfGps = photoMetadata.AccuracyOfGps;
+            fileMetadata.XmpFotoflyProvider.AddressOfGps = photoMetadata.AddressOfGps;
+            fileMetadata.XmpFotoflyProvider.AddressOfGpsLookupDate = photoMetadata.AddressOfGpsLookupDate;
+            fileMetadata.XmpFotoflyProvider.AddressOfGpsSource = photoMetadata.AddressOfGpsSource;
+            fileMetadata.XmpFotoflyProvider.LastEditDate = photoMetadata.FotoflyLastEditDate;
+            fileMetadata.XmpFotoflyProvider.OriginalCameraDate = photoMetadata.OriginalCameraDate;
+            fileMetadata.XmpFotoflyProvider.OriginalCameraFilename = photoMetadata.OriginalCameraFilename;
+            fileMetadata.XmpFotoflyProvider.UtcDate = photoMetadata.UtcDate;
+            fileMetadata.XmpFotoflyProvider.UtcOffset = photoMetadata.UtcOffset;
 
             // Save Rating
             fileMetadata.XmpMicrosoftProvider.Rating = photoMetadata.Rating;

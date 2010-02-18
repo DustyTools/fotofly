@@ -14,6 +14,10 @@ namespace Fotofly
 
     public abstract class GenericPhotoFile
     {
+        private string fileName = string.Empty;
+        private string fileExtension = string.Empty;
+        private DateTime fileLastModified = new DateTime();
+
         public bool HandleExceptions
         {
             get;
@@ -36,14 +40,7 @@ namespace Fotofly
         {
             get
             {
-                if (this.IsFileNameValid && this.FileExists)
-                {
-                    return Regex.Replace(new FileInfo(this.FileFullName).Name, this.FileExtension, string.Empty, RegexOptions.IgnoreCase);
-                }
-                else
-                {
-                    throw new Exception("FileFullName is not valid");
-                }
+                return this.fileName;
             }
         }
 
@@ -54,14 +51,7 @@ namespace Fotofly
         {
             get
             {
-                if (this.IsFileNameValid)
-                {
-                    return new FileInfo(this.FileFullName).LastWriteTime;
-                }
-                else
-                {
-                    throw new Exception("FileFullName is not valid");
-                }
+                return this.fileLastModified;
             }
         }
 
@@ -72,14 +62,7 @@ namespace Fotofly
         {
             get
             {
-                if (this.IsFileNameValid)
-                {
-                    return new FileInfo(this.FileFullName).Extension.ToLower();
-                }
-                else
-                {
-                    throw new Exception("FileFullName is not valid");
-                }
+                return this.fileExtension;
             }
         }
 
@@ -441,6 +424,12 @@ namespace Fotofly
         {
             // Save the filename
             this.FileFullName = this.GetFullFileName(fileName);
+
+            // Get and save File data (using FileInfo realtime creates locks on the file)
+            FileInfo file = new FileInfo(this.FileFullName);
+            this.fileLastModified = file.LastWriteTime;
+            this.fileExtension = file.Extension.ToLower();
+            this.fileName = Regex.Replace(file.Name, this.fileExtension, string.Empty, RegexOptions.IgnoreCase);
         }
 
         protected string GetFullFileName(string fileName)

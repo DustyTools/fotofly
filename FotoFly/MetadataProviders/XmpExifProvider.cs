@@ -72,14 +72,13 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                string gpsRef = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsAltitudeRef.Query);
                 URational urational = this.BitmapMetadata.GetQuery<URational>(XmpExifQueries.GpsAltitude.Query);
 
-                if (String.IsNullOrEmpty(gpsRef) || urational == null || double.IsNaN(urational.ToDouble()))
+                if (this.GpsAltitudeRef == GpsPosition.AltitudeRef.NotSpecified || urational == null || double.IsNaN(urational.ToDouble()))
                 {
                     return double.NaN;
                 }
-                else if (gpsRef == "1")
+                else if (this.GpsAltitudeRef == GpsPosition.AltitudeRef.BelowSeaLevel)
                 {
                     return -urational.ToDouble(3);
                 }
@@ -91,17 +90,63 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                // Check to see if the values have changed
-                if (double.IsNaN(value))
+                if (this.ValueHasChanged(value, this.GpsAltitude))
                 {
-                    // Blank out existing values
-                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitudeRef.Query, string.Empty);
-                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitude.Query, string.Empty);
+                    // Check to see if the values have changed
+                    if (double.IsNaN(value))
+                    {
+                        // Blank out existing values
+                        this.GpsAltitudeRef = GpsPosition.AltitudeRef.NotSpecified;
+
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitude.Query, string.Empty);
+                    }
+                    else
+                    {
+                        this.GpsAltitudeRef = value > 0 ? GpsPosition.AltitudeRef.AboveSeaLevel : GpsPosition.AltitudeRef.BelowSeaLevel;
+
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitude.Query, Math.Abs(value));
+                    }
                 }
-                else
+            }
+        }
+
+        public GpsPosition.AltitudeRef GpsAltitudeRef
+        {
+            get
+            {
+                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.GpsAltitudeRef.Query))
                 {
-                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitudeRef.Query, value > 0 ? 0 : 1);
-                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitude.Query, Math.Abs(value));
+                    string gpsAltitudeRef = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsAltitudeRef.Query);
+
+                    if (gpsAltitudeRef == "0")
+                    {
+                        return GpsPosition.AltitudeRef.AboveSeaLevel;
+                    }
+                    else if (gpsAltitudeRef == "1")
+                    {
+                        return GpsPosition.AltitudeRef.BelowSeaLevel;
+                    }
+                }
+
+                return GpsPosition.AltitudeRef.NotSpecified;
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.GpsAltitudeRef))
+                {
+                    if (value == GpsPosition.AltitudeRef.NotSpecified)
+                    {
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitudeRef.Query, string.Empty);
+                    }
+                    else if (value == GpsPosition.AltitudeRef.AboveSeaLevel)
+                    {
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitudeRef.Query, "0");
+                    }
+                    else if (value == GpsPosition.AltitudeRef.BelowSeaLevel)
+                    {
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitudeRef.Query, "1");
+                    }
                 }
             }
         }
@@ -117,44 +162,33 @@ namespace Fotofly.MetadataProviders
                 // “DDD,MM,SSk” or “DDD,MM.mmk”
                 //  51,55,84N or 51,55.6784N
                 string gpsLatitudeString = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsLatitude.Query);
+                GpsCoordinate.LatitudeRef gpsLatitudeRef = this.GpsLatitudeRef;
 
                 // Do basic validation, 3 is minimum length
-                if (!string.IsNullOrEmpty(gpsLatitudeString) && gpsLatitudeString.Length > 3)
+                if (gpsLatitudeRef != GpsCoordinate.LatitudeRef.NotSpecified && gpsLatitudeString.Length > 3)
                 {
-                    // Strip off the last character as the reference
-                    string latitudeRefString = gpsLatitudeString[gpsLatitudeString.Length - 1].ToString();
+                    // Split the string
+                    string[] splitString = gpsLatitudeString.Substring(0, gpsLatitudeString.Length - 1).Split(',');
 
-                    // Check the reference is valid
-                    if (latitudeRefString == "N" || latitudeRefString == "S")
+                    if (splitString.Length == 2)
                     {
-                        bool isRefPositive = latitudeRefString == "N" ? true : false;
+                        double degrees;
+                        double minutes;
 
-                        // Stripe off the reference
-                        gpsLatitudeString = gpsLatitudeString.Replace(latitudeRefString, string.Empty);
-                        
-                        // Split the string
-                        string[] splitString = gpsLatitudeString.Split(',');
-
-                        if (splitString.Length == 2)
+                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
                         {
-                            double degrees;
-                            double minutes;
-
-                            if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
-                            {
-                                return new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, isRefPositive, degrees, minutes);
-                            }
+                            return new GpsCoordinate(gpsLatitudeRef, degrees, minutes);
                         }
-                        else if (splitString.Length == 3)
-                        {
-                            double degrees;
-                            double minutes;
-                            double seconds;
+                    }
+                    else if (splitString.Length == 3)
+                    {
+                        double degrees;
+                        double minutes;
+                        double seconds;
 
-                            if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
-                            {
-                                return new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, isRefPositive, degrees, minutes, seconds);
-                            }
+                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
+                        {
+                            return new GpsCoordinate(gpsLatitudeRef, degrees, minutes, seconds);
                         }
                     }
                 }
@@ -164,15 +198,70 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (value.IsValidCoordinate)
+                if (this.ValueHasChanged(value, this.GpsLatitude))
                 {
-                    string latitudeAsString = string.Format("{0},{1},{2}{3}", value.Degrees, value.Minutes, value.Seconds, value.Ref);
+                    if (value.IsValidCoordinate)
+                    {
+                        string latitudeAsString = string.Format("{0},{1},{2}", value.Degrees, value.Minutes, value.Seconds);
 
-                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsLatitude.Query, latitudeAsString);
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsLatitude.Query, latitudeAsString);
+
+                        this.GpsLatitudeRef = value.Numeric > 0 ? GpsCoordinate.LatitudeRef.North : GpsCoordinate.LatitudeRef.South;
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsLatitude.Query);
+
+                        this.GpsLatitudeRef = GpsCoordinate.LatitudeRef.NotSpecified;
+                    }
                 }
-                else
+            }
+        }
+
+        public GpsCoordinate.LatitudeRef GpsLatitudeRef
+        {
+            get
+            {
+                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.GpsLatitude.Query))
                 {
-                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsLatitude.Query);
+                    string gpsLatitudeRef = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsLatitude.Query);
+
+                    if (gpsLatitudeRef.EndsWith("N"))
+                    {
+                        return GpsCoordinate.LatitudeRef.North;
+                    }
+                    else if (gpsLatitudeRef.EndsWith("S"))
+                    {
+                        return GpsCoordinate.LatitudeRef.South;
+                    }
+                }
+
+                return GpsCoordinate.LatitudeRef.NotSpecified;
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.GpsLatitudeRef))
+                {
+                    if (value == GpsCoordinate.LatitudeRef.NotSpecified)
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsLatitude.Query);
+                    }
+                    else
+                    {
+                        string gpsLatitude = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsLatitude.Query);
+                        gpsLatitude.TrimEnd('N');
+                        gpsLatitude.TrimEnd('S');
+
+                        if (value == GpsCoordinate.LatitudeRef.North)
+                        {
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsLatitude.Query, gpsLatitude + "N");
+                        }
+                        else if (value == GpsCoordinate.LatitudeRef.South)
+                        {
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsLatitude.Query, gpsLatitude + "S");
+                        }
+                    }
                 }
             }
         }
@@ -185,44 +274,33 @@ namespace Fotofly.MetadataProviders
             get
             {
                 string gpsLongitudeString = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsLongitude.Query);
+                GpsCoordinate.LongitudeRef gpsLongitudeRef = this.GpsLongitudeRef;
 
                 // Do basic validation, 3 is minimum length
-                if (!string.IsNullOrEmpty(gpsLongitudeString) && gpsLongitudeString.Length > 3)
+                if (gpsLongitudeRef != GpsCoordinate.LongitudeRef.NotSpecified && !string.IsNullOrEmpty(gpsLongitudeString) && gpsLongitudeString.Length > 3)
                 {
-                    // Strip off the last character as the reference
-                    string longitudeRefString = gpsLongitudeString[gpsLongitudeString.Length - 1].ToString();
+                    // Split the string
+                    string[] splitString = gpsLongitudeString.Substring(0, gpsLongitudeString.Length - 1).Split(',');
 
-                    // Check the reference is valid
-                    if (longitudeRefString == "E" || longitudeRefString == "W")
+                    if (splitString.Length == 2)
                     {
-                        bool isRefPositive = longitudeRefString == "E" ? true : false;
+                        double degrees;
+                        double minutes;
 
-                        // Stripe off the reference
-                        gpsLongitudeString = gpsLongitudeString.Replace(longitudeRefString, string.Empty);
-
-                        // Split the string
-                        string[] splitString = gpsLongitudeString.Split(',');
-
-                        if (splitString.Length == 2)
+                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
                         {
-                            double degrees;
-                            double minutes;
-
-                            if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
-                            {
-                                return new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, isRefPositive, degrees, minutes);
-                            }
+                            return new GpsCoordinate(gpsLongitudeRef, degrees, minutes);
                         }
-                        else if (splitString.Length == 3)
-                        {
-                            double degrees;
-                            double minutes;
-                            double seconds;
+                    }
+                    else if (splitString.Length == 3)
+                    {
+                        double degrees;
+                        double minutes;
+                        double seconds;
 
-                            if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
-                            {
-                                return new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, isRefPositive, degrees, minutes, seconds);
-                            }
+                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
+                        {
+                            return new GpsCoordinate(gpsLongitudeRef, degrees, minutes, seconds);
                         }
                     }
                 }
@@ -232,15 +310,70 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (value.IsValidCoordinate)
+                if (this.ValueHasChanged(value, this.GpsLongitude))
                 {
-                    string longitudeAsString = string.Format("{0},{1},{2}{3}", value.Degrees, value.Minutes, value.Seconds, value.Ref);
+                    if (value.IsValidCoordinate)
+                    {
+                        string latitudeAsString = string.Format("{0},{1},{2}", value.Degrees, value.Minutes, value.Seconds);
 
-                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsLongitude.Query, longitudeAsString);
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsLongitude.Query, latitudeAsString);
+
+                        this.GpsLongitudeRef = value.Numeric > 0 ? GpsCoordinate.LongitudeRef.East : GpsCoordinate.LongitudeRef.West;
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsLongitude.Query);
+
+                        this.GpsLongitudeRef = GpsCoordinate.LongitudeRef.NotSpecified;
+                    }
                 }
-                else
+            }
+        }
+
+        public GpsCoordinate.LongitudeRef GpsLongitudeRef
+        {
+            get
+            {
+                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.GpsLongitude.Query))
                 {
-                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsLongitude.Query);
+                    string gpsLongitudeRef = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsLongitude.Query);
+
+                    if (gpsLongitudeRef.EndsWith("E"))
+                    {
+                        return GpsCoordinate.LongitudeRef.East;
+                    }
+                    else if (gpsLongitudeRef.EndsWith("W"))
+                    {
+                        return GpsCoordinate.LongitudeRef.West;
+                    }
+                }
+
+                return GpsCoordinate.LongitudeRef.NotSpecified;
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.GpsLongitudeRef))
+                {
+                    if (value == GpsCoordinate.LongitudeRef.NotSpecified)
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsLongitude.Query);
+                    }
+                    else
+                    {
+                        string gpsLongitude = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsLongitude.Query);
+                        gpsLongitude.TrimEnd('E');
+                        gpsLongitude.TrimEnd('W');
+
+                        if (value == GpsCoordinate.LongitudeRef.West)
+                        {
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsLongitude.Query, gpsLongitude + "W");
+                        }
+                        else if (value == GpsCoordinate.LongitudeRef.East)
+                        {
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsLongitude.Query, gpsLongitude + "E");
+                        }
+                    }
                 }
             }
         }
@@ -260,15 +393,18 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (value != null && value != new DateTime())
+                if (this.ValueHasChanged(value, this.GpsDateTimeStamp))
                 {
-                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDateTimeStamp.Query);
-                }
-                else
-                {
-                    string gpsDateTimeStamp = value.ToString("z");
+                    if (value != null && value != new DateTime())
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDateTimeStamp.Query);
+                    }
+                    else
+                    {
+                        string gpsDateTimeStamp = value.ToString("z");
 
-                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsDateTimeStamp.Query, gpsDateTimeStamp);
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsDateTimeStamp.Query, gpsDateTimeStamp);
+                    }
                 }
             }
         }
@@ -285,7 +421,10 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                this.BitmapMetadata.SetQuery(XmpExifQueries.GpsVersionID.Query, value);
+                if (this.ValueHasChanged(value, this.GpsVersionID))
+                {
+                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsVersionID.Query, value);
+                }
             }
         }
 
@@ -308,13 +447,16 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (string.IsNullOrEmpty(value) || value == "None")
+                if (this.ValueHasChanged(value, this.GpsProcessingMethod))
                 {
-                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsProcessingMethod.Query);
-                }
-                else
-                {
-                    this.BitmapMetadata.SetQuery(XmpExifQueries.GpsProcessingMethod.Query, value);
+                    if (string.IsNullOrEmpty(value) || value == "None")
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsProcessingMethod.Query);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsProcessingMethod.Query, value);
+                    }
                 }
             }
         }
@@ -345,20 +487,23 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                switch (value)
+                if (this.ValueHasChanged(value, this.GpsMeasureMode))
                 {
-                    default:
-                    case GpsPosition.Dimensions.NotSpecified:
-                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, string.Empty);
-                        break;
+                    switch (value)
+                    {
+                        default:
+                        case GpsPosition.Dimensions.NotSpecified:
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, string.Empty);
+                            break;
 
-                    case GpsPosition.Dimensions.ThreeDimensional:
-                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, 3);
-                        break;
+                        case GpsPosition.Dimensions.ThreeDimensional:
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, 3);
+                            break;
 
-                    case GpsPosition.Dimensions.TwoDimensional:
-                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, 2);
-                        break;
+                        case GpsPosition.Dimensions.TwoDimensional:
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, 2);
+                            break;
+                    }
                 }
             }
         }

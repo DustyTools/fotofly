@@ -92,10 +92,23 @@
             }
 
             // Test value to write
-            string testSubject = "Test " + DateTime.Now.ToString();
+            string testString = "Test " + DateTime.Now.ToString();
+            DateTime testDate = DateTime.Now.AddTicks(-DateTime.Now.TimeOfDay.Ticks);
 
-            // Write to Photo Two
-            this.jpgPhotoTwo.Metadata.Subject = testSubject;
+            // Write text
+            this.jpgPhotoTwo.Metadata.Subject = testString;
+            this.jpgPhotoTwo.Metadata.Comment = testString;
+            this.jpgPhotoTwo.Metadata.Copyright = testString;
+            this.jpgPhotoTwo.Metadata.CreationSoftware = testString;
+            this.jpgPhotoTwo.Metadata.Title = testString;
+            this.jpgPhotoTwo.Metadata.AddressOfGpsSource = testString;
+
+            // Write dates
+            this.jpgPhotoTwo.Metadata.DateAquired = testDate;
+            this.jpgPhotoTwo.Metadata.DateDigitised = testDate;
+            this.jpgPhotoTwo.Metadata.DateTaken = testDate;
+            this.jpgPhotoTwo.Metadata.UtcDate = testDate;
+            this.jpgPhotoTwo.Metadata.AddressOfGpsLookupDate = testDate;
 
             // Save Photo Three
             this.jpgPhotoTwo.WriteMetadata(this.jpgPhotoX.FileFullName);
@@ -115,8 +128,20 @@
                 Assert.Fail("Unable to read saved files metadata");
             }
 
-            // Check the subject was set correctly
-            StringAssert.Matches(this.jpgPhotoX.Metadata.Subject, new Regex(testSubject));
+            // Check the text was set correctly
+            StringAssert.Matches(this.jpgPhotoX.Metadata.Subject, new Regex(testString));
+            StringAssert.Matches(this.jpgPhotoX.Metadata.Comment, new Regex(testString));
+            StringAssert.Matches(this.jpgPhotoX.Metadata.Copyright, new Regex(testString));
+            StringAssert.Matches(this.jpgPhotoX.Metadata.CreationSoftware, new Regex(testString));
+            StringAssert.Matches(this.jpgPhotoX.Metadata.Title, new Regex(testString));
+            StringAssert.Matches(this.jpgPhotoX.Metadata.AddressOfGpsSource, new Regex(testString));
+
+            // Check date was written
+            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.DateAquired, testDate);
+            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.DateDigitised, testDate);
+            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.DateTaken, testDate);
+            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.UtcDate, testDate);
+            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.AddressOfGpsLookupDate, testDate);
 
             if (new FileInfo(this.jpgPhotoTwo.FileFullName).Length > new FileInfo(this.jpgPhotoX.FileFullName).Length)
             {

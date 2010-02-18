@@ -10,7 +10,7 @@ namespace Fotofly.MetadataProviders
     using System.Text;
     using System.Windows.Media.Imaging;
 
-    public class FileMetadata
+    public class FileMetadata : IDisposable
     {
         private ExifProvider exifProvider;
         private GpsProvider gpsProvider;
@@ -102,6 +102,33 @@ namespace Fotofly.MetadataProviders
         public BitmapMetadata BitmapMetadata
         {
             get { return this.bitmapMetadata; }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+
+            // Take yourself off the Finalization queue 
+            // to prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Dispose of everything
+            this.exifProvider.Dispose();
+            this.gpsProvider.Dispose();
+            this.iptcProvider.Dispose();
+            this.xmpCoreProvider.Dispose();
+            this.xmpExifProvider.Dispose();
+            this.xmpFotoflyProvider.Dispose();
+            this.xmpMicrosoftProvider.Dispose();
+            this.xmpRightsProvider.Dispose();
+
+            // Force Garbage ObjCollection
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
     }
 }

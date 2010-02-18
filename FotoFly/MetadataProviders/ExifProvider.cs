@@ -42,7 +42,10 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                this.BitmapMetadata.Author = new ReadOnlyCollection<string>(value);
+                if (this.ValueHasChanged(value, this.Authors))
+                {
+                    this.BitmapMetadata.Author = new ReadOnlyCollection<string>(value);
+                }
             }
         }
         
@@ -89,13 +92,16 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (value == null)
+                if (this.ValueHasChanged(value, this.CameraManufacturer))
                 {
-                    this.BitmapMetadata.CameraManufacturer = string.Empty;
-                }
-                else
-                {
-                    this.BitmapMetadata.CameraManufacturer = value;
+                    if (value == null)
+                    {
+                        this.BitmapMetadata.CameraManufacturer = string.Empty;
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.CameraManufacturer = value;
+                    }
                 }
             }
         }
@@ -124,13 +130,16 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (value == null)
+                if (this.ValueHasChanged(value, this.CameraModel))
                 {
-                    this.BitmapMetadata.CameraModel = string.Empty;
-                }
-                else
-                {
-                    this.BitmapMetadata.CameraModel = value;
+                    if (value == null)
+                    {
+                        this.BitmapMetadata.CameraModel = string.Empty;
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.CameraModel = value;
+                    }
                 }
             }
         }
@@ -158,11 +167,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (value == null)
-                {
-                    this.BitmapMetadata.Copyright = string.Empty;
-                }
-                else
+                if (this.ValueHasChanged(value, this.Copyright))
                 {
                     this.BitmapMetadata.Copyright = value;
                 }
@@ -181,11 +186,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (string.IsNullOrEmpty(value))
-                {
-                    this.BitmapMetadata.ApplicationName = string.Empty;
-                }
-                else
+                if (this.ValueHasChanged(value, this.CreationSoftware))
                 {
                     this.BitmapMetadata.ApplicationName = value;
                 }
@@ -213,7 +214,10 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                this.BitmapMetadata.SetQuery(ExifQueries.DateDigitized.Query, new ExifDateTime(value).ToExifString());
+                if (this.ValueHasChanged(value, this.DateDigitised))
+                {
+                    this.BitmapMetadata.SetQuery(ExifQueries.DateDigitized.Query, new ExifDateTime(value).ToExifString());
+                }
             }
         }
 
@@ -238,12 +242,15 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                // Write to tempBitmap count
-                // Use sortable string to avoid US date format issue with Month\Date
-                this.BitmapMetadata.DateTaken = value.ToString("s");
+                if (this.ValueHasChanged(value, this.DateTaken))
+                {
+                    // Write to tempBitmap count
+                    // Use sortable string to avoid US date format issue with Month\Date
+                    this.BitmapMetadata.DateTaken = value.ToString("s");
 
-                // Use specific format for EXIF data, 2008:12:01 13:14:10
-                this.BitmapMetadata.SetQuery(ExifQueries.DateTaken.Query, value.ToString("yyyy:MM:dd HH:mm:ss"));
+                    // Use specific format for EXIF data, 2008:12:01 13:14:10
+                    this.BitmapMetadata.SetQuery(ExifQueries.DateTaken.Query, value.ToString("yyyy:MM:dd HH:mm:ss"));
+                }
             }
         }
 
@@ -685,7 +692,10 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                this.BitmapMetadata.Title = value;
+                if (this.ValueHasChanged(value, this.Title))
+                {
+                    this.BitmapMetadata.Title = value;
+                }
             }
         }
 

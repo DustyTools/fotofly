@@ -41,13 +41,16 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (!value.Equals(this.City))
                 {
-                    this.BitmapMetadata.SetQuery(IptcQueries.City.Query, string.Empty);
-                }
-                else
-                {
-                    this.BitmapMetadata.SetQuery(IptcQueries.City.Query, value);
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.SetQuery(IptcQueries.City.Query, string.Empty);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(IptcQueries.City.Query, value);
+                    }
                 }
             }
         }
@@ -73,13 +76,16 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (!value.Equals(this.Country))
                 {
-                    this.BitmapMetadata.SetQuery(IptcQueries.Country.Query, string.Empty);
-                }
-                else
-                {
-                    this.BitmapMetadata.SetQuery(IptcQueries.Country.Query, value);
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.SetQuery(IptcQueries.Country.Query, string.Empty);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(IptcQueries.Country.Query, value);
+                    }
                 }
             }
         }
@@ -105,13 +111,16 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (!value.Equals(this.Region))
                 {
-                    this.BitmapMetadata.SetQuery(IptcQueries.Region.Query, string.Empty);
-                }
-                else
-                {
-                    this.BitmapMetadata.SetQuery(IptcQueries.Region.Query, value);
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.SetQuery(IptcQueries.Region.Query, string.Empty);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(IptcQueries.Region.Query, value);
+                    }
                 }
             }
         }
@@ -137,13 +146,16 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (!value.Equals(this.SubLocation))
                 {
-                    this.BitmapMetadata.SetQuery(IptcQueries.SubLocation.Query, string.Empty);
-                }
-                else
-                {
-                    this.BitmapMetadata.SetQuery(IptcQueries.SubLocation.Query, value);
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.SetQuery(IptcQueries.SubLocation.Query, string.Empty);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(IptcQueries.SubLocation.Query, value);
+                    }
                 }
             }
         }
