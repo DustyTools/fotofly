@@ -431,6 +431,28 @@
         }
 
         /// <summary>
+        /// Read Files from different cameras
+        /// </summary>
+        [TestMethod]
+        public void ReadiPhoneFiles()
+        {
+            // Read iPhone files with are Geotagged
+            JpgPhoto photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhoneUntouched);
+            photo.ReadMetadata();
+
+            Assert.AreEqual<string>(photo.Metadata.CameraManufacturer, "Apple");
+            Assert.AreEqual<string>(photo.Metadata.CameraModel, "iPhone 3GS");
+            Assert.AreEqual<string>(photo.Metadata.Aperture, "f/2.8");
+            Assert.AreEqual<DateTime>(photo.Metadata.DateDigitised, new DateTime(2010, 02, 01, 08, 24, 40));
+            Assert.AreEqual<PhotoMetadataEnums.MeteringModes>(photo.Metadata.MeteringMode, PhotoMetadataEnums.MeteringModes.Average);
+
+            photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhoneWithTags);
+            photo.ReadMetadata();
+
+            Assert.AreEqual<Tag>(photo.Metadata.Tags.First(), new Tag("Test"));
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         [TestMethod]
