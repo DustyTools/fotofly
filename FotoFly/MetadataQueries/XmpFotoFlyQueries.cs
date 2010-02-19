@@ -24,8 +24,6 @@ namespace Fotofly.MetadataQueries
 
         public static readonly MetdataQuery<string, DateTime> OriginalCameraDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:OriginalCameraDate");
 
-        public static readonly MetdataQuery<string, string> AccuracyOfGps = new MetdataQuery<string, string>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:AccuracyOfGps");
-
         public static readonly MetdataQuery<string, DateTime> AddressOfGpsLookupDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:AddressOfGpsLookupDate");
 
         public static readonly MetdataQuery<string, string> AddressOfGpsSource = new MetdataQuery<string, string>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:AddressOfGpsSource");
@@ -34,5 +32,6 @@ namespace Fotofly.MetadataQueries
 
         // Old no longer used
         public static readonly MetdataQuery<string, Address> Address = new MetdataQuery<string, Address>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:Address");
+        public static readonly MetdataQuery<string, string> AccuracyOfGps = new MetdataQuery<string, string>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:AccuracyOfGps");
     }
 }

@@ -1,7 +1,7 @@
-// <copyright file="IptcProvider.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <copyright file="XmpIptcProvider.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
-// <date>2010-02-15</date>
-// <summary>IptcProvider Class</summary>
+// <date>2010-02-18</date>
+// <summary>XmpIptcProvider Class</summary>
 namespace Fotofly.MetadataProviders
 {
     using System;
@@ -14,9 +14,9 @@ namespace Fotofly.MetadataProviders
     using Fotofly.BitmapMetadataTools;
     using Fotofly.MetadataQueries;
 
-    public class IptcProvider : BaseProvider
+    public class XmpIptcProvider : BaseProvider
     {
-        public IptcProvider(BitmapMetadata bitmapMetadata)
+        public XmpIptcProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
         {}
 
@@ -56,7 +56,7 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                string returnValue = this.BitmapMetadata.GetQuery<string>(IptcQueries.City.Query);
+                string returnValue = this.BitmapMetadata.GetQuery<string>(XmpIptcQueries.LocationCreatedCity.Query);
 
                 if (string.IsNullOrEmpty(returnValue))
                 {
@@ -74,11 +74,11 @@ namespace Fotofly.MetadataProviders
                 {
                     if (string.IsNullOrEmpty(value))
                     {
-                        this.BitmapMetadata.SetQuery(IptcQueries.City.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(XmpIptcQueries.LocationCreatedCity.Query);
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(IptcQueries.City.Query, value);
+                        this.BitmapMetadata.SetQuery(XmpIptcQueries.LocationCreatedCity.Query, value);
                     }
                 }
             }
@@ -91,7 +91,7 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                string returnValue = this.BitmapMetadata.GetQuery<string>(IptcQueries.Country.Query);
+                string returnValue = this.BitmapMetadata.GetQuery<string>(XmpIptcQueries.LocationCreatedCountryName.Query);
 
                 if (string.IsNullOrEmpty(returnValue))
                 {
@@ -109,11 +109,11 @@ namespace Fotofly.MetadataProviders
                 {
                     if (string.IsNullOrEmpty(value))
                     {
-                        this.BitmapMetadata.SetQuery(IptcQueries.Country.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(XmpIptcQueries.LocationCreatedCountryName.Query);
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(IptcQueries.Country.Query, value);
+                        this.BitmapMetadata.SetQuery(XmpIptcQueries.LocationCreatedCountryName.Query, value);
                     }
                 }
             }
@@ -126,7 +126,7 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                string returnValue = this.BitmapMetadata.GetQuery<string>(IptcQueries.Region.Query);
+                string returnValue = this.BitmapMetadata.GetQuery<string>(XmpIptcQueries.LocationCreatedProvinceState.Query);
 
                 if (string.IsNullOrEmpty(returnValue))
                 {
@@ -144,11 +144,11 @@ namespace Fotofly.MetadataProviders
                 {
                     if (string.IsNullOrEmpty(value))
                     {
-                        this.BitmapMetadata.SetQuery(IptcQueries.Region.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(XmpIptcQueries.LocationCreatedProvinceState.Query);
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(IptcQueries.Region.Query, value);
+                        this.BitmapMetadata.SetQuery(XmpIptcQueries.LocationCreatedProvinceState.Query, value);
                     }
                 }
             }
@@ -161,7 +161,7 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                string returnValue = this.BitmapMetadata.GetQuery<string>(IptcQueries.SubLocation.Query);
+                string returnValue = this.BitmapMetadata.GetQuery<string>(XmpIptcQueries.LocationCreatedSublocation.Query);
 
                 if (string.IsNullOrEmpty(returnValue))
                 {
@@ -179,11 +179,11 @@ namespace Fotofly.MetadataProviders
                 {
                     if (string.IsNullOrEmpty(value))
                     {
-                        this.BitmapMetadata.SetQuery(IptcQueries.SubLocation.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(XmpIptcQueries.LocationCreatedSublocation.Query);
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(IptcQueries.SubLocation.Query, value);
+                        this.BitmapMetadata.SetQuery(XmpIptcQueries.LocationCreatedSublocation.Query, value);
                     }
                 }
             }

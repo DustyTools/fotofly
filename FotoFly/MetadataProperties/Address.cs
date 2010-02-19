@@ -128,11 +128,12 @@ namespace Fotofly
                     newAddress = newAddress.Trim();
                     newAddress = newAddress.Replace(@" /", @"/");
                     newAddress = newAddress.Replace(@"/ ", @"/");
-                    newAddress = Regex.Replace(newAddress, "GPS Places/", string.Empty);
-                    newAddress = Regex.Replace(newAddress, "Places/", string.Empty);
-                    newAddress = Regex.Replace(newAddress, "GPS Address/", string.Empty);
-                    newAddress = Regex.Replace(newAddress, "Geotagging/Address/", string.Empty);
-                    newAddress = Regex.Replace(newAddress, "Address/", string.Empty);
+                    newAddress = Regex.Replace(newAddress, "GPS Places", string.Empty);
+                    newAddress = Regex.Replace(newAddress, "Places", string.Empty);
+                    newAddress = Regex.Replace(newAddress, "GPS Address", string.Empty);
+                    newAddress = Regex.Replace(newAddress, "Geotagging/Address", string.Empty);
+                    newAddress = Regex.Replace(newAddress, "Address", string.Empty);
+                    newAddress = newAddress.TrimStart('/');
 
                     // Split the string up
                     string[] keywordArray = newAddress.Split('/');

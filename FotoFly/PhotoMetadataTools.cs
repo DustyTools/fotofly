@@ -55,7 +55,6 @@ namespace Fotofly
             photoMetadata.Rating = fileMetadata.XmpMicrosoftProvider.Rating;
 
             // Retreive Fotofly Data
-            photoMetadata.AccuracyOfGps = fileMetadata.XmpFotoflyProvider.AccuracyOfGps;
             photoMetadata.AddressOfGps = fileMetadata.XmpFotoflyProvider.AddressOfGps;
             photoMetadata.AddressOfGpsLookupDate = fileMetadata.XmpFotoflyProvider.AddressOfGpsLookupDate;
             photoMetadata.AddressOfGpsSource = fileMetadata.XmpFotoflyProvider.AddressOfGpsSource;
@@ -78,6 +77,21 @@ namespace Fotofly
             else
             {
                 photoMetadata.GpsPosition = new GpsPosition();
+            }
+
+            // Get Address
+            // Order of precidence is XMP for IPTC, then IPTC
+            if (fileMetadata.XmpIptcProvider.Address.IsValidAddress)
+            {
+                photoMetadata.Address = fileMetadata.XmpIptcProvider.Address;
+            }
+            else if (fileMetadata.IptcProvider.Address.IsValidAddress)
+            {
+                photoMetadata.Address = fileMetadata.IptcProvider.Address;
+            }
+            else
+            {
+                photoMetadata.Address = new Address();
             }
 
             if (bitmapDecoder != null)
@@ -124,6 +138,10 @@ namespace Fotofly
             fileMetadata.XmpFotoflyProvider.OriginalCameraFilename = photoMetadata.OriginalCameraFilename;
             fileMetadata.XmpFotoflyProvider.UtcDate = photoMetadata.UtcDate;
             fileMetadata.XmpFotoflyProvider.UtcOffset = photoMetadata.UtcOffset;
+
+            // Set Address, both XMP4IPTC & IPTC
+            fileMetadata.XmpIptcProvider.Address = photoMetadata.Address;
+            fileMetadata.IptcProvider.Address = photoMetadata.Address;
 
             // Save Rating
             fileMetadata.XmpMicrosoftProvider.Rating = photoMetadata.Rating;

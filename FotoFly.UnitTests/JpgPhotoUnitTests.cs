@@ -289,7 +289,7 @@
         [TestMethod]
         public void ReadGpsMetadata()
         {
-            Assert.AreEqual<int>(this.jpgPhotoOne.Metadata.GpsPosition.Accuracy, 0);
+            Assert.AreEqual<GpsPosition.Accuracies>(this.jpgPhotoOne.Metadata.GpsPosition.Accuracy, GpsPosition.Accuracies.Unknown);
 
             StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPosition.DegreesMinutesSecondsAltitude, new Regex("N 037° 48' 25.00\" W 122° 25' 23.00\" -17.464m"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPosition.Source, new Regex("Garmin Dakota 20"));
@@ -437,7 +437,7 @@
         public void ReadiPhoneFiles()
         {
             // Read iPhone files with are Geotagged
-            JpgPhoto photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhoneUntouched);
+            JpgPhoto photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhone3GsUntouched);
             photo.ReadMetadata();
 
             Assert.AreEqual<string>(photo.Metadata.CameraManufacturer, "Apple");
@@ -446,7 +446,7 @@
             Assert.AreEqual<DateTime>(photo.Metadata.DateDigitised, new DateTime(2010, 02, 01, 08, 24, 40));
             Assert.AreEqual<PhotoMetadataEnums.MeteringModes>(photo.Metadata.MeteringMode, PhotoMetadataEnums.MeteringModes.Average);
 
-            photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhoneWithTags);
+            photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhone3GsWithTags);
             photo.ReadMetadata();
 
             Assert.AreEqual<Tag>(photo.Metadata.Tags.First(), new Tag("Test"));

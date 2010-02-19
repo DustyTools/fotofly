@@ -57,7 +57,7 @@ namespace Fotofly
             set;
         }
 
-        [XmlAttribute]
+        [XmlElement]
         public RectangleCoordinates RegionRectangle
         {
             get
@@ -89,6 +89,11 @@ namespace Fotofly
                 }
 
                 return regionRectangle;
+            }
+
+            set
+            {
+                // For Serialisation
             }
         }
 

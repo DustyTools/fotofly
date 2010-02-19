@@ -138,7 +138,7 @@ namespace Fotofly.Geotagging
 
                         if (bingResult.IsValidCoordinate)
                         {
-                            bingResult.Accuracy = i;
+                            bingResult.Accuracy = (GpsPosition.Accuracies)i;
                             break;
                         }
                         else
@@ -160,7 +160,7 @@ namespace Fotofly.Geotagging
 
                         if (manualResult != null && manualResult.IsValidCoordinate)
                         {
-                            manualResult.Accuracy = i;
+                            manualResult.Accuracy = (GpsPosition.Accuracies)i;
                             break;
                         }
                         else
@@ -182,9 +182,6 @@ namespace Fotofly.Geotagging
                 {
                     photo.Metadata.GpsPosition = bingResult;
                 }
-
-                // save Accuracy to Xmp because there's no standard for Exif
-                //// photo.Metadata.AccuracyOfGps = photo.Metadata.GpsPosition.Accuracy;
             }
         }
 

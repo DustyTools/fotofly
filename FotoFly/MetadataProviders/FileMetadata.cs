@@ -12,6 +12,7 @@ namespace Fotofly.MetadataProviders
 
     public class FileMetadata : IDisposable
     {
+        private XmpIptcProvider xmpIptcProvider;
         private ExifProvider exifProvider;
         private GpsProvider gpsProvider;
         private IptcProvider iptcProvider;
@@ -32,6 +33,7 @@ namespace Fotofly.MetadataProviders
             this.xmpFotoflyProvider = new XmpFotoflyProvider(bitmapMetadata);
             this.xmpMicrosoftProvider = new XmpMicrosoftProvider(bitmapMetadata);
             this.xmpRightsProvider = new XmpRightsProvider(bitmapMetadata);
+            this.xmpIptcProvider = new XmpIptcProvider(bitmapMetadata);
             this.bitmapMetadata = bitmapMetadata;
         }
 
@@ -73,6 +75,14 @@ namespace Fotofly.MetadataProviders
         public XmpFotoflyProvider XmpFotoflyProvider
         {
             get { return this.xmpFotoflyProvider; }
+        }
+
+        /// <summary>
+        /// Data stored in xmp using IPTC for XMP Schema
+        /// </summary>
+        public XmpIptcProvider XmpIptcProvider
+        {
+            get { return this.xmpIptcProvider; }
         }
 
         /// <summary>

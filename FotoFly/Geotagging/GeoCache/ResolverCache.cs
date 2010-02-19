@@ -43,10 +43,10 @@ namespace Fotofly.Geotagging.Resolvers
             }
 
             // Declare all filenames
-            this.cacheForwardFileName = this.cacheDirectory + this.filePrefix + "_Forward.log";
-            this.cacheReverseFileName = this.cacheDirectory + this.filePrefix + "_Reverse.log";
-            this.failedReverseFileName = this.cacheDirectory + this.filePrefix + "_ReverseFailed.log";
-            this.failedForwardFileName = this.cacheDirectory + this.filePrefix + "_FowardFailed.log";
+            this.cacheForwardFileName = this.cacheDirectory + this.filePrefix + this.cacheSuffixName + "_Forward.log";
+            this.cacheReverseFileName = this.cacheDirectory + this.filePrefix + this.cacheSuffixName + "_Reverse.log";
+            this.failedReverseFileName = this.cacheDirectory + this.filePrefix + this.cacheSuffixName + "_ReverseFailed.log";
+            this.failedForwardFileName = this.cacheDirectory + this.filePrefix + this.cacheSuffixName + "_ForwardFailed.log";
 
             // Read Records Files
             this.cachedForwardRecords = this.ReadCacheRecords(this.cacheForwardFileName);

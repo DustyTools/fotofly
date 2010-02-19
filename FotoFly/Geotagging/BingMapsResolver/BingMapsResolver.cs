@@ -49,7 +49,7 @@ namespace Fotofly.Geotagging.Resolvers
             this.failedLookups = new List<string>();
         }
 
-        private enum LiveMapsDataSources
+        private enum BingMapsDataSources
         {
             EU,
             NA,
@@ -67,13 +67,24 @@ namespace Fotofly.Geotagging.Resolvers
         {
             Fotofly.Address returnValue = new Fotofly.Address();
 
+            // Check Resolver Cache
+            if (this.resolverCache != null)
+            {
+                returnValue = this.resolverCache.FindAddress(gps);
+
+                if (returnValue.IsValidAddress)
+                {
+                    return returnValue;
+                }
+            }
+
             // Set the LatLong
             LatLong latLong = new LatLong();
             latLong.Latitude = gps.Latitude.Numeric;
             latLong.Longitude = gps.Longitude.Numeric;
 
             // Set the datasource
-            LiveMapsDataSources dataSource = this.LiveMapsDataSource(country);
+            BingMapsDataSources dataSource = this.LiveMapsDataSource(country);
 
             GetInfoOptions options = new GetInfoOptions();
             options.IncludeAddresses = true;
@@ -102,6 +113,14 @@ namespace Fotofly.Geotagging.Resolvers
                 returnValue.City = places[0].Address.PrimaryCity;
                 returnValue.AddressLine = places[0].Address.AddressLine;
             }
+            else
+            {
+                // Add to Failure to cache
+                if (this.resolverCache != null)
+                {
+                    this.resolverCache.AddToReverseFailedRecords(gps);
+                }
+            }
 
             return returnValue;
         }
@@ -110,13 +129,24 @@ namespace Fotofly.Geotagging.Resolvers
         {
             GpsPosition returnValue = new GpsPosition();
 
-            LiveMapsDataSources dataSource = this.LiveMapsDataSource(addressToLookup.Country);
+            // Check Resolver Cache
+            if (this.resolverCache != null)
+            {
+                returnValue = this.resolverCache.FindGpsPosition(addressToLookup);
+
+                if (returnValue.IsValidCoordinate)
+                {
+                    return returnValue;
+                }
+            }
+
+            BingMapsDataSources dataSource = this.LiveMapsDataSource(addressToLookup.Country);
 
             if (this.failedLookups.Contains(addressToLookup.HierarchicalName))
             {
                 Debug.WriteLine("BingMapsResolver: " + addressToLookup.HierarchicalName + ": Address skipped (Previous Failed Lookup)");
             }
-            else if (dataSource == LiveMapsDataSources.World)
+            else if (dataSource == BingMapsDataSources.World)
             {
                 Debug.WriteLine("BingMapsResolver: " + addressToLookup.HierarchicalName + ": Address skipped (World Maps does not support Reverse Geotagging)");
             }
@@ -189,6 +219,12 @@ namespace Fotofly.Geotagging.Resolvers
                     }
                     else
                     {
+                        // Add to Failure to cache
+                        if (this.resolverCache != null)
+                        {
+                            this.resolverCache.AddToForwardFailedRecords(addressToLookup);
+                        }
+
                         // Add the failed resolution to the avoid list
                         this.failedLookups.Add(addressToLookup.HierarchicalName);
 
@@ -297,9 +333,9 @@ namespace Fotofly.Geotagging.Resolvers
             this.usstateCodes.Add("PA", "Pennsylvania");
         }
 
-        private LiveMapsDataSources LiveMapsDataSource(string country)
+        private BingMapsDataSources LiveMapsDataSource(string country)
         {
-            LiveMapsDataSources liveMapsDataSource = LiveMapsDataSources.World;
+            BingMapsDataSources bingMapsDataSource = BingMapsDataSources.World;
 
             if (string.IsNullOrEmpty(country))
             {
@@ -307,22 +343,22 @@ namespace Fotofly.Geotagging.Resolvers
             }
             else if (this.eucountries.Contains(country.ToLower()))
             {
-                liveMapsDataSource = LiveMapsDataSources.EU;
+                bingMapsDataSource = BingMapsDataSources.EU;
             }
             else if (this.nacountries.Contains(country.ToLower()))
             {
-                liveMapsDataSource = LiveMapsDataSources.NA;
+                bingMapsDataSource = BingMapsDataSources.NA;
             }
             else if (this.apcountries.Contains(country.ToLower()))
             {
-                liveMapsDataSource = LiveMapsDataSources.AP;
+                bingMapsDataSource = BingMapsDataSources.AP;
             }
             else if (country.ToLower() == "brazil")
             {
-                liveMapsDataSource = LiveMapsDataSources.BR;
+                bingMapsDataSource = BingMapsDataSources.BR;
             }
 
-            return liveMapsDataSource;
+            return bingMapsDataSource;
         }
 
         private string LookupRegionName(string shortCode, string country)

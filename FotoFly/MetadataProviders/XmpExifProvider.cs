@@ -497,11 +497,11 @@ namespace Fotofly.MetadataProviders
                             break;
 
                         case GpsPosition.Dimensions.ThreeDimensional:
-                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, 3);
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, "3");
                             break;
 
                         case GpsPosition.Dimensions.TwoDimensional:
-                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, 2);
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, "2");
                             break;
                     }
                 }

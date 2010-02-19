@@ -12,8 +12,8 @@
         public static readonly string MakeNikonD70 = "Make-NikonD70.jpg";
         public static readonly string MakePentaxOptioS = "Make-PentaxOptioS.jpg";
         public static readonly string MakeSonyDSCT30 = "Make-SonyDSCT30.jpg";
-        public static readonly string MakeiPhoneUntouched = "Make-iPhone-Untouched.jpg";
-        public static readonly string MakeiPhoneWithTags = "Make-iPhone-WithTags.jpg";
+        public static readonly string MakeiPhone3GsUntouched = "Make-iPhone3Gs-Untouched.jpg";
+        public static readonly string MakeiPhone3GsWithTags = "Make-iPhone3Gs-WithTags.jpg";
 
         public static readonly string NoPadding = "NoPadding.jpg";
 

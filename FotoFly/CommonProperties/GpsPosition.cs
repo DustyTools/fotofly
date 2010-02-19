@@ -78,7 +78,7 @@ namespace Fotofly
         }
 
         [XmlAttribute]
-        public int Accuracy
+        public GpsPosition.Accuracies Accuracy
         {
             get;
             set;
