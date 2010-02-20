@@ -37,6 +37,19 @@ namespace Fotofly
         }
 
         /// <summary>
+        /// Class representing a Jpeg Photo
+        /// </summary>
+        /// <param name="fileName">BitmapMetadata</param>
+        public JpgPhoto(BitmapMetadata bitmapMetadata)
+        {
+            // Copy that gets changed
+            this.InternalPhotoMetadata = PhotoMetadataTools.ReadBitmapMetadata(bitmapMetadata);
+
+            // Copy saved metadata for comparisons
+            this.InternalPhotoMetadataInFile = PhotoMetadataTools.ReadBitmapMetadata(bitmapMetadata);
+        }
+
+        /// <summary>
         /// Standard Metadata
         /// </summary>
         public PhotoMetadata Metadata
@@ -120,16 +133,21 @@ namespace Fotofly
         /// <param name="fileName">File to save the metadata changes to</param>
         public void WriteMetadata(string fileName)
         {
+            // If the file name isn't set then save it
             if (!this.IsFileNameValid)
             {
-                throw new Exception("Source file does not exist or is not valid: " + fileName);
+                // Save filename
+                this.SetFileName(fileName);
             }
+            else
+            {
+                // The filename is set, so we're saving a copy
+                // Grab a copy of the source file, we need this for image
+                File.Copy(this.FileFullName, fileName, true);
 
-            // Grab a copy of the source file, we need this for image
-            File.Copy(this.FileFullName, fileName, true);
-                
-            // Save filename
-            this.SetFileName(fileName);
+                // Save filename
+                this.SetFileName(fileName);
+            }
 
             this.WriteMetadata();
         }
