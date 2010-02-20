@@ -53,6 +53,18 @@
         }
 
         /// <summary>
+        /// Check Xmp Microsoft Schema Metadata provider
+        /// </summary>
+        [TestMethod]
+        public void ReadXmpMicrosoftMetadata()
+        {
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.SchemaXmpMicrosoft);
+            XmpMicrosoftProvider xmpMicrosoftProvider = new XmpMicrosoftProvider(bitmapMetadata);
+
+            Assert.AreEqual<MetadataEnums.Rating>(xmpMicrosoftProvider.Rating, MetadataEnums.Rating.ThreeStar);
+        }
+
+        /// <summary>
         /// Check Xmp Tiff Schema Metadata provider
         /// </summary>
         [TestMethod]

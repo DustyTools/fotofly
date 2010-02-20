@@ -15,6 +15,7 @@
         public static readonly string MakeiPhone3GsUntouched = "Make-iPhone3Gs-Untouched.jpg";
         public static readonly string MakeiPhone3GsWithTags = "Make-iPhone3Gs-WithTags.jpg";
 
+        public static readonly string SchemaXmpMicrosoft = "Schema-XmpMicrosoft.jpg";
         public static readonly string SchemaXmpExif = "Schema-XmpExif.jpg";
         public static readonly string SchemaXmpXap = "Schema-XmpXap.jpg";
         public static readonly string SchemaXmpTiff = "Schema-XmpTiff.jpg";
