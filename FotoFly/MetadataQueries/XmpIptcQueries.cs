@@ -34,7 +34,7 @@ namespace Fotofly.MetadataQueries
         public static readonly MetdataQuery<string, string> Location = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:Location");
         public static readonly MetdataQuery<string, string> Scene = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:Scene");
         public static readonly MetdataQuery<string, string> SubjectCode = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:SubjectCode");
-
+        
         // Address
         public static readonly MetdataQuery<string, string> LocationCreatedSublocation = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationCreatedSublocation");
         public static readonly MetdataQuery<string, string> LocationCreatedCountryName = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationCreatedCountryName");

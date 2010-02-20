@@ -42,7 +42,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (!value.Equals(this.DateAquired))
+                if (this.ValueHasChanged(value, this.DateAquired))
                 {
                     string dateAquired = value.ToString("yyyy-MM-ddTHH:mm:ss");
 
@@ -105,7 +105,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (!value.Equals(this.RegionInfo))
+                if (this.ValueHasChanged(value, this.RegionInfo))
                 {
                     // This method is distructive, it deletes all existing regions
                     // In place editing would be complicated because each region doesn't have a unique IDs
@@ -251,7 +251,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (!value.Equals(this.Rating))
+                if (this.ValueHasChanged(value, this.Rating))
                 {
                     this.BitmapMetadata.SetQueryOrRemove(XmpMicrosoftQueries.Rating.Query, ((int)value).ToString(), value == MetadataEnums.Rating.Unknown);
                 }

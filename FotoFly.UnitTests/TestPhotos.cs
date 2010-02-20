@@ -15,9 +15,10 @@
         public static readonly string MakeiPhone3GsUntouched = "Make-iPhone3Gs-Untouched.jpg";
         public static readonly string MakeiPhone3GsWithTags = "Make-iPhone3Gs-WithTags.jpg";
 
-        public static readonly string XmpExif = "XmpExif.jpg";
-        public static readonly string XmpXap = "XmpXap.jpg";
-        public static readonly string XmpTiff = "XmpTiff.jpg";
+        public static readonly string SchemaXmpExif = "Schema-XmpExif.jpg";
+        public static readonly string SchemaXmpXap = "Schema-XmpXap.jpg";
+        public static readonly string SchemaXmpTiff = "Schema-XmpTiff.jpg";
+        public static readonly string SchemaIptc = "Schema-Iptc.jpg";
 
         public static readonly string NoPadding = "NoPadding.jpg";
 

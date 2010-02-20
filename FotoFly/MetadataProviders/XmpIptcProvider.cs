@@ -70,7 +70,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (!value.Equals(this.City))
+                if (this.ValueHasChanged(value, this.City))
                 {
                     if (string.IsNullOrEmpty(value))
                     {
@@ -105,7 +105,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (!value.Equals(this.Country))
+                if (this.ValueHasChanged(value, this.Country))
                 {
                     if (string.IsNullOrEmpty(value))
                     {
@@ -140,7 +140,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (!value.Equals(this.Region))
+                if (this.ValueHasChanged(value, this.Region))
                 {
                     if (string.IsNullOrEmpty(value))
                     {
@@ -175,7 +175,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (!value.Equals(this.SubLocation))
+                if (this.ValueHasChanged(value, this.SubLocation))
                 {
                     if (string.IsNullOrEmpty(value))
                     {

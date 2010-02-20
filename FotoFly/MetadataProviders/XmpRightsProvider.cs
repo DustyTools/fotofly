@@ -43,7 +43,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (!value.Equals(this.Copyright))
+                if (this.ValueHasChanged(value, this.Copyright))
                 {
                     if (value == null)
                     {

@@ -159,7 +159,7 @@
             string afterFile = this.samplePhotosFolder + "WriteMetadataToFileLossless_After.jpg";
 
             // Get a copy of a file
-            File.Copy(this.jpgPhotoOne.FileFullName, beforeFile);
+            File.Copy(this.jpgPhotoOne.FileFullName, beforeFile, true);
 
             // Change some metadata
             JpgPhoto beforePhoto = new JpgPhoto(beforeFile);

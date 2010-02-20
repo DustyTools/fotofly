@@ -33,7 +33,7 @@
         [TestMethod]
         public void ReadMetadataDump()
         {
-            MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.XmpTiff));
+            MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.SchemaXmpTiff));
 
             // Check total count
             Assert.AreEqual<int>(metadataDump.StringList.Count, 186);
@@ -45,7 +45,7 @@
         [TestMethod]
         public void ReadXmpXapMetadata()
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.XmpXap);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.SchemaXmpXap);
             XmpXapProvider xmpXapProvider = new XmpXapProvider(bitmapMetadata);
 
             Assert.AreEqual<string>(xmpXapProvider.CreatorTool, "Tassography PhotoManager");
@@ -58,7 +58,7 @@
         [TestMethod]
         public void ReadXmpTiffMetadata()
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.XmpTiff);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.SchemaXmpTiff);
             XmpTiffProvider xmpTiffProvider = new XmpTiffProvider(bitmapMetadata);
 
             Assert.AreEqual<string>(xmpTiffProvider.Make, "Canon");
@@ -68,12 +68,31 @@
         }
 
         /// <summary>
+        /// Check Iptc Schema Metadata provider
+        /// </summary>
+        [TestMethod]
+        public void ReadIptcMetadata()
+        {
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.SchemaXmpTiff);
+            IptcProvider iptcProvider = new IptcProvider(bitmapMetadata);
+
+            Assert.AreEqual<string>(iptcProvider.Byline, "Ben Vincent");
+            Assert.AreEqual<string>(iptcProvider.City, "San Mateo");
+            Assert.AreEqual<string>(iptcProvider.CopyrightNotice, "Tassography");
+            Assert.AreEqual<string>(iptcProvider.Country, "United States");
+            Assert.AreEqual<string>(iptcProvider.DateCreated, "20080504");
+            Assert.AreEqual<string>(iptcProvider.Region, "California");
+            Assert.AreEqual<string>(iptcProvider.SubLocation, "San Mateo County Expo Center");
+            Assert.AreEqual<string>(iptcProvider.TimeCreated, "202900+0000");
+        }
+
+        /// <summary>
         /// Check XmpForExif Metadata provider
         /// </summary>
         [TestMethod]
         public void ReadXmpExifMetadata()
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.XmpExif);
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.SchemaXmpExif);
             XmpExifProvider xmpExifProvider = new XmpExifProvider(bitmapMetadata);
 
             Assert.AreEqual<string>(xmpExifProvider.DateTimeOriginal, "2008-05-04T20:29:00Z");

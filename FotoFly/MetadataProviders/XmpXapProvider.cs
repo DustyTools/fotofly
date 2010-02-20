@@ -60,7 +60,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (!value.Equals(this.Rating))
+                if (this.ValueHasChanged(value, this.Rating))
                 {
                     this.BitmapMetadata.SetQueryOrRemove(XmpXapQueries.Rating.Query, ((int)value).ToString(), value == MetadataEnums.Rating.Unknown);
                 }

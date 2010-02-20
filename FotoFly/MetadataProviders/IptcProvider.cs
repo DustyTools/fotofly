@@ -18,7 +18,7 @@ namespace Fotofly.MetadataProviders
     {
         public IptcProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
-        {}
+        { }
 
         public Address Address
         {
@@ -39,7 +39,7 @@ namespace Fotofly.MetadataProviders
                     return new Address();
                 }
             }
-         
+
             set
             {
                 this.Country = value.Country;
@@ -56,30 +56,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                string returnValue = this.BitmapMetadata.GetQuery<string>(IptcQueries.City.Query);
-
-                if (string.IsNullOrEmpty(returnValue))
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return returnValue;
-                }
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.City.Query);
             }
 
             set
             {
-                if (!value.Equals(this.City))
+                if (this.ValueHasChanged(value, this.City))
                 {
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        this.BitmapMetadata.SetQuery(IptcQueries.City.Query, string.Empty);
-                    }
-                    else
-                    {
-                        this.BitmapMetadata.SetQuery(IptcQueries.City.Query, value);
-                    }
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.City.Query, value.ToString(), string.IsNullOrEmpty(value));
                 }
             }
         }
@@ -91,30 +75,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                string returnValue = this.BitmapMetadata.GetQuery<string>(IptcQueries.Country.Query);
-
-                if (string.IsNullOrEmpty(returnValue))
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return returnValue;
-                }
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.Country.Query);
             }
 
             set
             {
-                if (!value.Equals(this.Country))
+                if (this.ValueHasChanged(value, this.Country))
                 {
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        this.BitmapMetadata.SetQuery(IptcQueries.Country.Query, string.Empty);
-                    }
-                    else
-                    {
-                        this.BitmapMetadata.SetQuery(IptcQueries.Country.Query, value);
-                    }
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Country.Query, value.ToString(), string.IsNullOrEmpty(value));
                 }
             }
         }
@@ -126,65 +94,185 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                string returnValue = this.BitmapMetadata.GetQuery<string>(IptcQueries.Region.Query);
-
-                if (string.IsNullOrEmpty(returnValue))
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return returnValue;
-                }
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.Region.Query);
             }
 
             set
             {
-                if (!value.Equals(this.Region))
+                if (this.ValueHasChanged(value, this.Region))
                 {
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        this.BitmapMetadata.SetQuery(IptcQueries.Region.Query, string.Empty);
-                    }
-                    else
-                    {
-                        this.BitmapMetadata.SetQuery(IptcQueries.Region.Query, value);
-                    }
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Region.Query, value.ToString(), string.IsNullOrEmpty(value));
                 }
             }
         }
 
         /// <summary>
-        /// Sublocation
+        /// SubLocation
         /// </summary>
         public string SubLocation
         {
             get
             {
-                string returnValue = this.BitmapMetadata.GetQuery<string>(IptcQueries.SubLocation.Query);
-
-                if (string.IsNullOrEmpty(returnValue))
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return returnValue;
-                }
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.SubLocation.Query);
             }
 
             set
             {
-                if (!value.Equals(this.SubLocation))
+                if (this.ValueHasChanged(value, this.SubLocation))
                 {
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        this.BitmapMetadata.SetQuery(IptcQueries.SubLocation.Query, string.Empty);
-                    }
-                    else
-                    {
-                        this.BitmapMetadata.SetQuery(IptcQueries.SubLocation.Query, value);
-                    }
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.SubLocation.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// CodeCharacterSet
+        /// </summary>
+        public string CodeCharacterSet
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.CodeCharacterSet.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.CodeCharacterSet))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.CodeCharacterSet.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// DateCreated
+        /// </summary>
+        public string DateCreated
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.DateCreated.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.DateCreated))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.DateCreated.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// TimeCreated
+        /// </summary>
+        public string TimeCreated
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.TimeCreated.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.TimeCreated))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.TimeCreated.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// OriginatingProgram
+        /// </summary>
+        public string OriginatingProgram
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.OriginatingProgram.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.OriginatingProgram))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.OriginatingProgram.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Byline
+        /// </summary>
+        public string Byline
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.Byline.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.Byline))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Byline.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Keywords
+        /// </summary>
+        public string Keywords
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.Keywords.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.Keywords))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Keywords.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// ObjectName
+        /// </summary>
+        public string ObjectName
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.ObjectName.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.ObjectName))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.ObjectName.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// CopyrightNotice
+        /// </summary>
+        public string CopyrightNotice
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.CopyrightNotice.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.CopyrightNotice))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.CopyrightNotice.Query, value.ToString(), string.IsNullOrEmpty(value));
                 }
             }
         }
