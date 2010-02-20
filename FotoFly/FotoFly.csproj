@@ -77,8 +77,11 @@
     <Compile Include="MetadataProviders\XmpCoreProvider.cs" />
     <Compile Include="MetadataProviders\XmpExifProvider.cs" />
     <Compile Include="MetadataProviders\XmpFotoflyProvider.cs" />
+    <Compile Include="MetadataProviders\XmpIptcProvider.cs" />
     <Compile Include="MetadataProviders\XmpMicrosoftProvider.cs" />
     <Compile Include="MetadataProviders\XmpRightsProvider.cs" />
+    <Compile Include="MetadataProviders\XmpTiffProvider.cs" />
+    <Compile Include="MetadataProviders\XmpXapProvider.cs" />
     <Compile Include="MetadataQueries\GpsQueries.cs" />
     <Compile Include="MetadataQueries\XmpCoreQueries.cs" />
     <Compile Include="MetadataQueries\XmpDublinCoreQueries.cs" />
@@ -113,6 +116,8 @@
     <Compile Include="MetadataProperties\Address.cs" />
     <Compile Include="CommonProperties\GpsCoordinate.cs" />
     <Compile Include="CommonProperties\GpsPosition.cs" />
+    <Compile Include="MetadataQueries\XmpTiffQueries.cs" />
+    <Compile Include="MetadataQueries\XmpXapQueries.cs" />
     <Compile Include="PhotoMetadata.cs" />
     <Compile Include="MetadataProperties\URationalTriplet.cs" />
     <Compile Include="MetadataProperties\URational.cs" />

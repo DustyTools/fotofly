@@ -16,6 +16,11 @@ namespace Fotofly.MetadataQueries
             this.Query = query;
         }
 
+        public MetdataQuery(string schema, string query)
+        {
+            this.Query = schema.TrimEnd(':') + ":" + query.TrimStart(':');
+        }
+
         public string Query
         {
             get;

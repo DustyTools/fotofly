@@ -12,26 +12,29 @@ namespace Fotofly.MetadataQueries
 
     public static class XmpFotoflyQueries
     {
-        public static readonly MetdataQuery<BitmapMetadata, BitmapMetadata> FotoflyStruct = new MetdataQuery<BitmapMetadata, BitmapMetadata>(@"/xmp/http\:\/\/ns.fotofly:Fotofly");
+        private static string baseSchema = @"http\:\/\/ns.fotofly:";
+        private static string schema = @"/xmp/" + XmpFotoflyQueries.baseSchema + "Fotofly/" + XmpFotoflyQueries.baseSchema;
 
-        public static readonly MetdataQuery<string, DateTime> UtcDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:UtcDate");
+        public static readonly MetdataQuery<BitmapMetadata, BitmapMetadata> FotoflyStruct = new MetdataQuery<BitmapMetadata, BitmapMetadata>(@"/xmp/" + baseSchema + "Fotofly");
 
-        public static readonly MetdataQuery<string, double?> UtcOffset = new MetdataQuery<string, double?>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:UtcOffset");
+        public static readonly MetdataQuery<string, DateTime> UtcDate = new MetdataQuery<string, DateTime>(XmpFotoflyQueries.schema, "UtcDate");
 
-        public static readonly MetdataQuery<string, DateTime> LastEditDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:LastEditDate");
+        public static readonly MetdataQuery<string, double?> UtcOffset = new MetdataQuery<string, double?>(XmpFotoflyQueries.schema, "UtcOffset");
 
-        public static readonly MetdataQuery<string, string> OriginalCameraFilename = new MetdataQuery<string, string>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:OriginalCameraFilename");
+        public static readonly MetdataQuery<string, DateTime> LastEditDate = new MetdataQuery<string, DateTime>(XmpFotoflyQueries.schema, "LastEditDate");
 
-        public static readonly MetdataQuery<string, DateTime> OriginalCameraDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:OriginalCameraDate");
+        public static readonly MetdataQuery<string, string> OriginalCameraFilename = new MetdataQuery<string, string>(XmpFotoflyQueries.schema, "OriginalCameraFilename");
 
-        public static readonly MetdataQuery<string, DateTime> AddressOfGpsLookupDate = new MetdataQuery<string, DateTime>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:AddressOfGpsLookupDate");
+        public static readonly MetdataQuery<string, DateTime> OriginalCameraDate = new MetdataQuery<string, DateTime>(XmpFotoflyQueries.schema, "OriginalCameraDate");
 
-        public static readonly MetdataQuery<string, string> AddressOfGpsSource = new MetdataQuery<string, string>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:AddressOfGpsSource");
+        public static readonly MetdataQuery<string, DateTime> AddressOfGpsLookupDate = new MetdataQuery<string, DateTime>(XmpFotoflyQueries.schema, "AddressOfGpsLookupDate");
 
-        public static readonly MetdataQuery<string, Address> AddressOfGps = new MetdataQuery<string, Address>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:AddressOfGps");
+        public static readonly MetdataQuery<string, string> AddressOfGpsSource = new MetdataQuery<string, string>(XmpFotoflyQueries.schema, "AddressOfGpsSource");
+
+        public static readonly MetdataQuery<string, Address> AddressOfGps = new MetdataQuery<string, Address>(XmpFotoflyQueries.schema, "AddressOfGps");
 
         // Old no longer used
-        public static readonly MetdataQuery<string, Address> Address = new MetdataQuery<string, Address>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:Address");
-        public static readonly MetdataQuery<string, string> AccuracyOfGps = new MetdataQuery<string, string>(@"/xmp/http\:\/\/ns.fotofly:Fotofly/http\:\/\/ns.fotofly:AccuracyOfGps");
+        public static readonly MetdataQuery<string, Address> Address = new MetdataQuery<string, Address>(XmpFotoflyQueries.schema, "Address");
+        public static readonly MetdataQuery<string, string> AccuracyOfGps = new MetdataQuery<string, string>(XmpFotoflyQueries.schema, "AccuracyOfGps");
     }
 }

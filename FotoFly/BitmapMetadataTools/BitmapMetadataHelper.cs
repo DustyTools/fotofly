@@ -177,5 +177,17 @@ namespace Fotofly.BitmapMetadataTools
             // Return Object Type
             return bitmapMetadata.GetQuery(query).GetType();
         }
+
+        public static void SetQueryOrRemove(this BitmapMetadata bitmapMetadata, string query, string value, bool whenTrueRemoveQuery)
+        {
+            if (whenTrueRemoveQuery)
+            {
+                bitmapMetadata.RemoveQuery(query);
+            }
+            else
+            {
+                bitmapMetadata.SetQuery(query, value);
+            }
+        }
     }
 }

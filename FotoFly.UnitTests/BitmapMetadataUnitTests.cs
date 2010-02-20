@@ -28,6 +28,70 @@
         }
 
         /// <summary>
+        /// Check MetadataDump
+        /// </summary>
+        [TestMethod]
+        public void ReadMetadataDump()
+        {
+            MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.XmpTiff));
+
+            // Check total count
+            Assert.AreEqual<int>(metadataDump.StringList.Count, 186);
+        }
+
+        /// <summary>
+        /// Check Xmp Xap Schema Metadata provider
+        /// </summary>
+        [TestMethod]
+        public void ReadXmpXapMetadata()
+        {
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.XmpXap);
+            XmpXapProvider xmpXapProvider = new XmpXapProvider(bitmapMetadata);
+
+            Assert.AreEqual<string>(xmpXapProvider.CreatorTool, "Tassography PhotoManager");
+            Assert.AreEqual<string>(xmpXapProvider.Rating, "4");
+        }
+
+        /// <summary>
+        /// Check Xmp Tiff Schema Metadata provider
+        /// </summary>
+        [TestMethod]
+        public void ReadXmpTiffMetadata()
+        {
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.XmpTiff);
+            XmpTiffProvider xmpTiffProvider = new XmpTiffProvider(bitmapMetadata);
+
+            Assert.AreEqual<string>(xmpTiffProvider.Make, "Canon");
+            Assert.AreEqual<string>(xmpTiffProvider.Model, "Canon PowerShot SD790 IS");
+            Assert.AreEqual<string>(xmpTiffProvider.Orientation, "6");
+            Assert.AreEqual<string>(xmpTiffProvider.Software, "Tassography PhotoManager");
+        }
+
+        /// <summary>
+        /// Check XmpForExif Metadata provider
+        /// </summary>
+        [TestMethod]
+        public void ReadXmpExifMetadata()
+        {
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.XmpExif);
+            XmpExifProvider xmpExifProvider = new XmpExifProvider(bitmapMetadata);
+
+            Assert.AreEqual<string>(xmpExifProvider.DateTimeOriginal, "2008-05-04T20:29:00Z");
+            Assert.AreEqual<string>(xmpExifProvider.FocalLength, "6200/1000");
+            Assert.AreEqual<string>(xmpExifProvider.MaxApertureValue, "95/32");
+            Assert.AreEqual<string>(xmpExifProvider.FNumber, "80/10");
+            Assert.AreEqual<string>(xmpExifProvider.Aperture, "192/32");
+            Assert.AreEqual<string>(xmpExifProvider.ExposureTime, "1/320");
+            Assert.AreEqual<string>(xmpExifProvider.ShutterSpeedValue, "266/32");
+            Assert.AreEqual<string>(xmpExifProvider.ExposureBiasValue, "0/3");
+            Assert.AreEqual<string>(xmpExifProvider.ExifVersion, "0220");
+            Assert.AreEqual<string>(xmpExifProvider.MeteringMode, "5");
+            Assert.AreEqual<string>(xmpExifProvider.ISOSpeed, "80");
+            Assert.AreEqual<string>(xmpExifProvider.WhiteBalance, "0");
+            Assert.AreEqual<string>(xmpExifProvider.DigitalZoomRatio, "3648/3648");
+        }
+
+        /// <summary>
         /// Check Fotofly metadata provider
         /// </summary>
         [TestMethod]

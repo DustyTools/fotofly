@@ -346,18 +346,6 @@
         }
 
         /// <summary>
-        /// Check MetadataDump
-        /// </summary>
-        [TestMethod]
-        public void ReadMetadataDump()
-        {
-            MetadataDump metadataDump = new MetadataDump(WpfFileManager.ReadBitmapMetadata(this.jpgPhotoTwo.FileFullName));
-
-            // Check total count
-            Assert.AreEqual<int>(metadataDump.StringList.Count, 71);
-        }
-
-        /// <summary>
         /// Check ReadCorruptMetadata, reads a known bad image and checks the values are read correctly
         /// </summary>
         [TestMethod]
@@ -427,6 +415,9 @@
             photo.ReadMetadata();
 
             photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeSonyDSCT30);
+            photo.ReadMetadata();
+
+            photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhone3GsUntouched);
             photo.ReadMetadata();
         }
 
