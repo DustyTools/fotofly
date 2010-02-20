@@ -121,7 +121,7 @@ namespace Fotofly
         /// Metering Mode
         /// </summary>
         [XmlAttribute]
-        public PhotoMetadataEnums.MeteringModes MeteringMode
+        public MetadataEnums.MeteringModes MeteringMode
         {
             get;
             set;
@@ -208,10 +208,10 @@ namespace Fotofly
         }
 
         /// <summary>
-        /// Rating (Ranging 0-5)
+        /// Rating (Ranging unknown to 1-5)
         /// </summary>
         [XmlAttribute]
-        public int Rating
+        public MetadataEnums.Rating Rating
         {
             get;
             set;
@@ -289,18 +289,18 @@ namespace Fotofly
         /// Orientation of the Image (Readonly)
         /// </summary>
         [XmlIgnore]
-        public PhotoMetadataEnums.ImageOrientations Orientation
+        public MetadataEnums.ImageOrientations Orientation
         {
             get
             {
                 // Work out Orientation
                 if (this.ImageHeight > this.ImageWidth)
                 {
-                    return PhotoMetadataEnums.ImageOrientations.Portrait;
+                    return MetadataEnums.ImageOrientations.Portrait;
                 }
                 else
                 {
-                    return PhotoMetadataEnums.ImageOrientations.Landscape;
+                    return MetadataEnums.ImageOrientations.Landscape;
                 }
             }
         }

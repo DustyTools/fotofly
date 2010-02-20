@@ -12,7 +12,7 @@ namespace Fotofly.MetadataQueries
 
     public static class XmpMicrosoftQueries
     {
-        public static readonly MetdataQuery<string, string> Rating = new MetdataQuery<string, string>("/xmp/MicrosoftPhoto:Rating");
+        public static readonly MetdataQuery<string, MetadataEnums.Rating> Rating = new MetdataQuery<string, MetadataEnums.Rating>("/xmp/MicrosoftPhoto:Rating");
 
         // "DateAcquired" (LPWSTR) ["http://ns.microsoft.com/photo/1.0/" (LPWSTR)]
         public static readonly MetdataQuery<string, DateTime> DateAcquired = new MetdataQuery<string, DateTime>("/xmp/MicrosoftPhoto:DateAcquired");

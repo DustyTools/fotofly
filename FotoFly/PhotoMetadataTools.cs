@@ -52,9 +52,23 @@ namespace Fotofly
             photoMetadata.Title = fileMetadata.ExifProvider.Title;
             photoMetadata.VerticalResolution = fileMetadata.ExifProvider.VerticalResolution;
 
-            photoMetadata.Rating = fileMetadata.XmpMicrosoftProvider.Rating;
+            // Rating
+            // Check Xap, then Microsoft
+            if (fileMetadata.XmpXapProvider.Rating != MetadataEnums.Rating.Unknown)
+            {
+                photoMetadata.Rating = fileMetadata.XmpXapProvider.Rating;
+            }
+            else if (fileMetadata.XmpMicrosoftProvider.Rating != MetadataEnums.Rating.Unknown)
+            {
+                photoMetadata.Rating = fileMetadata.XmpMicrosoftProvider.Rating;
+            }
+            else
+            {
+                photoMetadata.Rating = MetadataEnums.Rating.Unknown;
+            }
+            
 
-            // Retreive Fotofly Data
+            // Retrieve Fotofly Data
             photoMetadata.AddressOfGps = fileMetadata.XmpFotoflyProvider.AddressOfGps;
             photoMetadata.AddressOfGpsLookupDate = fileMetadata.XmpFotoflyProvider.AddressOfGpsLookupDate;
             photoMetadata.AddressOfGpsSource = fileMetadata.XmpFotoflyProvider.AddressOfGpsSource;
@@ -144,7 +158,13 @@ namespace Fotofly
             fileMetadata.IptcProvider.Address = photoMetadata.Address;
 
             // Save Rating
-            fileMetadata.XmpMicrosoftProvider.Rating = photoMetadata.Rating;
+            // Only save to XmpMicrosoft if it's been set
+            fileMetadata.XmpXapProvider.Rating = photoMetadata.Rating;
+
+            if (fileMetadata.XmpMicrosoftProvider.Rating != MetadataEnums.Rating.Unknown)
+            {
+                fileMetadata.XmpMicrosoftProvider.Rating = photoMetadata.Rating;
+            }
 
             // GPS
             // Save to Gps & XMP

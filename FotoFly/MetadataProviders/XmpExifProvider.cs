@@ -104,7 +104,7 @@ namespace Fotofly.MetadataProviders
                     {
                         this.GpsAltitudeRef = value > 0 ? GpsPosition.AltitudeRef.AboveSeaLevel : GpsPosition.AltitudeRef.BelowSeaLevel;
 
-                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitude.Query, Math.Abs(value));
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsAltitude.Query, Math.Abs(value).ToString());
                     }
                 }
             }

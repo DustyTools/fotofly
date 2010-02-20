@@ -215,27 +215,45 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Rating (Range 0-5)
         /// </summary>
-        public int Rating
+        public MetadataEnums.Rating Rating
         {
             get
             {
-                int rating = this.BitmapMetadata.Rating;
+                string rating = this.BitmapMetadata.GetQuery<string>(XmpMicrosoftQueries.Rating.Query);
 
-                return rating;
+                if (String.IsNullOrEmpty(rating))
+                {
+                    return MetadataEnums.Rating.Unknown;
+                }
+                else if (rating == "1")
+                {
+                    return MetadataEnums.Rating.OneStar;
+                }
+                else if (rating == "2")
+                {
+                    return MetadataEnums.Rating.TwoStar;
+                }
+                else if (rating == "3")
+                {
+                    return MetadataEnums.Rating.ThreeStar;
+                }
+                else if (rating == "4")
+                {
+                    return MetadataEnums.Rating.FourStar;
+                }
+                else if (rating == "5")
+                {
+                    return MetadataEnums.Rating.FiveStar;
+                }
+
+                return MetadataEnums.Rating.Unknown;
             }
 
             set
             {
                 if (!value.Equals(this.Rating))
                 {
-                    if (value >= 0 || value <= 5)
-                    {
-                        this.BitmapMetadata.Rating = value;
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid Rating");
-                    }
+                    this.BitmapMetadata.SetQueryOrRemove(XmpMicrosoftQueries.Rating.Query, ((int)value).ToString(), value == MetadataEnums.Rating.Unknown);
                 }
             }
         }

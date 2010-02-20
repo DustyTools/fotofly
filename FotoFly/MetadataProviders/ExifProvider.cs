@@ -514,7 +514,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// ExposureMode
         /// </summary>
-        public PhotoMetadataEnums.ExposureModes ExposureMode
+        public MetadataEnums.ExposureModes ExposureMode
         {
             get
             {
@@ -522,11 +522,11 @@ namespace Fotofly.MetadataProviders
 
                 if (exposureMode == null)
                 {
-                    return PhotoMetadataEnums.ExposureModes.AutoExposure;
+                    return MetadataEnums.ExposureModes.AutoExposure;
                 }
                 else
                 {
-                    return (PhotoMetadataEnums.ExposureModes)exposureMode.Value;
+                    return (MetadataEnums.ExposureModes)exposureMode.Value;
                 }
             }
         }
@@ -534,7 +534,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// SubjectDistanceRange
         /// </summary>
-        public PhotoMetadataEnums.SubjectDistanceRanges SubjectDistanceRange
+        public MetadataEnums.SubjectDistanceRanges SubjectDistanceRange
         {
             get
             {
@@ -542,11 +542,11 @@ namespace Fotofly.MetadataProviders
 
                 if (subjectDistanceRange == null)
                 {
-                    return PhotoMetadataEnums.SubjectDistanceRanges.Unknown;
+                    return MetadataEnums.SubjectDistanceRanges.Unknown;
                 }
                 else
                 {
-                    return (PhotoMetadataEnums.SubjectDistanceRanges)subjectDistanceRange.Value;
+                    return (MetadataEnums.SubjectDistanceRanges)subjectDistanceRange.Value;
                 }
             }
         }
@@ -554,7 +554,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Metering Mode
         /// </summary>
-        public PhotoMetadataEnums.MeteringModes MeteringMode
+        public MetadataEnums.MeteringModes MeteringMode
         {
             get
             {
@@ -562,11 +562,11 @@ namespace Fotofly.MetadataProviders
 
                 if (meteringMode == null)
                 {
-                    return PhotoMetadataEnums.MeteringModes.Unknown;
+                    return MetadataEnums.MeteringModes.Unknown;
                 }
                 else
                 {
-                    return (PhotoMetadataEnums.MeteringModes)meteringMode.Value;
+                    return (MetadataEnums.MeteringModes)meteringMode.Value;
                 }
             }
         }
@@ -574,7 +574,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Orientation
         /// </summary>
-        public PhotoMetadataEnums.Orientations Orientation
+        public MetadataEnums.Orientations Orientation
         {
             get
             {
@@ -582,11 +582,11 @@ namespace Fotofly.MetadataProviders
 
                 if (orientation == null)
                 {
-                    return PhotoMetadataEnums.Orientations.Unknown;
+                    return MetadataEnums.Orientations.Unknown;
                 }
                 else
                 {
-                    return (PhotoMetadataEnums.Orientations)orientation.Value;
+                    return (MetadataEnums.Orientations)orientation.Value;
                 }
             }
         }
@@ -594,7 +594,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// WhiteBalance
         /// </summary>
-        public PhotoMetadataEnums.WhiteBalances WhiteBalance
+        public MetadataEnums.WhiteBalances WhiteBalance
         {
             get
             {
@@ -602,11 +602,11 @@ namespace Fotofly.MetadataProviders
 
                 if (whiteBalance == null)
                 {
-                    return PhotoMetadataEnums.WhiteBalances.AutoWhiteBalance;
+                    return MetadataEnums.WhiteBalances.AutoWhiteBalance;
                 }
                 else
                 {
-                    return (PhotoMetadataEnums.WhiteBalances)whiteBalance.Value;
+                    return (MetadataEnums.WhiteBalances)whiteBalance.Value;
                 }
             }
         }
@@ -614,7 +614,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// WhiteBalanceMode
         /// </summary>
-        public PhotoMetadataEnums.LightSources LightSource
+        public MetadataEnums.LightSources LightSource
         {
             get
             {
@@ -622,11 +622,11 @@ namespace Fotofly.MetadataProviders
 
                 if (lightSource == null)
                 {
-                    return PhotoMetadataEnums.LightSources.Unknown;
+                    return MetadataEnums.LightSources.Unknown;
                 }
                 else
                 {
-                    return (PhotoMetadataEnums.LightSources)lightSource.Value;
+                    return (MetadataEnums.LightSources)lightSource.Value;
                 }
             }
         }
@@ -634,7 +634,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// ColorRepresentation
         /// </summary>
-        public PhotoMetadataEnums.ColorRepresentations ColorRepresentation
+        public MetadataEnums.ColorRepresentations ColorRepresentation
         {
             get
             {
@@ -642,11 +642,11 @@ namespace Fotofly.MetadataProviders
 
                 if (colour == null || colour.Value != 1)
                 {
-                    return PhotoMetadataEnums.ColorRepresentations.Unknown;
+                    return MetadataEnums.ColorRepresentations.Unknown;
                 }
                 else
                 {
-                    return PhotoMetadataEnums.ColorRepresentations.sRGB;
+                    return MetadataEnums.ColorRepresentations.sRGB;
                 }
             }
         }
@@ -654,7 +654,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// ExposureMode
         /// </summary>
-        public PhotoMetadataEnums.ExposurePrograms ExposureProgram
+        public MetadataEnums.ExposurePrograms ExposureProgram
         {
             get
             {
@@ -662,11 +662,11 @@ namespace Fotofly.MetadataProviders
 
                 if (exposureProgram == null)
                 {
-                    return PhotoMetadataEnums.ExposurePrograms.Unknown;
+                    return MetadataEnums.ExposurePrograms.Unknown;
                 }
                 else
                 {
-                    return (PhotoMetadataEnums.ExposurePrograms)exposureProgram.Value;
+                    return (MetadataEnums.ExposurePrograms)exposureProgram.Value;
                 }
             }
         }

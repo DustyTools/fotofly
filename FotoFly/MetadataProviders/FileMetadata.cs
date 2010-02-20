@@ -22,6 +22,7 @@ namespace Fotofly.MetadataProviders
         private XmpMicrosoftProvider xmpMicrosoftProvider;
         private XmpRightsProvider xmpRightsProvider;
         private XmpTiffProvider xmpTiffProvider;
+        private XmpXapProvider xmpXapProvider;
         private BitmapMetadata bitmapMetadata;
 
         public FileMetadata(BitmapMetadata bitmapMetadata)
@@ -36,6 +37,7 @@ namespace Fotofly.MetadataProviders
             this.xmpRightsProvider = new XmpRightsProvider(bitmapMetadata);
             this.xmpIptcProvider = new XmpIptcProvider(bitmapMetadata);
             this.xmpTiffProvider = new XmpTiffProvider(bitmapMetadata);
+            this.xmpXapProvider = new XmpXapProvider(bitmapMetadata);
             this.bitmapMetadata = bitmapMetadata;
         }
 
@@ -77,6 +79,14 @@ namespace Fotofly.MetadataProviders
         public XmpFotoflyProvider XmpFotoflyProvider
         {
             get { return this.xmpFotoflyProvider; }
+        }
+
+        /// <summary>
+        /// Data stored in xmp using Xap Schema
+        /// </summary>
+        public XmpXapProvider XmpXapProvider
+        {
+            get { return this.xmpXapProvider; }
         }
 
         /// <summary>

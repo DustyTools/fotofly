@@ -69,6 +69,7 @@
     <Compile Include="JpgPhotoTools.cs" />
     <Compile Include="MetadataProperties\ImageRegion.cs" />
     <Compile Include="MetadataProperties\ImageRegionInfo.cs" />
+    <Compile Include="MetadataProperties\MetadataEnums.cs" />
     <Compile Include="MetadataProviders\BaseProvider.cs" />
     <Compile Include="MetadataProviders\ExifProvider.cs" />
     <Compile Include="MetadataProviders\FileMetadata.cs" />
@@ -121,7 +122,6 @@
     <Compile Include="PhotoMetadata.cs" />
     <Compile Include="MetadataProperties\URationalTriplet.cs" />
     <Compile Include="MetadataProperties\URational.cs" />
-    <Compile Include="MetadataProperties\PhotoMetadataEnums.cs" />
     <Compile Include="PhotoMetadataTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MetadataProperties\SRational.cs" />

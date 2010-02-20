@@ -1,7 +1,7 @@
-﻿// <copyright file="PhotoMetadataEnums.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+﻿// <copyright file="MetadataEnums.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
 // <date>2009-11-04</date>
-// <summary>PhotoMetadataEnums</summary>
+// <summary>MetadataEnums</summary>
 namespace Fotofly
 {
     using System;
@@ -9,7 +9,7 @@ namespace Fotofly
     using System.Linq;
     using System.Text;
     
-    public class PhotoMetadataEnums
+    public class MetadataEnums
     {
         /// <summary>
         /// Image orientation viewed in terms of rows and columns.
@@ -113,6 +113,16 @@ namespace Fotofly
             Unknown,
             sRGB,
             Uncalibrated
+        }
+
+        public enum Rating : int
+        {
+            Unknown = 0,
+            OneStar = 1,
+            TwoStar = 2,
+            ThreeStar = 3,
+            FourStar = 4,
+            FiveStar = 5
         }
 
         public enum WhiteBalances : int

@@ -49,7 +49,7 @@
             XmpXapProvider xmpXapProvider = new XmpXapProvider(bitmapMetadata);
 
             Assert.AreEqual<string>(xmpXapProvider.CreatorTool, "Tassography PhotoManager");
-            Assert.AreEqual<string>(xmpXapProvider.Rating, "4");
+            Assert.AreEqual<MetadataEnums.Rating>(xmpXapProvider.Rating, MetadataEnums.Rating.FourStar);
         }
 
         /// <summary>

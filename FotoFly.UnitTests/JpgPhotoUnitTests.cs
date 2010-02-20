@@ -245,17 +245,15 @@
             StringAssert.Matches(this.jpgPhotoOne.Metadata.Subject, new Regex(@"Test Caption\\Title\\Subject"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.Title, new Regex(@"Test Caption\\Title\\Subject"));
         }
-            
+
         /// <summary>
         /// ReadNumericMetadata
         /// </summary>
         [TestMethod]
         public void ReadNumericMetadata()
         {
-            Assert.AreEqual<int>(this.jpgPhotoOne.Metadata.Rating, 3, "Rating");
-
             Assert.AreEqual<double>(this.jpgPhotoOne.Metadata.DigitalZoomRatio, 0, "DigitalZoomRatio");
-            
+
             Assert.AreEqual<int>(this.jpgPhotoOne.Metadata.ImageHeight, 480, "ImageHeight");
             Assert.AreEqual<int>(this.jpgPhotoOne.Metadata.ImageWidth, 640, "ImageWidth");
 
@@ -264,12 +262,23 @@
         }
 
         /// <summary>
+        /// Read Ratings
+        /// </summary>
+        [TestMethod]
+        public void ReadRatingMetadata()
+        {
+            Assert.AreEqual<MetadataEnums.Rating>(this.jpgPhotoOne.Metadata.Rating, MetadataEnums.Rating.ThreeStar, "Rating");
+
+            Assert.AreEqual<MetadataEnums.Rating>(this.jpgPhotoTwo.Metadata.Rating, MetadataEnums.Rating.Unknown, "Rating");
+        }
+
+        /// <summary>
         /// ReadEnumMetadata
         /// </summary>
         [TestMethod]
         public void ReadEnumMetadata()
         {
-            Assert.AreEqual<PhotoMetadataEnums.MeteringModes>(this.jpgPhotoTwo.Metadata.MeteringMode, PhotoMetadataEnums.MeteringModes.CenterWeightedAverage);
+            Assert.AreEqual<MetadataEnums.MeteringModes>(this.jpgPhotoTwo.Metadata.MeteringMode, MetadataEnums.MeteringModes.CenterWeightedAverage);
         }
         
         /// <summary>
@@ -435,7 +444,7 @@
             Assert.AreEqual<string>(photo.Metadata.CameraModel, "iPhone 3GS");
             Assert.AreEqual<string>(photo.Metadata.Aperture, "f/2.8");
             Assert.AreEqual<DateTime>(photo.Metadata.DateDigitised, new DateTime(2010, 02, 01, 08, 24, 40));
-            Assert.AreEqual<PhotoMetadataEnums.MeteringModes>(photo.Metadata.MeteringMode, PhotoMetadataEnums.MeteringModes.Average);
+            Assert.AreEqual<MetadataEnums.MeteringModes>(photo.Metadata.MeteringMode, MetadataEnums.MeteringModes.Average);
 
             photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhone3GsWithTags);
             photo.ReadMetadata();

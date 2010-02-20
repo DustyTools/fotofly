@@ -22,20 +22,47 @@ namespace Fotofly.MetadataProviders
         { }
 
         /// <summary>
-        /// Rating
+        /// Rating (Range 0-5)
         /// </summary>
-        public string Rating
+        public MetadataEnums.Rating Rating
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(XmpXapQueries.Rating.Query);
+                string rating = this.BitmapMetadata.GetQuery<string>(XmpXapQueries.Rating.Query);
+
+                if (String.IsNullOrEmpty(rating))
+                {
+                    return MetadataEnums.Rating.Unknown;
+                }
+                else if (rating == "1")
+                {
+                    return MetadataEnums.Rating.OneStar;
+                }
+                else if (rating == "2")
+                {
+                    return MetadataEnums.Rating.TwoStar;
+                }
+                else if (rating == "3")
+                {
+                    return MetadataEnums.Rating.ThreeStar;
+                }
+                else if (rating == "4")
+                {
+                    return MetadataEnums.Rating.FourStar;
+                }
+                else if (rating == "5")
+                {
+                    return MetadataEnums.Rating.FiveStar;
+                }
+
+                return MetadataEnums.Rating.Unknown;
             }
 
             set
             {
-                if (this.ValueHasChanged(value, this.Rating))
+                if (!value.Equals(this.Rating))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpXapQueries.Rating.Query, value, string.IsNullOrEmpty(value));
+                    this.BitmapMetadata.SetQueryOrRemove(XmpXapQueries.Rating.Query, ((int)value).ToString(), value == MetadataEnums.Rating.Unknown);
                 }
             }
         }
