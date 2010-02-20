@@ -19,7 +19,8 @@ namespace Fotofly.MetadataProviders
     {
         public ExifProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
-        {}
+        {
+        }
 
         /// <summary>
         /// List of Authors, also known as Photographer

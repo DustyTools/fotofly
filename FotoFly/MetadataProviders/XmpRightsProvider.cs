@@ -18,7 +18,8 @@ namespace Fotofly.MetadataProviders
     {
         public XmpRightsProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
-        {}
+        {
+        }
 
         /// <summary>
         /// Copyright owner of the photo

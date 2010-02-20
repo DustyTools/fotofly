@@ -18,7 +18,8 @@ namespace Fotofly.MetadataProviders
     {
         public IptcProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
-        { }
+        {
+        }
 
         public Address Address
         {

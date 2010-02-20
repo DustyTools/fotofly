@@ -14,18 +14,18 @@ namespace Fotofly.MetadataQueries
         // TIFF Schema
         // - The schema name is http://ns.adobe.com/tiff/1.0/
         // - The preferred schema namespace prefix is tiff
-        private static string schema = @"/xmp/tiff:";
+        public static readonly string QueryPrefix = @"/xmp/tiff:";
 
         // make (LPWSTR) ["http://ns.adobe.com/tiff/1.0/" (LPWSTR)]
-        public static readonly MetdataQuery<string, string> Make = new MetdataQuery<string, string>(XmpTiffQueries.schema, "make");
+        public static readonly MetdataQuery<string, string> Make = new MetdataQuery<string, string>(XmpTiffQueries.QueryPrefix, "make");
 
         // model (LPWSTR) ["http://ns.adobe.com/tiff/1.0/" (LPWSTR)]
-        public static readonly MetdataQuery<string, string> Model = new MetdataQuery<string, string>(XmpTiffQueries.schema, "model");
+        public static readonly MetdataQuery<string, string> Model = new MetdataQuery<string, string>(XmpTiffQueries.QueryPrefix, "model");
 
         // Orientation (LPWSTR) ["http://ns.adobe.com/tiff/1.0/" (LPWSTR)]
-        public static readonly MetdataQuery<string, string> Orientation = new MetdataQuery<string, string>(XmpTiffQueries.schema, "Orientation");
+        public static readonly MetdataQuery<string, string> Orientation = new MetdataQuery<string, string>(XmpTiffQueries.QueryPrefix, "Orientation");
 
         // software (LPWSTR) ["http://ns.adobe.com/tiff/1.0/" (LPWSTR)]
-        public static readonly MetdataQuery<string, string> Software = new MetdataQuery<string, string>(XmpTiffQueries.schema, "software");
+        public static readonly MetdataQuery<string, string> Software = new MetdataQuery<string, string>(XmpTiffQueries.QueryPrefix, "software");
     }
 }

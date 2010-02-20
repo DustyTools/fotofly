@@ -67,7 +67,6 @@ namespace Fotofly
                 photoMetadata.Rating = MetadataEnums.Rating.Unknown;
             }
             
-
             // Retrieve Fotofly Data
             photoMetadata.AddressOfGps = fileMetadata.XmpFotoflyProvider.AddressOfGps;
             photoMetadata.AddressOfGpsLookupDate = fileMetadata.XmpFotoflyProvider.AddressOfGpsLookupDate;

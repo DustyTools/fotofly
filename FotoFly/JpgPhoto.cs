@@ -67,6 +67,18 @@ namespace Fotofly
         }
 
         /// <summary>
+        /// The filename is valid and the file exists
+        /// </summary>
+        public new bool IsFileNameValid
+        {
+            get
+            {
+                // Compliment Base checks with file extension checks
+                return base.IsFileNameValid && this.ImageType == GenericPhotoEnums.ImageTypes.Jpeg;
+            }
+        }
+
+        /// <summary>
         /// Metadata as stored in the file
         /// </summary>
         private PhotoMetadata MetadataInFile
@@ -80,18 +92,6 @@ namespace Fotofly
                 }
 
                 return this.InternalPhotoMetadataInFile;
-            }
-        }
-
-        /// <summary>
-        /// The filename is valid and the file exists
-        /// </summary>
-        public new bool IsFileNameValid
-        {
-            get
-            {
-                // Compliment Base checks with file extension checks
-                return base.IsFileNameValid && this.ImageType == GenericPhotoEnums.ImageTypes.Jpeg;
             }
         }
 

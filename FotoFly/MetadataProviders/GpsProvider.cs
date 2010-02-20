@@ -18,7 +18,8 @@ namespace Fotofly.MetadataProviders
     {
         public GpsProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
-        {}
+        {
+        }
 
         /// <summary>
         /// GpsPosition, encapculates Latitude, Longitude, Altitude, Source, Dimension and SatelliteTime

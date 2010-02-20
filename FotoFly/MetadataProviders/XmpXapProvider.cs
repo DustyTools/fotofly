@@ -19,7 +19,8 @@ namespace Fotofly.MetadataProviders
     {
         public XmpXapProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
-        { }
+        {
+        }
 
         /// <summary>
         /// Rating (Range 0-5)

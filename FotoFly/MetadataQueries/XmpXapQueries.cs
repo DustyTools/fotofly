@@ -14,12 +14,12 @@ namespace Fotofly.MetadataQueries
         // Xap Schema
         // - The schema name is http://ns.adobe.com/xap/1.0/
         // - The preferred schema namespace prefix is xap
-        private static string schema = @"/xmp/http\:\/\/ns.adobe.com\/xap\/1.0\/:";
+        public static readonly string QueryPrefix = @"/xmp/http\:\/\/ns.adobe.com\/xap\/1.0\/:";
 
         // creatortool (LPWSTR) ["http://ns.adobe.com/xap/1.0/" (LPWSTR)]
-        public static readonly MetdataQuery<string, string> CreatorTool = new MetdataQuery<string, string>(XmpXapQueries.schema, "creatortool");
+        public static readonly MetdataQuery<string, string> CreatorTool = new MetdataQuery<string, string>(XmpXapQueries.QueryPrefix, "creatortool");
 
         // Rating (LPWSTR) ["http://ns.adobe.com/xap/1.0/" (LPWSTR)]
-        public static readonly MetdataQuery<string, MetadataEnums.Rating> Rating = new MetdataQuery<string, MetadataEnums.Rating>(XmpXapQueries.schema, "Rating");
+        public static readonly MetdataQuery<string, MetadataEnums.Rating> Rating = new MetdataQuery<string, MetadataEnums.Rating>(XmpXapQueries.QueryPrefix, "Rating");
     }
 }

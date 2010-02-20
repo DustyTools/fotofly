@@ -12,11 +12,11 @@
     using System.Windows.Media.Imaging;
 
     using Fotofly;
+    using Fotofly.BitmapMetadataTools;
     using Fotofly.Geotagging;
+    using Fotofly.MetadataProviders;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Fotofly.BitmapMetadataTools;
-    using Fotofly.MetadataProviders;
 
     [TestClass]
     public class BitmapMetadataUnitTests
@@ -26,6 +26,20 @@
         public BitmapMetadataUnitTests()
         {
         }
+
+        #region Pre & Post Test Pass Code, not currently used
+        // Run code after all tests in a class have run
+        [ClassCleanup()]
+        public static void PostTestPassCleanup()
+        {
+        }
+
+        // Run code before running the first test in the class
+        [ClassInitialize()]
+        public static void PreTestPassInitialize(TestContext testContext)
+        {
+        }
+        #endregion
 
         /// <summary>
         /// Check MetadataDump
@@ -62,6 +76,10 @@
             XmpMicrosoftProvider xmpMicrosoftProvider = new XmpMicrosoftProvider(bitmapMetadata);
 
             Assert.AreEqual<MetadataEnums.Rating>(xmpMicrosoftProvider.Rating, MetadataEnums.Rating.ThreeStar);
+            Assert.AreEqual<string>(xmpMicrosoftProvider.RegionInfo.Regions[0].PersonDisplayName, "Ben Vincent");
+            Assert.AreEqual<string>(xmpMicrosoftProvider.RegionInfo.Regions[0].PersonEmailDigest, "68A7D36853D6CBDEC05624C1516B2533F8F665E0");
+            Assert.AreEqual<string>(xmpMicrosoftProvider.RegionInfo.Regions[0].PersonLiveIdCID, "3058747437326753075");
+            Assert.AreEqual<string>(xmpMicrosoftProvider.RegionInfo.Regions[0].RectangleString, "0.287500, 0.191667, 0.182812, 0.243750");
         }
 
         /// <summary>
@@ -177,7 +195,7 @@
             Assert.AreEqual<GpsCoordinate>(gpsProvider.Latitude, new GpsCoordinate(GpsCoordinate.LatitudeRef.North, 37, 48.41667));
             Assert.AreEqual<GpsCoordinate>(gpsProvider.Longitude, new GpsCoordinate(GpsCoordinate.LongitudeRef.East, 122, 25.38333));
             Assert.AreEqual<string>(gpsProvider.DateTimeStamp.ToString("u"), "2009-10-10 21:46:24Z");
-            Assert.AreEqual<Double>(gpsProvider.Altitude, -17.464);
+            Assert.AreEqual<double>(gpsProvider.Altitude, -17.464);
             Assert.AreEqual<GpsPosition.Dimensions>(gpsProvider.MeasureMode, GpsPosition.Dimensions.ThreeDimensional);
             Assert.AreEqual<string>(gpsProvider.VersionID, "2200");
         }
@@ -218,20 +236,6 @@
             Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLongitude, new GpsCoordinate(GpsCoordinate.LongitudeRef.East, 4, 27, 9));
             Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 14:00:52Z");
         }
-
-        #region Pre & Post Test Pass Code, not currently used
-        // Run code after all tests in a class have run
-        [ClassCleanup()]
-        public static void PostTestPassCleanup()
-        {
-        }
-
-        // Run code before running the first test in the class
-        [ClassInitialize()]
-        public static void PreTestPassInitialize(TestContext testContext)
-        {
-        }
-        #endregion
 
         #region Pre\Post Test Code
         [TestCleanup()]

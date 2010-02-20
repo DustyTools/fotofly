@@ -18,6 +18,11 @@ namespace Fotofly
         private string fileExtension = string.Empty;
         private DateTime fileLastModified = new DateTime();
 
+        public GenericPhotoFile()
+        {
+            this.SecondaryFiles = new List<string>();
+        }
+
         public bool HandleExceptions
         {
             get;
@@ -106,11 +111,6 @@ namespace Fotofly
                         return GenericPhotoEnums.ImageTypes.Unknown;
                 }
             }
-        }
-
-        public GenericPhotoFile()
-        {
-            this.SecondaryFiles = new List<string>();
         }
 
         protected PhotoMetadata InternalPhotoMetadata

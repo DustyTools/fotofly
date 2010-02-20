@@ -12,11 +12,11 @@
     using System.Windows.Media.Imaging;
 
     using Fotofly;
+    using Fotofly.BitmapMetadataTools;
     using Fotofly.Geotagging;
+    using Fotofly.MetadataQueries;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Fotofly.MetadataQueries;
-    using Fotofly.BitmapMetadataTools;
 
     [TestClass]
     public class JpgPhotoUnitTests
@@ -314,7 +314,7 @@
         /// Check Microsoft RegionInfo regions data are read correctly
         /// </summary>
         [TestMethod]
-        public void ReadXmpRegionMetadata()
+        public void ReadImageRegionMetadata()
         {
             if (this.jpgPhotoOne.Metadata.RegionInfo == null)
             {
@@ -335,7 +335,7 @@
         /// Check Microsoft RegionInfo regions are written correctly
         /// </summary>
         [TestMethod]
-        public void WriteXmpRegionMetadata()
+        public void WriteImageRegionMetadata()
         {
             string testValueSuffix = DateTime.Now.ToUniversalTime().ToString();
 

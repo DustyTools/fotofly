@@ -19,7 +19,8 @@ namespace Fotofly.MetadataProviders
     {
         public XmpMicrosoftProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
-        {}
+        {
+        }
 
         /// <summary>
         /// DateAquired, Microsoft Windows 7 Property

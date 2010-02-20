@@ -19,7 +19,8 @@ namespace Fotofly.MetadataProviders
     {
         public XmpTiffProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
-        { }
+        {
+        }
 
         /// <summary>
         /// Make

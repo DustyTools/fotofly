@@ -19,7 +19,8 @@ namespace Fotofly.MetadataProviders
     {
         public XmpCoreProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
-        {}
+        {
+        }
 
         /// <summary>
         /// Subject, not often used by software, Title should be used in most cases

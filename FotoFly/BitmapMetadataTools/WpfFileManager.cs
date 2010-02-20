@@ -25,10 +25,12 @@ namespace Fotofly.BitmapMetadataTools
 
     public class WpfFileManager : IDisposable
     {
-        private bool disposed = false;
-        private Stream sourceStream;
+        public static readonly uint PaddingAmount = 5120;
 
         private static BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
+
+        private bool disposed = false;
+        private Stream sourceStream;
 
         public WpfFileManager(string filename)
         {
@@ -53,8 +55,6 @@ namespace Fotofly.BitmapMetadataTools
                 throw new Exception("No Frames of Metadata in the file:\n\n" + filename);
             }
         }
-
-        public static readonly uint PaddingAmount = 5120;
 
         public BitmapMetadata BitmapMetadata
         {
@@ -277,6 +277,19 @@ namespace Fotofly.BitmapMetadataTools
             File.Delete(tempFile);
         }
 
+        public void Dispose()
+        {
+            if (!this.disposed)
+            {
+                this.Dispose(true);
+            }
+
+            // Take yourself off the Finalization queue 
+            // to prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
         private static void AddMetadataPadding(BitmapMetadata bitmapMetadata)
         {
             // Ensure there's enough EXIF Padding
@@ -331,19 +344,6 @@ namespace Fotofly.BitmapMetadataTools
             {
                 throw new Exception("The current thread is not ApartmentState.STA");
             }
-        }
-
-        public void Dispose()
-        {
-            if (!this.disposed)
-            {
-                this.Dispose(true);
-            }
-
-            // Take yourself off the Finalization queue 
-            // to prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
