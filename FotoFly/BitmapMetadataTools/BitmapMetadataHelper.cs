@@ -94,8 +94,22 @@ namespace Fotofly.BitmapMetadataTools
             }
             else if (typeof(T) == typeof(DateTime))
             {
-                // Parse the object as a DateTime, stripping out the Z
-                DateTime dateTime = DateTime.Parse(((string)unknownObject).TrimEnd('Z'));
+                // Split the string into date & time
+                // Convert T to a space
+                string[] dateTimeString = (unknownObject as string).Replace("T", " ").Split(' ');
+
+                if (dateTimeString.Length != 2)
+                {
+                    return default(T);
+                }
+
+                // Ensure seperate is dash for Date
+                dateTimeString[0] = dateTimeString[0].Replace(":", "-");
+
+                // Strip the Z from the Time
+                dateTimeString[1] = dateTimeString[1].TrimEnd('Z');
+                
+                DateTime dateTime = DateTime.Parse(dateTimeString[0] + " " + dateTimeString[1]);
 
                 // Parse as local time
                 DateTime localDateTime = new DateTime(dateTime.Ticks, DateTimeKind.Local);
