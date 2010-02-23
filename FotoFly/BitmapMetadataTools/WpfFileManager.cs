@@ -68,63 +68,6 @@ namespace Fotofly.BitmapMetadataTools
             set;
         }
 
-        public static BitmapMetadata ReadBitmapMetadata(string file)
-        {
-            // The Metadata we'll be returning
-            BitmapMetadata bitmapMetadata;
-
-            try
-            {
-                // Create a decoder, cache all content on load because we'll close the stream
-                using (Stream sourceStream = File.Open(file, FileMode.Open, FileAccess.Read))
-                {
-                    // Create a Bitmap Decoder, loading all metadata on load
-                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, WpfFileManager.createOptions, BitmapCacheOption.OnLoad);
-
-                    // Check the contents of the file is valid
-                    if (bitmapDecoder.Frames[0] != null && bitmapDecoder.Frames[0].Metadata != null)
-                    {
-                        // Grab the metadata
-                        // If BitmapCacheOption.None then the clone will be empty of any metadata
-                        bitmapMetadata = bitmapDecoder.Frames[0].Metadata.Clone() as BitmapMetadata;
-                    }
-                    else
-                    {
-                        throw new Exception("No Frames of Metadata in the file:\n\n" + file);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Unable to read the file:\n\n", e);
-            }
-
-            return bitmapMetadata;
-        }
-
-        public static BitmapMetadata ReadBitmapMetadata(string file, bool openForEditing)
-        {
-            // The Metadata we'll be returning
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(file);
-
-            // Return the metadata if it's not going to be edited
-            if (!openForEditing)
-            {
-                return WpfFileManager.ReadBitmapMetadata(file);
-            }
-
-            // Validate the threading model
-            WpfFileManager.ValidateThreadingModel();
-
-            // The file must be JPG because the TIFF padding queries are different
-            WpfFileManager.ValidateFileIsJpeg(file);
-
-            // Ensure the metadata has the right padding in place for new data
-            WpfFileManager.AddMetadataPadding(bitmapMetadata);
-
-            return bitmapMetadata;
-        }
-
         public static void WriteBitmapMetadata(string outputFile, BitmapMetadata bitmapMetadata, string sourceFileForImage)
         {
             // Open Source File
@@ -360,5 +303,69 @@ namespace Fotofly.BitmapMetadataTools
 
             this.disposed = true;
         }
+
+        /*    
+        Static Read Methods that don't work regardless of BitmapCacheOptions you use.
+        BitmapCacheOption.OnLoad results in correct Tags containing Unicode
+        BitmapCacheOption.None\Default result in the data not being read into memory so clone fails
+        Need to work out another way of cloning the BitmapMetadata that forces everything to be read
+         
+        public static BitmapMetadata ReadBitmapMetadata(string file)
+        {
+            // The Metadata we'll be returning
+            BitmapMetadata bitmapMetadata;
+
+            try
+            {
+                // Create a decoder, cache all content on load because we'll close the stream
+                using (Stream sourceStream = File.Open(file, FileMode.Open, FileAccess.Read))
+                {
+                    // Create a Bitmap Decoder, loading all metadata on load
+                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, WpfFileManager.createOptions, BitmapCacheOption.OnLoad);
+
+                    // Check the contents of the file is valid
+                    if (bitmapDecoder.Frames[0] != null && bitmapDecoder.Frames[0].Metadata != null)
+                    {
+                        // Grab the metadata
+                        // If BitmapCacheOption.None then the clone will be empty of any metadata
+                        bitmapMetadata = bitmapDecoder.Frames[0].Metadata.Clone() as BitmapMetadata;
+                    }
+                    else
+                    {
+                        throw new Exception("No Frames of Metadata in the file:\n\n" + file);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Unable to read the file:\n\n", e);
+            }
+
+            return bitmapMetadata;
+        }
+
+        public static BitmapMetadata ReadBitmapMetadata(string file, bool openForEditing)
+        {
+            // The Metadata we'll be returning
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(file);
+
+            // Return the metadata if it's not going to be edited
+            if (!openForEditing)
+            {
+                return WpfFileManager.ReadBitmapMetadata(file);
+            }
+
+            // Validate the threading model
+            WpfFileManager.ValidateThreadingModel();
+
+            // The file must be JPG because the TIFF padding queries are different
+            WpfFileManager.ValidateFileIsJpeg(file);
+
+            // Ensure the metadata has the right padding in place for new data
+            WpfFileManager.AddMetadataPadding(bitmapMetadata);
+
+            return bitmapMetadata;
+        }
+        */
     }
 }

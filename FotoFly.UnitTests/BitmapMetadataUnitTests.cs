@@ -17,6 +17,7 @@
     using Fotofly.MetadataProviders;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Fotofly.MetadataQueries;
 
     [TestClass]
     public class BitmapMetadataUnitTests
@@ -51,6 +52,44 @@
 
             // Check total count
             Assert.AreEqual<int>(metadataDump.StringList.Count, 186);
+        }
+
+
+        /// <summary>
+        /// ReadPadding
+        /// </summary>
+        [TestMethod]
+        public void ReadPadding()
+        {
+            // Load a file with no padding set
+            BitmapMetadata noPaddingBitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.NoPadding);
+
+            // Check Padding Amounts
+            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(ExifQueries.Padding.Query).ToString(), "5120");
+            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(XmpCoreQueries.Padding.Query), null);
+            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(IptcQueries.Padding.Query).ToString(), "5120");
+
+            // Load a file with default padding set
+            BitmapMetadata paddingBitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.UnitTest1);
+
+            // Check Padding Amounts
+            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(ExifQueries.Padding.Query), WpfFileManager.PaddingAmount);
+            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(IptcQueries.Padding.Query), WpfFileManager.PaddingAmount);
+
+            // Don't understand why this is 0, it should be 5120
+            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(XmpCoreQueries.Padding.Query), 0);
+        }
+
+        /// <summary>
+        /// Check BitmapMetadata Tags
+        /// </summary>
+        [TestMethod]
+        public void ReadMetadataTags()
+        {
+            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.TagsWithUnicode);
+
+            Assert.AreEqual<string>(bitmapMetadata.Keywords[0], "Geotagging/Info/LatLonFromAddressLookup");
+            Assert.AreEqual<string>(bitmapMetadata.Keywords[1], "Address/France/Île-de-France/Paris");
         }
 
         /// <summary>

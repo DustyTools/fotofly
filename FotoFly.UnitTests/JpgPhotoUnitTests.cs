@@ -102,6 +102,8 @@
             this.jpgPhotoTwo.Metadata.CreationSoftware = testString;
             this.jpgPhotoTwo.Metadata.Title = testString;
             this.jpgPhotoTwo.Metadata.AddressOfGpsSource = testString;
+            this.jpgPhotoTwo.Metadata.Tags = new TagList();
+            this.jpgPhotoTwo.Metadata.Tags.Add(new Tag("Test Tag Î"));
 
             // Write dates
             this.jpgPhotoTwo.Metadata.DateAquired = testDate;
@@ -142,6 +144,7 @@
             Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.DateTaken, testDate);
             Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.UtcDate, testDate);
             Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.AddressOfGpsLookupDate, testDate);
+            Assert.AreEqual<Tag>(this.jpgPhotoOne.Metadata.Tags.First(), new Tag("Test Tag Î"));
 
             if (new FileInfo(this.jpgPhotoTwo.FileFullName).Length > new FileInfo(this.jpgPhotoX.FileFullName).Length)
             {
@@ -244,6 +247,7 @@
             StringAssert.Matches(this.jpgPhotoOne.Metadata.ShutterSpeed, new Regex("1/1000 sec."));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.Subject, new Regex(@"Test Caption\\Title\\Subject"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.Title, new Regex(@"Test Caption\\Title\\Subject"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.Tags.Last().Name, new Regex(@"Test Tag Î"));
         }
 
         /// <summary>
@@ -377,31 +381,6 @@
             // +1.3 step
             jpgPhoto = new JpgPhoto(this.samplePhotosFolder + TestPhotos.ExposureBiasPlus13);
             StringAssert.Matches(jpgPhoto.Metadata.ExposureBias, new Regex(Regex.Escape("+1.3 step")));
-        }
-
-        /// <summary>
-        /// ReadPadding
-        /// </summary>
-        [TestMethod]
-        public void ReadPadding()
-        {
-            // Load a file with no padding set
-            BitmapMetadata noPaddingBitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.NoPadding);
-
-            // Check Padding Amounts
-            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(ExifQueries.Padding.Query).ToString(), "5120");
-            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(XmpCoreQueries.Padding.Query), null);
-            Assert.AreEqual<object>(noPaddingBitmapMetadata.GetQuery(IptcQueries.Padding.Query).ToString(), "5120");
-
-            // Load a file with default padding set
-            BitmapMetadata paddingBitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.samplePhotosFolder + TestPhotos.UnitTest1);
-
-            // Check Padding Amounts
-            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(ExifQueries.Padding.Query), WpfFileManager.PaddingAmount);
-            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(IptcQueries.Padding.Query), WpfFileManager.PaddingAmount);
-
-            // Don't understand why this is 0, it should be 5120
-            Assert.AreEqual<uint>(paddingBitmapMetadata.GetQuery<uint>(XmpCoreQueries.Padding.Query), 0);
         }
 
         /// <summary>
