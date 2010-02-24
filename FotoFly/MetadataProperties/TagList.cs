@@ -31,6 +31,29 @@ namespace Fotofly
             }
         }
 
+        public TagList(string[] stringArray)
+        {
+            this.tags = new List<Tag>();
+
+            if (stringArray != null)
+            {
+                foreach (string text in stringArray)
+                {
+                    this.Add(Regex.Replace(text.TrimEnd('/'), "//", "/"));
+                }
+            }
+        }
+
+        public TagList(string tagString)
+        {
+            this.tags = new List<Tag>();
+
+            if (!string.IsNullOrEmpty(tagString))
+            {
+                this.Add(Regex.Replace(tagString.TrimEnd('/'), "//", "/"));
+            }
+        }
+
         public TagList(ReadOnlyCollection<string> readOnlyCollection)
         {
             this.tags = new List<Tag>();
@@ -225,6 +248,18 @@ namespace Fotofly
             }
 
             return new ReadOnlyCollection<string>(tagsAsStrings);
+        }
+
+        public string[] ToStringArray()
+        {
+            string[] stringArray = new string[this.tags.Count];
+
+            for(int i = 0; i < this.tags.Count ; i ++)
+            {
+                stringArray[i] = this.tags[i].FullName;
+            }
+
+            return stringArray;
         }
 
         public override string ToString()

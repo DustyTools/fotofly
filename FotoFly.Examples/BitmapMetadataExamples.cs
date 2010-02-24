@@ -16,23 +16,25 @@
     {
         public static void ReadMetadata(string inputFile)
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile);
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile))
+            {
+                FileMetadata wpfMetadata = new FileMetadata(wpfFileManager.BitmapMetadata);
 
-            FileMetadata wpfMetadata = new FileMetadata(bitmapMetadata);
-
-            Debug.WriteLine(wpfMetadata.ExifProvider.Aperture);
+                Debug.WriteLine(wpfMetadata.ExifProvider.Aperture);
+            }
         }
 
         public static void WriteMetadata(string inputFile)
         {
             File.Copy(inputFile, "BitmapMetadataExamples.WriteMetadata.jpg", true);
 
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile, true))
+            {
+                FileMetadata wpfMetadata = new FileMetadata(wpfFileManager.BitmapMetadata);
+                wpfMetadata.IptcProvider.Country = "United States";
 
-            FileMetadata wpfMetadata = new FileMetadata(bitmapMetadata);
-            wpfMetadata.IptcProvider.Country = "United States";
-
-            WpfFileManager.WriteBitmapMetadata("BitmapMetadataExamples.WriteMetadata.jpg", bitmapMetadata);
+                wpfFileManager.WriteMetadata();
+            }
         }
 
         public static void ReadIPTCAddres(string inputFile)
@@ -45,55 +47,58 @@
             // iptcSubLocation = "/app13/irb/8bimiptc/iptc/Sub-location";
             string iptcCity = @"/app13/irb/8bimiptc/iptc/City";
 
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
-
-            // Check there's city data
-            if (bitmapMetadata.ContainsQuery(iptcCity))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile))
             {
-                // Dump it to the console
-                Debug.WriteLine(bitmapMetadata.GetQuery(iptcCity));
+                // Check there's city data
+                if (wpfFileManager.BitmapMetadata.ContainsQuery(iptcCity))
+                {
+                    // Dump it to the console
+                    Debug.WriteLine(wpfFileManager.BitmapMetadata.GetQuery(iptcCity));
+                }
             }
         }
 
         public static void ReadGpsAltitude(string inputFile)
         {
             // Grab copy of BitmapMetadata
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile))
+            {
+                // Grab the GpsAltitudeRef
+                string altitudeRef = wpfFileManager.BitmapMetadata.GetQuery("/app1/ifd/Gps/subifd:{uint=5}").ToString();
 
-            // Grab the GpsAltitudeRef
-            string altitudeRef = bitmapMetadata.GetQuery("/app1/ifd/Gps/subifd:{uint=5}").ToString();
+                // Grab GpsAltitude as a ulong
+                ulong rational = (ulong)wpfFileManager.BitmapMetadata.GetQuery("/app1/ifd/Gps/subifd:{uint=6}");
 
-            // Grab GpsAltitude as a ulong
-            ulong rational = (ulong)bitmapMetadata.GetQuery("/app1/ifd/Gps/subifd:{uint=6}");
+                // Now shift & mask out the upper and lower parts to get the numerator and the denominator
+                uint numerator = (uint)(rational & 0xFFFFFFFFL);
+                uint denominator = (uint)((rational & 0xFFFFFFFF00000000L) >> 32);
 
-            // Now shift & mask out the upper and lower parts to get the numerator and the denominator
-            uint numerator = (uint)(rational & 0xFFFFFFFFL);
-            uint denominator = (uint)((rational & 0xFFFFFFFF00000000L) >> 32);
-
-            // And finally turn it into a double
-            double altitude = Math.Round(Convert.ToDouble(numerator) / Convert.ToDouble(denominator), 3);
+                // And finally turn it into a double
+                double altitude = Math.Round(Convert.ToDouble(numerator) / Convert.ToDouble(denominator), 3);
+            }
         }
 
         public static void ReadGpsLatitude(string inputFile)
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
-
-            // Grab the GpsLatitudeRef
-            // 'N' indicates north latitude, and 'S' is south latitude
-            string latitudeRef = bitmapMetadata.GetQuery("/app1/ifd/Gps/subifd:{uint=1}").ToString();
-
-            // Grab GpsLatitude as a ulong array
-            ulong[] rational = (ulong[])bitmapMetadata.GetQuery("/app1/ifd/Gps/subifd:{uint=2}");
-            double[] latitude = new double[3];
-
-            // Read and convert each of the rationals into a double
-            for (int i = 0; i < 3; i++)
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile))
             {
-                // Now shift & mask out the upper and lower parts to get the numerator and the denominator
-                uint numerator = (uint)(rational[i] & 0xFFFFFFFFL);
-                uint denominator = (uint)((rational[i] & 0xFFFFFFFF00000000L) >> 32);
+                // Grab the GpsLatitudeRef
+                // 'N' indicates north latitude, and 'S' is south latitude
+                string latitudeRef = wpfFileManager.BitmapMetadata.GetQuery("/app1/ifd/Gps/subifd:{uint=1}").ToString();
 
-                latitude[i] = Math.Round(Convert.ToDouble(numerator) / Convert.ToDouble(denominator), 3);
+                // Grab GpsLatitude as a ulong array
+                ulong[] rational = (ulong[])wpfFileManager.BitmapMetadata.GetQuery("/app1/ifd/Gps/subifd:{uint=2}");
+                double[] latitude = new double[3];
+
+                // Read and convert each of the rationals into a double
+                for (int i = 0; i < 3; i++)
+                {
+                    // Now shift & mask out the upper and lower parts to get the numerator and the denominator
+                    uint numerator = (uint)(rational[i] & 0xFFFFFFFFL);
+                    uint denominator = (uint)((rational[i] & 0xFFFFFFFF00000000L) >> 32);
+
+                    latitude[i] = Math.Round(Convert.ToDouble(numerator) / Convert.ToDouble(denominator), 3);
+                }
             }
         }
 
@@ -108,16 +113,16 @@
             string iptcCity = @"/app13/irb/8bimiptc/iptc/City";
             string iptcSubLocation = @"/app13/irb/8bimiptc/iptc/Sub-location";
 
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile, true))
+            {
+                // Use SetQuery to store the IPTC Address fields
+                wpfFileManager.BitmapMetadata.SetQuery(iptcCity, "IPTC City");
+                wpfFileManager.BitmapMetadata.SetQuery(iptcCountry, "IPTC Country");
+                wpfFileManager.BitmapMetadata.SetQuery(iptcRegion, "IPTC Region");
+                wpfFileManager.BitmapMetadata.SetQuery(iptcSubLocation, "IPTC SubLocation");
 
-            // Use SetQuery to store the IPTC Address fields
-            bitmapMetadata.SetQuery(iptcCity, "IPTC City");
-            bitmapMetadata.SetQuery(iptcCountry, "IPTC Country");
-            bitmapMetadata.SetQuery(iptcRegion, "IPTC Region");
-            bitmapMetadata.SetQuery(iptcSubLocation, "IPTC SubLocation");
-
-            // Save the new file
-            WpfFileManager.WriteBitmapMetadata("BitmapMetadataExamples.WriteIPTCAddres.jpg", bitmapMetadata);
+                wpfFileManager.WriteMetadata();
+            }
         }
 
         public static void RemoveIPTCAddres(string inputFile)
@@ -131,52 +136,53 @@
             string iptcCity = @"/app13/irb/8bimiptc/iptc/City";
             string iptcSubLocation = @"/app13/irb/8bimiptc/iptc/Sub-location";
 
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile, true))
+            {
+                // Remove IPTC Address fields
+                wpfFileManager.BitmapMetadata.RemoveQuery(iptcCity);
+                wpfFileManager.BitmapMetadata.RemoveQuery(iptcCountry);
+                wpfFileManager.BitmapMetadata.RemoveQuery(iptcRegion);
+                wpfFileManager.BitmapMetadata.RemoveQuery(iptcSubLocation);
 
-            // Remove IPTC Address fields
-            bitmapMetadata.RemoveQuery(iptcCity);
-            bitmapMetadata.RemoveQuery(iptcCountry);
-            bitmapMetadata.RemoveQuery(iptcRegion);
-            bitmapMetadata.RemoveQuery(iptcSubLocation);
-
-            // Save the new file
-            WpfFileManager.WriteBitmapMetadata("BitmapMetadataExamples.RemoveIPTCAddres.jpg", bitmapMetadata);
+                wpfFileManager.WriteMetadata();
+            }
         }
 
         public static void ReadWLPGRegions(string inputFile)
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
-
-            // Declare a bunch of XMP paths (see my last blog for details)
-            string microsoftRegions = @"/xmp/MP:RegionInfo/MPRI:Regions";
-            string microsoftPersonDisplayName = @"/MPReg:PersonDisplayName";
-            string microsoftRectangle = @"/MPReg:Rectangle";
-
-            // Check there is a RegionInfo
-            if (bitmapMetadata.ContainsQuery(microsoftRegions))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile))
             {
-                BitmapMetadata regionsMetadata = bitmapMetadata.GetQuery(microsoftRegions) as BitmapMetadata;
+                // Declare a bunch of XMP paths (see my last blog for details)
+                string microsoftRegions = @"/xmp/MP:RegionInfo/MPRI:Regions";
+                string microsoftPersonDisplayName = @"/MPReg:PersonDisplayName";
+                string microsoftRectangle = @"/MPReg:Rectangle";
 
-                // Loop through each Region
-                foreach (string regionQuery in regionsMetadata)
+                // Check there is a RegionInfo
+                if (wpfFileManager.BitmapMetadata.ContainsQuery(microsoftRegions))
                 {
-                    string regionFullQuery = microsoftRegions + regionQuery;
+                    BitmapMetadata regionsMetadata = wpfFileManager.BitmapMetadata.GetQuery(microsoftRegions) as BitmapMetadata;
 
-                    // Query for all the data for this region
-                    BitmapMetadata regionMetadata = bitmapMetadata.GetQuery(regionFullQuery) as BitmapMetadata;
-
-                    if (regionMetadata != null)
+                    // Loop through each Region
+                    foreach (string regionQuery in regionsMetadata)
                     {
-                        if (regionMetadata.ContainsQuery(microsoftPersonDisplayName))
-                        {
-                            Console.WriteLine("PersonDisplayName:\t"
-                               + regionMetadata.GetQuery(XmpMicrosoftQueries.RegionPersonDisplayName.Query).ToString());
-                        }
+                        string regionFullQuery = microsoftRegions + regionQuery;
 
-                        if (regionMetadata.ContainsQuery(microsoftRectangle))
+                        // Query for all the data for this region
+                        BitmapMetadata regionMetadata = wpfFileManager.BitmapMetadata.GetQuery(regionFullQuery) as BitmapMetadata;
+
+                        if (regionMetadata != null)
                         {
-                            Console.WriteLine("Rectangle:\t\t"
-                               + regionMetadata.GetQuery(XmpMicrosoftQueries.RegionRectangle.Query).ToString());
+                            if (regionMetadata.ContainsQuery(microsoftPersonDisplayName))
+                            {
+                                Console.WriteLine("PersonDisplayName:\t"
+                                   + regionMetadata.GetQuery(XmpMicrosoftQueries.RegionPersonDisplayName.Query).ToString());
+                            }
+
+                            if (regionMetadata.ContainsQuery(microsoftRectangle))
+                            {
+                                Console.WriteLine("Rectangle:\t\t"
+                                   + regionMetadata.GetQuery(XmpMicrosoftQueries.RegionRectangle.Query).ToString());
+                            }
                         }
                     }
                 }
@@ -185,71 +191,77 @@
 
         public static void CreateWLPGRegions(string inputFile)
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile, true))
+            {
+                // Declare a bunch of XMP paths (see my last blog for details)
+                string microsoftRegionInfo = @"/xmp/MP:RegionInfo";
+                string microsoftRegions = @"/xmp/MP:RegionInfo/MPRI:Regions";
+                string microsoftPersonDisplayName = @"/MPReg:PersonDisplayName";
 
-            // Declare a bunch of XMP paths (see my last blog for details)
-            string microsoftRegionInfo = @"/xmp/MP:RegionInfo";
-            string microsoftRegions = @"/xmp/MP:RegionInfo/MPRI:Regions";
-            string microsoftPersonDisplayName = @"/MPReg:PersonDisplayName";
+                wpfFileManager.BitmapMetadata.SetQuery(microsoftRegionInfo, new BitmapMetadata("xmpstruct"));
 
-            bitmapMetadata.SetQuery(microsoftRegionInfo, new BitmapMetadata("xmpstruct"));
+                wpfFileManager.BitmapMetadata.SetQuery(microsoftRegions, new BitmapMetadata("xmpbag"));
 
-            bitmapMetadata.SetQuery(microsoftRegions, new BitmapMetadata("xmpbag"));
+                wpfFileManager.BitmapMetadata.SetQuery(microsoftRegions + "/{ulong=0}", new BitmapMetadata("xmpstruct"));
 
-            bitmapMetadata.SetQuery(microsoftRegions + "/{ulong=0}", new BitmapMetadata("xmpstruct"));
+                wpfFileManager.BitmapMetadata.SetQuery(microsoftRegions + "/{ulong=0}" + microsoftPersonDisplayName, "Test " + DateTime.Now.ToString());
 
-            bitmapMetadata.SetQuery(microsoftRegions + "/{ulong=0}" + microsoftPersonDisplayName, "Test " + DateTime.Now.ToString());
+                wpfFileManager.BitmapMetadata.SetQuery(microsoftRegions + "/{ulong=1}", new BitmapMetadata("xmpstruct"));
 
-            bitmapMetadata.SetQuery(microsoftRegions + "/{ulong=1}", new BitmapMetadata("xmpstruct"));
+                wpfFileManager.BitmapMetadata.SetQuery(microsoftRegions + "/{ulong=1}" + microsoftPersonDisplayName, "Test " + DateTime.Now.ToString());
 
-            bitmapMetadata.SetQuery(microsoftRegions + "/{ulong=1}" + microsoftPersonDisplayName, "Test " + DateTime.Now.ToString());
+                wpfFileManager.WriteMetadata();
+            }
         }
 
         public static void UpdateWLPGRegions(string inputFile)
         {
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(inputFile, true);
-
-            // Declare a bunch of XMP paths (see my last blog for details)
-            string microsoftRegions = @"/xmp/MP:RegionInfo/MPRI:Regions";
-            string microsoftPersonDisplayName = @"/MPReg:PersonDisplayName";
-            string microsoftRectangle = @"/MPReg:Rectangle";
-
-            // Check the sourceMetadata contains a Region
-            if (bitmapMetadata.ContainsQuery(microsoftRegions))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile, true))
             {
-                // Get Region Data as BitmapMetadata
-                BitmapMetadata regionsMetadata = bitmapMetadata.GetQuery(microsoftRegions) as BitmapMetadata;
+                // Declare a bunch of XMP paths (see my last blog for details)
+                string microsoftRegions = @"/xmp/MP:RegionInfo/MPRI:Regions";
+                string microsoftPersonDisplayName = @"/MPReg:PersonDisplayName";
+                string microsoftRectangle = @"/MPReg:Rectangle";
 
-                // Loop through each Region
-                foreach (string regionQuery in regionsMetadata)
+                // Check the sourceMetadata contains a Region
+                if (wpfFileManager.BitmapMetadata.ContainsQuery(microsoftRegions))
                 {
-                    string regionFullQuery = microsoftRegions + regionQuery;
+                    // Get Region Data as BitmapMetadata
+                    BitmapMetadata regionsMetadata = wpfFileManager.BitmapMetadata.GetQuery(microsoftRegions) as BitmapMetadata;
 
-                    // Grab Region metadata as BitmapMetadata
-                    BitmapMetadata regionMetadata = bitmapMetadata.GetQuery(regionFullQuery) as BitmapMetadata;
-
-                    // Change Rectangle & DisplayName to test values
-                    if (regionMetadata != null)
+                    // Loop through each Region
+                    foreach (string regionQuery in regionsMetadata)
                     {
-                        // If the region has a DisplayName, change the value
-                        if (regionMetadata.ContainsQuery(microsoftPersonDisplayName))
+                        string regionFullQuery = microsoftRegions + regionQuery;
+
+                        // Grab Region metadata as BitmapMetadata
+                        BitmapMetadata regionMetadata = wpfFileManager.BitmapMetadata.GetQuery(regionFullQuery) as BitmapMetadata;
+
+                        // Change Rectangle & DisplayName to test values
+                        if (regionMetadata != null)
                         {
-                            regionMetadata.SetQuery(XmpMicrosoftQueries.RegionPersonDisplayName.Query, "test");
+                            // If the region has a DisplayName, change the value
+                            if (regionMetadata.ContainsQuery(microsoftPersonDisplayName))
+                            {
+                                regionMetadata.SetQuery(XmpMicrosoftQueries.RegionPersonDisplayName.Query, "test");
+                            }
+
+                            // If the region has a DisplayName, change the value
+                            if (regionMetadata.ContainsQuery(microsoftRectangle))
+                            {
+                                regionMetadata.SetQuery(XmpMicrosoftQueries.RegionRectangle.Query, "test");
+                            }
                         }
 
-                        // If the region has a DisplayName, change the value
-                        if (regionMetadata.ContainsQuery(microsoftRectangle))
-                        {
-                            regionMetadata.SetQuery(XmpMicrosoftQueries.RegionRectangle.Query, "test");
-                        }
+                        // Write the Region back to Regions
+                        wpfFileManager.BitmapMetadata.SetQuery(regionFullQuery, regionMetadata);
                     }
 
-                    // Write the Region back to Regions
-                    bitmapMetadata.SetQuery(regionFullQuery, regionMetadata);
+                    // Write the Regions back to Root Metadata
+                    wpfFileManager.BitmapMetadata.SetQuery(microsoftRegions, regionsMetadata);
                 }
 
-                // Write the Regions back to Root Metadata
-                bitmapMetadata.SetQuery(microsoftRegions, regionsMetadata);
+                wpfFileManager.WriteMetadata();
             }
         }
     }

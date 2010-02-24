@@ -31,41 +31,37 @@ namespace Fotofly.BitmapMetadataTools
 
         private bool disposed = false;
         private Stream sourceStream;
+        private BitmapMetadata bitmapMetadata;
+        private BitmapDecoder bitmapDecoder;
+        private string sourceFilename;
+        private string destinationfilename;
+        private bool openForEditing;
 
         public WpfFileManager(string filename)
         {
-            // Check file exists and is a valid jpg\jpeg file
-            WpfFileManager.ValidateFileIsJpeg(filename);
+            // Read metadata
+            this.ReadMetadata(filename, false);
+        }
 
-            // Create a decoder, cache all content on load because we'll close the stream
-            this.sourceStream = File.Open(filename, FileMode.Open, FileAccess.Read);
-
-            // Create a Bitmap Decoder, loading all metadata on load
-            this.BitmapDecoder = BitmapDecoder.Create(this.sourceStream, WpfFileManager.createOptions, BitmapCacheOption.None);
-
-            // Check the contents of the file is valid
-            if (this.BitmapDecoder.Frames[0] != null && this.BitmapDecoder.Frames[0].Metadata != null)
-            {
-                // Grab the metadata
-                // If BitmapCacheOption.None then the clone will be empty of any metadata
-                this.BitmapMetadata = this.BitmapDecoder.Frames[0].Metadata as BitmapMetadata;
-            }
-            else
-            {
-                throw new Exception("No Frames of Metadata in the file:\n\n" + filename);
-            }
+        public WpfFileManager(string filename, bool openForEditing)
+        {
+            this.ReadMetadata(filename, openForEditing);
         }
 
         public BitmapMetadata BitmapMetadata
         {
-            get;
-            set;
+            get
+            {
+                return this.bitmapMetadata;
+            }
         }
 
         public BitmapDecoder BitmapDecoder
         {
-            get;
-            set;
+            get
+            {
+                return this.bitmapDecoder;
+            }
         }
 
         public static void WriteBitmapMetadata(string outputFile, BitmapMetadata bitmapMetadata, string sourceFileForImage)
@@ -101,7 +97,7 @@ namespace Fotofly.BitmapMetadataTools
             WpfFileManager.ValidateThreadingModel();
 
             // Source file is is used as source of the the image & thumbnail for the new file
-            string sourceFile = outputFile.ToLower().Replace(".jpg", ".temp");
+            string sourceFile = outputFile.ToLower().Replace(".jpg", ".fotoflytmp");
 
             // Try saving the file as needed
             bool fileSaved = false;
@@ -178,7 +174,7 @@ namespace Fotofly.BitmapMetadataTools
             }
 
             // Create backup of the file so you can read and write to different files
-            string tempFile = destinationFile + ".tmp";
+            string tempFile = destinationFile + ".fotoflytemp";
             File.Copy(destinationFile, tempFile, true);
 
             // Open the source file
@@ -233,24 +229,98 @@ namespace Fotofly.BitmapMetadataTools
             GC.SuppressFinalize(this);
         }
 
-        private static void AddMetadataPadding(BitmapMetadata bitmapMetadata)
+        public void WriteMetadata()
+        {
+            // Create a new Jpg encoder
+            JpegBitmapEncoder jpegBitmapEncoder = new JpegBitmapEncoder();
+            jpegBitmapEncoder.Frames.Add(BitmapFrame.Create(this.bitmapDecoder.Frames[0], this.bitmapDecoder.Frames[0].Thumbnail, this.bitmapMetadata, this.bitmapDecoder.Frames[0].ColorContexts));
+
+            // Save the output file
+            using (Stream outputStream = File.Open(this.destinationfilename, FileMode.Create, FileAccess.ReadWrite))
+            {
+                jpegBitmapEncoder.Save(outputStream);
+            }
+        }
+
+        private void ReadMetadata(string filename, bool openForEditing)
+        {
+            // Save filename
+            this.sourceFilename = filename;
+            this.destinationfilename = filename;
+            this.openForEditing = openForEditing;
+
+            // If open for editing, do additional checks
+            if (openForEditing)
+            {
+                // Validate the threading model
+                WpfFileManager.ValidateThreadingModel();
+
+                // The file must be JPG because the TIFF padding queries are different
+                WpfFileManager.ValidateFileIsJpeg(filename);
+
+                // Create backup of the file so you can read and write to different files
+                string tempFile = filename + ".fotoflytemp";
+                File.Copy(filename, tempFile, true);
+
+                // Replace the filename with the temp filename
+                this.sourceFilename = tempFile;
+            }
+
+            this.ReadMetadata();
+
+            if (openForEditing)
+            {
+                // Ensure the metadata has the right padding in place for new data
+                this.AddMetadataPadding();
+            }
+        }
+
+        private void ReadMetadata()
+        {
+            // Create a decoder, cache all content on load because we'll close the stream
+            this.sourceStream = File.Open(this.sourceFilename, FileMode.Open, FileAccess.Read);
+
+            // Create a Bitmap Decoder
+            this.bitmapDecoder = BitmapDecoder.Create(this.sourceStream, WpfFileManager.createOptions, BitmapCacheOption.None);
+
+            // Check the contents of the file is valid
+            if (this.BitmapDecoder.Frames[0] != null && this.BitmapDecoder.Frames[0].Metadata != null)
+            {
+                // Grab the metadata
+                if (this.openForEditing)
+                {
+                    // Clone so we have an unfrozen object
+                    this.bitmapMetadata = this.BitmapDecoder.Frames[0].Metadata.Clone() as BitmapMetadata;
+                }
+                else
+                {
+                    this.bitmapMetadata = this.BitmapDecoder.Frames[0].Metadata as BitmapMetadata;
+                }
+            }
+            else
+            {
+                throw new Exception("No Frames of Metadata in the file:\n\n" + sourceFilename);
+            }
+        }
+
+        private void AddMetadataPadding()
         {
             // Ensure there's enough EXIF Padding
-            if (bitmapMetadata.GetQuery<UInt32>(ExifQueries.Padding.Query) < WpfFileManager.PaddingAmount)
+            if (this.BitmapMetadata.GetQuery<UInt32>(ExifQueries.Padding.Query) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(ExifQueries.Padding.Query, WpfFileManager.PaddingAmount);
+                this.BitmapMetadata.SetQuery(ExifQueries.Padding.Query, WpfFileManager.PaddingAmount);
             }
 
             // Ensure there's enough XMP Padding
-            if (bitmapMetadata.GetQuery<UInt32>(XmpCoreQueries.Padding.Query) < WpfFileManager.PaddingAmount)
+            if (this.BitmapMetadata.GetQuery<UInt32>(XmpCoreQueries.Padding.Query) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(XmpCoreQueries.Padding.Query, WpfFileManager.PaddingAmount);
+                this.BitmapMetadata.SetQuery(XmpCoreQueries.Padding.Query, WpfFileManager.PaddingAmount);
             }
 
             // Ensure there's enough IPTC Padding
-            if (bitmapMetadata.GetQuery<UInt32>(IptcQueries.Padding.Query) < WpfFileManager.PaddingAmount)
+            if (this.BitmapMetadata.GetQuery<UInt32>(IptcQueries.Padding.Query) < WpfFileManager.PaddingAmount)
             {
-                bitmapMetadata.SetQuery(IptcQueries.Padding.Query, WpfFileManager.PaddingAmount);
+                this.BitmapMetadata.SetQuery(IptcQueries.Padding.Query, WpfFileManager.PaddingAmount);
             }
         }
 
@@ -276,13 +346,14 @@ namespace Fotofly.BitmapMetadataTools
 
         private static void ValidateThreadingModel()
         {
-            // TODO: Don't need this check for Win 7 or Vista with the Platform Update Package (KB971644
+            // TODO: Don't need this check for Win 7 or Vista with the Platform Update Package (KB971644)
+            // Exception if the thread apartment state is not valid
+            // https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2192976&SiteID=1
+
             // Try changing to STA
             Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
             Thread.CurrentThread.IsBackground = false;
 
-            // Exception if the thread apartment state is not valid
-            // https://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=2192976&SiteID=1
             if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
             {
                 throw new Exception("The current thread is not ApartmentState.STA");
@@ -296,21 +367,28 @@ namespace Fotofly.BitmapMetadataTools
             GC.WaitForPendingFinalizers();
 
             // Dispose of everything
-            this.BitmapMetadata = null;
-            this.BitmapDecoder = null;
+            this.bitmapMetadata = null;
+            this.bitmapDecoder = null;
             this.sourceStream.Close();
             this.sourceStream.Dispose();
+
+            // If open for editing, delete the temporary file
+            if (this.openForEditing && File.Exists(this.sourceFilename))
+            {
+                File.Delete(this.sourceFilename);
+            }
 
             this.disposed = true;
         }
 
-        /*    
-        Static Read Methods that don't work regardless of BitmapCacheOptions you use.
-        BitmapCacheOption.OnLoad results in correct Tags containing Unicode
-        BitmapCacheOption.None\Default result in the data not being read into memory so clone fails
-        Need to work out another way of cloning the BitmapMetadata that forces everything to be read
-         
+        /* Broken Static Read methods
+         * A bug in WIC stops these from working because non-ASCII characters get manggled
         public static BitmapMetadata ReadBitmapMetadata(string file)
+        {
+            return WpfFileManager.ReadBitmapMetadata(file, false);
+        }
+
+        public static BitmapMetadata ReadBitmapMetadata(string file, bool openForEditing)
         {
             // The Metadata we'll be returning
             BitmapMetadata bitmapMetadata;
@@ -321,14 +399,15 @@ namespace Fotofly.BitmapMetadataTools
                 using (Stream sourceStream = File.Open(file, FileMode.Open, FileAccess.Read))
                 {
                     // Create a Bitmap Decoder, loading all metadata on load
-                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, WpfFileManager.createOptions, BitmapCacheOption.OnLoad);
+                    // This one is used to load the vast majority of data
+                    BitmapDecoder bitmapDecoder = BitmapDecoder.Create(sourceStream, WpfFileManager.createOptions, BitmapCacheOption.OnDemand);
 
                     // Check the contents of the file is valid
                     if (bitmapDecoder.Frames[0] != null && bitmapDecoder.Frames[0].Metadata != null)
                     {
                         // Grab the metadata
                         // If BitmapCacheOption.None then the clone will be empty of any metadata
-                        bitmapMetadata = bitmapDecoder.Frames[0].Metadata.Clone() as BitmapMetadata;
+                        bitmapMetadata = bitmapDecoder.Frames[0].Metadata.CloneCurrentValue() as BitmapMetadata;
                     }
                     else
                     {
@@ -341,18 +420,10 @@ namespace Fotofly.BitmapMetadataTools
                 throw new Exception("Unable to read the file:\n\n", e);
             }
 
-            return bitmapMetadata;
-        }
-
-        public static BitmapMetadata ReadBitmapMetadata(string file, bool openForEditing)
-        {
-            // The Metadata we'll be returning
-            BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(file);
-
             // Return the metadata if it's not going to be edited
             if (!openForEditing)
             {
-                return WpfFileManager.ReadBitmapMetadata(file);
+                return bitmapMetadata;
             }
 
             // Validate the threading model

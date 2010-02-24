@@ -44,7 +44,7 @@ namespace Fotofly.MetadataQueries
         public static readonly MetdataQuery<string, string> Byline = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/By-line");
         public static readonly MetdataQuery<string, string> Caption = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Caption");
 
-        public static readonly MetdataQuery<string[], TagList> Keywords = new MetdataQuery<string[], TagList>(@"/app13/irb/8bimiptc/iptc/Caption");
+        public static readonly MetdataQuery<string[], TagList> Keywords = new MetdataQuery<string[], TagList>(@"/app13/irb/8bimiptc/iptc/Keywords");
 
         public static readonly MetdataQuery<string, string> DateCreated = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Date Created");
         public static readonly MetdataQuery<string, string> TimeCreated = new MetdataQuery<string, string>(@"/app13/irb/8bimiptc/iptc/Time Created");

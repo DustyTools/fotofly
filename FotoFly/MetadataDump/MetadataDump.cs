@@ -62,11 +62,17 @@ namespace Fotofly
             }
         }
 
-        private void GeneratePropertyList()
+        public void GeneratePropertyList()
         {
             this.propertyList = new List<MetadataProperty>();
 
             this.propertyList.AddRange(this.GeneratePropertyList(this.bitmapMetadata, string.Empty));
+        }
+
+        public void GenerateStringList()
+        {
+            this.stringList = new List<string>();
+            this.stringList.AddRange(this.GenerateStringList(this.PropertyList));
         }
 
         private List<MetadataProperty> GeneratePropertyList(BitmapMetadata metadata, string rootQuery)
@@ -105,12 +111,6 @@ namespace Fotofly
             }
 
             return returnValue;
-        }
-
-        private void GenerateStringList()
-        {
-            this.stringList = new List<string>();
-            this.stringList.AddRange(this.GenerateStringList(this.PropertyList));
         }
 
         private List<string> GenerateStringList(List<MetadataProperty> properties)

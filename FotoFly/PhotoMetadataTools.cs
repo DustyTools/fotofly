@@ -68,6 +68,7 @@ namespace Fotofly
             }
             
             // Retrieve Fotofly Data
+            photoMetadata.AccuracyOfGps = fileMetadata.XmpFotoflyProvider.AccuracyOfGps;
             photoMetadata.AddressOfGps = fileMetadata.XmpFotoflyProvider.AddressOfGps;
             photoMetadata.AddressOfGpsLookupDate = fileMetadata.XmpFotoflyProvider.AddressOfGpsLookupDate;
             photoMetadata.AddressOfGpsSource = fileMetadata.XmpFotoflyProvider.AddressOfGpsSource;

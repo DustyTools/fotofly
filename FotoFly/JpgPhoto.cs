@@ -37,19 +37,6 @@ namespace Fotofly
         }
 
         /// <summary>
-        /// Class representing a Jpeg Photo
-        /// </summary>
-        /// <param name="fileName">BitmapMetadata</param>
-        public JpgPhoto(BitmapMetadata bitmapMetadata)
-        {
-            // Copy that gets changed
-            this.InternalPhotoMetadata = PhotoMetadataTools.ReadBitmapMetadata(bitmapMetadata);
-
-            // Copy saved metadata for comparisons
-            this.InternalPhotoMetadataInFile = PhotoMetadataTools.ReadBitmapMetadata(bitmapMetadata);
-        }
-
-        /// <summary>
         /// Standard Metadata
         /// </summary>
         public PhotoMetadata Metadata
@@ -304,17 +291,18 @@ namespace Fotofly
                 // Set the Last Edit Date
                 this.Metadata.FotoflyLastEditDate = DateTime.Now;
 
-                // Read
-                BitmapMetadata bitmapMetadata = WpfFileManager.ReadBitmapMetadata(this.FileFullName, true);
+                // Read the file
+                using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileFullName, true))
+                {
+                    // Copy values across
+                    PhotoMetadataTools.WriteBitmapMetadata(wpfFileManager.BitmapMetadata, this.InternalPhotoMetadata);
 
-                // Copy values across
-                PhotoMetadataTools.WriteBitmapMetadata(bitmapMetadata, this.InternalPhotoMetadata);
+                    // Save file
+                    wpfFileManager.WriteMetadata();
 
-                // Write
-                WpfFileManager.WriteBitmapMetadata(this.FileFullName, bitmapMetadata);
-
-                // Copy saved metadata for comparisons
-                this.InternalPhotoMetadataInFile = PhotoMetadataTools.ReadBitmapMetadata(bitmapMetadata);
+                    // Save new BitmapMetadata as MetadataInFile
+                    this.InternalPhotoMetadataInFile = PhotoMetadataTools.ReadBitmapMetadata(wpfFileManager.BitmapMetadata);
+                }
             }
         }
     }

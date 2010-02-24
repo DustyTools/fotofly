@@ -144,11 +144,58 @@
             Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.DateTaken, testDate);
             Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.UtcDate, testDate);
             Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.AddressOfGpsLookupDate, testDate);
-            Assert.AreEqual<Tag>(this.jpgPhotoOne.Metadata.Tags.First(), new Tag("Test Tag Î"));
+            Assert.AreEqual<Tag>(this.jpgPhotoOne.Metadata.Tags.Last(), new Tag("Test Tag Î"));
 
             if (new FileInfo(this.jpgPhotoTwo.FileFullName).Length > new FileInfo(this.jpgPhotoX.FileFullName).Length)
             {
                 Assert.Fail("Photo has decreased in size after saving");
+            }
+        }
+
+        /// <summary>
+        /// WriteMetadataToFile
+        /// </summary>
+        [TestMethod]
+        public void WriteMetadataToFileAndCheckForMetadataLoss()
+        {
+            // Clean up from previous test
+            if (File.Exists(this.jpgPhotoX.FileFullName))
+            {
+                File.Delete(this.jpgPhotoX.FileFullName);
+            }
+
+            // Change date and save
+            this.jpgPhotoOne.Metadata.FotoflyLastEditDate = DateTime.Now.AddTicks(-DateTime.Now.TimeOfDay.Ticks);
+            this.jpgPhotoOne.WriteMetadata(this.jpgPhotoX.FileFullName);
+
+            MetadataDump beforeDump;
+            MetadataDump afterDump;
+
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTest1))
+            {
+                beforeDump = new MetadataDump(wpfFileManager.BitmapMetadata);
+                beforeDump.GenerateStringList();
+            }
+
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestX))
+            {
+                afterDump = new MetadataDump(wpfFileManager.BitmapMetadata);
+                afterDump.GenerateStringList();
+            }
+
+            for (int i = 0; i < beforeDump.StringList.Count; i++)
+            {
+                if (beforeDump.StringList[i] != afterDump.StringList[i]
+                    && !beforeDump.StringList[i].Contains("LastEditDate"))
+                {
+                    Assert.Fail("Metadata mismatch " + beforeDump.StringList[i] + " != " + afterDump.StringList[i]);
+                }
+            }
+
+            // Clean up
+            if (File.Exists(this.jpgPhotoX.FileFullName))
+            {
+                File.Delete(this.jpgPhotoX.FileFullName);
             }
         }
 

@@ -224,18 +224,31 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Keywords
         /// </summary>
-        public string Keywords
+        public TagList Keywords
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(IptcQueries.Keywords.Query);
+                if (this.BitmapMetadata.IsQueryOfType(IptcQueries.Keywords.Query, typeof(string)))
+                {
+                    string stringTag = this.BitmapMetadata.GetQuery<string>(IptcQueries.Keywords.Query);
+
+                    return new TagList(stringTag);
+                }
+                else if (this.BitmapMetadata.IsQueryOfType(IptcQueries.Keywords.Query, typeof(string[])))
+                {
+                    string[] stringArray = this.BitmapMetadata.GetQuery<string[]>(IptcQueries.Keywords.Query);
+
+                    return new TagList(stringArray);
+                }
+
+                return new TagList();
             }
 
             set
             {
                 if (this.ValueHasChanged(value, this.Keywords))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Keywords.Query, value.ToString(), string.IsNullOrEmpty(value));
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Keywords.Query, value.ToStringArray(), value.Count == 0);
                 }
             }
         }
