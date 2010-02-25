@@ -24,7 +24,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// GpsPosition, encapculates Latitude, Longitude, Altitude, Source, Dimension and SatelliteTime
         /// </summary>
-        public GpsPosition GpsPosition
+        public GpsPosition GpsPositionCreated
         {
             get
             {
@@ -66,6 +66,40 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
+        /// GpsPosition, encapculates Latitude, Longitude, Altitude, Source, Dimension and SatelliteTime
+        /// </summary>
+        public GpsPosition GpsPositionShown
+        {
+            get
+            {
+                GpsPosition gpsPosition = new GpsPosition();
+                gpsPosition.Latitude = this.DestLatitude.Clone() as GpsCoordinate;
+                gpsPosition.Longitude = this.DestLongitude.Clone() as GpsCoordinate;
+                gpsPosition.Altitude = Double.NaN;
+                gpsPosition.Source = string.Empty;
+                gpsPosition.Dimension = GpsPosition.Dimensions.TwoDimensional;
+                gpsPosition.SatelliteTime = new DateTime();
+
+                return gpsPosition;
+            }
+
+            set
+            {
+                if (value.IsValidCoordinate)
+                {
+                    this.DestLatitude = value.Latitude.Clone() as GpsCoordinate;
+                    this.DestLongitude = value.Longitude.Clone() as GpsCoordinate;
+                }
+                else
+                {
+                    // Clear all properties
+                    this.DestLatitude = new GpsCoordinate();
+                    this.DestLongitude = new GpsCoordinate();
+                }
+            }
+        }
+
+        /// <summary>
         /// Gps Altitude
         /// </summary>
         public double Altitude
@@ -100,7 +134,7 @@ namespace Fotofly.MetadataProviders
                     {
                         // Blank out existing values
                         this.AltitudeRef = GpsPosition.AltitudeRef.NotSpecified;
-                        this.BitmapMetadata.SetQuery(GpsQueries.Altitude.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.Altitude.Query);
                     }
                     else
                     {
@@ -144,7 +178,7 @@ namespace Fotofly.MetadataProviders
                     if (value == GpsPosition.AltitudeRef.NotSpecified)
                     {
                         // Blank out existing values
-                        this.BitmapMetadata.SetQuery(GpsQueries.AltitudeRef.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.AltitudeRef.Query);
                     }
                     else if (value == GpsPosition.AltitudeRef.AboveSeaLevel)
                     {
@@ -159,7 +193,7 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// Gps Latitude
+        /// Gps Location Created Latitude
         /// </summary>
         public GpsCoordinate Latitude
         {
@@ -190,7 +224,7 @@ namespace Fotofly.MetadataProviders
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(GpsQueries.Latitude.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.Latitude.Query);
 
                         this.LatitudeRef = GpsCoordinate.LatitudeRef.NotSpecified;
                     }
@@ -225,7 +259,7 @@ namespace Fotofly.MetadataProviders
                 {
                     if (value == GpsCoordinate.LatitudeRef.NotSpecified)
                     {
-                        this.BitmapMetadata.SetQuery(GpsQueries.LatitudeRef.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.LatitudeRef.Query);
                     }
                     else if (value == GpsCoordinate.LatitudeRef.North)
                     {
@@ -240,7 +274,7 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// Gps Longitude
+        /// Gps Location Created Longitude
         /// </summary>
         public GpsCoordinate Longitude
         {
@@ -272,8 +306,8 @@ namespace Fotofly.MetadataProviders
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(GpsQueries.Longitude.Query, string.Empty);
-                        this.BitmapMetadata.SetQuery(GpsQueries.LongitudeRef.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.Longitude.Query);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.LongitudeRef.Query);
                     }
                 }
             }
@@ -306,7 +340,7 @@ namespace Fotofly.MetadataProviders
                 {
                     if (value == GpsCoordinate.LongitudeRef.NotSpecified)
                     {
-                        this.BitmapMetadata.SetQuery(GpsQueries.LongitudeRef.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.LongitudeRef.Query);
                     }
                     else if (value == GpsCoordinate.LongitudeRef.West)
                     {
@@ -352,7 +386,7 @@ namespace Fotofly.MetadataProviders
                     {
                         default:
                         case GpsPosition.Dimensions.NotSpecified:
-                            this.BitmapMetadata.SetQuery(GpsQueries.MeasureMode.Query, string.Empty);
+                            this.BitmapMetadata.RemoveQuery(GpsQueries.MeasureMode.Query);
                             break;
 
                         case GpsPosition.Dimensions.ThreeDimensional:
@@ -421,7 +455,7 @@ namespace Fotofly.MetadataProviders
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(GpsQueries.DateStamp.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.DateStamp.Query);
                     }
                 }
             }
@@ -462,7 +496,7 @@ namespace Fotofly.MetadataProviders
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(GpsQueries.TimeStamp.Query, string.Empty);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.TimeStamp.Query);
                     }
                 }
             }
@@ -482,7 +516,18 @@ namespace Fotofly.MetadataProviders
             {
                 if (this.ValueHasChanged(value, this.VersionID))
                 {
-                    this.BitmapMetadata.SetQuery(GpsQueries.VersionID.Query, value);
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.VersionID.Query);
+                    }
+                    else if (value == "2200")
+                    {
+                        this.BitmapMetadata.SetQuery(GpsQueries.VersionID.Query, "2200");
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid Gps.VersionID, must be equal to 2200");
+                    }
                 }
             }
         }
@@ -515,6 +560,168 @@ namespace Fotofly.MetadataProviders
                     else
                     {
                         this.BitmapMetadata.SetQuery(GpsQueries.ProcessingMethod.Query, value);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gps Location Show Latitude
+        /// </summary>
+        public GpsCoordinate DestLatitude
+        {
+            get
+            {
+                GpsCoordinate.LatitudeRef latitudeRef = this.DestLatitudeRef;
+
+                URationalTriplet gpsRational = this.BitmapMetadata.GetQuery<URationalTriplet>(GpsQueries.DestLatitude.Query);
+
+                if (latitudeRef != GpsCoordinate.LatitudeRef.NotSpecified && gpsRational != null)
+                {
+                    return new GpsCoordinate(latitudeRef, gpsRational.ToDouble());
+                }
+
+                return new GpsCoordinate();
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.DestLatitude))
+                {
+                    if (value.IsValidCoordinate)
+                    {
+                        this.DestLatitudeRef = value.Numeric > 0 ? GpsCoordinate.LatitudeRef.North : GpsCoordinate.LatitudeRef.South;
+
+                        URationalTriplet gpsRational = new URationalTriplet(value.Degrees, value.Minutes, value.Seconds);
+                        this.BitmapMetadata.SetQuery(GpsQueries.DestLatitude.Query, gpsRational.ToUlongArray(true));
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.DestLatitude.Query);
+
+                        this.DestLatitudeRef = GpsCoordinate.LatitudeRef.NotSpecified;
+                    }
+                }
+            }
+        }
+
+        public GpsCoordinate.LatitudeRef DestLatitudeRef
+        {
+            get
+            {
+                if (this.BitmapMetadata.ContainsQuery(GpsQueries.DestLatitudeRef.Query))
+                {
+                    string gpsDestLatitudeRef = this.BitmapMetadata.GetQuery<string>(GpsQueries.DestLatitudeRef.Query);
+
+                    if (gpsDestLatitudeRef == "N")
+                    {
+                        return GpsCoordinate.LatitudeRef.North;
+                    }
+                    else if (gpsDestLatitudeRef == "S")
+                    {
+                        return GpsCoordinate.LatitudeRef.South;
+                    }
+                }
+
+                return GpsCoordinate.LatitudeRef.NotSpecified;
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.Latitude))
+                {
+                    if (value == GpsCoordinate.LatitudeRef.NotSpecified)
+                    {
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.DestLatitudeRef.Query);
+                    }
+                    else if (value == GpsCoordinate.LatitudeRef.North)
+                    {
+                        this.BitmapMetadata.SetQuery(GpsQueries.DestLatitudeRef.Query, "N");
+                    }
+                    else if (value == GpsCoordinate.LatitudeRef.South)
+                    {
+                        this.BitmapMetadata.SetQuery(GpsQueries.DestLatitudeRef.Query, "S");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// /// Gps Location Show Longitude
+        /// </summary>
+        public GpsCoordinate DestLongitude
+        {
+            get
+            {
+                GpsCoordinate.LongitudeRef longitudeRef = this.DestLongitudeRef;
+
+                URationalTriplet gpsRational = this.BitmapMetadata.GetQuery<URationalTriplet>(GpsQueries.DestLongitude.Query);
+
+                if (longitudeRef != GpsCoordinate.LongitudeRef.NotSpecified && gpsRational != null)
+                {
+                    return new GpsCoordinate(longitudeRef, gpsRational.ToDouble());
+                }
+
+                return new GpsCoordinate();
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.DestLongitude))
+                {
+                    if (value.IsValidCoordinate)
+                    {
+                        this.BitmapMetadata.SetQuery(GpsQueries.DestLongitudeRef.Query, value.Ref);
+
+                        URationalTriplet gpsRational = new URationalTriplet(value.Degrees, value.Minutes, value.Seconds);
+
+                        this.BitmapMetadata.SetQuery(GpsQueries.DestLongitude.Query, gpsRational.ToUlongArray(true));
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.DestLongitude.Query);
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.DestLongitudeRef.Query);
+                    }
+                }
+            }
+        }
+
+        public GpsCoordinate.LongitudeRef DestLongitudeRef
+        {
+            get
+            {
+                if (this.BitmapMetadata.ContainsQuery(GpsQueries.DestLongitudeRef.Query))
+                {
+                    string gpsDestLongitudeRef = this.BitmapMetadata.GetQuery<string>(GpsQueries.DestLongitudeRef.Query);
+
+                    if (gpsDestLongitudeRef == "E")
+                    {
+                        return GpsCoordinate.LongitudeRef.East;
+                    }
+                    else if (gpsDestLongitudeRef == "W")
+                    {
+                        return GpsCoordinate.LongitudeRef.West;
+                    }
+                }
+
+                return GpsCoordinate.LongitudeRef.NotSpecified;
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.Longitude))
+                {
+                    if (value == GpsCoordinate.LongitudeRef.NotSpecified)
+                    {
+                        this.BitmapMetadata.RemoveQuery(GpsQueries.DestLongitudeRef.Query);
+                    }
+                    else if (value == GpsCoordinate.LongitudeRef.West)
+                    {
+                        this.BitmapMetadata.SetQuery(GpsQueries.DestLongitudeRef.Query, "W");
+                    }
+                    else if (value == GpsCoordinate.LongitudeRef.East)
+                    {
+                        this.BitmapMetadata.SetQuery(GpsQueries.DestLongitudeRef.Query, "E");
                     }
                 }
             }

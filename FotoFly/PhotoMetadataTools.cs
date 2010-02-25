@@ -26,15 +26,14 @@ namespace Fotofly
             // Load Metadata Reader
             FileMetadata fileMetadata = new FileMetadata(bitmapMetadata);
 
-            // Copy across all base properties
+            // Copy across all Exif properties
+            // Prefer Exif but use XMP for Exif if no value set
             photoMetadata.Aperture = fileMetadata.ExifProvider.Aperture;
             photoMetadata.Authors = fileMetadata.ExifProvider.Authors;
             photoMetadata.CameraManufacturer = fileMetadata.ExifProvider.CameraManufacturer;
             photoMetadata.CameraModel = fileMetadata.ExifProvider.CameraModel;
-            photoMetadata.Comment = fileMetadata.XmpCoreProvider.Comment;
             photoMetadata.Copyright = fileMetadata.ExifProvider.Copyright;
             photoMetadata.CreationSoftware = fileMetadata.ExifProvider.CreationSoftware;
-            photoMetadata.DateAquired = fileMetadata.XmpMicrosoftProvider.DateAquired;
             photoMetadata.DateDigitised = fileMetadata.ExifProvider.DateDigitised;
             photoMetadata.DateTaken = fileMetadata.ExifProvider.DateTaken;
             photoMetadata.DigitalZoomRatio = fileMetadata.ExifProvider.DigitalZoomRatio;
@@ -45,12 +44,20 @@ namespace Fotofly
             photoMetadata.ImageWidth = fileMetadata.ExifProvider.ImageWidth;
             photoMetadata.Iso = fileMetadata.ExifProvider.Iso;
             photoMetadata.MeteringMode = fileMetadata.ExifProvider.MeteringMode;
-            photoMetadata.RegionInfo = fileMetadata.XmpMicrosoftProvider.RegionInfo;
             photoMetadata.ShutterSpeed = fileMetadata.ExifProvider.ShutterSpeed;
-            photoMetadata.Subject = fileMetadata.XmpCoreProvider.Subject;
-            photoMetadata.Tags = fileMetadata.XmpCoreProvider.Tags;
             photoMetadata.Title = fileMetadata.ExifProvider.Title;
             photoMetadata.VerticalResolution = fileMetadata.ExifProvider.VerticalResolution;
+
+            photoMetadata.Subject = fileMetadata.XmpCoreProvider.Subject;
+            photoMetadata.Tags = fileMetadata.XmpCoreProvider.Tags;
+            photoMetadata.Comment = fileMetadata.XmpCoreProvider.Comment;
+
+            photoMetadata.DateAquired = fileMetadata.XmpMicrosoftProvider.DateAquired;
+            photoMetadata.RegionInfo = fileMetadata.XmpMicrosoftProvider.RegionInfo;
+
+            // IPTC Rules
+            // Prefer XMP but use IPTC if no value set
+            // Except if the IPTC Checksum is different from XMP when both are set
 
             // Rating
             // Check Xap, then Microsoft
@@ -66,7 +73,7 @@ namespace Fotofly
             {
                 photoMetadata.Rating = MetadataEnums.Rating.Unknown;
             }
-            
+
             // Retrieve Fotofly Data
             photoMetadata.AccuracyOfGps = fileMetadata.XmpFotoflyProvider.AccuracyOfGps;
             photoMetadata.AddressOfGps = fileMetadata.XmpFotoflyProvider.AddressOfGps;
@@ -78,19 +85,32 @@ namespace Fotofly
             photoMetadata.UtcDate = fileMetadata.XmpFotoflyProvider.UtcDate;
             photoMetadata.UtcOffset = fileMetadata.XmpFotoflyProvider.UtcOffset;
 
-            // GPS
-            // Check Exif, then XMP
-            if (fileMetadata.GpsProvider.GpsPosition.IsValidCoordinate)
+            // Location Created - Check Exif, then XMP
+            if (fileMetadata.GpsProvider.GpsPositionCreated.IsValidCoordinate)
             {
-                photoMetadata.GpsPosition = fileMetadata.GpsProvider.GpsPosition;
+                photoMetadata.GpsPositionCreated = fileMetadata.GpsProvider.GpsPositionCreated;
             }
-            else if (fileMetadata.XmpExifProvider.GpsPosition.IsValidCoordinate)
+            else if (fileMetadata.XmpExifProvider.GpsPositionCreated.IsValidCoordinate)
             {
-                photoMetadata.GpsPosition = fileMetadata.XmpExifProvider.GpsPosition;
+                photoMetadata.GpsPositionCreated = fileMetadata.XmpExifProvider.GpsPositionCreated;
             }
             else
             {
-                photoMetadata.GpsPosition = new GpsPosition();
+                photoMetadata.GpsPositionCreated = new GpsPosition();
+            }
+
+            // Location Shown - Check Exif, then XMP
+            if (fileMetadata.GpsProvider.GpsPositionShown.IsValidCoordinate)
+            {
+                photoMetadata.GpsPositionShown = fileMetadata.GpsProvider.GpsPositionShown;
+            }
+            else if (fileMetadata.XmpExifProvider.GpsPositionShown.IsValidCoordinate)
+            {
+                photoMetadata.GpsPositionShown = fileMetadata.XmpExifProvider.GpsPositionShown;
+            }
+            else
+            {
+                photoMetadata.GpsPositionShown = new GpsPosition();
             }
 
             // Get Address
@@ -127,20 +147,25 @@ namespace Fotofly
             FileMetadata fileMetadata = new FileMetadata(bitmapMetadata);
 
             // Copy across all base properties
-            // NOTE: A lot of PhotoMetadata values are Readonly (mainly camera settings such as Aperture)
+            // NOTE: A lot of PhotoMetadata values are Readonly (such as camera settings like Aperture)
+            // Always write to Exif
+            // Except if XMP set, if it's set either delete or also set it
+            // TODO: Move Exif reconsilation into a more structure place (another method?)
             fileMetadata.ExifProvider.Authors = photoMetadata.Authors;
             fileMetadata.ExifProvider.CameraManufacturer = photoMetadata.CameraManufacturer;
             fileMetadata.ExifProvider.CameraModel = photoMetadata.CameraModel;
-            fileMetadata.XmpCoreProvider.Comment = photoMetadata.Comment;
             fileMetadata.ExifProvider.Copyright = photoMetadata.Copyright;
             fileMetadata.ExifProvider.CreationSoftware = photoMetadata.CreationSoftware;
-            fileMetadata.XmpMicrosoftProvider.DateAquired = photoMetadata.DateAquired;
             fileMetadata.ExifProvider.DateDigitised = photoMetadata.DateDigitised;
             fileMetadata.ExifProvider.DateTaken = photoMetadata.DateTaken;
-            fileMetadata.XmpMicrosoftProvider.RegionInfo = photoMetadata.RegionInfo;
+            fileMetadata.ExifProvider.Title = photoMetadata.Title;
+
+            fileMetadata.XmpCoreProvider.Comment = photoMetadata.Comment;
             fileMetadata.XmpCoreProvider.Subject = photoMetadata.Subject;
             fileMetadata.XmpCoreProvider.Tags = photoMetadata.Tags;
-            fileMetadata.ExifProvider.Title = photoMetadata.Title;
+
+            fileMetadata.XmpMicrosoftProvider.DateAquired = photoMetadata.DateAquired;
+            fileMetadata.XmpMicrosoftProvider.RegionInfo = photoMetadata.RegionInfo;
 
             // Save Fotofly Data
             fileMetadata.XmpFotoflyProvider.AccuracyOfGps = photoMetadata.AccuracyOfGps;
@@ -167,12 +192,19 @@ namespace Fotofly
             }
 
             // GPS
-            // Save to Gps & XMP
-            fileMetadata.GpsProvider.GpsPosition = photoMetadata.GpsPosition;
+            // Save to Gps
+            // Only save to XMP if it's set
+            fileMetadata.GpsProvider.GpsPositionCreated = photoMetadata.GpsPositionCreated;
+            fileMetadata.GpsProvider.GpsPositionShown = photoMetadata.GpsPositionShown;
 
-            if (fileMetadata.XmpExifProvider.GpsPosition.IsValidCoordinate)
+            if (fileMetadata.XmpExifProvider.GpsPositionCreated.IsValidCoordinate)
             {
-                fileMetadata.XmpExifProvider.GpsPosition = photoMetadata.GpsPosition;
+                fileMetadata.XmpExifProvider.GpsPositionCreated = photoMetadata.GpsPositionCreated;
+            }
+
+            if (fileMetadata.XmpExifProvider.GpsPositionShown.IsValidCoordinate)
+            {
+                fileMetadata.XmpExifProvider.GpsPositionShown = photoMetadata.GpsPositionShown;
             }
         }
 

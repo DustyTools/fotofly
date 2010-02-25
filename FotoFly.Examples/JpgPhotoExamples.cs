@@ -69,10 +69,10 @@
             JpgPhoto jpgPhoto = new JpgPhoto("JpgPhotoExamples.AddGpsCoor.jpg");
             jpgPhoto.ReadMetadata();
 
-            jpgPhoto.Metadata.GpsPosition.Latitude.Numeric = 1.05;
-            jpgPhoto.Metadata.GpsPosition.Longitude.Numeric = -0.95;
-            jpgPhoto.Metadata.GpsPosition.Dimension = GpsPosition.Dimensions.TwoDimensional;
-            jpgPhoto.Metadata.GpsPosition.Source = "GPS Test";
+            jpgPhoto.Metadata.GpsPositionCreated.Latitude.Numeric = 1.05;
+            jpgPhoto.Metadata.GpsPositionCreated.Longitude.Numeric = -0.95;
+            jpgPhoto.Metadata.GpsPositionCreated.Dimension = GpsPosition.Dimensions.TwoDimensional;
+            jpgPhoto.Metadata.GpsPositionCreated.Source = "GPS Test";
 
             jpgPhoto.WriteMetadata();
         }

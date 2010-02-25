@@ -25,7 +25,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// GpsPosition, encapculates Latitude, Longitude, Altitude, Source, Dimension and SatelliteTime
         /// </summary>
-        public GpsPosition GpsPosition
+        public GpsPosition GpsPositionCreated
         {
             get
             {
@@ -373,6 +373,267 @@ namespace Fotofly.MetadataProviders
                         else if (value == GpsCoordinate.LongitudeRef.East)
                         {
                             this.BitmapMetadata.SetQuery(XmpExifQueries.GpsLongitude.Query, gpsLongitude + "E");
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// GpsPosition, encapculates Latitude, Longitude, Altitude, Source, Dimension and SatelliteTime
+        /// </summary>
+        public GpsPosition GpsPositionShown
+        {
+            get
+            {
+                GpsPosition gpsPosition = new GpsPosition();
+                gpsPosition.Latitude = this.GpsDestLatitude.Clone() as GpsCoordinate;
+                gpsPosition.Longitude = this.GpsDestLongitude.Clone() as GpsCoordinate;
+                gpsPosition.Altitude = double.NaN;
+                gpsPosition.Source = string.Empty;
+                gpsPosition.Dimension = GpsPosition.Dimensions.TwoDimensional;
+                gpsPosition.SatelliteTime = new DateTime();
+
+                return gpsPosition;
+            }
+
+            set
+            {
+                if (value.IsValidCoordinate)
+                {
+                    this.GpsDestLatitude = value.Latitude.Clone() as GpsCoordinate;
+                    this.GpsDestLongitude = value.Longitude.Clone() as GpsCoordinate;
+                }
+                else
+                {
+                    // Clear all properties
+                    this.GpsDestLatitude = new GpsCoordinate();
+                    this.GpsDestLongitude = new GpsCoordinate();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gps Latitude
+        /// </summary>
+        public GpsCoordinate GpsDestLatitude
+        {
+            get
+            {
+                // Format
+                // “DDD,MM,SSk” or “DDD,MM.mmk”
+                //  51,55,84N or 51,55.6784N
+                string gpsDestLatitudeString = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsDestLatitude.Query);
+                GpsCoordinate.LatitudeRef gpsDestLatitudeRef = this.GpsDestLatitudeRef;
+
+                // Do basic validation, 3 is minimum length
+                if (gpsDestLatitudeRef != GpsCoordinate.LatitudeRef.NotSpecified && gpsDestLatitudeString.Length > 3)
+                {
+                    // Split the string
+                    string[] splitString = gpsDestLatitudeString.Substring(0, gpsDestLatitudeString.Length - 1).Split(',');
+
+                    if (splitString.Length == 2)
+                    {
+                        double degrees;
+                        double minutes;
+
+                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
+                        {
+                            return new GpsCoordinate(gpsDestLatitudeRef, degrees, minutes);
+                        }
+                    }
+                    else if (splitString.Length == 3)
+                    {
+                        double degrees;
+                        double minutes;
+                        double seconds;
+
+                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
+                        {
+                            return new GpsCoordinate(gpsDestLatitudeRef, degrees, minutes, seconds);
+                        }
+                    }
+                }
+
+                return new GpsCoordinate();
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.GpsDestLatitude))
+                {
+                    if (value.IsValidCoordinate)
+                    {
+                        string latitudeAsString = string.Format("{0},{1},{2}", value.Degrees, value.Minutes, value.Seconds);
+
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsDestLatitude.Query, latitudeAsString);
+
+                        this.GpsDestLatitudeRef = value.Numeric > 0 ? GpsCoordinate.LatitudeRef.North : GpsCoordinate.LatitudeRef.South;
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDestLatitude.Query);
+
+                        this.GpsDestLatitudeRef = GpsCoordinate.LatitudeRef.NotSpecified;
+                    }
+                }
+            }
+        }
+
+        public GpsCoordinate.LatitudeRef GpsDestLatitudeRef
+        {
+            get
+            {
+                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.GpsDestLatitude.Query))
+                {
+                    string gpsDestLatitudeRef = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsDestLatitude.Query);
+
+                    if (gpsDestLatitudeRef.EndsWith("N"))
+                    {
+                        return GpsCoordinate.LatitudeRef.North;
+                    }
+                    else if (gpsDestLatitudeRef.EndsWith("S"))
+                    {
+                        return GpsCoordinate.LatitudeRef.South;
+                    }
+                }
+
+                return GpsCoordinate.LatitudeRef.NotSpecified;
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.GpsDestLatitudeRef))
+                {
+                    if (value == GpsCoordinate.LatitudeRef.NotSpecified)
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDestLatitude.Query);
+                    }
+                    else
+                    {
+                        string gpsDestLatitude = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsDestLatitude.Query);
+                        gpsDestLatitude.TrimEnd('N');
+                        gpsDestLatitude.TrimEnd('S');
+
+                        if (value == GpsCoordinate.LatitudeRef.North)
+                        {
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsDestLatitude.Query, gpsDestLatitude + "N");
+                        }
+                        else if (value == GpsCoordinate.LatitudeRef.South)
+                        {
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsDestLatitude.Query, gpsDestLatitude + "S");
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gps Longitude
+        /// </summary>
+        public GpsCoordinate GpsDestLongitude
+        {
+            get
+            {
+                string gpsDestLongitudeString = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsDestLongitude.Query);
+                GpsCoordinate.LongitudeRef gpsDestLongitudeRef = this.GpsDestLongitudeRef;
+
+                // Do basic validation, 3 is minimum length
+                if (gpsDestLongitudeRef != GpsCoordinate.LongitudeRef.NotSpecified && !string.IsNullOrEmpty(gpsDestLongitudeString) && gpsDestLongitudeString.Length > 3)
+                {
+                    // Split the string
+                    string[] splitString = gpsDestLongitudeString.Substring(0, gpsDestLongitudeString.Length - 1).Split(',');
+
+                    if (splitString.Length == 2)
+                    {
+                        double degrees;
+                        double minutes;
+
+                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
+                        {
+                            return new GpsCoordinate(gpsDestLongitudeRef, degrees, minutes);
+                        }
+                    }
+                    else if (splitString.Length == 3)
+                    {
+                        double degrees;
+                        double minutes;
+                        double seconds;
+
+                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
+                        {
+                            return new GpsCoordinate(gpsDestLongitudeRef, degrees, minutes, seconds);
+                        }
+                    }
+                }
+
+                return new GpsCoordinate();
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.GpsDestLongitude))
+                {
+                    if (value.IsValidCoordinate)
+                    {
+                        string latitudeAsString = string.Format("{0},{1},{2}", value.Degrees, value.Minutes, value.Seconds);
+
+                        this.BitmapMetadata.SetQuery(XmpExifQueries.GpsDestLongitude.Query, latitudeAsString);
+
+                        this.GpsDestLongitudeRef = value.Numeric > 0 ? GpsCoordinate.LongitudeRef.East : GpsCoordinate.LongitudeRef.West;
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDestLongitude.Query);
+
+                        this.GpsDestLongitudeRef = GpsCoordinate.LongitudeRef.NotSpecified;
+                    }
+                }
+            }
+        }
+
+        public GpsCoordinate.LongitudeRef GpsDestLongitudeRef
+        {
+            get
+            {
+                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.GpsLongitude.Query))
+                {
+                    string gpsDestLongitudeRef = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsDestLongitude.Query);
+
+                    if (gpsDestLongitudeRef.EndsWith("E"))
+                    {
+                        return GpsCoordinate.LongitudeRef.East;
+                    }
+                    else if (gpsDestLongitudeRef.EndsWith("W"))
+                    {
+                        return GpsCoordinate.LongitudeRef.West;
+                    }
+                }
+
+                return GpsCoordinate.LongitudeRef.NotSpecified;
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.GpsDestLongitudeRef))
+                {
+                    if (value == GpsCoordinate.LongitudeRef.NotSpecified)
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDestLongitude.Query);
+                    }
+                    else
+                    {
+                        string gpsDestLongitude = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsDestLongitude.Query);
+                        gpsDestLongitude.TrimEnd('E');
+                        gpsDestLongitude.TrimEnd('W');
+
+                        if (value == GpsCoordinate.LongitudeRef.West)
+                        {
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsDestLongitude.Query, gpsDestLongitude + "W");
+                        }
+                        else if (value == GpsCoordinate.LongitudeRef.East)
+                        {
+                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsDestLongitude.Query, gpsDestLongitude + "E");
                         }
                     }
                 }

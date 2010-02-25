@@ -18,7 +18,8 @@ namespace Fotofly
         public PhotoMetadata()
         {
             this.RegionInfo = new ImageRegionInfo();
-            this.GpsPosition = new GpsPosition();
+            this.GpsPositionShown = new GpsPosition();
+            this.GpsPositionCreated = new GpsPosition();
             this.Authors = new PeopleList();
             this.Tags = new TagList();
             this.Address = new Address();
@@ -148,10 +149,20 @@ namespace Fotofly
         }
 
         /// <summary>
-        /// Gps Position
+        /// Gps Position of the Location where the photo was crated
         /// </summary>
         [XmlElementAttribute]
-        public GpsPosition GpsPosition
+        public GpsPosition GpsPositionCreated
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gps Position of the Location shown in the Photo
+        /// </summary>
+        [XmlElementAttribute]
+        public GpsPosition GpsPositionShown
         {
             get;
             set;

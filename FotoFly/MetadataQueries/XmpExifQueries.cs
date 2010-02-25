@@ -19,6 +19,8 @@ namespace Fotofly.MetadataQueries
         // the four EXIF bytes with period separators. The current value is “2.0.0.0”.
         public static readonly MetdataQuery<string, string> GpsVersionID = new MetdataQuery<string, string>("/xmp/exif:GPSVersionID");
         
+        // GPS 1-4 are Location Created
+
         // GPS Latitude & GPSLongitude
         // * A Text value in the form “DDD,MM,SSk” or “DDD,MM.mmk”, where:
         // – DDD is a number of degrees
@@ -89,10 +91,18 @@ namespace Fotofly.MetadataQueries
         // exif:GPSMapDatum Text Internal GPS tag 18, 0x12. Geodetic survey data.
         public static readonly MetdataQuery<string, string> GpsMapDatum = new MetdataQuery<string, string>("/xmp/exif:GPSMapDatum");
 
-        // exif:GPSDestLatitude GPSCoordinate Internal GPS tag 20, 0x14 (position) and 19, 0x13 (North/South). Indicates destination latitude.
+        // GPS 19-22 are Location Show
+
+        // exif:GPSDestLatitudeRef 19, 0x13 (North/South). Indicates destination latitude.
+        public static readonly MetdataQuery<string, string> GpsDestLatitudeRef = new MetdataQuery<string, string>("/xmp/exif:GPSDestLatitudeRef");
+
+        // exif:GPSDestLatitude GPSCoordinate Internal GPS tag 20. Indicates destination latitude.
         public static readonly MetdataQuery<string, string> GpsDestLatitude = new MetdataQuery<string, string>("/xmp/exif:GPSDestLatitude");
 
-        // exif:GPSDestLongitude GPSCoordinate Internal GPS tag 22, 0x16 (position) and 21, 0x15 (East/West). Indicates destination longitude.
+        // exif:GPSDestLongitudeRef 21, 0x15 (East/West). Indicates destination longitude.
+        public static readonly MetdataQuery<string, string> GpsDestLongitudeRef = new MetdataQuery<string, string>("/xmp/exif:GPSDestLongitudeRef");
+
+        // exif:GPSDestLongitude GPSCoordinate Internal GPS tag 22, 0x16 (position). Indicates destination longitude.
         public static readonly MetdataQuery<string, string> GpsDestLongitude = new MetdataQuery<string, string>("/xmp/exif:GPSDestLongitude");
         
         // exif:GPSDestBearingRef Closed Choice of Text Internal GPS tag 23, 0x17. Reference for movement

@@ -349,16 +349,16 @@
         [TestMethod]
         public void ReadGpsMetadata()
         {
-            Assert.AreEqual<GpsPosition.Accuracies>(this.jpgPhotoOne.Metadata.GpsPosition.Accuracy, GpsPosition.Accuracies.Unknown);
+            Assert.AreEqual<GpsPosition.Accuracies>(this.jpgPhotoOne.Metadata.GpsPositionCreated.Accuracy, GpsPosition.Accuracies.Unknown);
 
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPosition.DegreesMinutesSecondsAltitude, new Regex("N 037° 48' 25.00\" W 122° 25' 23.00\" -17.464m"));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPosition.Source, new Regex("Garmin Dakota 20"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPositionCreated.DegreesMinutesSecondsAltitude, new Regex("N 037° 48' 25.00\" W 122° 25' 23.00\" -17.464m"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPositionCreated.Source, new Regex("Garmin Dakota 20"));
 
-            Assert.AreEqual<double>(this.jpgPhotoOne.Metadata.GpsPosition.Altitude, -17.464, "Altitude");
+            Assert.AreEqual<double>(this.jpgPhotoOne.Metadata.GpsPositionCreated.Altitude, -17.464, "Altitude");
 
-            Assert.AreEqual<GpsPosition.Dimensions>(this.jpgPhotoOne.Metadata.GpsPosition.Dimension, GpsPosition.Dimensions.ThreeDimensional);
+            Assert.AreEqual<GpsPosition.Dimensions>(this.jpgPhotoOne.Metadata.GpsPositionCreated.Dimension, GpsPosition.Dimensions.ThreeDimensional);
 
-            Assert.AreEqual<DateTime>(this.jpgPhotoOne.Metadata.GpsPosition.SatelliteTime, new DateTime(2009, 10, 10, 21, 46, 24));
+            Assert.AreEqual<DateTime>(this.jpgPhotoOne.Metadata.GpsPositionCreated.SatelliteTime, new DateTime(2009, 10, 10, 21, 46, 24));
         }
 
         /// <summary>

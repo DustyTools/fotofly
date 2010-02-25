@@ -134,7 +134,7 @@ namespace Fotofly.Geotagging.Resolvers
             {
                 returnValue = this.resolverCache.FindGpsPosition(addressToLookup);
 
-                if (returnValue.IsValidCoordinate)
+                if (returnValue != null && returnValue.IsValidCoordinate)
                 {
                     return returnValue;
                 }

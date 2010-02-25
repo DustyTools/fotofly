@@ -104,7 +104,7 @@ namespace Fotofly.Geotagging
             // Order is 1) Gps Track 2) Bing Maps 4) Manual Cache
 
             // Use Gps Tracks if Configured
-            if (!photo.Metadata.GpsPosition.IsValidCoordinate && this.IsGpsTracksResolverConfigured)
+            if (!photo.Metadata.GpsPositionCreated.IsValidCoordinate && this.IsGpsTracksResolverConfigured)
             {
                 if (photo.Metadata.UtcDate == null || photo.Metadata.UtcDate == new DateTime())
                 {
@@ -115,12 +115,12 @@ namespace Fotofly.Geotagging
 
                 if (gpsPosition != null && gpsPosition.IsValidCoordinate)
                 {
-                    photo.Metadata.GpsPosition = gpsPosition;
+                    photo.Metadata.GpsPositionCreated = gpsPosition;
                 }
             }
 
             // If we have no valid result try alternate methods
-            if (!photo.Metadata.GpsPosition.IsValidCoordinate)
+            if (!photo.Metadata.GpsPositionCreated.IsValidCoordinate)
             {
                 // Retrieve result from Bing & Cache and choose the most accurate
                 GpsPosition bingResult = new GpsPosition();
@@ -172,15 +172,15 @@ namespace Fotofly.Geotagging
 
                 if (manualResult.Accuracy == 0 && bingResult.Accuracy == 0)
                 {
-                    photo.Metadata.GpsPosition = new GpsPosition();
+                    photo.Metadata.GpsPositionCreated = new GpsPosition();
                 }
                 else if (manualResult.Accuracy > bingResult.Accuracy)
                 {
-                    photo.Metadata.GpsPosition = manualResult;
+                    photo.Metadata.GpsPositionCreated = manualResult;
                 }
                 else
                 {
-                    photo.Metadata.GpsPosition = bingResult;
+                    photo.Metadata.GpsPositionCreated = bingResult;
                 }
             }
         }
@@ -190,12 +190,12 @@ namespace Fotofly.Geotagging
             // Should only be run if the GPS Position was found using a GPS
             // The is determined by knowing the altitude, because that's not normally returned from Lookups
             // Order is: 1) Bing Maps 2) Google Maps
-            if (photo.Metadata != null && photo.Metadata.GpsPosition.Dimension == GpsPosition.Dimensions.ThreeDimensional)
+            if (photo.Metadata != null && photo.Metadata.GpsPositionCreated.Dimension == GpsPosition.Dimensions.ThreeDimensional)
             {
                 // Use Bing if configured
                 if (!photo.Metadata.AddressOfGps.IsValidAddress && this.IsBingMapsResolverConfigured)
                 {
-                    photo.Metadata.AddressOfGps = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPosition, photo.Metadata.Address.Country);
+                    photo.Metadata.AddressOfGps = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPositionCreated, photo.Metadata.Address.Country);
                     photo.Metadata.AddressOfGpsLookupDate = DateTime.Now;
                     photo.Metadata.AddressOfGpsSource = BingMapsResolver.SourceName;
                 }
@@ -203,7 +203,7 @@ namespace Fotofly.Geotagging
                 // Use Google if configured
                 if (!photo.Metadata.AddressOfGps.IsValidAddress && this.IsGoogleMapsResolverConfigured)
                 {
-                    photo.Metadata.AddressOfGps = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPosition);
+                    photo.Metadata.AddressOfGps = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPositionCreated);
                     photo.Metadata.AddressOfGpsLookupDate = DateTime.Now;
                     photo.Metadata.AddressOfGpsSource = GoogleMapsResolver.SourceName;
                 }
