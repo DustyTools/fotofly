@@ -596,7 +596,7 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.GpsLongitude.Query))
+                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.GpsDestLongitude.Query))
                 {
                     string gpsDestLongitudeRef = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsDestLongitude.Query);
 
