@@ -13,24 +13,24 @@ namespace Fotofly
     /// <summary>
     /// Class representing Industry Standard Metadata
     /// </summary>
-    public class PhotoMetadata
+    public class PhotoMetadata : IFileMetadata
     {
         public PhotoMetadata()
         {
             this.RegionInfo = new ImageRegionInfo();
-            this.GpsPositionShown = new GpsPosition();
-            this.GpsPositionCreated = new GpsPosition();
+            this.GpsPositionOfLocationShown = new GpsPosition();
+            this.GpsPositionOfLocationCreated = new GpsPosition();
             this.Authors = new PeopleList();
             this.Tags = new TagList();
-            this.Address = new Address();
-            this.AddressOfGps = new Address();
+            this.AddressOfLocationCreated = new Address();
+            this.AddressOfLocationShown = new Address();
         }
 
         /// <summary>
         /// Aperture
         /// </summary>
         [XmlAttribute]
-        public string Aperture
+        public Aperture Aperture
         {
             get;
             set;
@@ -50,7 +50,7 @@ namespace Fotofly
         /// Shutter Speed
         /// </summary>
         [XmlAttribute]
-        public string ShutterSpeed
+        public ShutterSpeed ShutterSpeed
         {
             get;
             set;
@@ -72,7 +72,7 @@ namespace Fotofly
         /// Exposure Bias
         /// </summary>
         [XmlAttribute]
-        public string ExposureBias
+        public ExposureBias ExposureBias
         {
             get;
             set;
@@ -152,7 +152,7 @@ namespace Fotofly
         /// Gps Position of the Location where the photo was crated
         /// </summary>
         [XmlElementAttribute]
-        public GpsPosition GpsPositionCreated
+        public GpsPosition GpsPositionOfLocationCreated
         {
             get;
             set;
@@ -162,7 +162,17 @@ namespace Fotofly
         /// Gps Position of the Location shown in the Photo
         /// </summary>
         [XmlElementAttribute]
-        public GpsPosition GpsPositionShown
+        public GpsPosition GpsPositionOfLocationShown
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// DateModified, as stored in Metadata (not the same as file last modified)
+        /// </summary>
+        [XmlAttribute]
+        public DateTime DateModified
         {
             get;
             set;
@@ -192,7 +202,7 @@ namespace Fotofly
         /// ISO Speed rating 
         /// </summary>
         [XmlAttribute]
-        public string Iso
+        public IsoSpeed IsoSpeed
         {
             get;
             set;
@@ -219,30 +229,20 @@ namespace Fotofly
         }
 
         /// <summary>
-        /// Rating (Ranging unknown to 1-5)
+        /// Rating (Ranging -1.0 to 5.0)
         /// </summary>
         [XmlAttribute]
-        public MetadataEnums.Rating Rating
+        public Rating Rating
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Subject, not often used by software, Title should be used in most cases
+        /// Description Also Known as Title (in Windows), User Comment, Caption, Abstract or Description
         /// </summary>
         [XmlAttribute]
-        public string Subject
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Title, sometimes knows as Caption and Subject (there is also another attribute for Subject)
-        /// </summary>
-        [XmlAttribute]
-        public string Title
+        public string Description
         {
             get;
             set;
@@ -258,10 +258,20 @@ namespace Fotofly
         }
 
         /// <summary>
-        /// Comment, also known as Description
+        /// Comment, not stored in XMP, IPTC or Exif
         /// </summary>
         [XmlAttribute]
         public string Comment
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Subject, not stored in XMP, IPTC or Exif
+        /// </summary>
+        [XmlAttribute]
+        public string Subject
         {
             get;
             set;
@@ -340,7 +350,7 @@ namespace Fotofly
         /// DigitalZoomRatio
         /// </summary>
         [XmlAttribute]
-        public double DigitalZoomRatio
+        public double? DigitalZoomRatio
         {
             get;
             set;
@@ -364,9 +374,9 @@ namespace Fotofly
         [XmlAttribute]
         public string OriginalCameraFilename { get; set; }
 
-        public Address AddressOfGps { get; set; }
+        public Address AddressOfLocationCreated { get; set; }
 
-        public Address Address { get; set; }
+        public Address AddressOfLocationShown { get; set; }
 
         [XmlAttribute]
         public string AddressOfGpsSource { get; set; }
@@ -380,15 +390,6 @@ namespace Fotofly
             get
             {
                 return this.UtcOffset != null;
-            }
-        }
-
-        [XmlIgnore]
-        public bool IsAddressOfGpsSet
-        {
-            get
-            {
-                return this.AddressOfGps.IsValidAddress;
             }
         }
 

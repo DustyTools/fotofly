@@ -21,15 +21,16 @@ namespace Fotofly.MetadataProviders
         {
         }
 
-        public Address Address
+
+        public Address AddressOfLocationCreated
         {
             get
             {
                 Address address = new Address();
-                address.Country = this.Country;
-                address.City = this.City;
-                address.Region = this.Region;
-                address.AddressLine = this.SubLocation;
+                address.Country = this.LocationCreatedCountry;
+                address.City = this.LocationCreatedCity;
+                address.Region = this.LocationCreatedRegion;
+                address.AddressLine = this.LocationCreatedSubLocation;
 
                 if (address.IsValidAddress)
                 {
@@ -43,17 +44,17 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                this.Country = value.Country;
-                this.City = value.City;
-                this.Region = value.Region;
-                this.SubLocation = value.AddressLine;
+                this.LocationCreatedCountry = value.Country;
+                this.LocationCreatedCity = value.City;
+                this.LocationCreatedRegion = value.Region;
+                this.LocationCreatedSubLocation = value.AddressLine;
             }
         }
 
         /// <summary>
         /// City
         /// </summary>
-        public string City
+        public string LocationCreatedCity
         {
             get
             {
@@ -62,7 +63,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.City))
+                if (this.ValueHasChanged(value, this.LocationCreatedCity))
                 {
                     this.BitmapMetadata.SetQueryOrRemove(IptcQueries.City.Query, value.ToString(), string.IsNullOrEmpty(value));
                 }
@@ -72,7 +73,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// County
         /// </summary>
-        public string Country
+        public string LocationCreatedCountry
         {
             get
             {
@@ -81,7 +82,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.Country))
+                if (this.ValueHasChanged(value, this.LocationCreatedCountry))
                 {
                     this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Country.Query, value.ToString(), string.IsNullOrEmpty(value));
                 }
@@ -91,7 +92,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Region, also used for State, County or Province
         /// </summary>
-        public string Region
+        public string LocationCreatedRegion
         {
             get
             {
@@ -100,7 +101,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.Region))
+                if (this.ValueHasChanged(value, this.LocationCreatedRegion))
                 {
                     this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Region.Query, value.ToString(), string.IsNullOrEmpty(value));
                 }
@@ -110,7 +111,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// SubLocation
         /// </summary>
-        public string SubLocation
+        public string LocationCreatedSubLocation
         {
             get
             {
@@ -119,7 +120,112 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.SubLocation))
+                if (this.ValueHasChanged(value, this.LocationCreatedSubLocation))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.SubLocation.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        public Address AddressOfLocationShown
+        {
+            get
+            {
+                Address address = new Address();
+                address.Country = this.LocationShownCountry;
+                address.City = this.LocationShownCity;
+                address.Region = this.LocationShownRegion;
+                address.AddressLine = this.LocationShownSubLocation;
+
+                if (address.IsValidAddress)
+                {
+                    return address;
+                }
+                else
+                {
+                    return new Address();
+                }
+            }
+
+            set
+            {
+                this.LocationShownCountry = value.Country;
+                this.LocationShownCity = value.City;
+                this.LocationShownRegion = value.Region;
+                this.LocationShownSubLocation = value.AddressLine;
+            }
+        }
+
+        /// <summary>
+        /// City
+        /// </summary>
+        public string LocationShownCity
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.City.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.LocationShownCity))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.City.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// County
+        /// </summary>
+        public string LocationShownCountry
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.Country.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.LocationShownCountry))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Country.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Region, also used for State, County or Province
+        /// </summary>
+        public string LocationShownRegion
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.Region.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.LocationShownRegion))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Region.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// SubLocation
+        /// </summary>
+        public string LocationShownSubLocation
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.SubLocation.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.LocationShownSubLocation))
                 {
                     this.BitmapMetadata.SetQueryOrRemove(IptcQueries.SubLocation.Query, value.ToString(), string.IsNullOrEmpty(value));
                 }
@@ -146,20 +252,37 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// DateCreated
+        /// Datetime Created
         /// </summary>
-        public string DateCreated
+        public DateTime DateTimeCreated
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(IptcQueries.DateCreated.Query);
+                return new DateTime(this.DateCreated.Year, this.DateCreated.Month, this.DateCreated.Day, this.TimeCreated.Hours, this.TimeCreated.Minutes, this.TimeCreated.Seconds, this.TimeCreated.Milliseconds); 
+            }
+
+            set
+            {
+                this.DateCreated = value.Date;
+                this.TimeCreated = value.TimeOfDay;
+            }
+        }
+
+        /// <summary>
+        /// DateCreated
+        /// </summary>
+        public DateTime DateCreated
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<DateTime>(IptcQueries.DateCreated.Query);
             }
 
             set
             {
                 if (this.ValueHasChanged(value, this.DateCreated))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.DateCreated.Query, value.ToString(), string.IsNullOrEmpty(value));
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.DateCreated.Query, value.ToString(), value == new DateTime());
                 }
             }
         }
@@ -167,18 +290,73 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// TimeCreated
         /// </summary>
-        public string TimeCreated
+        public TimeSpan TimeCreated
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(IptcQueries.TimeCreated.Query);
+                return this.BitmapMetadata.GetQuery<TimeSpan>(IptcQueries.TimeCreated.Query);
             }
 
             set
             {
                 if (this.ValueHasChanged(value, this.TimeCreated))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.TimeCreated.Query, value.ToString(), string.IsNullOrEmpty(value));
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.TimeCreated.Query, value.ToString(), value == new TimeSpan());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Date Time Digitised
+        /// </summary>
+        public DateTime DateTimeDigitised
+        {
+            get
+            {
+                return new DateTime(this.DateDigitised.Year, this.DateDigitised.Month, this.DateDigitised.Day, this.TimeDigitised.Hours, this.TimeDigitised.Minutes, this.TimeDigitised.Seconds, this.TimeDigitised.Milliseconds);
+            }
+
+            set
+            {
+                this.DateDigitised = value.Date;
+                this.TimeDigitised = value.TimeOfDay;
+            }
+        }
+
+        /// <summary>
+        /// DateDigitised
+        /// </summary>
+        public DateTime DateDigitised 
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<DateTime>(IptcQueries.DateDigitised.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.DateDigitised))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.DateDigitised.Query, value.ToString(), value == new DateTime());
+                }
+            }
+        }
+
+        /// <summary>
+        /// TimeDigitised
+        /// </summary>
+        public TimeSpan TimeDigitised 
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<TimeSpan>(IptcQueries.TimeDigitised.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.TimeDigitised))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.TimeDigitised.Query, value.ToString(), value == new TimeSpan());
                 }
             }
         }
@@ -268,6 +446,25 @@ namespace Fotofly.MetadataProviders
                 if (this.ValueHasChanged(value, this.ObjectName))
                 {
                     this.BitmapMetadata.SetQueryOrRemove(IptcQueries.ObjectName.Query, value.ToString(), string.IsNullOrEmpty(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Caption
+        /// </summary>
+        public string Caption
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(IptcQueries.Caption.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.Caption))
+                {
+                    this.BitmapMetadata.SetQueryOrRemove(IptcQueries.Caption.Query, value.ToString(), string.IsNullOrEmpty(value));
                 }
             }
         }

@@ -54,6 +54,53 @@
         }
 
         /// <summary>
+        /// Check Xmp Xap Schema Metadata provider
+        /// </summary>
+        [TestMethod]
+        public void WriteTextMetadata()
+        {
+            File.Copy(this.samplePhotosFolder + TestPhotos.UnitTest1, this.samplePhotosFolder + TestPhotos.UnitTestTemp2, true);
+
+            string testString = " " + DateTime.Now.ToString();
+
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestTemp2, true))
+            {
+                FileMetadata fileMetadata = new FileMetadata(wpfFileManager.BitmapMetadata);
+
+                fileMetadata.Description = "Description" + testString;
+                fileMetadata.Comment = "Comment" + testString;
+                fileMetadata.Copyright = "Copyright" + testString;
+                fileMetadata.Subject = "Subject" + testString;
+
+                wpfFileManager.WriteMetadata();
+            }
+
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestTemp2))
+            {
+                FileMetadata fileMetadata = new FileMetadata(wpfFileManager.BitmapMetadata);
+
+                Assert.AreEqual<string>(fileMetadata.Description, "Description" + testString, "Description");
+                Assert.AreEqual<string>(fileMetadata.Comment, "Comment" + testString, "Comment");
+                Assert.AreEqual<string>(fileMetadata.Copyright, "Copyright" + testString, "Copyright");
+                Assert.AreEqual<string>(fileMetadata.Subject, "Subject" + testString, "Subject");
+
+                // Check underlying Description values
+                Assert.AreEqual<string>(fileMetadata.IptcProvider.Caption, "Description" + testString, "Iptc.Caption");
+                Assert.AreEqual<string>(fileMetadata.ExifProvider.Description, "Description" + testString, "Exif.Description");
+
+                // TODO Add unerlying check for:
+                // Xmp dc:title
+                // Xmp dc:description
+            }
+
+            // Clean up from previous test
+            if (File.Exists(this.samplePhotosFolder + TestPhotos.UnitTestTemp2))
+            {
+                File.Delete(this.samplePhotosFolder + TestPhotos.UnitTestTemp2);
+            }
+        }
+
+        /// <summary>
         /// ReadPadding
         /// </summary>
         [TestMethod]
@@ -112,7 +159,7 @@
                 XmpXapProvider xmpXapProvider = new XmpXapProvider(wpfFileManager.BitmapMetadata);
 
                 Assert.AreEqual<string>(xmpXapProvider.CreatorTool, "Tassography PhotoManager");
-                Assert.AreEqual<MetadataEnums.Rating>(xmpXapProvider.Rating, MetadataEnums.Rating.FourStar);
+                Assert.AreEqual<Rating.Ratings>(xmpXapProvider.Rating.AsEnum, Rating.Ratings.FourStar);
             }
         }
 
@@ -126,7 +173,7 @@
             {
                 XmpMicrosoftProvider xmpMicrosoftProvider = new XmpMicrosoftProvider(wpfFileManager.BitmapMetadata);
 
-                Assert.AreEqual<MetadataEnums.Rating>(xmpMicrosoftProvider.Rating, MetadataEnums.Rating.ThreeStar);
+                Assert.AreEqual<Rating.Ratings>(xmpMicrosoftProvider.Rating.AsEnum, Rating.Ratings.ThreeStar);
                 Assert.AreEqual<string>(xmpMicrosoftProvider.RegionInfo.Regions[0].PersonDisplayName, "Ben Vincent");
                 Assert.AreEqual<string>(xmpMicrosoftProvider.RegionInfo.Regions[0].PersonEmailDigest, "68A7D36853D6CBDEC05624C1516B2533F8F665E0");
                 Assert.AreEqual<string>(xmpMicrosoftProvider.RegionInfo.Regions[0].PersonLiveIdCID, "3058747437326753075");
@@ -162,13 +209,14 @@
                 IptcProvider iptcProvider = new IptcProvider(wpfFileManager.BitmapMetadata);
 
                 Assert.AreEqual<string>(iptcProvider.Byline, "Ben Vincent");
-                Assert.AreEqual<string>(iptcProvider.City, "San Mateo");
+                Assert.AreEqual<string>(iptcProvider.LocationCreatedCity, "San Mateo");
                 Assert.AreEqual<string>(iptcProvider.CopyrightNotice, "Tassography");
-                Assert.AreEqual<string>(iptcProvider.Country, "United States");
-                Assert.AreEqual<string>(iptcProvider.DateCreated, "20080504");
-                Assert.AreEqual<string>(iptcProvider.Region, "California");
-                Assert.AreEqual<string>(iptcProvider.SubLocation, "San Mateo County Expo Center");
-                Assert.AreEqual<string>(iptcProvider.TimeCreated, "202900+0000");
+                Assert.AreEqual<string>(iptcProvider.LocationCreatedCountry, "United States");
+                Assert.AreEqual<string>(iptcProvider.LocationCreatedRegion, "California");
+                Assert.AreEqual<string>(iptcProvider.LocationCreatedSubLocation, "San Mateo County Expo Center");
+
+                Assert.AreEqual<DateTime>(iptcProvider.DateCreated, new DateTime(2008, 05, 04));
+                Assert.AreEqual<TimeSpan>(iptcProvider.TimeCreated, new TimeSpan(20, 29, 00));
             }
         }
 
@@ -182,19 +230,15 @@
             {
                 XmpExifProvider xmpExifProvider = new XmpExifProvider(wpfFileManager.BitmapMetadata);
 
-                Assert.AreEqual<string>(xmpExifProvider.DateTimeOriginal, "2008-05-04T20:29:00Z");
                 Assert.AreEqual<string>(xmpExifProvider.FocalLength, "6200/1000");
-                Assert.AreEqual<string>(xmpExifProvider.MaxApertureValue, "95/32");
-                Assert.AreEqual<string>(xmpExifProvider.FNumber, "80/10");
-                Assert.AreEqual<string>(xmpExifProvider.Aperture, "192/32");
-                Assert.AreEqual<string>(xmpExifProvider.ExposureTime, "1/320");
-                Assert.AreEqual<string>(xmpExifProvider.ShutterSpeedValue, "266/32");
-                Assert.AreEqual<string>(xmpExifProvider.ExposureBiasValue, "0/3");
+                Assert.AreEqual<Aperture>(xmpExifProvider.MaxApertureValue, new Aperture(95, 32));
+                Assert.AreEqual<Aperture>(xmpExifProvider.Aperture, new Aperture(80, 10));
                 Assert.AreEqual<string>(xmpExifProvider.ExifVersion, "0220");
-                Assert.AreEqual<string>(xmpExifProvider.MeteringMode, "5");
-                Assert.AreEqual<string>(xmpExifProvider.ISOSpeed, "80");
+                Assert.AreEqual<MetadataEnums.MeteringModes>(xmpExifProvider.MeteringMode, MetadataEnums.MeteringModes.Pattern);
+                Assert.AreEqual<IsoSpeed>(xmpExifProvider.IsoSpeed, new IsoSpeed(80));
                 Assert.AreEqual<string>(xmpExifProvider.WhiteBalance, "0");
-                Assert.AreEqual<string>(xmpExifProvider.DigitalZoomRatio, "3648/3648");
+                Assert.AreEqual<double?>(xmpExifProvider.DigitalZoomRatio, 0.0);
+                Assert.AreEqual<ExposureBias>(xmpExifProvider.ExposureBias, new ExposureBias("0/3"));
             }
         }
 
@@ -205,16 +249,15 @@
         public void WriteFotoflyMetadata()
         {
             // Copy file
-            File.Copy(this.samplePhotosFolder + TestPhotos.UnitTest1, this.samplePhotosFolder + TestPhotos.UnitTestX, true);
+            File.Copy(this.samplePhotosFolder + TestPhotos.UnitTest1, this.samplePhotosFolder + TestPhotos.UnitTestTemp1, true);
 
             // Test Values
             DateTime testDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
-            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestX, true))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestTemp1, true))
             {
                 XmpFotoflyProvider xmpFotoflyProvider = new XmpFotoflyProvider(wpfFileManager.BitmapMetadata);
                 xmpFotoflyProvider.AccuracyOfGps = GpsPosition.Accuracies.Region;
-                xmpFotoflyProvider.AddressOfGps = new Address("United States/California/San Francisco/Mission Street");
                 xmpFotoflyProvider.AddressOfGpsLookupDate = testDate;
                 xmpFotoflyProvider.AddressOfGpsSource = "Bing Maps for Enterprise";
                 xmpFotoflyProvider.LastEditDate = testDate;
@@ -226,12 +269,11 @@
                 wpfFileManager.WriteMetadata();
             }
 
-            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestX))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestTemp1))
             {
                 XmpFotoflyProvider xmpFotoflyProvider = new XmpFotoflyProvider(wpfFileManager.BitmapMetadata);
 
                 Assert.AreEqual<GpsPosition.Accuracies>(xmpFotoflyProvider.AccuracyOfGps, GpsPosition.Accuracies.Region);
-                Assert.AreEqual<Address>(xmpFotoflyProvider.AddressOfGps, new Address("United States/California/San Francisco/Mission Street"));
                 Assert.AreEqual<DateTime>(xmpFotoflyProvider.AddressOfGpsLookupDate, testDate);
                 Assert.AreEqual<string>(xmpFotoflyProvider.AddressOfGpsSource, "Bing Maps for Enterprise");
                 Assert.AreEqual<DateTime>(xmpFotoflyProvider.LastEditDate, testDate);
@@ -241,9 +283,9 @@
                 Assert.AreEqual<double>(xmpFotoflyProvider.UtcOffset.Value, 5);
             }
 
-            if (File.Exists(this.samplePhotosFolder + TestPhotos.UnitTestX))
+            if (File.Exists(this.samplePhotosFolder + TestPhotos.UnitTestTemp1))
             {
-                File.Delete(this.samplePhotosFolder + TestPhotos.UnitTestX);
+                File.Delete(this.samplePhotosFolder + TestPhotos.UnitTestTemp1);
             }
         }
 

@@ -115,16 +115,6 @@ namespace Fotofly
             Uncalibrated
         }
 
-        public enum Rating : int
-        {
-            Unknown = 0,
-            OneStar = 1,
-            TwoStar = 2,
-            ThreeStar = 3,
-            FourStar = 4,
-            FiveStar = 5
-        }
-
         public enum WhiteBalances : int
         {
             AutoWhiteBalance = 0,

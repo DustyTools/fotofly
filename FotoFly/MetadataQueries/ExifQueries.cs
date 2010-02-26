@@ -17,6 +17,10 @@ namespace Fotofly.MetadataQueries
         //       Image Tags
         // *********************************************************************************** //
 
+        // Image Description (270, 0x010E)
+        // Shown as Title in Windows File Properties
+        public static readonly MetdataQuery<string, string> Description = new MetdataQuery<string, string>("/app1/ifd/exif:{uint=270}");
+
         // Ascii. The manufacturer of the recording equipment. This is the manufacturer of
         // the DSC, scanner, video digitizer or other equipment that generated the image.
         // When the field is left blank, it is treated as unknown. 
@@ -50,11 +54,20 @@ namespace Fotofly.MetadataQueries
 
         // Ascii. The date and time of image creation. In Exif standard, it is the date and time the
         // file was changed. 
-        public static readonly MetdataQuery<string, string> DateTaken = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=306}");
+        public static readonly MetdataQuery<string, string> DateModified = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=306}");
+
+        // Ascii. SubSecond
+        public static readonly MetdataQuery<string, string> DateModifiedSubSec = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=37520}");
+
+        // Artist (315, 0x013B)
+        public static readonly MetdataQuery<string, string> Artist = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=315}");
 
         // *********************************************************************************** //
         //       Photo Tags
         // *********************************************************************************** //
+
+        // Copyright (33432, 0x8298) 
+        public static readonly MetdataQuery<string, string> Copyright = new MetdataQuery<string, string>("/app1/ifd/subifd:{uint=33432}");
 
         // Rational. Exposure time, given in seconds (sec). 
         public static readonly MetdataQuery<Int64, string> ShutterSpeed = new MetdataQuery<Int64, string>("/app1/ifd/exif/subifd:{uint=33434}");
@@ -71,14 +84,20 @@ namespace Fotofly.MetadataQueries
 
         // Ascii. The date and time when the original image data was generated. For a digital still camera
         // the date and time the picture was taken are recorded. 
-        public static readonly MetdataQuery<string, string> DateTakenOther = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=36867}");
+        public static readonly MetdataQuery<string, string> DateTaken = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=36867}");
+
+        // Ascii. SubSecond
+        public static readonly MetdataQuery<string, string> DateTakenSubSec = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=37521}");
 
         // Ascii. The date and time when the image was stored as digital data. 
         public static readonly MetdataQuery<string, string> DateDigitized = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=36868}");
 
+        // Ascii. SubSecond
+        public static readonly MetdataQuery<string, string> DateDigitizedSubSec = new MetdataQuery<string, string>("/app1/ifd/exif/subifd:{uint=37522}");
+
         // SRational. The exposure bias. The units is the APEX value. Ordinarily it is given
         // in the range of -99.99 to 99.99. 
-        public static readonly MetdataQuery<Int64, string> ExposureBias = new MetdataQuery<Int64, string>("/app1/ifd/exif/subifd:{uint=37380}");
+        public static readonly MetdataQuery<Int64, SRational> ExposureBias = new MetdataQuery<Int64, SRational>("/app1/ifd/exif/subifd:{uint=37380}");
 
         // Short
         public static readonly MetdataQuery<Int16, string> MeteringMode = new MetdataQuery<Int16, string>("/app1/ifd/exif/subifd:{uint=37383}");

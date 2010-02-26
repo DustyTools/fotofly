@@ -26,119 +26,12 @@ namespace Fotofly
             // Load Metadata Reader
             FileMetadata fileMetadata = new FileMetadata(bitmapMetadata);
 
-            // Copy across all Exif properties
-            // Prefer Exif but use XMP for Exif if no value set
-            photoMetadata.Aperture = fileMetadata.ExifProvider.Aperture;
-            photoMetadata.Authors = fileMetadata.ExifProvider.Authors;
-            photoMetadata.CameraManufacturer = fileMetadata.ExifProvider.CameraManufacturer;
-            photoMetadata.CameraModel = fileMetadata.ExifProvider.CameraModel;
-            photoMetadata.Copyright = fileMetadata.ExifProvider.Copyright;
-            photoMetadata.CreationSoftware = fileMetadata.ExifProvider.CreationSoftware;
-            photoMetadata.DateDigitised = fileMetadata.ExifProvider.DateDigitised;
-            photoMetadata.DateTaken = fileMetadata.ExifProvider.DateTaken;
-            photoMetadata.DigitalZoomRatio = fileMetadata.ExifProvider.DigitalZoomRatio;
-            photoMetadata.ExposureBias = fileMetadata.ExifProvider.ExposureBias;
-            photoMetadata.FocalLength = fileMetadata.ExifProvider.FocalLength;
-            photoMetadata.HorizontalResolution = fileMetadata.ExifProvider.HorizontalResolution;
-            photoMetadata.ImageHeight = fileMetadata.ExifProvider.ImageHeight;
-            photoMetadata.ImageWidth = fileMetadata.ExifProvider.ImageWidth;
-            photoMetadata.Iso = fileMetadata.ExifProvider.Iso;
-            photoMetadata.MeteringMode = fileMetadata.ExifProvider.MeteringMode;
-            photoMetadata.ShutterSpeed = fileMetadata.ExifProvider.ShutterSpeed;
-            photoMetadata.Title = fileMetadata.ExifProvider.Title;
-            photoMetadata.VerticalResolution = fileMetadata.ExifProvider.VerticalResolution;
+            // List of changes, used for debugging
+            List<string> changes = new List<string>();
 
-            photoMetadata.Subject = fileMetadata.XmpCoreProvider.Subject;
-            photoMetadata.Tags = fileMetadata.XmpCoreProvider.Tags;
-            photoMetadata.Comment = fileMetadata.XmpCoreProvider.Comment;
+            PhotoMetadataTools.UseReflection(fileMetadata, photoMetadata, true, ref changes);
 
-            photoMetadata.DateAquired = fileMetadata.XmpMicrosoftProvider.DateAquired;
-            photoMetadata.RegionInfo = fileMetadata.XmpMicrosoftProvider.RegionInfo;
-
-            // IPTC Rules
-            // Prefer XMP but use IPTC if no value set
-            // Except if the IPTC Checksum is different from XMP when both are set
-
-            // Rating
-            // Check Xap, then Microsoft
-            if (fileMetadata.XmpXapProvider.Rating != MetadataEnums.Rating.Unknown)
-            {
-                photoMetadata.Rating = fileMetadata.XmpXapProvider.Rating;
-            }
-            else if (fileMetadata.XmpMicrosoftProvider.Rating != MetadataEnums.Rating.Unknown)
-            {
-                photoMetadata.Rating = fileMetadata.XmpMicrosoftProvider.Rating;
-            }
-            else
-            {
-                photoMetadata.Rating = MetadataEnums.Rating.Unknown;
-            }
-
-            // Retrieve Fotofly Data
-            photoMetadata.AccuracyOfGps = fileMetadata.XmpFotoflyProvider.AccuracyOfGps;
-            photoMetadata.AddressOfGps = fileMetadata.XmpFotoflyProvider.AddressOfGps;
-            photoMetadata.AddressOfGpsLookupDate = fileMetadata.XmpFotoflyProvider.AddressOfGpsLookupDate;
-            photoMetadata.AddressOfGpsSource = fileMetadata.XmpFotoflyProvider.AddressOfGpsSource;
-            photoMetadata.FotoflyLastEditDate = fileMetadata.XmpFotoflyProvider.LastEditDate;
-            photoMetadata.OriginalCameraDate = fileMetadata.XmpFotoflyProvider.OriginalCameraDate;
-            photoMetadata.OriginalCameraFilename = fileMetadata.XmpFotoflyProvider.OriginalCameraFilename;
-            photoMetadata.UtcDate = fileMetadata.XmpFotoflyProvider.UtcDate;
-            photoMetadata.UtcOffset = fileMetadata.XmpFotoflyProvider.UtcOffset;
-
-            // Location Created - Check Exif, then XMP
-            if (fileMetadata.GpsProvider.GpsPositionCreated.IsValidCoordinate)
-            {
-                photoMetadata.GpsPositionCreated = fileMetadata.GpsProvider.GpsPositionCreated;
-            }
-            else if (fileMetadata.XmpExifProvider.GpsPositionCreated.IsValidCoordinate)
-            {
-                photoMetadata.GpsPositionCreated = fileMetadata.XmpExifProvider.GpsPositionCreated;
-            }
-            else
-            {
-                photoMetadata.GpsPositionCreated = new GpsPosition();
-            }
-
-            // Location Shown - Check Exif, then XMP
-            if (fileMetadata.GpsProvider.GpsPositionShown.IsValidCoordinate)
-            {
-                photoMetadata.GpsPositionShown = fileMetadata.GpsProvider.GpsPositionShown;
-            }
-            else if (fileMetadata.XmpExifProvider.GpsPositionShown.IsValidCoordinate)
-            {
-                photoMetadata.GpsPositionShown = fileMetadata.XmpExifProvider.GpsPositionShown;
-            }
-            else
-            {
-                photoMetadata.GpsPositionShown = new GpsPosition();
-            }
-
-            // Get Address
-            // Order of precidence is XMP for IPTC, then IPTC
-            if (fileMetadata.XmpIptcProvider.Address.IsValidAddress)
-            {
-                photoMetadata.Address = fileMetadata.XmpIptcProvider.Address;
-            }
-            else if (fileMetadata.IptcProvider.Address.IsValidAddress)
-            {
-                photoMetadata.Address = fileMetadata.IptcProvider.Address;
-            }
-            else
-            {
-                photoMetadata.Address = new Address();
-            }
-
-            if (bitmapDecoder != null)
-            {
-                // Manually copy across ImageHeight & ImageWidth if they are not set in metadata
-                // This should be pretty rare but can happen if the image has been resized or manipulated and the metadata not copied across
-                if (photoMetadata.ImageHeight == 0 || photoMetadata.ImageWidth == 0)
-                {
-                    photoMetadata.ImageHeight = bitmapDecoder.Frames[0].PixelHeight;
-                    photoMetadata.ImageWidth = bitmapDecoder.Frames[0].PixelWidth;
-                }
-            }
-
+            // Use Reflection to Copy all values from fileMetadata to photoMetadata
             return photoMetadata;
         }
 
@@ -146,66 +39,11 @@ namespace Fotofly
         {
             FileMetadata fileMetadata = new FileMetadata(bitmapMetadata);
 
-            // Copy across all base properties
-            // NOTE: A lot of PhotoMetadata values are Readonly (such as camera settings like Aperture)
-            // Always write to Exif
-            // Except if XMP set, if it's set either delete or also set it
-            // TODO: Move Exif reconsilation into a more structure place (another method?)
-            fileMetadata.ExifProvider.Authors = photoMetadata.Authors;
-            fileMetadata.ExifProvider.CameraManufacturer = photoMetadata.CameraManufacturer;
-            fileMetadata.ExifProvider.CameraModel = photoMetadata.CameraModel;
-            fileMetadata.ExifProvider.Copyright = photoMetadata.Copyright;
-            fileMetadata.ExifProvider.CreationSoftware = photoMetadata.CreationSoftware;
-            fileMetadata.ExifProvider.DateDigitised = photoMetadata.DateDigitised;
-            fileMetadata.ExifProvider.DateTaken = photoMetadata.DateTaken;
-            fileMetadata.ExifProvider.Title = photoMetadata.Title;
+            // List of changes, used for debugging
+            List<string> changes = new List<string>();
 
-            fileMetadata.XmpCoreProvider.Comment = photoMetadata.Comment;
-            fileMetadata.XmpCoreProvider.Subject = photoMetadata.Subject;
-            fileMetadata.XmpCoreProvider.Tags = photoMetadata.Tags;
-
-            fileMetadata.XmpMicrosoftProvider.DateAquired = photoMetadata.DateAquired;
-            fileMetadata.XmpMicrosoftProvider.RegionInfo = photoMetadata.RegionInfo;
-
-            // Save Fotofly Data
-            fileMetadata.XmpFotoflyProvider.AccuracyOfGps = photoMetadata.AccuracyOfGps;
-            fileMetadata.XmpFotoflyProvider.AddressOfGps = photoMetadata.AddressOfGps;
-            fileMetadata.XmpFotoflyProvider.AddressOfGpsLookupDate = photoMetadata.AddressOfGpsLookupDate;
-            fileMetadata.XmpFotoflyProvider.AddressOfGpsSource = photoMetadata.AddressOfGpsSource;
-            fileMetadata.XmpFotoflyProvider.LastEditDate = photoMetadata.FotoflyLastEditDate;
-            fileMetadata.XmpFotoflyProvider.OriginalCameraDate = photoMetadata.OriginalCameraDate;
-            fileMetadata.XmpFotoflyProvider.OriginalCameraFilename = photoMetadata.OriginalCameraFilename;
-            fileMetadata.XmpFotoflyProvider.UtcDate = photoMetadata.UtcDate;
-            fileMetadata.XmpFotoflyProvider.UtcOffset = photoMetadata.UtcOffset;
-
-            // Set Address, both XMP4IPTC & IPTC
-            fileMetadata.XmpIptcProvider.Address = photoMetadata.Address;
-            fileMetadata.IptcProvider.Address = photoMetadata.Address;
-
-            // Save Rating
-            // Only save to XmpMicrosoft if it's been set
-            fileMetadata.XmpXapProvider.Rating = photoMetadata.Rating;
-
-            if (fileMetadata.XmpMicrosoftProvider.Rating != MetadataEnums.Rating.Unknown)
-            {
-                fileMetadata.XmpMicrosoftProvider.Rating = photoMetadata.Rating;
-            }
-
-            // GPS
-            // Save to Gps
-            // Only save to XMP if it's set
-            fileMetadata.GpsProvider.GpsPositionCreated = photoMetadata.GpsPositionCreated;
-            fileMetadata.GpsProvider.GpsPositionShown = photoMetadata.GpsPositionShown;
-
-            if (fileMetadata.XmpExifProvider.GpsPositionCreated.IsValidCoordinate)
-            {
-                fileMetadata.XmpExifProvider.GpsPositionCreated = photoMetadata.GpsPositionCreated;
-            }
-
-            if (fileMetadata.XmpExifProvider.GpsPositionShown.IsValidCoordinate)
-            {
-                fileMetadata.XmpExifProvider.GpsPositionShown = photoMetadata.GpsPositionShown;
-            }
+            // Use Reflection to Copy all values from photoMetadata to FileMetadata
+            PhotoMetadataTools.UseReflection(photoMetadata, fileMetadata, true, ref changes);
         }
 
         public static void CompareMetadata(object source, object destination, ref List<string> changes)

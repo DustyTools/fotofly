@@ -68,31 +68,57 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// Comment, also known as Description
+        /// DateModified
         /// </summary>
-        public string Comment
+        public DateTime DateTimeModified
         {
             get
             {
-                string formattedString = String.Empty;
+                ExifDateTime exifDateTime = this.BitmapMetadata.GetQuery<ExifDateTime>(XmpCoreQueries.DateTimeModified.Query);
 
-                try
+                if (exifDateTime == null)
                 {
-                    formattedString = this.BitmapMetadata.Comment;
+                    return new DateTime();
                 }
-                catch
+                else
                 {
-                    formattedString = String.Empty;
+                    return exifDateTime.ToDateTime();
                 }
-
-                return formattedString;
             }
 
             set
             {
-                if (this.ValueHasChanged(value, this.Comment))
+                if (this.ValueHasChanged(value, this.DateTimeModified))
                 {
-                    this.BitmapMetadata.Comment = value;
+                    this.BitmapMetadata.SetQuery(XmpCoreQueries.DateTimeModified.Query, new ExifDateTime(value).ToExifString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Date Digitised
+        /// </summary>
+        public DateTime DateTimeDigitised
+        {
+            get
+            {
+                ExifDateTime exifDateTime = this.BitmapMetadata.GetQuery<ExifDateTime>(XmpCoreQueries.DateTimeDigitised.Query);
+
+                if (exifDateTime == null)
+                {
+                    return new DateTime();
+                }
+                else
+                {
+                    return exifDateTime.ToDateTime();
+                }
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.DateTimeDigitised))
+                {
+                    this.BitmapMetadata.SetQuery(XmpCoreQueries.DateTimeDigitised.Query, new ExifDateTime(value).ToExifString());
                 }
             }
         }

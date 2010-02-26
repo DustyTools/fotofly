@@ -21,15 +21,16 @@ namespace Fotofly.MetadataProviders
         {
         }
 
-        public Address Address
+
+        public Address AddressOfLocationShown
         {
             get
             {
                 Address address = new Address();
-                address.Country = this.Country;
-                address.City = this.City;
-                address.Region = this.Region;
-                address.AddressLine = this.SubLocation;
+                address.Country = this.LocationShownCountry;
+                address.City = this.LocationShownCity;
+                address.Region = this.LocationShownRegion;
+                address.AddressLine = this.LocationShownSubLocation;
 
                 if (address.IsValidAddress)
                 {
@@ -40,20 +41,20 @@ namespace Fotofly.MetadataProviders
                     return new Address();
                 }
             }
-         
+
             set
             {
-                this.Country = value.Country;
-                this.City = value.City;
-                this.Region = value.Region;
-                this.SubLocation = value.AddressLine;
+                this.LocationShownCountry = value.Country;
+                this.LocationShownCity = value.City;
+                this.LocationShownRegion = value.Region;
+                this.LocationShownSubLocation = value.AddressLine;
             }
         }
 
         /// <summary>
         /// City
         /// </summary>
-        public string City
+        public string LocationShownCity
         {
             get
             {
@@ -71,7 +72,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.City))
+                if (this.ValueHasChanged(value, this.LocationShownCity))
                 {
                     if (string.IsNullOrEmpty(value))
                     {
@@ -88,7 +89,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// County
         /// </summary>
-        public string Country
+        public string LocationShownCountry
         {
             get
             {
@@ -106,7 +107,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.Country))
+                if (this.ValueHasChanged(value, this.LocationShownCountry))
                 {
                     if (string.IsNullOrEmpty(value))
                     {
@@ -123,7 +124,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Region, also used for State, County or Province
         /// </summary>
-        public string Region
+        public string LocationShownRegion
         {
             get
             {
@@ -141,7 +142,7 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.Region))
+                if (this.ValueHasChanged(value, this.LocationShownRegion))
                 {
                     if (string.IsNullOrEmpty(value))
                     {
@@ -158,7 +159,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Sublocation
         /// </summary>
-        public string SubLocation
+        public string LocationShownSubLocation
         {
             get
             {
@@ -176,7 +177,176 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.SubLocation))
+                if (this.ValueHasChanged(value, this.LocationShownSubLocation))
+                {
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpIptcQueries.LocationCreatedSublocation.Query);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(XmpIptcQueries.LocationCreatedSublocation.Query, value);
+                    }
+                }
+            }
+        }
+
+        public Address AddressOfLocationCreated
+        {
+            get
+            {
+                Address address = new Address();
+                address.Country = this.LocationCreatedCountry;
+                address.City = this.LocationCreatedCity;
+                address.Region = this.LocationCreatedRegion;
+                address.AddressLine = this.LocationCreatedSubLocation;
+
+                if (address.IsValidAddress)
+                {
+                    return address;
+                }
+                else
+                {
+                    return new Address();
+                }
+            }
+         
+            set
+            {
+                this.LocationCreatedCountry = value.Country;
+                this.LocationCreatedCity = value.City;
+                this.LocationCreatedRegion = value.Region;
+                this.LocationCreatedSubLocation = value.AddressLine;
+            }
+        }
+
+        /// <summary>
+        /// City
+        /// </summary>
+        public string LocationCreatedCity
+        {
+            get
+            {
+                string returnValue = this.BitmapMetadata.GetQuery<string>(XmpIptcQueries.LocationCreatedCity.Query);
+
+                if (string.IsNullOrEmpty(returnValue))
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return returnValue;
+                }
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.LocationCreatedCity))
+                {
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpIptcQueries.LocationCreatedCity.Query);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(XmpIptcQueries.LocationCreatedCity.Query, value);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// County
+        /// </summary>
+        public string LocationCreatedCountry
+        {
+            get
+            {
+                string returnValue = this.BitmapMetadata.GetQuery<string>(XmpIptcQueries.LocationCreatedCountryName.Query);
+
+                if (string.IsNullOrEmpty(returnValue))
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return returnValue;
+                }
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.LocationCreatedCountry))
+                {
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpIptcQueries.LocationCreatedCountryName.Query);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(XmpIptcQueries.LocationCreatedCountryName.Query, value);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Region, also used for State, County or Province
+        /// </summary>
+        public string LocationCreatedRegion
+        {
+            get
+            {
+                string returnValue = this.BitmapMetadata.GetQuery<string>(XmpIptcQueries.LocationCreatedProvinceState.Query);
+
+                if (string.IsNullOrEmpty(returnValue))
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return returnValue;
+                }
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.LocationCreatedRegion))
+                {
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpIptcQueries.LocationCreatedProvinceState.Query);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(XmpIptcQueries.LocationCreatedProvinceState.Query, value);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sublocation
+        /// </summary>
+        public string LocationCreatedSubLocation
+        {
+            get
+            {
+                string returnValue = this.BitmapMetadata.GetQuery<string>(XmpIptcQueries.LocationCreatedSublocation.Query);
+
+                if (string.IsNullOrEmpty(returnValue))
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return returnValue;
+                }
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.LocationCreatedSubLocation))
                 {
                     if (string.IsNullOrEmpty(value))
                     {

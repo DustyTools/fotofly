@@ -25,7 +25,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// GpsPosition, encapculates Latitude, Longitude, Altitude, Source, Dimension and SatelliteTime
         /// </summary>
-        public GpsPosition GpsPositionCreated
+        public GpsPosition GpsPositionOfLocationCreated
         {
             get
             {
@@ -382,7 +382,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// GpsPosition, encapculates Latitude, Longitude, Altitude, Source, Dimension and SatelliteTime
         /// </summary>
-        public GpsPosition GpsPositionShown
+        public GpsPosition GpsPositionOfLocationShown
         {
             get
             {
@@ -773,19 +773,16 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Aperture
         /// </summary>
-        public string Aperture
+        public Aperture Aperture
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(XmpExifQueries.ApertureValue.Query);
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.Aperture))
+                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.FNumber.Query))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpExifQueries.ApertureValue.Query, value, string.IsNullOrEmpty(value));
+                    return new Aperture(this.BitmapMetadata.GetQuery<string>(XmpExifQueries.FNumber.Query));
                 }
+
+                return new Aperture();
             }
         }
 
@@ -923,44 +920,6 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// DateTimeDigitized
-        /// </summary>
-        public string DateTimeDigitized
-        {
-            get
-            {
-                return this.BitmapMetadata.GetQuery<string>(XmpExifQueries.DateTimeDigitized.Query);
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.DateTimeDigitized))
-                {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpExifQueries.DateTimeDigitized.Query, value, string.IsNullOrEmpty(value));
-                }
-            }
-        }
-
-        /// <summary>
-        /// DateTimeOriginal
-        /// </summary>
-        public string DateTimeOriginal
-        {
-            get
-            {
-                return this.BitmapMetadata.GetQuery<string>(XmpExifQueries.DateTimeOriginal.Query);
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.DateTimeOriginal))
-                {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpExifQueries.DateTimeOriginal.Query, value, string.IsNullOrEmpty(value));
-                }
-            }
-        }
-
-        /// <summary>
         /// DeviceSettingDescription
         /// </summary>
         public string DeviceSettingDescription
@@ -982,19 +941,25 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// DigitalZoomRatio
         /// </summary>
-        public string DigitalZoomRatio
+        public double? DigitalZoomRatio
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(XmpExifQueries.DigitalZoomRatio.Query);
-            }
+                string digitalZoomRatioString = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.DigitalZoomRatio.Query);
 
-            set
-            {
-                if (this.ValueHasChanged(value, this.DigitalZoomRatio))
+                if (!string.IsNullOrEmpty(digitalZoomRatioString))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpExifQueries.DigitalZoomRatio.Query, value, string.IsNullOrEmpty(value));
+                    double digitalZoomRatio;
+
+                    if (double.TryParse(digitalZoomRatioString, out digitalZoomRatio))
+                    {
+                        return digitalZoomRatio;
+                    }
+
+                    return 0.0;
                 }
+
+                return null;
             }
         }
 
@@ -1018,20 +983,19 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// ExposureBiasValue
+        /// Exposure Bias
         /// </summary>
-        public string ExposureBiasValue
+        public ExposureBias ExposureBias
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(XmpExifQueries.ExposureBiasValue.Query);
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.ExposureBiasValue))
+                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(ExifQueries.ExposureBias.Query))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpExifQueries.ExposureBiasValue.Query, value, string.IsNullOrEmpty(value));
+                    return new ExposureBias(this.BitmapMetadata.GetQuery<string>(XmpExifQueries.ExposureBias.Query));
+                }
+                else
+                {
+                    return null;
                 }
             }
         }
@@ -1362,19 +1326,21 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// ISOSpeedRatings
         /// </summary>
-        public string ISOSpeed
+        public IsoSpeed IsoSpeed
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(XmpExifQueries.ISOSpeed.Query);
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.ISOSpeed))
+                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.IsoSpeed.Query))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpExifQueries.ISOSpeed.Query, value, string.IsNullOrEmpty(value));
+                    string iso = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.IsoSpeed.Query);
+
+                    if (!string.IsNullOrEmpty(iso))
+                    {
+                        return new IsoSpeed(iso);
+                    }
                 }
+
+                return new IsoSpeed();
             }
         }
 
@@ -1400,37 +1366,42 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// MaxApertureValue
         /// </summary>
-        public string MaxApertureValue
+        public Aperture MaxApertureValue
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(XmpExifQueries.MaxApertureValue.Query);
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.MaxApertureValue))
+                if (this.BitmapMetadata.ContainsQuery(XmpExifQueries.MaxApertureValue.Query))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpExifQueries.MaxApertureValue.Query, value, string.IsNullOrEmpty(value));
+                    string maxAperture = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.MaxApertureValue.Query);
+
+                    if (!string.IsNullOrEmpty(maxAperture))
+                    {
+                        return new Aperture(maxAperture);
+                    }
                 }
+
+                return new Aperture();
             }
         }
 
         /// <summary>
         /// MeteringMode
         /// </summary>
-        public string MeteringMode
+        public MetadataEnums.MeteringModes MeteringMode
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(XmpExifQueries.MeteringMode.Query);
-            }
+                string meteringMode = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.MeteringMode.Query);
 
-            set
-            {
-                if (this.ValueHasChanged(value, this.MeteringMode))
+                int meteringModeInt;
+
+                if (int.TryParse(meteringMode, out meteringModeInt))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpExifQueries.MeteringMode.Query, value, string.IsNullOrEmpty(value));
+                    return (MetadataEnums.MeteringModes)meteringModeInt;
+                }
+                else
+                {
+                    return MetadataEnums.MeteringModes.Unknown;
                 }
             }
         }
@@ -1588,21 +1559,18 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// ShutterSpeedValue
+        /// Shutter Speed
         /// </summary>
-        public string ShutterSpeedValue
+        public ShutterSpeed ShutterSpeed
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(XmpExifQueries.ShutterSpeedValue.Query);
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.ShutterSpeedValue))
+                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(XmpExifQueries.ExposureTime.Query))
                 {
-                    this.BitmapMetadata.SetQueryOrRemove(XmpExifQueries.ShutterSpeedValue.Query, value, string.IsNullOrEmpty(value));
+                    return new ShutterSpeed(this.BitmapMetadata.GetQuery<string>(XmpExifQueries.ExposureTime.Query));
                 }
+
+                return null;
             }
         }
 

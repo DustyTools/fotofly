@@ -270,8 +270,14 @@ namespace Fotofly
                 // Copy that gets changed
                 this.InternalPhotoMetadata = PhotoMetadataTools.ReadBitmapMetadata(wpfFileManager.BitmapMetadata, wpfFileManager.BitmapDecoder);
 
+                this.InternalPhotoMetadata.ImageHeight = wpfFileManager.BitmapDecoder.Frames[0].PixelHeight;
+                this.InternalPhotoMetadata.ImageWidth = wpfFileManager.BitmapDecoder.Frames[0].PixelWidth;
+
                 // Copy saved metadata for comparisons
                 this.InternalPhotoMetadataInFile = PhotoMetadataTools.ReadBitmapMetadata(wpfFileManager.BitmapMetadata, wpfFileManager.BitmapDecoder);
+
+                this.InternalPhotoMetadataInFile.ImageHeight = wpfFileManager.BitmapDecoder.Frames[0].PixelHeight;
+                this.InternalPhotoMetadataInFile.ImageWidth = wpfFileManager.BitmapDecoder.Frames[0].PixelWidth;
             }
         }
 

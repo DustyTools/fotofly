@@ -23,37 +23,9 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// List of Authors, also known as Photographer
-        /// </summary>
-        public PeopleList Authors
-        {
-            get
-            {
-                ReadOnlyCollection<string> readOnlyCollectionString = this.BitmapMetadata.Author;
-
-                if (readOnlyCollectionString == null || readOnlyCollectionString.Count == 0)
-                {
-                    return new PeopleList();
-                }
-                else
-                {
-                    return new PeopleList(readOnlyCollectionString);
-                }
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.Authors))
-                {
-                    this.BitmapMetadata.Author = new ReadOnlyCollection<string>(value);
-                }
-            }
-        }
-        
-        /// <summary>
         /// Aperture
         /// </summary>
-        public string Aperture
+        public Aperture Aperture
         {
             get
             {
@@ -61,12 +33,10 @@ namespace Fotofly.MetadataProviders
 
                 if (urational != null)
                 {
-                    return "f/" + urational.ToDouble().ToString();
+                    return new Aperture(urational);
                 }
-                else
-                {
-                    return string.Empty;
-                }
+
+                return new Aperture();
             }
         }
 
@@ -152,25 +122,33 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                string formattedString = string.Empty;
-
-                try
-                {
-                    formattedString = this.BitmapMetadata.Copyright;
-                }
-                catch
-                {
-                    return String.Empty;
-                }
-
-                return formattedString;
+                return this.BitmapMetadata.GetQuery<string>(ExifQueries.Copyright.Query);
             }
 
             set
             {
                 if (this.ValueHasChanged(value, this.Copyright))
                 {
-                    this.BitmapMetadata.Copyright = value;
+                    this.BitmapMetadata.SetQuery(ExifQueries.Copyright.Query, value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Description
+        /// </summary>
+        public string Description
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(ExifQueries.Description.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.Description))
+                {
+                    this.BitmapMetadata.SetQuery(ExifQueries.Description.Query, value);
                 }
             }
         }
@@ -223,9 +201,37 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
+        /// DateModified
+        /// </summary>
+        public DateTime DateTimeModified
+        {
+            get
+            {
+                ExifDateTime exifDateTime = this.BitmapMetadata.GetQuery<ExifDateTime>(ExifQueries.DateModified.Query);
+
+                if (exifDateTime == null)
+                {
+                    return new DateTime();
+                }
+                else
+                {
+                    return exifDateTime.ToDateTime();
+                }
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.DateTimeModified))
+                {
+                    this.BitmapMetadata.SetQuery(ExifQueries.DateModified.Query, new ExifDateTime(value).ToExifString());
+                }
+            }
+        }
+
+        /// <summary>
         /// DateTaken, recorded by the camera when the photo is taken
         /// </summary>
-        public DateTime DateTaken
+        public DateTime DateTimeTaken
         {
             get
             {
@@ -243,14 +249,11 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.DateTaken))
+                if (this.ValueHasChanged(value, this.DateTimeTaken))
                 {
                     // Write to tempBitmap count
                     // Use sortable string to avoid US date format issue with Month\Date
                     this.BitmapMetadata.DateTaken = value.ToString("s");
-
-                    // Use specific format for EXIF data, 2008:12:01 13:14:10
-                    this.BitmapMetadata.SetQuery(ExifQueries.DateTaken.Query, value.ToString("yyyy:MM:dd HH:mm:ss"));
                 }
             }
         }
@@ -258,7 +261,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// DigitalZoomRatio
         /// </summary>
-        public double DigitalZoomRatio
+        public double? DigitalZoomRatio
         {
             get
             {
@@ -266,7 +269,7 @@ namespace Fotofly.MetadataProviders
 
                 if (rational == null || rational.Numerator == 0)
                 {
-                    return 0;
+                    return null;
                 }
                 else
                 {
@@ -278,25 +281,18 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Exposure Bias
         /// </summary>
-        public string ExposureBias
+        public ExposureBias ExposureBias
         {
             get
             {
-                SRational rational = this.BitmapMetadata.GetQuery<SRational>(ExifQueries.ExposureBias.Query);
-
-                if (rational != null && rational.ToInt() != 0)
+                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(ExifQueries.ExposureBias.Query))
                 {
-                    if (rational.ToInt() > 0)
-                    {
-                        return "+" + Math.Round(rational.ToDouble(), 1) + " step";
-                    }
-                    else
-                    {
-                        return Math.Round(rational.ToDouble(), 1) + " step";
-                    }
+                    return new ExposureBias(this.BitmapMetadata.GetQuery<SRational>(ExifQueries.ExposureBias.Query));
                 }
-
-                return "0 step";
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -323,25 +319,21 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// ISO Speed rating 
         /// </summary>
-        public string Iso
+        public IsoSpeed IsoSpeed
         {
             get
             {
-                if (this.BitmapMetadata.IsQueryOfType(ExifQueries.IsoSpeedRating.Query, ExifQueries.IsoSpeedRating.BitmapMetadataType))
+                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(ExifQueries.IsoSpeedRating.Query))
                 {
-                    UInt16? iso = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.IsoSpeedRating.Query);
+                    UInt16? isoSpeed = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.IsoSpeedRating.Query);
 
-                    if (iso == null)
+                    if (isoSpeed != null)
                     {
-                        return string.Empty;
-                    }
-                    else if (iso.Value > 0 && iso.Value < 10000)
-                    {
-                        return "ISO-" + iso.Value.ToString();
+                        return new IsoSpeed(isoSpeed.Value);
                     }
                 }
 
-                return string.Empty;
+                return new IsoSpeed();
             }
         }
 
@@ -408,47 +400,21 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Shutter Speed
         /// </summary>
-        public string ShutterSpeed
+        public ShutterSpeed ShutterSpeed
         {
             get
             {
-                try
+                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(ExifQueries.ShutterSpeed.Query))
                 {
                     URational urational = this.BitmapMetadata.GetQuery<URational>(ExifQueries.ShutterSpeed.Query);
 
                     if (urational != null)
                     {
-                        double exposureTime = urational.ToDouble();
-
-                        string formattedString = String.Empty;
-
-                        if (exposureTime > 1)
-                        {
-                            formattedString = exposureTime.ToString();
-                        }
-                        else
-                        {
-                            // Convert Decimal to Integer
-                            double newDecimal = System.Math.Round((1 / exposureTime), 0);
-
-                            formattedString = newDecimal.ToString();
-
-                            formattedString = "1/" + formattedString;
-                        }
-
-                        if (formattedString != String.Empty)
-                        {
-                            formattedString += " sec.";
-                        }
-
-                        return formattedString;
+                        return new ShutterSpeed(urational);
                     }
                 }
-                catch
-                {
-                }
 
-                return String.Empty;
+                return null;
             }
         }
 

@@ -39,7 +39,7 @@ namespace Fotofly.MetadataQueries
         // physical representation), following IIM conventions. For example, a photo taken during the American
         // Civil War would have a creation date during that epoch (1861-1865) rather than the date the photo
         // was digitized for archiving.
-        public static readonly MetdataQuery<string, string> DateCreated = new MetdataQuery<string, string>("/xmp/photoshop:DateCreated");
+        public static readonly MetdataQuery<string, string> DateTimeCreated = new MetdataQuery<string, string>("/xmp/photoshop:DateCreated");
 
         // Text : Headline.
         public static readonly MetdataQuery<string, string> Headline = new MetdataQuery<string, string>("/xmp/photoshop:Headline");

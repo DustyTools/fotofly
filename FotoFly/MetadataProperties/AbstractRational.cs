@@ -27,6 +27,17 @@ namespace Fotofly
             this.Denominator = accuracy;
         }
 
+        /// <summary>
+        /// Creates an Exif Rational
+        /// </summary>
+        /// <param name="numerator">The numerator</param>
+        /// <param name="denonimator">The denominator</param>
+        public AbstractRational(int numerator, int denominator)
+        {
+            this.Numerator = numerator;
+            this.Denominator = denominator;
+        }
+
         public int Numerator
         {
             get;
@@ -59,7 +70,14 @@ namespace Fotofly
         /// <returns>Int</returns>
         public int ToInt()
         {
-            return Convert.ToInt32(Math.Round(Convert.ToDouble(this.Numerator) / Convert.ToDouble(this.Denominator)));
+            if (this.Numerator != 0 && this.Numerator != 0)
+            {
+                return Convert.ToInt32(Math.Round(Convert.ToDouble(this.Numerator) / Convert.ToDouble(this.Denominator)));
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         /// <summary>

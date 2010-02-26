@@ -214,9 +214,9 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// Rating (Range 0-5)
+        /// Rating (Range -1.0 to 5.0)
         /// </summary>
-        public MetadataEnums.Rating Rating
+        public Rating Rating
         {
             // 1 Star - 1
             // 2 Star - 25
@@ -229,59 +229,60 @@ namespace Fotofly.MetadataProviders
 
                 if (String.IsNullOrEmpty(rating))
                 {
-                    return MetadataEnums.Rating.Unknown;
+                    return new Rating();
                 }
                 else if (rating == "1")
                 {
-                    return MetadataEnums.Rating.OneStar;
+                    return new Rating(1);
                 }
                 else if (rating == "25")
                 {
-                    return MetadataEnums.Rating.TwoStar;
+                    return new Rating(2);
                 }
                 else if (rating == "50")
                 {
-                    return MetadataEnums.Rating.ThreeStar;
+                    return new Rating(3);
                 }
                 else if (rating == "75")
                 {
-                    return MetadataEnums.Rating.FourStar;
+                    return new Rating(4);
                 }
                 else if (rating == "99")
                 {
-                    return MetadataEnums.Rating.FiveStar;
+                    return new Rating(5);
                 }
 
-                return MetadataEnums.Rating.Unknown;
+                return new Rating();
             }
 
             set
             {
                 if (this.ValueHasChanged(value, this.Rating))
                 {
-                    switch (value)
+                    switch (value.AsEnum)
                     {
-                        case MetadataEnums.Rating.OneStar:
+                        case Rating.Ratings.OneStar:
                             this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.Rating.Query, "1");
                             break;
 
-                        case MetadataEnums.Rating.TwoStar:
+                        case Rating.Ratings.TwoStar:
                             this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.Rating.Query, "25");
                             break;
 
-                        case MetadataEnums.Rating.ThreeStar:
+                        case Rating.Ratings.ThreeStar:
                             this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.Rating.Query, "50");
                             break;
 
-                        case MetadataEnums.Rating.FourStar:
+                        case Rating.Ratings.FourStar:
                             this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.Rating.Query, "75");
                             break;
 
-                        case MetadataEnums.Rating.FiveStar:
+                        case Rating.Ratings.FiveStar:
                             this.BitmapMetadata.SetQuery(XmpMicrosoftQueries.Rating.Query, "99");
                             break;
 
-                        case MetadataEnums.Rating.Unknown:
+                        case Rating.Ratings.Rejected:
+                        case Rating.Ratings.NoRating:
                         default:
                             this.BitmapMetadata.RemoveQuery(XmpMicrosoftQueries.Rating.Query);
                             break;

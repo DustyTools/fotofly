@@ -36,6 +36,12 @@ namespace Fotofly.MetadataQueries
         public static readonly MetdataQuery<string, string> State = new MetdataQuery<string, string>("/xmp/State");
         public static readonly MetdataQuery<string, string> Country = new MetdataQuery<string, string>("/xmp/Country");
 
+        // xmp:DateTimeModified
+        public static readonly MetdataQuery<string, string> DateTimeModified = new MetdataQuery<string, string>("/xmp/ModifyDate");
+
+        // xmp:DateTimeDigitised
+        public static readonly MetdataQuery<string, string> DateTimeDigitised = new MetdataQuery<string, string>("/xmp/CreateDate");
+
         // Unused Queries
         public static readonly MetdataQuery<string, string> AuthorsPosition = new MetdataQuery<string, string>("/xmp/AuthorsPosition");
         public static readonly MetdataQuery<string, string> Category = new MetdataQuery<string, string>("/xmp/Category");

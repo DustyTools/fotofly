@@ -86,6 +86,12 @@
         public static readonly string UnitTest2 = "UnitTest-2.jpg";
         
         // Not a real file, used to save the during testing
-        public static readonly string UnitTestX = "UnitTest-X.jpg";
+        public static readonly string UnitTestTemp1 = "UnitTest-Temp1.jpg";
+        public static readonly string UnitTestTemp2 = "UnitTest-Temp2.jpg";
+        public static readonly string UnitTestTemp3 = "UnitTest-Temp3.jpg";
+        public static readonly string UnitTestTemp4 = "UnitTest-Temp4.jpg";
+        public static readonly string UnitTestTemp5 = "UnitTest-Temp5.jpg";
+        public static readonly string UnitTestTemp6 = "UnitTest-Temp6.jpg";
+        public static readonly string UnitTestTemp7 = "UnitTest-Temp7.jpg";
     }
 }

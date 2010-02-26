@@ -23,6 +23,21 @@ namespace Fotofly.BitmapMetadataTools
 
     public static class BitmapMetadataHelper
     {
+        public static bool ContainsQueryAndNotEmpty(this BitmapMetadata bitmapMetadata, string query)
+        {
+            if (bitmapMetadata.ContainsQuery(query))
+            {
+                string value = bitmapMetadata.GetQuery<string>(query);
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static T GetQuery<T>(this BitmapMetadata bitmapMetadata, string query)
         {
             // Return default if the BitmapMetadata doesn't contain the query
@@ -92,30 +107,63 @@ namespace Fotofly.BitmapMetadataTools
                 // Convert back to typeof(T)
                 return (T)Convert.ChangeType(exifDateTime, typeof(T));
             }
+            else if (typeof(T) == typeof(TimeSpan))
+            {
+                string timespanString = (unknownObject as string);
+
+                if (!timespanString.EndsWith("+0000"))
+                {
+                    throw new NotImplementedException("Timespan contains timezone, need to implement the right code");
+                }
+                else if (timespanString.Length > 6)
+                {
+                    int hour = Convert.ToInt32(timespanString.Substring(0, 2));
+                    int minute = Convert.ToInt32(timespanString.Substring(2, 2));
+                    int second = Convert.ToInt32(timespanString.Substring(4, 2));
+
+                    TimeSpan timeSpan = new TimeSpan(hour, minute, second);
+
+                    return (T)Convert.ChangeType(timeSpan, typeof(T));
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
             else if (typeof(T) == typeof(DateTime))
             {
                 // Split the string into date & time
                 // Convert T to a space
                 string[] dateTimeString = (unknownObject as string).Replace("T", " ").Split(' ');
 
-                if (dateTimeString.Length != 2)
+                if (dateTimeString.Length == 1 && dateTimeString[0].Length == 8)
                 {
-                    return default(T);
+                    int year = Convert.ToInt32(dateTimeString[0].Substring(0, 4));
+                    int month = Convert.ToInt32(dateTimeString[0].Substring(4, 2));
+                    int day = Convert.ToInt32(dateTimeString[0].Substring(6, 2));
+
+                    DateTime dateTime = new DateTime(year, month, day);
+
+                    return (T)Convert.ChangeType(dateTime, typeof(T));
+                }
+                else if (dateTimeString.Length == 2)
+                {
+                    // Ensure seperate is dash for Date
+                    dateTimeString[0] = dateTimeString[0].Replace(":", "-");
+
+                    // Strip the Z from the Time
+                    dateTimeString[1] = dateTimeString[1].TrimEnd('Z');
+
+                    DateTime dateTime = DateTime.Parse(dateTimeString[0] + " " + dateTimeString[1]);
+
+                    // Parse as local time
+                    DateTime localDateTime = new DateTime(dateTime.Ticks, DateTimeKind.Local);
+
+                    // Convert back to typeof(T)
+                    return (T)Convert.ChangeType(localDateTime, typeof(T));
                 }
 
-                // Ensure seperate is dash for Date
-                dateTimeString[0] = dateTimeString[0].Replace(":", "-");
-
-                // Strip the Z from the Time
-                dateTimeString[1] = dateTimeString[1].TrimEnd('Z');
-                
-                DateTime dateTime = DateTime.Parse(dateTimeString[0] + " " + dateTimeString[1]);
-
-                // Parse as local time
-                DateTime localDateTime = new DateTime(dateTime.Ticks, DateTimeKind.Local);
-
-                // Convert back to typeof(T)
-                return (T)Convert.ChangeType(localDateTime, typeof(T));
+                return default(T);
             }
             else if (typeof(T) == typeof(string))
             {

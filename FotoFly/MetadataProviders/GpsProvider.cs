@@ -24,7 +24,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// GpsPosition, encapculates Latitude, Longitude, Altitude, Source, Dimension and SatelliteTime
         /// </summary>
-        public GpsPosition GpsPositionCreated
+        public GpsPosition GpsPositionOfLocationCreated
         {
             get
             {
@@ -68,7 +68,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// GpsPosition, encapculates Latitude, Longitude, Altitude, Source, Dimension and SatelliteTime
         /// </summary>
-        public GpsPosition GpsPositionShown
+        public GpsPosition GpsPositionOfLocationShown
         {
             get
             {

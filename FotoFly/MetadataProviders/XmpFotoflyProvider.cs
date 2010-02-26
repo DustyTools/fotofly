@@ -162,48 +162,6 @@ namespace Fotofly.MetadataProviders
             }
         }
 
-        public DateTime AddressOfGpsLookupDate
-        {
-            get
-            {
-                string addressOfGpsLookupDate = this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.AddressOfGpsLookupDate.Query);
-
-                if (string.IsNullOrEmpty(addressOfGpsLookupDate))
-                {
-                    return new DateTime();
-                }
-                else
-                {
-                    // Parse the object as a DateTime, stripping out the Z
-                    DateTime dateTime = DateTime.Parse(addressOfGpsLookupDate.TrimEnd('Z'));
-
-                    // Parse as local time
-                    DateTime localDateTime = new DateTime(dateTime.Ticks, DateTimeKind.Local);
-
-                    return localDateTime;
-                }
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.AddressOfGpsLookupDate))
-                {
-                    this.CreateFotoflyStruct();
-
-                    if (value == new DateTime())
-                    {
-                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AddressOfGpsLookupDate.Query);
-                    }
-                    else
-                    {
-                        string addressOfGpsLookupDate = value.ToString("yyyy-MM-ddTHH:mm:ss");
-
-                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AddressOfGpsLookupDate.Query, addressOfGpsLookupDate);
-                    }
-                }
-            }
-        }
-
         public DateTime OriginalCameraDate
         {
             get
@@ -271,35 +229,43 @@ namespace Fotofly.MetadataProviders
             }
         }
 
-        public Address AddressOfGps
+        public DateTime AddressOfGpsLookupDate
         {
             get
             {
-                string address = this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.AddressOfGps.Query);
+                string addressOfGpsLookupDate = this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.AddressOfGpsLookupDate.Query);
 
-                if (string.IsNullOrEmpty(address))
+                if (string.IsNullOrEmpty(addressOfGpsLookupDate))
                 {
-                    return new Address();
+                    return new DateTime();
                 }
                 else
                 {
-                    return new Address(address);
+                    // Parse the object as a DateTime, stripping out the Z
+                    DateTime dateTime = DateTime.Parse(addressOfGpsLookupDate.TrimEnd('Z'));
+
+                    // Parse as local time
+                    DateTime localDateTime = new DateTime(dateTime.Ticks, DateTimeKind.Local);
+
+                    return localDateTime;
                 }
             }
 
             set
             {
-                if (this.ValueHasChanged(value, this.AddressOfGps))
+                if (this.ValueHasChanged(value, this.AddressOfGpsLookupDate))
                 {
                     this.CreateFotoflyStruct();
 
-                    if (value == null || !value.IsValidAddress)
+                    if (value == new DateTime())
                     {
-                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AddressOfGps.Query);
+                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AddressOfGpsLookupDate.Query);
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AddressOfGps.Query, value.HierarchicalName);
+                        string addressOfGpsLookupDate = value.ToString("yyyy-MM-ddTHH:mm:ss");
+
+                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AddressOfGpsLookupDate.Query, addressOfGpsLookupDate);
                     }
                 }
             }

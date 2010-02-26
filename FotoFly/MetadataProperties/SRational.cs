@@ -10,8 +10,18 @@ namespace Fotofly
 
     public class SRational : AbstractRational
     {
+        public SRational(int numerator, int denominator)
+            : base(numerator, denominator)
+        {
+        }
+
         public SRational(double numerator, int accuracy)
             : base(numerator, accuracy)
+        {
+        }
+
+        public SRational()
+            : base(0, 0)
         {
         }
 

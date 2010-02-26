@@ -15,10 +15,21 @@ namespace Fotofly
         {
         }
 
+        public URational(int numerator, int denominator)
+            : base(numerator, denominator)
+        {
+        }
+
         public URational(UInt64 data)
         {
             this.Numerator = (int)(data & 0xFFFFFFFFL);
             this.Denominator = (int)((data & 0xFFFFFFFF00000000L) >> 32);
+        }
+
+        public URational(URational uRational)
+        {
+            this.Numerator = uRational.Numerator;
+            this.Denominator = uRational.Denominator;
         }
     }
 }

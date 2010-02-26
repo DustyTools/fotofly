@@ -31,7 +31,7 @@
             using (WpfFileManager wpfFileManager = new WpfFileManager(inputFile, true))
             {
                 FileMetadata wpfMetadata = new FileMetadata(wpfFileManager.BitmapMetadata);
-                wpfMetadata.IptcProvider.Country = "United States";
+                wpfMetadata.IptcProvider.LocationCreatedCountry = "United States";
 
                 wpfFileManager.WriteMetadata();
             }

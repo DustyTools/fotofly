@@ -34,8 +34,16 @@ namespace Fotofly.MetadataQueries
         public static readonly MetdataQuery<string, string> Location = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:Location");
         public static readonly MetdataQuery<string, string> Scene = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:Scene");
         public static readonly MetdataQuery<string, string> SubjectCode = new MetdataQuery<string, string>("/xmp/Iptc4xmpCore:SubjectCode");
-        
-        // Address
+
+        // Location Shown
+        public static readonly MetdataQuery<string, string> LocationShownWorldRegion = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationShownWorldRegion");
+        public static readonly MetdataQuery<string, string> LocationShownSublocation = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationShownSublocation");
+        public static readonly MetdataQuery<string, string> LocationShownCountryName = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationShownCountryName");
+        public static readonly MetdataQuery<string, string> LocationShownProvinceState = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationShownProvinceState");
+        public static readonly MetdataQuery<string, string> LocationShownCity = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationShownCity");
+
+        // Location Created
+        public static readonly MetdataQuery<string, string> LocationCreatedWorldRegion = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationCreatedWorldRegion");
         public static readonly MetdataQuery<string, string> LocationCreatedSublocation = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationCreatedSublocation");
         public static readonly MetdataQuery<string, string> LocationCreatedCountryName = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationCreatedCountryName");
         public static readonly MetdataQuery<string, string> LocationCreatedProvinceState = new MetdataQuery<string, string>("/xmp/Iptc4xmpExt:LocationCreatedProvinceState");

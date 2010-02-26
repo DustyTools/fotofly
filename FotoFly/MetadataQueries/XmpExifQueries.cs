@@ -180,7 +180,7 @@ namespace Fotofly.MetadataQueries
         // Date and time when image was stored as digital data, can be the same as DateTimeOriginal if originally
         // stored in digital form. Stored in ISO 8601 format. Includes the EXIF SubSecTimeDigitized data.
         public static readonly MetdataQuery<string, string> DateTimeDigitized = new MetdataQuery<string, string>("/xmp/exif:DateTimeDigitized");
-        
+
         // exif:ExposureTime Rational Internal EXIF tag 33434, 0x829A. Exposure time in seconds.
         public static readonly MetdataQuery<string, string> ExposureTime = new MetdataQuery<string, string>("/xmp/exif:ExposureTime");
         
@@ -205,7 +205,7 @@ namespace Fotofly.MetadataQueries
 
         // exif:ISOSpeed seq Integer Internal EXIF tag 34855, 0x8827. ISO Speed and ISO
         // Latitude of the input device as specified in ISO 12232.
-        public static readonly MetdataQuery<string, string> ISOSpeed = new MetdataQuery<string, string>("/xmp/exif:ISOSpeed");
+        public static readonly MetdataQuery<string, string> IsoSpeed = new MetdataQuery<string, string>("/xmp/exif:ISOSpeed");
         
         // exif:OECF OECF/SFR Internal EXIF tag 34856, 0x8828. Opto-Electoric
         // Conversion Function as specified in ISO 14524.
@@ -213,16 +213,16 @@ namespace Fotofly.MetadataQueries
         
         // exif:ShutterSpeedValue Rational Internal EXIF tag 37377, 0x9201. Shutter speed, unit is
         // APEX. See Annex C of the EXIF specification.
-        public static readonly MetdataQuery<string, string> ShutterSpeedValue = new MetdataQuery<string, string>("/xmp/exif:ShutterSpeedValue");
+        // public static readonly MetdataQuery<string, string> ShutterSpeedValue = new MetdataQuery<string, string>("/xmp/exif:ShutterSpeedValue");
         
         // exif:ApertureValue Rational Internal EXIF tag 37378, 0x9202. Lens aperture, unit is APEX.
-        public static readonly MetdataQuery<string, string> ApertureValue = new MetdataQuery<string, string>("/xmp/exif:ApertureValue");
+        // public static readonly MetdataQuery<string, string> ApertureValue = new MetdataQuery<string, string>("/xmp/exif:ApertureValue");
         
         // exif:BrightnessValue Rational Internal EXIF tag 37379, 0x9203. Brightness, unit is APEX.
         public static readonly MetdataQuery<string, string> BrightnessValue = new MetdataQuery<string, string>("/xmp/exif:BrightnessValue");
         
         // exif:ExposureBiasValue Rational Internal EXIF tag 37380, 0x9204. Exposure bias, unit is APEX.
-        public static readonly MetdataQuery<string, string> ExposureBiasValue = new MetdataQuery<string, string>("/xmp/exif:ExposureBiasValue");
+        public static readonly MetdataQuery<string, ExposureBias> ExposureBias = new MetdataQuery<string, ExposureBias>("/xmp/exif:ExposureBiasValue");
         
         // exif:MaxApertureValue Rational Internal EXIF tag 37381, 0x9205. Smallest F number of lens, in APEX.
         public static readonly MetdataQuery<string, string> MaxApertureValue = new MetdataQuery<string, string>("/xmp/exif:MaxApertureValue");

@@ -30,14 +30,10 @@
         // Contains GPS Data
         private JpgPhoto jpgPhotoTwo;
 
-        // This file is transient and deleted at the end of the test run
-        private JpgPhoto jpgPhotoX;
-
         public JpgPhotoUnitTests()
         {
             this.jpgPhotoOne = new JpgPhoto(this.samplePhotosFolder + TestPhotos.UnitTest1);
             this.jpgPhotoTwo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.UnitTest2);
-            this.jpgPhotoX = new JpgPhoto(this.samplePhotosFolder + TestPhotos.UnitTestX);
         }
 
         #region Pre & Post Test Pass Code, not currently used
@@ -86,24 +82,24 @@
         public void WriteMetadataToFile()
         {
             // Clean up from previous test
-            if (File.Exists(this.jpgPhotoX.FileFullName))
+            if (File.Exists(this.samplePhotosFolder + TestPhotos.UnitTestTemp3))
             {
-                File.Delete(this.jpgPhotoX.FileFullName);
+                File.Delete(this.samplePhotosFolder + TestPhotos.UnitTestTemp3);
             }
 
             // Test value to write
             string testString = "Test " + DateTime.Now.ToString();
             DateTime testDate = DateTime.Now.AddTicks(-DateTime.Now.TimeOfDay.Ticks);
+            string testTag = "Test Tag Î";
 
             // Write text
-            this.jpgPhotoTwo.Metadata.Subject = testString;
+            this.jpgPhotoTwo.Metadata.Description = testString;
             this.jpgPhotoTwo.Metadata.Comment = testString;
             this.jpgPhotoTwo.Metadata.Copyright = testString;
             this.jpgPhotoTwo.Metadata.CreationSoftware = testString;
-            this.jpgPhotoTwo.Metadata.Title = testString;
             this.jpgPhotoTwo.Metadata.AddressOfGpsSource = testString;
             this.jpgPhotoTwo.Metadata.Tags = new TagList();
-            this.jpgPhotoTwo.Metadata.Tags.Add(new Tag("Test Tag Î"));
+            this.jpgPhotoTwo.Metadata.Tags.Add(new Tag(testTag));
 
             // Write dates
             this.jpgPhotoTwo.Metadata.DateAquired = testDate;
@@ -113,43 +109,45 @@
             this.jpgPhotoTwo.Metadata.AddressOfGpsLookupDate = testDate;
 
             // Save Photo Three
-            this.jpgPhotoTwo.WriteMetadata(this.jpgPhotoX.FileFullName);
+            this.jpgPhotoTwo.WriteMetadata(this.samplePhotosFolder + TestPhotos.UnitTestTemp3);
 
             // Check the file was created
-            if (!File.Exists(this.jpgPhotoX.FileFullName))
+            if (!File.Exists(this.samplePhotosFolder + TestPhotos.UnitTestTemp3))
             {
                 Assert.Fail("File save failed");
             }
 
             // Read metadata
-            this.jpgPhotoX.ReadMetadata();
+            JpgPhoto jpgPhotoTemp = new JpgPhoto(this.samplePhotosFolder + TestPhotos.UnitTestTemp3);
+            jpgPhotoTemp.ReadMetadata();
 
             // Check the file was created
-            if (this.jpgPhotoX.Metadata == null)
+            if (jpgPhotoTemp.Metadata == null)
             {
                 Assert.Fail("Unable to read saved files metadata");
             }
 
             // Check the text was set correctly
-            StringAssert.Matches(this.jpgPhotoX.Metadata.Subject, new Regex(testString));
-            StringAssert.Matches(this.jpgPhotoX.Metadata.Comment, new Regex(testString));
-            StringAssert.Matches(this.jpgPhotoX.Metadata.Copyright, new Regex(testString));
-            StringAssert.Matches(this.jpgPhotoX.Metadata.CreationSoftware, new Regex(testString));
-            StringAssert.Matches(this.jpgPhotoX.Metadata.Title, new Regex(testString));
-            StringAssert.Matches(this.jpgPhotoX.Metadata.AddressOfGpsSource, new Regex(testString));
+            StringAssert.Matches(jpgPhotoTemp.Metadata.Description, new Regex(testString), "Description");
+            StringAssert.Matches(jpgPhotoTemp.Metadata.Comment, new Regex(testString), "Comment");
+            StringAssert.Matches(jpgPhotoTemp.Metadata.Copyright, new Regex(testString), "Copyright");
+            StringAssert.Matches(jpgPhotoTemp.Metadata.CreationSoftware, new Regex(testString), "CreationSoftware");
+            StringAssert.Matches(jpgPhotoTemp.Metadata.AddressOfGpsSource, new Regex(testString), "AddressOfGpsSource");
 
             // Check date was written
-            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.DateAquired, testDate);
-            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.DateDigitised, testDate);
-            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.DateTaken, testDate);
-            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.UtcDate, testDate);
-            Assert.AreEqual<DateTime>(this.jpgPhotoTwo.Metadata.AddressOfGpsLookupDate, testDate);
-            Assert.AreEqual<Tag>(this.jpgPhotoOne.Metadata.Tags.Last(), new Tag("Test Tag Î"));
+            Assert.AreEqual<DateTime>(jpgPhotoTemp.Metadata.DateAquired, testDate, "DateAquired");
+            Assert.AreEqual<DateTime>(jpgPhotoTemp.Metadata.DateDigitised, testDate, "DateDigitised");
+            Assert.AreEqual<DateTime>(jpgPhotoTemp.Metadata.DateTaken, testDate, "DateTaken");
+            Assert.AreEqual<DateTime>(jpgPhotoTemp.Metadata.UtcDate, testDate, "UtcDate");
+            Assert.AreEqual<DateTime>(jpgPhotoTemp.Metadata.AddressOfGpsLookupDate, testDate, "AddressOfGpsLookupDate");
+            Assert.AreEqual<Tag>(jpgPhotoTemp.Metadata.Tags.Last(), new Tag(testTag), "Tags");
 
-            if (new FileInfo(this.jpgPhotoTwo.FileFullName).Length > new FileInfo(this.jpgPhotoX.FileFullName).Length)
+            if (new FileInfo(this.jpgPhotoTwo.FileFullName).Length > new FileInfo(jpgPhotoTemp.FileFullName).Length)
             {
                 Assert.Fail("Photo has decreased in size after saving");
             }
+
+            File.Delete(this.samplePhotosFolder + TestPhotos.UnitTestTemp3);
         }
 
         /// <summary>
@@ -159,14 +157,14 @@
         public void WriteMetadataToFileAndCheckForMetadataLoss()
         {
             // Clean up from previous test
-            if (File.Exists(this.jpgPhotoX.FileFullName))
+            if (File.Exists(this.samplePhotosFolder + TestPhotos.UnitTestTemp5))
             {
-                File.Delete(this.jpgPhotoX.FileFullName);
+                File.Delete(this.samplePhotosFolder + TestPhotos.UnitTestTemp5);
             }
 
             // Change date and save
             this.jpgPhotoOne.Metadata.FotoflyLastEditDate = DateTime.Now.AddTicks(-DateTime.Now.TimeOfDay.Ticks);
-            this.jpgPhotoOne.WriteMetadata(this.jpgPhotoX.FileFullName);
+            this.jpgPhotoOne.WriteMetadata(this.samplePhotosFolder + TestPhotos.UnitTestTemp5);
 
             MetadataDump beforeDump;
             MetadataDump afterDump;
@@ -177,7 +175,7 @@
                 beforeDump.GenerateStringList();
             }
 
-            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestX))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestTemp5))
             {
                 afterDump = new MetadataDump(wpfFileManager.BitmapMetadata);
                 afterDump.GenerateStringList();
@@ -186,17 +184,21 @@
             for (int i = 0; i < beforeDump.StringList.Count; i++)
             {
                 if (beforeDump.StringList[i] != afterDump.StringList[i]
-                    && !beforeDump.StringList[i].Contains("LastEditDate"))
+                    && !beforeDump.StringList[i].Contains("LastEditDate")
+                    && !beforeDump.StringList[i].Contains("ushort=513")
+                    && !beforeDump.StringList[i].Contains("OffsetSchema"))
                 {
                     Assert.Fail("Metadata mismatch " + beforeDump.StringList[i] + " != " + afterDump.StringList[i]);
                 }
             }
 
-            // Clean up
-            if (File.Exists(this.jpgPhotoX.FileFullName))
+            if (new FileInfo(this.jpgPhotoTwo.FileFullName).Length > new FileInfo(this.samplePhotosFolder + TestPhotos.UnitTestTemp5).Length)
             {
-                File.Delete(this.jpgPhotoX.FileFullName);
+                Assert.Fail("Photo has decreased in size after saving");
             }
+
+            // Clean up
+            File.Delete(this.samplePhotosFolder + TestPhotos.UnitTestTemp5);
         }
 
         /// <summary>
@@ -205,17 +207,18 @@
         [TestMethod]
         public void WriteMetadataToFileLossless()
         {
-            string beforeFile = this.samplePhotosFolder + "WriteMetadataToFileLossless_Before.jpg";
-            string afterFile = this.samplePhotosFolder + "WriteMetadataToFileLossless_After.jpg";
+            string beforeFile = this.samplePhotosFolder + TestPhotos.UnitTestTemp6;
+            string afterFile = this.samplePhotosFolder + TestPhotos.UnitTestTemp7;
 
             // Get a copy of a file
             File.Copy(this.jpgPhotoOne.FileFullName, beforeFile, true);
 
             // Change some metadata
             JpgPhoto beforePhoto = new JpgPhoto(beforeFile);
-            beforePhoto.Metadata.Subject = "Test " + DateTime.Now.ToString();
-            beforePhoto.Metadata.Comment = "Test " + DateTime.Now.ToString();
-            beforePhoto.Metadata.Copyright = "Test " + DateTime.Now.ToString();
+            beforePhoto.Metadata.Description = "Test Description" + DateTime.Now.ToString();
+            beforePhoto.Metadata.Comment = "Test Comment" + DateTime.Now.ToString();
+            beforePhoto.Metadata.Copyright = "Test Copyright" + DateTime.Now.ToString();
+            beforePhoto.Metadata.Subject = "Subject Copyright" + DateTime.Now.ToString();
 
             // Save as temp file
             beforePhoto.WriteMetadata(afterFile);
@@ -270,8 +273,8 @@
             }
 
             // Tidy UP
-            File.Delete(this.samplePhotosFolder + "WriteMetadataToFileLossless_Before.jpg");
-            File.Delete(this.samplePhotosFolder + "WriteMetadataToFileLossless_After.jpg");
+            File.Delete(beforeFile);
+            File.Delete(afterFile);
         }
 
         /// <summary>
@@ -282,19 +285,17 @@
         {
             // All string values
             StringAssert.Matches(this.jpgPhotoOne.Metadata.Authors[0], new Regex("Test Author"), "Author");
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.Aperture, new Regex(@"f/9"), "Aperture");
             StringAssert.Matches(this.jpgPhotoOne.Metadata.CameraManufacturer, new Regex("Canon"), "CameraManufacturer");
             StringAssert.Matches(this.jpgPhotoOne.Metadata.CameraModel, new Regex("Canon"), "CameraModel");
             StringAssert.Matches(this.jpgPhotoOne.Metadata.Comment, new Regex("Test Comment"), "Comment");
             StringAssert.Matches(this.jpgPhotoOne.Metadata.CreationSoftware, new Regex("Digital Photo Professional"), "CreationSoftware");
             StringAssert.Matches(this.jpgPhotoOne.Metadata.Copyright, new Regex("Test Copyright"), "Copyright");
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.ExposureBias, new Regex("0 step"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.FocalLength, new Regex("380 mm"));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.Iso, new Regex("ISO-400"));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.ShutterSpeed, new Regex("1/1000 sec."));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.Subject, new Regex(@"Test Caption\\Title\\Subject"));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.Title, new Regex(@"Test Caption\\Title\\Subject"));
             StringAssert.Matches(this.jpgPhotoOne.Metadata.Tags.Last().Name, new Regex(@"Test Tag Î"));
+
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.Description, new Regex(@"Test Title"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.Comment, new Regex(@"Test Comment"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.Subject, new Regex(@"Test Subject"));
         }
 
         /// <summary>
@@ -303,13 +304,14 @@
         [TestMethod]
         public void ReadNumericMetadata()
         {
-            Assert.AreEqual<double>(this.jpgPhotoOne.Metadata.DigitalZoomRatio, 0, "DigitalZoomRatio");
-
             Assert.AreEqual<int>(this.jpgPhotoOne.Metadata.ImageHeight, 480, "ImageHeight");
             Assert.AreEqual<int>(this.jpgPhotoOne.Metadata.ImageWidth, 640, "ImageWidth");
 
             Assert.AreEqual<int>(this.jpgPhotoOne.Metadata.HorizontalResolution, 350, "HorizontalResolution");
             Assert.AreEqual<int>(this.jpgPhotoOne.Metadata.VerticalResolution, 350, "VerticalResolution");
+
+            // TODO Get test file
+            Assert.AreEqual<double?>(this.jpgPhotoOne.Metadata.DigitalZoomRatio, null, "DigitalZoomRatio");
         }
 
         /// <summary>
@@ -318,9 +320,9 @@
         [TestMethod]
         public void ReadRatingMetadata()
         {
-            Assert.AreEqual<MetadataEnums.Rating>(this.jpgPhotoOne.Metadata.Rating, MetadataEnums.Rating.ThreeStar, "Rating");
+            Assert.AreEqual<Rating.Ratings>(this.jpgPhotoOne.Metadata.Rating.AsEnum, Rating.Ratings.ThreeStar, "Rating");
 
-            Assert.AreEqual<MetadataEnums.Rating>(this.jpgPhotoTwo.Metadata.Rating, MetadataEnums.Rating.Unknown, "Rating");
+            Assert.AreEqual<Rating.Ratings>(this.jpgPhotoTwo.Metadata.Rating.AsEnum, Rating.Ratings.NoRating, "Rating");
         }
 
         /// <summary>
@@ -349,16 +351,16 @@
         [TestMethod]
         public void ReadGpsMetadata()
         {
-            Assert.AreEqual<GpsPosition.Accuracies>(this.jpgPhotoOne.Metadata.GpsPositionCreated.Accuracy, GpsPosition.Accuracies.Unknown);
+            Assert.AreEqual<GpsPosition.Accuracies>(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.Accuracy, GpsPosition.Accuracies.Unknown);
 
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPositionCreated.DegreesMinutesSecondsAltitude, new Regex("N 037° 48' 25.00\" W 122° 25' 23.00\" -17.464m"));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPositionCreated.Source, new Regex("Garmin Dakota 20"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.DegreesMinutesSecondsAltitude, new Regex("N 037° 48' 25.00\" W 122° 25' 23.00\" -17.464m"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.Source, new Regex("Garmin Dakota 20"));
 
-            Assert.AreEqual<double>(this.jpgPhotoOne.Metadata.GpsPositionCreated.Altitude, -17.464, "Altitude");
+            Assert.AreEqual<double>(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.Altitude, -17.464, "Altitude");
 
-            Assert.AreEqual<GpsPosition.Dimensions>(this.jpgPhotoOne.Metadata.GpsPositionCreated.Dimension, GpsPosition.Dimensions.ThreeDimensional);
+            Assert.AreEqual<GpsPosition.Dimensions>(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.Dimension, GpsPosition.Dimensions.ThreeDimensional);
 
-            Assert.AreEqual<DateTime>(this.jpgPhotoOne.Metadata.GpsPositionCreated.SatelliteTime, new DateTime(2009, 10, 10, 21, 46, 24));
+            Assert.AreEqual<DateTime>(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.SatelliteTime, new DateTime(2009, 10, 10, 21, 46, 24));
         }
 
         /// <summary>
@@ -395,14 +397,16 @@
             this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonLiveIdCID = "PersonLiveIdCID" + testValueSuffix;
             this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].RectangleString = "RectangleString" + testValueSuffix;
 
-            this.jpgPhotoOne.WriteMetadata(this.jpgPhotoX.FileFullName);
+            this.jpgPhotoOne.WriteMetadata(this.samplePhotosFolder + TestPhotos.UnitTestTemp4);
 
-            this.jpgPhotoX.ReadMetadata();
+            JpgPhoto jpgPhotoTemp = new JpgPhoto(this.samplePhotosFolder + TestPhotos.UnitTestTemp4);
 
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonDisplayName, new Regex("PersonDisplayName" + testValueSuffix));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonEmailDigest, new Regex("PersonEmailDigest" + testValueSuffix));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].PersonLiveIdCID, new Regex("PersonLiveIdCID" + testValueSuffix));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.RegionInfo.Regions[0].RectangleString, new Regex("RectangleString" + testValueSuffix));
+            StringAssert.Matches(jpgPhotoTemp.Metadata.RegionInfo.Regions[0].PersonDisplayName, new Regex("PersonDisplayName" + testValueSuffix));
+            StringAssert.Matches(jpgPhotoTemp.Metadata.RegionInfo.Regions[0].PersonEmailDigest, new Regex("PersonEmailDigest" + testValueSuffix));
+            StringAssert.Matches(jpgPhotoTemp.Metadata.RegionInfo.Regions[0].PersonLiveIdCID, new Regex("PersonLiveIdCID" + testValueSuffix));
+            StringAssert.Matches(jpgPhotoTemp.Metadata.RegionInfo.Regions[0].RectangleString, new Regex("RectangleString" + testValueSuffix));
+
+            File.Delete(this.samplePhotosFolder + TestPhotos.UnitTestTemp4);
         }
 
         /// <summary>
@@ -412,7 +416,20 @@
         public void ReadCorruptMetadata()
         {
             JpgPhoto jpgPhoto = new JpgPhoto(this.samplePhotosFolder + TestPhotos.CorruptExposureBias);
-            StringAssert.Matches(jpgPhoto.Metadata.ExposureBias, new Regex("0 step"));
+
+            Assert.AreEqual<ExposureBias>(jpgPhoto.Metadata.ExposureBias, new ExposureBias());
+        }
+
+        /// <summary>
+        /// Read Aperture, Iso Speed and Shutter Speed
+        /// </summary>
+        [TestMethod]
+        public void ReadSpecialProperties()
+        {
+            Assert.AreEqual<ExposureBias>(this.jpgPhotoOne.Metadata.ExposureBias, new ExposureBias());
+            Assert.AreEqual<ShutterSpeed>(this.jpgPhotoOne.Metadata.ShutterSpeed, new ShutterSpeed("1/1000"), "ShutterSpeed");
+            Assert.AreEqual<Aperture>(this.jpgPhotoOne.Metadata.Aperture, new Aperture(9), "Aperture");
+            Assert.AreEqual<IsoSpeed>(this.jpgPhotoOne.Metadata.IsoSpeed, new IsoSpeed(400), "IsoSpeed");
         }
 
         /// <summary>
@@ -423,11 +440,11 @@
         {
             // -1.3 step
             JpgPhoto jpgPhoto = new JpgPhoto(this.samplePhotosFolder + TestPhotos.ExposureBiasMinus13);
-            StringAssert.Matches(jpgPhoto.Metadata.ExposureBias, new Regex(Regex.Escape("-1.3 step")));
+            Assert.AreEqual<ExposureBias>(jpgPhoto.Metadata.ExposureBias, new ExposureBias("-4/3"));
 
             // +1.3 step
             jpgPhoto = new JpgPhoto(this.samplePhotosFolder + TestPhotos.ExposureBiasPlus13);
-            StringAssert.Matches(jpgPhoto.Metadata.ExposureBias, new Regex(Regex.Escape("+1.3 step")));
+            Assert.AreEqual<ExposureBias>(jpgPhoto.Metadata.ExposureBias, new ExposureBias("4/3"));
         }
 
         /// <summary>
@@ -436,7 +453,7 @@
         [TestMethod]
         public void ReadCameraMake()
         {
-            // Read photos from a couple of different cameras, the aim is to ensure no expection is thrown reading the data
+            // Read photos from a couple of different cameras, the aim is to ensure no exception is thrown reading the data
             JpgPhoto photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeKodakDX4900);
             photo.ReadMetadata();
 
@@ -466,16 +483,19 @@
             JpgPhoto photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhone3GsUntouched);
             photo.ReadMetadata();
 
-            Assert.AreEqual<string>(photo.Metadata.CameraManufacturer, "Apple");
-            Assert.AreEqual<string>(photo.Metadata.CameraModel, "iPhone 3GS");
-            Assert.AreEqual<string>(photo.Metadata.Aperture, "f/2.8");
-            Assert.AreEqual<DateTime>(photo.Metadata.DateDigitised, new DateTime(2010, 02, 01, 08, 24, 40));
-            Assert.AreEqual<MetadataEnums.MeteringModes>(photo.Metadata.MeteringMode, MetadataEnums.MeteringModes.Average);
+            Assert.AreEqual<string>(photo.Metadata.CameraManufacturer, "Apple", "CameraManufacturer");
+            Assert.AreEqual<string>(photo.Metadata.CameraModel, "iPhone 3GS", "CameraModel");
+            
+            Assert.AreEqual<DateTime>(photo.Metadata.DateDigitised, new DateTime(2010, 02, 01, 08, 24, 40), "DateDigitised");
+
+            Assert.AreEqual<MetadataEnums.MeteringModes>(photo.Metadata.MeteringMode, MetadataEnums.MeteringModes.Average, "MeteringMode");
+            Assert.AreEqual<Aperture>(photo.Metadata.Aperture, new Aperture(14, 5), "Aperture");
+            Assert.AreEqual<ShutterSpeed>(photo.Metadata.ShutterSpeed, new ShutterSpeed(1, 170), "ShutterSpeed");
 
             photo = new JpgPhoto(this.samplePhotosFolder + TestPhotos.MakeiPhone3GsWithTags);
             photo.ReadMetadata();
 
-            Assert.AreEqual<Tag>(photo.Metadata.Tags.First(), new Tag("Test"));
+            Assert.AreEqual<Tag>(photo.Metadata.Tags.First(), new Tag("Test"), "Tag");
         }
 
         /// <summary>
@@ -502,11 +522,6 @@
         [TestCleanup()]
         public void PostTestCleanup()
         {
-            // Clean up
-            if (File.Exists(this.jpgPhotoX.FileFullName))
-            {
-                File.Delete(this.jpgPhotoX.FileFullName);
-            }
         }
 
         #region Pre\Post Test Code

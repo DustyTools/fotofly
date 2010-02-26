@@ -19,7 +19,7 @@ namespace Fotofly.MetadataQueries
         // 3 Star - 50
         // 4 Star - 75
         // 5 Star - 99
-        public static readonly MetdataQuery<string, MetadataEnums.Rating> Rating = new MetdataQuery<string, MetadataEnums.Rating>("/xmp/MicrosoftPhoto:Rating");
+        public static readonly MetdataQuery<string, double> Rating = new MetdataQuery<string, double>("/xmp/MicrosoftPhoto:Rating");
 
         // "DateAcquired" (LPWSTR) ["http://ns.microsoft.com/photo/1.0/" (LPWSTR)]
         public static readonly MetdataQuery<string, DateTime> DateAcquired = new MetdataQuery<string, DateTime>("/xmp/MicrosoftPhoto:DateAcquired");

@@ -20,6 +20,6 @@ namespace Fotofly.MetadataQueries
         public static readonly MetdataQuery<string, string> CreatorTool = new MetdataQuery<string, string>(XmpXapQueries.QueryPrefix, "creatortool");
 
         // Rating (LPWSTR) ["http://ns.adobe.com/xap/1.0/" (LPWSTR)]
-        public static readonly MetdataQuery<string, MetadataEnums.Rating> Rating = new MetdataQuery<string, MetadataEnums.Rating>(XmpXapQueries.QueryPrefix, "Rating");
+        public static readonly MetdataQuery<string, double> Rating = new MetdataQuery<string, double>(XmpXapQueries.QueryPrefix, "Rating");
     }
 }
