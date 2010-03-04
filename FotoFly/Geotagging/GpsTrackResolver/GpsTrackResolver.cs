@@ -89,7 +89,6 @@ namespace Fotofly.Geotagging.Resolvers
                             newCoordinate.Latitude.Numeric = pointNode.Lat;
                             newCoordinate.Longitude.Numeric = pointNode.Lon;
                             newCoordinate.Altitude = pointNode.Ele;
-                            newCoordinate.Dimension = GpsPosition.Dimensions.ThreeDimensional;
 
                             // Use the tracks data or the parameter override
                             newCoordinate.Source = string.IsNullOrEmpty(this.GpsTrackSource) ? gpxFile.RootNode.Creator : this.GpsTrackSource;

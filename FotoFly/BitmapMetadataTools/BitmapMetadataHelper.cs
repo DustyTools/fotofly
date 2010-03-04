@@ -23,21 +23,6 @@ namespace Fotofly.BitmapMetadataTools
 
     public static class BitmapMetadataHelper
     {
-        public static bool ContainsQueryAndNotEmpty(this BitmapMetadata bitmapMetadata, string query)
-        {
-            if (bitmapMetadata.ContainsQuery(query))
-            {
-                string value = bitmapMetadata.GetQuery<string>(query);
-
-                if (!string.IsNullOrEmpty(value))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public static T GetQuery<T>(this BitmapMetadata bitmapMetadata, string query)
         {
             // Return default if the BitmapMetadata doesn't contain the query
@@ -56,7 +41,7 @@ namespace Fotofly.BitmapMetadataTools
             }
             else if (typeof(T) == typeof(SRational))
             {
-                if (unknownObject.GetType() == typeof(Int64))
+                if (unknownObject.GetType() == bitmapMetadata.GetStorageType(typeof(SRational)))
                 {
                     // Create new Rational, casting the unknownobject as an Int64
                     SRational rational = new SRational((Int64)unknownObject);
@@ -71,7 +56,7 @@ namespace Fotofly.BitmapMetadataTools
             }
             else if (typeof(T) == typeof(URational))
             {
-                if (unknownObject.GetType() == typeof(UInt64))
+                if (unknownObject.GetType() == bitmapMetadata.GetStorageType(typeof(URational)))
                 {
                     // Create new URational, casting the unknownobject as an UInt64
                     URational urational = new URational((UInt64)unknownObject);
@@ -86,7 +71,7 @@ namespace Fotofly.BitmapMetadataTools
             }
             else if (typeof(T) == typeof(URationalTriplet))
             {
-                if (unknownObject.GetType() == typeof(UInt64[]))
+                if (unknownObject.GetType() == bitmapMetadata.GetStorageType(typeof(URationalTriplet)))
                 {
                     // Create new GpsRational, casting the unknownobject as an Int64[]
                     URationalTriplet gpsRational = new URationalTriplet((UInt64[])unknownObject);
@@ -223,21 +208,32 @@ namespace Fotofly.BitmapMetadataTools
             }
         }
 
-        public static bool IsQueryOfType(this BitmapMetadata bitmapMetadata, string query, Type type)
+        public static bool IsQueryValidAndOfType(this BitmapMetadata bitmapMetadata, string query, Type type)
         {
-            return bitmapMetadata.GetQueryType(query) == type;
-        }
-
-        public static Type GetQueryType(this BitmapMetadata bitmapMetadata, string query)
-        {
-            // Return null if no query value
-            if (!bitmapMetadata.ContainsQuery(query))
+            // Check there's a query value
+            if (bitmapMetadata.ContainsQuery(query))
             {
-                return null;
+                type = bitmapMetadata.GetStorageType(type);
+                
+                // Get object
+                Object obj = bitmapMetadata.GetQuery(query).GetType();
+
+                if (obj != null)
+                {
+                    // Special case for empty strings, return true if set
+                    // Otherwise check for null and then type
+                    if (type == typeof(string))
+                    {
+                        return true;
+                    }
+                    else if (obj == type)
+                    {
+                        return true;
+                    }
+                }
             }
 
-            // Return Object Type
-            return bitmapMetadata.GetQuery(query).GetType();
+            return false;
         }
 
         public static void SetQueryOrRemove(this BitmapMetadata bitmapMetadata, string query, object value, bool whenTrueRemoveQuery)
@@ -250,6 +246,37 @@ namespace Fotofly.BitmapMetadataTools
             {
                 bitmapMetadata.SetQuery(query, value);
             }
+        }
+
+        private static Type GetStorageType(this BitmapMetadata bitmapMetadata, Type type)
+        {
+            // Flip type to the expected storage type
+            if (type == typeof(SRational))
+            {
+                type = typeof(Int64);
+            }
+            else if (type == typeof(URational))
+            {
+                type = typeof(UInt64);
+            }
+            else if (type == typeof(URationalTriplet))
+            {
+                type = typeof(UInt64[]);
+            }
+            else if (type == typeof(ExifDateTime))
+            {
+                type = typeof(string);
+            }
+            else if (type == typeof(TimeSpan))
+            {
+                type = typeof(string);
+            }
+            else if (type == typeof(DateTime))
+            {
+                type = typeof(string);
+            }
+            
+            return type;
         }
     }
 }

@@ -55,11 +55,11 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Microsoft Region Info extension which provides data on regions in the photo
         /// </summary>
-        public ImageRegionInfo RegionInfo
+        public MicrosoftImageRegionInfo RegionInfo
         {
             get
             {
-                ImageRegionInfo regionInfo = new ImageRegionInfo();
+                MicrosoftImageRegionInfo regionInfo = new MicrosoftImageRegionInfo();
 
                 // Read Each Region
                 BitmapMetadata regionsMetadata = this.BitmapMetadata.GetQuery<BitmapMetadata>(XmpMicrosoftQueries.Regions.Query);
@@ -74,7 +74,7 @@ namespace Fotofly.MetadataProviders
 
                         if (regionMetadata != null)
                         {
-                            ImageRegion imageRegion = new ImageRegion();
+                            MicrosoftImageRegion imageRegion = new MicrosoftImageRegion();
 
                             if (regionMetadata.ContainsQuery(XmpMicrosoftQueries.RegionRectangle.Query))
                             {
@@ -153,7 +153,7 @@ namespace Fotofly.MetadataProviders
                         int currentRegion = 0;
 
                         // Loop through each Region
-                        foreach (ImageRegion region in value.Regions)
+                        foreach (MicrosoftImageRegion region in value.Regions)
                         {
                             // Build query for current region
                             string currentRegionQuery = String.Format(CultureInfo.InvariantCulture, XmpMicrosoftQueries.Region.Query, currentRegion);

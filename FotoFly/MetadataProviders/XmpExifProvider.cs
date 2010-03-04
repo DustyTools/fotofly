@@ -34,35 +34,9 @@ namespace Fotofly.MetadataProviders
                 gpsPosition.Longitude = this.GpsLongitude.Clone() as GpsCoordinate;
                 gpsPosition.Altitude = this.GpsAltitude;
                 gpsPosition.Source = this.GpsProcessingMethod;
-                gpsPosition.Dimension = this.GpsMeasureMode;
                 gpsPosition.SatelliteTime = this.GpsDateTimeStamp;
 
                 return gpsPosition;
-            }
-
-            set
-            {
-                if (value.IsValidCoordinate)
-                {
-                    this.GpsAltitude = value.Altitude;
-                    this.GpsLatitude = value.Latitude.Clone() as GpsCoordinate;
-                    this.GpsLongitude = value.Longitude.Clone() as GpsCoordinate;
-                    this.GpsDateTimeStamp = value.SatelliteTime;
-                    this.GpsMeasureMode = value.Dimension;
-                    this.GpsProcessingMethod = value.Source;
-                    this.GpsVersionID = "2200";
-                }
-                else
-                {
-                    // Clear all properties
-                    this.GpsAltitude = double.NaN;
-                    this.GpsLatitude = new GpsCoordinate();
-                    this.GpsLongitude = new GpsCoordinate();
-                    this.GpsDateTimeStamp = new DateTime();
-                    this.GpsProcessingMethod = string.Empty;
-                    this.GpsVersionID = string.Empty;
-                    this.GpsMeasureMode = GpsPosition.Dimensions.NotSpecified;
-                }
             }
         }
 
@@ -391,7 +365,6 @@ namespace Fotofly.MetadataProviders
                 gpsPosition.Longitude = this.GpsDestLongitude.Clone() as GpsCoordinate;
                 gpsPosition.Altitude = double.NaN;
                 gpsPosition.Source = string.Empty;
-                gpsPosition.Dimension = GpsPosition.Dimensions.TwoDimensional;
                 gpsPosition.SatelliteTime = new DateTime();
 
                 return gpsPosition;
@@ -734,7 +707,11 @@ namespace Fotofly.MetadataProviders
                 {
                     string measureMode = this.BitmapMetadata.GetQuery<string>(XmpExifQueries.GpsMeasureMode.Query);
 
-                    if (!string.IsNullOrEmpty(measureMode) && measureMode == "2")
+                    if (!string.IsNullOrEmpty(measureMode) && measureMode == "1")
+                    {
+                        return GpsPosition.Dimensions.OneDimensional;
+                    }
+                    else if (!string.IsNullOrEmpty(measureMode) && measureMode == "2")
                     {
                         return GpsPosition.Dimensions.TwoDimensional;
                     }
@@ -745,28 +722,6 @@ namespace Fotofly.MetadataProviders
                 }
 
                 return GpsPosition.Dimensions.NotSpecified;
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.GpsMeasureMode))
-                {
-                    switch (value)
-                    {
-                        default:
-                        case GpsPosition.Dimensions.NotSpecified:
-                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, string.Empty);
-                            break;
-
-                        case GpsPosition.Dimensions.ThreeDimensional:
-                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, "3");
-                            break;
-
-                        case GpsPosition.Dimensions.TwoDimensional:
-                            this.BitmapMetadata.SetQuery(XmpExifQueries.GpsMeasureMode.Query, "2");
-                            break;
-                    }
-                }
             }
         }
 
@@ -989,7 +944,7 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(ExifQueries.ExposureBias.Query))
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.ExposureBias.Query, typeof(string)))
                 {
                     return new ExposureBias(this.BitmapMetadata.GetQuery<string>(XmpExifQueries.ExposureBias.Query));
                 }
@@ -1565,7 +1520,7 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(XmpExifQueries.ExposureTime.Query))
+                if (this.BitmapMetadata.IsQueryValidAndOfType(XmpExifQueries.ExposureTime.Query, typeof(string)))
                 {
                     return new ShutterSpeed(this.BitmapMetadata.GetQuery<string>(XmpExifQueries.ExposureTime.Query));
                 }
@@ -1575,7 +1530,7 @@ namespace Fotofly.MetadataProviders
         }
 
         /// <summary>
-        /// SpatialFrequencyResponse
+        /// Spatial Frequency Response
         /// </summary>
         public string SpatialFrequencyResponse
         {

@@ -100,7 +100,7 @@ namespace Fotofly.Geotagging.Resolvers
         public void AddToReverseFailedRecords(GpsPosition gpsPosition)
         {
             var query = from x in this.failedReverseRecords
-                        where x.DegreesMinutesSecondsAltitude == gpsPosition.DegreesMinutesSecondsAltitude
+                        where x.ToString() == gpsPosition.ToString()
                         select x;
 
             if (query.FirstOrDefault() == null)
@@ -121,7 +121,7 @@ namespace Fotofly.Geotagging.Resolvers
             {
                 this.failedForwardRecords.Add(address);
 
-                this.WriteFailedRecords(this.cacheReverseFileName, this.failedForwardRecords);
+                this.WriteFailedRecords(this.failedForwardFileName, this.failedForwardRecords);
             }
         }
 
@@ -145,6 +145,8 @@ namespace Fotofly.Geotagging.Resolvers
             cachedResult.GpsPosition = gpsPosition.Clone() as GpsPosition;
 
             this.cachedForwardRecords.Add(cachedResult);
+
+            this.WriteCachedRecords(this.cacheForwardFileName, this.cachedForwardRecords, true);
         }
 
         public void AddToReverseCacheRecords(Address address, GpsPosition gpsPosition, DateTime date)
@@ -168,6 +170,8 @@ namespace Fotofly.Geotagging.Resolvers
             cachedResult.GpsPosition = gpsPosition.Clone() as GpsPosition;
 
             this.cachedReverseRecords.Add(cachedResult);
+
+            this.WriteCachedRecords(this.cacheReverseFileName, this.cachedReverseRecords, false);
         }
 
         private List<Address> ReadFailedAddresses(string filename)
@@ -181,7 +185,13 @@ namespace Fotofly.Geotagging.Resolvers
                 {
                     while (!file.EndOfStream)
                     {
-                        returnValue.Add(new Address(file.ReadLine()));
+                        string newData = file.ReadLine();
+
+                        // Skip any line starting with a comment
+                        if (!newData.StartsWith("##"))
+                        {
+                            returnValue.Add(new Address(newData));
+                        }
                     }
 
                     file.Close();
@@ -204,9 +214,13 @@ namespace Fotofly.Geotagging.Resolvers
                     {
                         string newData = file.ReadLine();
 
-                        string[] data = newData.Split(',');
+                        // Skip any line starting with a comment
+                        if (!newData.StartsWith("##"))
+                        {
+                            string[] data = newData.Split(',');
 
-                        returnValue.Add(new GpsPosition(Convert.ToDouble(data[0]), Convert.ToDouble(data[1])));
+                            returnValue.Add(new GpsPosition(Convert.ToDouble(data[0]), Convert.ToDouble(data[1])));
+                        }
                     }
 
                     file.Close();
@@ -229,9 +243,13 @@ namespace Fotofly.Geotagging.Resolvers
                     {
                         string newData = file.ReadLine();
 
-                        string[] data = newData.Split(',');
+                        // Skip any line starting with a comment
+                        if (!newData.StartsWith("##"))
+                        {
+                            string[] data = newData.Split(',');
 
-                        returnValue.Add(new GeoCacheRecord(data[0], data[1], data[2], data[3]));
+                            returnValue.Add(new GeoCacheRecord(data[0], data[1], data[2], data[3]));
+                        }
                     }
 
                     file.Close();
@@ -243,86 +261,78 @@ namespace Fotofly.Geotagging.Resolvers
 
         private void WriteFailedRecords(string filename, List<Address> records)
         {
-            // Delete the existing File
-            if (File.Exists(filename))
+            List<string> recordsToWrite = new List<string>();
+
+            foreach (Address address in records)
             {
-                File.Delete(filename);
+                recordsToWrite.Add(address.HierarchicalName);
             }
 
-            if (records.Count > 0)
-            {
-                // Write the current data into the file
-                using (StreamWriter file = new StreamWriter(filename))
-                {
-                    foreach (Address address in records)
-                    {
-                        file.WriteLine(address.HierarchicalName);
-                    }
-
-                    file.Close();
-                }
-            }
+            this.WriteToFile(filename, recordsToWrite, "Failed Forward lookups for Address to GpsPosition resolution");
         }
 
         private void WriteFailedRecords(string filename, List<GpsPosition> records)
         {
-            // Delete the existing File
-            if (File.Exists(filename))
+            List<string> recordsToWrite = new List<string>();
+
+            foreach (GpsPosition gpsPosition in records)
             {
-                File.Delete(filename);
+                StringBuilder newLine = new StringBuilder();
+
+                newLine.Append(gpsPosition.Latitude.Numeric);
+                newLine.Append(", ");
+                newLine.Append(gpsPosition.Longitude.Numeric);
+
+                recordsToWrite.Add(newLine.ToString());
             }
 
-            if (records.Count > 0)
+            this.WriteToFile(filename, recordsToWrite, "Failed Reverse lookups for GpsPosition to Address resolution");
+        }
+
+        private void WriteCachedRecords(string filename, List<GeoCacheRecord> cachedResults, bool forwardLookup)
+        {
+            List<string> recordsToWrite = new List<string>();
+
+            foreach (GeoCacheRecord results in cachedResults)
             {
-                // Write the current data into the file
-                using (StreamWriter file = new StreamWriter(filename))
-                {
-                    foreach (GpsPosition gpsPosition in records)
-                    {
-                        StringBuilder newLine = new StringBuilder();
+                StringBuilder newLine = new StringBuilder();
 
-                        newLine.Append(gpsPosition.Latitude.Numeric);
-                        newLine.Append(", ");
-                        newLine.Append(gpsPosition.Longitude.Numeric);
+                newLine.Append(results.Address.HierarchicalName);
+                newLine.Append(", ");
+                newLine.Append(results.GpsPosition.Latitude.Numeric.ToString());
+                newLine.Append(", ");
+                newLine.Append(results.GpsPosition.Longitude.Numeric.ToString());
+                newLine.Append(", ");
+                newLine.Append(results.Date.ToString());
 
-                        file.WriteLine(newLine.ToString());
-                    }
+                recordsToWrite.Add(newLine.ToString());
+            }
 
-                    file.Close();
-                }
+            if (forwardLookup)
+            {
+                this.WriteToFile(filename, recordsToWrite, "Forward lookups for Address to GpsPosition resolution");
+            }
+            else
+            {
+                this.WriteToFile(filename, recordsToWrite, "Reverse lookups for GpsPosition to Address resolution");
             }
         }
 
-        private void WriteCachedRecords(string filename, List<GeoCacheRecord> cachedResults)
+        private void WriteToFile(string filename, List<string> recordsToWrite, string fileHeader)
         {
-            // Delete the existing File
-            if (File.Exists(filename))
-            {
-                File.Delete(filename);
-            }
-
-            if (cachedResults.Count > 0)
+            if (recordsToWrite.Count > 0)
             {
                 // Write the current data into the file
-                using (StreamWriter file = new StreamWriter(filename))
+                using (StreamWriter file = new StreamWriter(filename, false))
                 {
-                    var resultsToSave = from x in cachedResults
-                                        orderby x.Address.HierarchicalName
-                                        select x;
+                    file.WriteLine("## " + fileHeader);
+                    file.WriteLine("## Last saved " + DateTime.Now.ToString());
+                    file.WriteLine("##########################################################################################");
 
-                    foreach (GeoCacheRecord results in resultsToSave.ToList<GeoCacheRecord>())
+                    // Select distinct rows and order the results
+                    foreach (string record in recordsToWrite.OrderBy(x => x).Distinct())
                     {
-                        StringBuilder newLine = new StringBuilder();
-
-                        newLine.Append(results.Address.HierarchicalName);
-                        newLine.Append(", ");
-                        newLine.Append(results.GpsPosition.Latitude.Numeric.ToString());
-                        newLine.Append(", ");
-                        newLine.Append(results.GpsPosition.Longitude.Numeric.ToString());
-                        newLine.Append(", ");
-                        newLine.Append(results.Date.ToString());
-
-                        file.WriteLine(newLine.ToString());
+                        file.WriteLine(record);
                     }
 
                     file.Close();

@@ -9,6 +9,7 @@ namespace Fotofly
     using System.Text;
     using System.Xml.Serialization;
 
+    [XmlRootAttribute("GpsCoordinate", Namespace = "http://www.tassography.com/fotofly")]
     public class GpsCoordinate : ICloneable
     {
         public static readonly int MaxLatitude = 90;
@@ -16,74 +17,80 @@ namespace Fotofly
         public static readonly int MaxLongitude = 180;
         public static readonly int MinLongitude = -180;
 
-        private double degrees;
-        private double seconds;
-        private double minutes;
-
-        private bool isRefPositive;
         private LatOrLons latOrLon;
 
         public GpsCoordinate()
         {
-            this.degrees = double.NaN;
-            this.seconds = double.NaN;
-            this.minutes = double.NaN;
+            this.Numeric = double.NaN;
+            this.latOrLon = LatOrLons.NotSpecified;
         }
 
-        public GpsCoordinate(LatOrLons coorType, double numeric)
+        public GpsCoordinate(GpsCoordinate.LatOrLons latOrLon)
         {
-            this.LatOrLon = coorType;
+            this.Numeric = double.NaN;
+            this.latOrLon = latOrLon;
+        }
+
+        public GpsCoordinate(GpsCoordinate.LatOrLons latOrLon, double numeric)
+        {
             this.Numeric = numeric;
+            this.latOrLon = latOrLon;
         }
 
         public GpsCoordinate(GpsCoordinate.LatitudeRef latitudeRef, double numeric)
         {
-            this.LatOrLon = LatOrLons.Latitude;
-            this.Numeric = numeric;
-            this.isRefPositive = latitudeRef == LatitudeRef.North ? true : false;
+            if (Math.Abs(numeric) != numeric)
+            {
+                throw new Exception("Numeric should only be positive, use reference to specific direction");
+            }
+
+            this.latOrLon = LatOrLons.Latitude;
+            this.Numeric = latitudeRef == LatitudeRef.North ? numeric : -numeric;
         }
 
         public GpsCoordinate(GpsCoordinate.LongitudeRef longitudeRef, double numeric)
         {
-            this.LatOrLon = LatOrLons.Longitude;
-            this.Numeric = numeric;
-            this.isRefPositive = longitudeRef == LongitudeRef.East ? true : false;
+            if (Math.Abs(numeric) != numeric)
+            {
+                throw new Exception("Numeric should only be positive, use reference to specific direction");
+            }
+
+            this.latOrLon = LatOrLons.Longitude;
+            this.Numeric = longitudeRef == LongitudeRef.East ? numeric : -numeric;
         }
 
         public GpsCoordinate(GpsCoordinate.LatitudeRef latitudeRef, double degrees, double minutes)
         {
-            this.LatOrLon = LatOrLons.Latitude;
-            this.isRefPositive = latitudeRef == LatitudeRef.North ? true : false;
-            this.degrees = Math.Round(degrees, 0);
-            this.minutes = Math.Floor(minutes);
-            this.seconds = Math.Round((minutes - this.Minutes) * 60.0, 1);
+            this.latOrLon = LatOrLons.Latitude;
+            this.SetCoordinate(degrees, minutes, 0);
+
+            this.Numeric = latitudeRef == LatitudeRef.North ? this.Numeric : -this.Numeric;
         }
 
         public GpsCoordinate(GpsCoordinate.LongitudeRef longitudeRef, double degrees, double minutes)
         {
-            this.LatOrLon = LatOrLons.Longitude;
-            this.isRefPositive = longitudeRef == LongitudeRef.East ? true : false;
-            this.degrees = Math.Round(degrees, 0);
-            this.minutes = Math.Floor(minutes);
-            this.seconds = Math.Round((minutes - this.Minutes) * 60.0, 1);
+            this.latOrLon = LatOrLons.Longitude;
+            this.SetCoordinate(degrees, minutes, 0);
+
+            this.Numeric = longitudeRef == LongitudeRef.East ? this.Numeric : -this.Numeric;
         }
 
         public GpsCoordinate(GpsCoordinate.LatitudeRef latitudeRef, double degrees, double minutes, double seconds)
         {
-            this.LatOrLon = LatOrLons.Latitude;
-            this.isRefPositive = latitudeRef == LatitudeRef.North ? true : false;
-            this.degrees = Math.Round(degrees, 0);
-            this.minutes = Math.Round(minutes, 0);
-            this.seconds = Math.Round(seconds, 0);
+            this.latOrLon = LatOrLons.Latitude;
+
+            int roundTo = 0;
+            this.SetCoordinate(Math.Round(degrees, roundTo), Math.Round(minutes, roundTo), Math.Round(seconds, roundTo));
+
+            this.Numeric = latitudeRef == LatitudeRef.North ? this.Numeric : -this.Numeric;
         }
 
         public GpsCoordinate(GpsCoordinate.LongitudeRef longitudeRef, double degrees, double minutes, double seconds)
         {
-            this.LatOrLon = LatOrLons.Longitude;
-            this.isRefPositive = longitudeRef == LongitudeRef.East ? true : false;
-            this.degrees = Math.Round(degrees, 0);
-            this.minutes = Math.Round(minutes, 0);
-            this.seconds = Math.Round(seconds, 0);
+            this.latOrLon = LatOrLons.Longitude;
+            this.SetCoordinate(degrees, minutes, seconds);
+
+            this.Numeric = longitudeRef == LongitudeRef.East ? this.Numeric : -this.Numeric;
         }
 
         public enum LatOrLons
@@ -110,79 +117,8 @@ namespace Fotofly
         [XmlAttribute]
         public double Numeric
         {
-            get
-            {
-                if (double.IsNaN(this.Degrees) || double.IsNaN(this.Minutes) || double.IsNaN(this.Seconds))
-                {
-                    return double.NaN;
-                }
-                else
-                {
-                    // Example 32° 56' 26.57" is 32 + (56/60) + (26.57 / 3600) = 32.940713888
-                    double numeric = Math.Round(this.Degrees + (Convert.ToDouble(this.Minutes) / 60) + (Convert.ToDouble(this.Seconds) / 3600), 4);
-
-                    if (!this.IsValidNumeric(numeric, this.LatOrLon))
-                    {
-                        return double.NaN;
-                    }
-                    else if (this.isRefPositive)
-                    {
-                        return numeric;
-                    }
-                    else
-                    {
-                        return -numeric;
-                    }
-                }
-            }
-
-            set
-            {
-                if (double.IsNaN(value) || !this.IsValidNumeric(value, this.LatOrLon))
-                {
-                    // Set internals so we don't loop
-                    this.Degrees = double.NaN;
-                    this.Minutes = double.NaN;
-                    this.Seconds = double.NaN;
-                }
-                else
-                {
-                    if (value > 0)
-                    {
-                        this.isRefPositive = true;
-                    }
-                    else
-                    {
-                        this.isRefPositive = false;
-                    }
-
-                    double remainder = Math.Abs(value);
-
-                    // Calculate Degrees, everything to the left of the decimal
-                    this.Degrees = (int)Math.Floor(remainder);
-
-                    // Calculate the Minutes, remove the Degrees, then divide by 60 and round down
-                    remainder = remainder - this.Degrees;
-
-                    this.Minutes = (int)Math.Floor(remainder * 60);
-
-                    // Calculate the Seconds, remove the Minutes
-                    this.Seconds = Math.Round(Convert.ToDouble((remainder * 3600) - (this.Minutes * 60)));
-
-                    // Fix rounding issues
-                    if (this.Seconds >= 60)
-                    {
-                        this.Minutes = this.Minutes + 1;
-                        this.Seconds = this.Seconds - 60;
-                    }
-
-                    if (this.Minutes >= 60)
-                    {
-                        this.Degrees = this.Degrees + 1;
-                        this.Minutes = this.Minutes - 60;
-                    }
-                }
-            }
+            get;
+            set;
         }
 
         [XmlIgnore]
@@ -193,14 +129,20 @@ namespace Fotofly
                 // Formats the string in the format E 106° 49' 32.9"
                 if (this.IsValidCoordinate)
                 {
+                    double degrees;
+                    double minutes;
+                    double seconds;
+
+                    this.CalculateDegreesMinutesSeconds(out degrees, out minutes, out seconds);
+
                     StringBuilder dms = new StringBuilder();
                     dms.Append(this.Ref);
                     dms.Append(" ");
-                    dms.Append(this.AddPaddingZeros(this.degrees, 3, 0));
+                    dms.Append(this.AddPaddingZeros(degrees, 3, 0));
                     dms.Append("° ");
-                    dms.Append(this.AddPaddingZeros(this.minutes, 2, 0));
+                    dms.Append(this.AddPaddingZeros(minutes, 2, 0));
                     dms.Append("' ");
-                    dms.Append(this.AddPaddingZeros(this.seconds, 2, 2));
+                    dms.Append(this.AddPaddingZeros(seconds, 2, 2));
                     dms.Append('"');
 
                     return dms.ToString();
@@ -217,7 +159,24 @@ namespace Fotofly
         {
             get
             {
-                return this.IsValidNumeric(this.Numeric, this.LatOrLon);
+                if (double.IsNaN(this.Numeric))
+                {
+                    // Not a valid coordinate
+                    return false;
+                }
+                else if (this.LatOrLon == LatOrLons.Latitude && (this.Numeric > GpsCoordinate.MaxLatitude || this.Numeric < GpsCoordinate.MinLatitude))
+                {
+                    // Invalid Latitude
+                    return false;
+                }
+                else if (this.LatOrLon == LatOrLons.Longitude && (this.Numeric > GpsCoordinate.MaxLongitude || this.Numeric < GpsCoordinate.MinLongitude))
+                {
+                    // Invalid Longitude
+                    return false;
+                }
+
+                // Valid Coordinate
+                return true;
             }
         }
 
@@ -228,16 +187,6 @@ namespace Fotofly
             {
                 return this.latOrLon;
             }
-
-            set
-            {
-                this.latOrLon = value;
-
-                if (!this.IsValidNumeric(this.Numeric, value))
-                {
-                    this.Numeric = double.NaN;
-                }
-            }
         }
 
         [XmlIgnore]
@@ -247,15 +196,15 @@ namespace Fotofly
             // ASCII 'N' indicates north latitude, and 'S' is south latitude
             get
             {
-                if (this.LatOrLon == LatOrLons.Latitude && this.isRefPositive)
+                if (this.LatOrLon == LatOrLons.Latitude && Math.Abs(this.Numeric) == this.Numeric)
                 {
                     return 'N';
                 }
-                else if (this.LatOrLon == LatOrLons.Latitude && !this.isRefPositive)
+                else if (this.LatOrLon == LatOrLons.Latitude && Math.Abs(this.Numeric) != this.Numeric)
                 {
                     return 'S';
                 }
-                else if (this.LatOrLon == LatOrLons.Longitude && this.isRefPositive)
+                else if (this.LatOrLon == LatOrLons.Longitude && Math.Abs(this.Numeric) == this.Numeric)
                 {
                     return 'E';
                 }
@@ -269,17 +218,13 @@ namespace Fotofly
             {
                 value = value.ToString().ToUpper().ToCharArray()[0];
 
-                if (String.IsNullOrEmpty(value.ToString()))
+                if (value == 'N' || value == 'E')
                 {
-                    this.isRefPositive = true;
-                }
-                else if (value == 'N' || value == 'E')
-                {
-                    this.isRefPositive = true;
+                    this.Numeric = Math.Abs(this.Numeric);
                 }
                 else if (value == 'S' || value == 'W')
                 {
-                    this.isRefPositive = false;
+                    this.Numeric = -Math.Abs(this.Numeric);
                 }
                 else
                 {
@@ -289,24 +234,48 @@ namespace Fotofly
         }
 
         [XmlIgnore]
-        public double Degrees
+        public int Degrees
         {
-            get { return this.degrees; }
-            set { this.degrees = Math.Round(value, 0); }
+            get
+            {
+                double degrees;
+                double minutes;
+                double seconds;
+
+                this.CalculateDegreesMinutesSeconds(out degrees, out minutes, out seconds);
+
+                return (int)degrees;
+            }
         }
 
         [XmlIgnore]
-        public double Minutes
+        public int Minutes
         {
-            get { return this.minutes; }
-            set { this.minutes = Math.Round(value, 0); }
+            get
+            {
+                double degrees;
+                double minutes;
+                double seconds;
+
+                this.CalculateDegreesMinutesSeconds(out degrees, out minutes, out seconds);
+
+                return (int)minutes;
+            }
         }
 
         [XmlIgnore]
         public double Seconds
         {
-            get { return this.seconds; }
-            set { this.seconds = Math.Round(value, 0); }
+            get
+            {
+                double degrees;
+                double minutes;
+                double seconds;
+
+                this.CalculateDegreesMinutesSeconds(out degrees, out minutes, out seconds);
+
+                return seconds;
+            }
         }
 
         public override bool Equals(object unknownObject)
@@ -330,29 +299,75 @@ namespace Fotofly
 
         public object Clone()
         {
-            if (this.LatOrLon == LatOrLons.Latitude && this.isRefPositive)
-            {
-                return new GpsCoordinate(GpsCoordinate.LatitudeRef.North, this.Degrees, this.Minutes, this.Seconds);
-            }
-            else if (this.LatOrLon == LatOrLons.Latitude)
-            {
-                return new GpsCoordinate(GpsCoordinate.LatitudeRef.South, this.Degrees, this.Minutes, this.Seconds);
-            }
-            else if (this.LatOrLon == LatOrLons.Longitude && this.isRefPositive)
-            {
-                return new GpsCoordinate(GpsCoordinate.LongitudeRef.East, this.Degrees, this.Minutes, this.Seconds);
-            }
-            else if (this.LatOrLon == LatOrLons.Longitude)
-            {
-                return new GpsCoordinate(GpsCoordinate.LongitudeRef.West, this.Degrees, this.Minutes, this.Seconds);
-            }
-
-            return new GpsCoordinate();
+            return new GpsCoordinate(this.LatOrLon, this.Numeric);
         }
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        private void SetCoordinate(double degrees, double minutes, double seconds)
+        {
+            if (Math.Abs(degrees) != degrees || Math.Abs(minutes) != minutes || Math.Abs(seconds) != seconds)
+            {
+                throw new Exception(@"Degrees\Minutes\Seconds should only be positive, use reference to specific direction");
+            }
+            else if (double.IsNaN(degrees) || double.IsNaN(minutes) || double.IsNaN(seconds))
+            {
+                this.Numeric = double.NaN;
+            }
+            else
+            {
+                // Example 32° 56' 26.57" is 32 + (56/60) + (26.57 / 3600) = 32.940713888
+                this.Numeric = Math.Round(degrees + (Convert.ToDouble(minutes) / 60) + (Convert.ToDouble(seconds) / 3600), 4);
+
+                // If this isn't valid reset the value
+                if (!this.IsValidCoordinate)
+                {
+                    this.Numeric = double.NaN;
+                }
+            }
+        }
+
+        private void CalculateDegreesMinutesSeconds(out double degrees, out double minutes, out double seconds)
+        {
+            if (!this.IsValidCoordinate)
+            {
+                degrees = double.NaN;
+                minutes = double.NaN;
+                seconds = double.NaN;
+            }
+            else
+            {
+                double remainder = Math.Abs(this.Numeric);
+
+                // Calculate Degrees, everything to the left of the decimal
+                degrees = (int)Math.Floor(remainder);
+
+                // Calculate the Minutes, remove the Degrees, then divide by 60 and round down
+                remainder = remainder - degrees;
+
+                minutes = (int)Math.Floor(remainder * 60);
+
+                // Calculate the Seconds, remove the Minutes
+                seconds = Math.Round(Convert.ToDouble((remainder * 3600) - (minutes * 60)));
+
+                // Fix rounding issues
+                // If Seconds exceeds 60
+                if (seconds >= 60)
+                {
+                    minutes = minutes + 1;
+                    seconds = seconds - 60;
+                }
+
+                // If Minutes exceeds 60
+                if (minutes >= 60)
+                {
+                    degrees = degrees + 1;
+                    minutes = minutes - 60;
+                }
+            }
         }
 
         private string AddPaddingZeros(double number, int leading, int trailing)
@@ -391,26 +406,6 @@ namespace Fotofly
             }
 
             return returnValue.ToString();
-        }
-
-        private bool IsValidNumeric(double numeric, LatOrLons latOrLon)
-        {
-            if (latOrLon == LatOrLons.Latitude && (numeric > GpsCoordinate.MaxLatitude || numeric < GpsCoordinate.MinLatitude))
-            {
-                return false;
-            }
-            else if (this.LatOrLon == LatOrLons.Longitude && (numeric > GpsCoordinate.MaxLongitude || numeric < GpsCoordinate.MinLongitude))
-            {
-                return false;
-            }
-            else if (double.IsNaN(numeric))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
         }
     }
 }

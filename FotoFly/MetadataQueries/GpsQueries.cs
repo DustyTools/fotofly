@@ -52,7 +52,7 @@ namespace Fotofly.MetadataQueries
         public static readonly MetdataQuery<string, string> Status = new MetdataQuery<string, string>("/app1/ifd/Gps/subifd:{uint=9}");
         
         // Indicates the Gps measurement mode. '2' means two-dimensional measurement and '3' means
-        // three-dimensional
+        // three-dimensional, '1' means one-dimensional (Altitude only)
         public static readonly MetdataQuery<Int32, GpsPosition.Dimensions> MeasureMode = new MetdataQuery<Int32, GpsPosition.Dimensions>("/app1/ifd/Gps/subifd:{uint=10}");
 
         // Indicates the GPS DOP (data degree of precision). An HDOP value is written during

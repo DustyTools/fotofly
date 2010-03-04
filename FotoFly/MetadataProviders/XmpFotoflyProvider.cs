@@ -19,6 +19,13 @@ namespace Fotofly.MetadataProviders
         public XmpFotoflyProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
         {
+            // Remove unused queries
+            if (!bitmapMetadata.IsFrozen)
+            {
+                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AccuracyOfGps.Query);
+                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AddressOfGps.Query);
+            }
+            
             string query = XmpFotoflyQueries.FotoflyStruct.Query.Replace(XmpFotoflyQueries.QueryStruct, XmpFotoflyQueries.OldQueryStruct);
 
             if (this.BitmapMetadata.ContainsQuery(query))
@@ -289,43 +296,6 @@ namespace Fotofly.MetadataProviders
                     else
                     {
                         this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AddressOfGpsSource.Query, value);
-                    }
-                }
-            }
-        }
-
-        public GpsPosition.Accuracies AccuracyOfGps
-        {
-            get
-            {
-                string accuracyOfGpsString = this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.AccuracyOfGps.Query);
-
-                if (!string.IsNullOrEmpty(accuracyOfGpsString))
-                {
-                    int accuracyOfGps;
-
-                    if (Int32.TryParse(accuracyOfGpsString[0].ToString(), out accuracyOfGps) && accuracyOfGps < 9 && accuracyOfGps > 0)
-                    {
-                        return (GpsPosition.Accuracies)accuracyOfGps;
-                    }
-                }
-
-                return GpsPosition.Accuracies.Unknown;
-            }
-
-            set
-            {
-                if (this.ValueHasChanged(value, this.AccuracyOfGps))
-                {
-                    this.CreateFotoflyStruct();
-
-                    if (value == GpsPosition.Accuracies.Unknown)
-                    {
-                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AccuracyOfGps.Query);
-                    }
-                    else
-                    {
-                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AccuracyOfGps.Query, (int)value + "-" + value.ToString());
                     }
                 }
             }

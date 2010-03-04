@@ -93,5 +93,12 @@
         public static readonly string UnitTestTemp5 = "UnitTest-Temp5.jpg";
         public static readonly string UnitTestTemp6 = "UnitTest-Temp6.jpg";
         public static readonly string UnitTestTemp7 = "UnitTest-Temp7.jpg";
+        public static readonly string UnitTestTemp8 = "UnitTest-Temp8.jpg";
+
+        // WriteGpsMetadata
+        public static readonly string UnitTestTemp9 = "UnitTest-Temp9.jpg";
+
+        // WriteAddressMetadata
+        public static readonly string UnitTestTemp10 = "UnitTest-Temp10.jpg";
     }
 }

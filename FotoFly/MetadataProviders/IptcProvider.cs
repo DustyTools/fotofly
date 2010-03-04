@@ -406,13 +406,13 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                if (this.BitmapMetadata.IsQueryOfType(IptcQueries.Keywords.Query, typeof(string)))
+                if (this.BitmapMetadata.IsQueryValidAndOfType(IptcQueries.Keywords.Query, typeof(string)))
                 {
                     string stringTag = this.BitmapMetadata.GetQuery<string>(IptcQueries.Keywords.Query);
 
                     return new TagList(stringTag);
                 }
-                else if (this.BitmapMetadata.IsQueryOfType(IptcQueries.Keywords.Query, typeof(string[])))
+                else if (this.BitmapMetadata.IsQueryValidAndOfType(IptcQueries.Keywords.Query, typeof(string[])))
                 {
                     string[] stringArray = this.BitmapMetadata.GetQuery<string[]>(IptcQueries.Keywords.Query);
 

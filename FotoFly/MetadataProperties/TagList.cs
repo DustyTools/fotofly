@@ -11,7 +11,9 @@ namespace Fotofly
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Xml.Serialization;
 
+    [XmlRootAttribute("TagList", Namespace = "http://www.tassography.com/fotofly")]
     public class TagList : IEnumerable<Tag>, ICloneable
     {
         private List<Tag> tags;

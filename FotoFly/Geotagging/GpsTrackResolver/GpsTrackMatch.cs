@@ -64,9 +64,7 @@ namespace Fotofly.Geotagging.Resolvers
                 && this.GpsPositionAfter.SatelliteTime > utcTime)
             {
                 // Set common properties
-                this.gpsPositionMiddle.Dimension = GpsPosition.Dimensions.ThreeDimensional;
                 this.gpsPositionMiddle.Source = this.GpsPositionAfter.Source;
-                this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.Premise;
 
                 // Work out the difference between the two points in nano seconds
                 long nanoSecondsGap = this.GpsPositionAfter.SatelliteTime.Ticks - this.GpsPositionBefore.SatelliteTime.Ticks;
@@ -101,35 +99,6 @@ namespace Fotofly.Geotagging.Resolvers
                 else
                 {
                     this.gpsPositionMiddle.SatelliteTime = this.GpsPositionAfter.SatelliteTime;
-                }
-
-                // Set Accuracy
-                double distanceToPointA = this.GpsPositionBefore.Distance(this.gpsPositionMiddle);
-                double distanceToPointB = this.GpsPositionAfter.Distance(this.gpsPositionMiddle);
-
-                // Work out farthest point because this is the least accurate point
-                double distanceToFarthestPoint = distanceToPointA > distanceToPointB ? distanceToPointA : distanceToPointB;
-
-                // Calculate Accuracy
-                if (distanceToFarthestPoint < 100)
-                {
-                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.Address;
-                }
-                else if (distanceToFarthestPoint < 1000)
-                {
-                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.Street;
-                }
-                else if (distanceToFarthestPoint < 10000)
-                {
-                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.City;
-                }
-                else if (distanceToFarthestPoint < 50000)
-                {
-                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.Region;
-                }
-                else
-                {
-                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.Country;
                 }
             }
         }

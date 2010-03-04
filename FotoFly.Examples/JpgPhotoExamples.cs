@@ -51,12 +51,12 @@
             jpgPhoto.ReadMetadata();
 
             // Create new Region
-            ImageRegion newRegion = new ImageRegion();
+            MicrosoftImageRegion newRegion = new MicrosoftImageRegion();
             newRegion.PersonDisplayName = "Ben Vincent";
             newRegion.RectangleString = "0.1, 0.1, 0.1, 0.1";
 
             // Add the new region to the photo
-            jpgPhoto.Metadata.RegionInfo.Regions.Add(newRegion);
+            jpgPhoto.Metadata.MicrosoftRegionInfo.Regions.Add(newRegion);
 
             // Save
             jpgPhoto.WriteMetadata();

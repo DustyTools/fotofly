@@ -99,46 +99,49 @@ namespace Fotofly.Geotagging
             return new GpsPosition();
         }
 
-        public void FindGpsPosition(JpgPhoto photo)
+        public void FindGpsPositionCreated(JpgPhoto photo)
         {
-            // Order is 1) Gps Track 2) Bing Maps 4) Manual Cache
-
             // Use Gps Tracks if Configured
             if (!photo.Metadata.GpsPositionOfLocationCreated.IsValidCoordinate && this.IsGpsTracksResolverConfigured)
             {
-                if (photo.Metadata.UtcDate == null || photo.Metadata.UtcDate == new DateTime())
+                if (photo.Metadata.DateUtc == null || photo.Metadata.DateUtc == new DateTime())
                 {
                     throw new Exception("Metadata.UtcDate must be set Gps Tracks are UTC based");
                 }
 
-                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(photo.Metadata.UtcDate);
+                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(photo.Metadata.DateUtc);
 
                 if (gpsPosition != null && gpsPosition.IsValidCoordinate)
                 {
                     photo.Metadata.GpsPositionOfLocationCreated = gpsPosition;
                 }
             }
+        }
 
+        public void FindGpsPositionShown(JpgPhoto photo)
+        {
             // If we have no valid result try alternate methods
-            if (!photo.Metadata.GpsPositionOfLocationCreated.IsValidCoordinate)
+            if (!photo.Metadata.GpsPositionOfLocationShown.IsValidCoordinate)
             {
                 // Retrieve result from Bing & Cache and choose the most accurate
                 GpsPosition bingResult = new GpsPosition();
+                int bingAccuracy = 0;
                 GpsPosition manualResult = new GpsPosition();
+                int manualAccuracy = 0;
 
                 // Use Bing if Configured
                 if (this.IsBingMapsResolverConfigured)
                 {
                     // Check Bing
                     // Cycle through the address, start as accurate as possible
-                    for (int i = photo.Metadata.AddressOfLocationCreated.HierarchicalNameLength; i > 0; i--)
+                    for (int i = photo.Metadata.AddressOfLocationShown.HierarchicalNameLength; i > 0; i--)
                     {
                         // Query Bing
-                        bingResult = this.bingMapsResolver.FindGpsPosition(photo.Metadata.AddressOfLocationCreated.AddressTruncated(i));
+                        bingResult = this.bingMapsResolver.FindGpsPosition(photo.Metadata.AddressOfLocationShown.AddressTruncated(i));
 
-                        if (bingResult.IsValidCoordinate)
+                        if (bingResult != null && bingResult.IsValidCoordinate)
                         {
-                            bingResult.Accuracy = (GpsPosition.Accuracies)i;
+                            bingAccuracy = i;
                             break;
                         }
                         else
@@ -153,14 +156,14 @@ namespace Fotofly.Geotagging
                 {
                     // Check Cache
                     // Cycle through the address, start as accurate as possible
-                    for (int i = photo.Metadata.AddressOfLocationCreated.HierarchicalNameLength; i > 0; i--)
+                    for (int i = photo.Metadata.AddressOfLocationShown.HierarchicalNameLength; i > 0; i--)
                     {
                         // Query Cache
-                        manualResult = this.manualCache.FindGpsPosition(photo.Metadata.AddressOfLocationCreated.AddressTruncated(i));
+                        manualResult = this.manualCache.FindGpsPosition(photo.Metadata.AddressOfLocationShown.AddressTruncated(i));
 
                         if (manualResult != null && manualResult.IsValidCoordinate)
                         {
-                            manualResult.Accuracy = (GpsPosition.Accuracies)i;
+                            manualAccuracy = i;
                             break;
                         }
                         else
@@ -170,27 +173,26 @@ namespace Fotofly.Geotagging
                     }
                 }
 
-                if (manualResult.Accuracy == 0 && bingResult.Accuracy == 0)
+                if (manualAccuracy == 0 && bingAccuracy == 0)
                 {
-                    photo.Metadata.GpsPositionOfLocationCreated = new GpsPosition();
+                    photo.Metadata.GpsPositionOfLocationShown = new GpsPosition();
                 }
-                else if (manualResult.Accuracy > bingResult.Accuracy)
+                else if (manualAccuracy > bingAccuracy)
                 {
-                    photo.Metadata.GpsPositionOfLocationCreated = manualResult;
+                    photo.Metadata.GpsPositionOfLocationShown = manualResult;
                 }
                 else
                 {
-                    photo.Metadata.GpsPositionOfLocationCreated = bingResult;
+                    photo.Metadata.GpsPositionOfLocationShown = bingResult;
                 }
             }
         }
 
-        public void FindAddress(JpgPhoto photo)
+        public void FindAddressCreated(JpgPhoto photo)
         {
-            // Should only be run if the GPS Position was found using a GPS
-            // The is determined by knowing the altitude, because that's not normally returned from Lookups
+            // Look up address for Gps Position recorded by a Tracker
             // Order is: 1) Bing Maps 2) Google Maps
-            if (photo.Metadata != null && photo.Metadata.GpsPositionOfLocationCreated.Dimension == GpsPosition.Dimensions.ThreeDimensional)
+            if (photo.Metadata.GpsPositionOfLocationCreated.IsValidCoordinate)
             {
                 // Use Bing if configured
                 if (!photo.Metadata.AddressOfLocationCreated.IsValidAddress && this.IsBingMapsResolverConfigured)

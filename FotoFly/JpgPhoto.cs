@@ -16,7 +16,7 @@ namespace Fotofly
 
     using Fotofly.BitmapMetadataTools;
     using Fotofly.MetadataProviders;
-    using Fotofly.XmlTools;
+    using System.Reflection;
 
     public class JpgPhoto : GenericPhotoFile
     {
@@ -183,29 +183,9 @@ namespace Fotofly
             {
                 throw new Exception("File does not exist: " + this.FileFullName);
             }
-            else
-            {
-                try
-                {
-                    using (FileStream fileStream = new FileStream(this.FileFullName, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        using (StreamReader reader = new StreamReader(fileStream))
-                        {
-                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(PhotoMetadata));
 
-                            this.InternalPhotoMetadata = xmlSerializer.Deserialize(reader) as PhotoMetadata;
-                        }
-
-                        // Try and force the file lock to be released
-                        fileStream.Close();
-                        fileStream.Dispose();
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Unable to read the file: " + this.FileFullName, e);
-                }
-            }
+            this.InternalPhotoMetadata = PhotoMetadataTools.ReadPhotoMetadataFromXml(fileName);
+            this.InternalPhotoMetadataInFile = PhotoMetadataTools.ReadPhotoMetadataFromXml(fileName);
         }
 
         /// <summary>
@@ -228,7 +208,7 @@ namespace Fotofly
             }
             else
             {
-                GenericSerialiser.Write<PhotoMetadata>(this.Metadata, fileName);
+                PhotoMetadataTools.WritePhotoMetadataToXml(this.Metadata, fileName);
             }
         }
 
@@ -236,20 +216,20 @@ namespace Fotofly
         /// Compares the Metadata with the metadata stored in the original file
         /// </summary>
         /// <returns>A list of changes</returns>
-        public List<string> CompareMetadataToFileMetadata()
+        public List<CompareResult> CompareMetadataToFileMetadata()
         {
             if (!this.IsFileNameValid)
             {
                 throw new Exception("File does not exist or is not valid: " + this.FileFullName);
             }
 
-            List<string> changes = new List<string>();
+            List<CompareResult> compareResults = new List<CompareResult>();
 
             // Compare the two
-            PhotoMetadataTools.CompareMetadata(this.Metadata, this.MetadataInFile, ref changes);
+            PhotoMetadataTools.CompareMetadata(this.MetadataInFile, this.Metadata, ref compareResults);
 
             // Sort
-            var query = from x in changes
+            var query = from x in compareResults
                         orderby x
                         select x;
 
@@ -286,7 +266,7 @@ namespace Fotofly
         /// </summary>
         private void UnhandledWriteMetadata()
         {
-            List<string> changes = new List<string>();
+            List<CompareResult> changes = new List<CompareResult>();
 
             // Compare the two
             PhotoMetadataTools.CompareMetadata(this.InternalPhotoMetadata, this.InternalPhotoMetadataInFile, ref changes);
@@ -295,7 +275,8 @@ namespace Fotofly
             if (changes.Count > 0)
             {
                 // Set the Last Edit Date
-                this.Metadata.FotoflyLastEditDate = DateTime.Now;
+                this.Metadata.DateLastFotoflySave = DateTime.Now;
+                this.Metadata.CreationSoftware = FotoflyAssemblyInfo.ShortBuildVersion;
 
                 // Read the file
                 using (WpfFileManager wpfFileManager = new WpfFileManager(this.FileFullName, true))

@@ -11,9 +11,16 @@ namespace Fotofly
     using System.Text;
     using System.Windows.Media.Imaging;
     using Fotofly.MetadataProviders;
+    using System.IO;
+    using System.Xml.Serialization;
+    using System.Threading;
 
     public static class PhotoMetadataTools
     {
+        public static string SerializationPrefix = "fotofly";
+        public static string SerializationNamespace = "http://www.tassography.com/fotofly";
+        private static int serializationSleepTime = 5000;
+
         public static PhotoMetadata ReadBitmapMetadata(BitmapMetadata bitmapMetadata)
         {
             return PhotoMetadataTools.ReadBitmapMetadata(bitmapMetadata, null);
@@ -27,9 +34,9 @@ namespace Fotofly
             FileMetadata fileMetadata = new FileMetadata(bitmapMetadata);
 
             // List of changes, used for debugging
-            List<string> changes = new List<string>();
+            List<CompareResult> compareResults = new List<CompareResult>();
 
-            PhotoMetadataTools.UseReflection(fileMetadata, photoMetadata, true, ref changes);
+            PhotoMetadataTools.UseReflection(fileMetadata, photoMetadata, true, ref compareResults);
 
             // Use Reflection to Copy all values from fileMetadata to photoMetadata
             return photoMetadata;
@@ -40,24 +47,119 @@ namespace Fotofly
             FileMetadata fileMetadata = new FileMetadata(bitmapMetadata);
 
             // List of changes, used for debugging
-            List<string> changes = new List<string>();
+            List<CompareResult> compareResults = new List<CompareResult>();
 
             // Use Reflection to Copy all values from photoMetadata to FileMetadata
-            PhotoMetadataTools.UseReflection(photoMetadata, fileMetadata, true, ref changes);
+            PhotoMetadataTools.UseReflection(photoMetadata, fileMetadata, true, ref compareResults);
         }
 
-        public static void CompareMetadata(object source, object destination, ref List<string> changes)
+        public static void CompareMetadata(object source, object destination, ref List<CompareResult> changes)
         {
             PhotoMetadataTools.UseReflection(source, destination, false, ref changes);
         }
 
-        private static void UseReflection(object source, object destination, bool applyChanges, ref List<string> changes)
+        public static PhotoMetadata ReadPhotoMetadataFromXml(string fileName)
+        {
+            PhotoMetadata photoMetadata;
+
+            if (File.Exists(fileName))
+            {
+                try
+                {
+                    using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        using (StreamReader reader = new StreamReader(fileStream))
+                        {
+                            // Create the seraliser
+                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(PhotoMetadata), PhotoMetadataTools.SerializationNamespace); 
+                            
+                            photoMetadata = (PhotoMetadata)xmlSerializer.Deserialize(reader);
+                        }
+
+                        // Try and force the file lock to be released
+                        fileStream.Close();
+                        fileStream.Dispose();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Unable to read the file: " + fileName, e);
+                }
+            }
+            else
+            {
+                throw new Exception("File not found: " + fileName);
+            }
+
+            return photoMetadata;
+        }
+
+        public static void WritePhotoMetadataToXml(PhotoMetadata photoMetadata, string fileName)
+        {
+            int retryCount = 3;
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new Exception("FileName is not valid");
+            }
+
+            Exception serializerException = null;
+            bool serializerSucceeded = false;
+
+            for (int i = 0; i < retryCount; i++)
+            {
+                // Try saving the file
+                try
+                {
+                    using (FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        using (StreamWriter writer = new StreamWriter(fileStream))
+                        {
+
+                            // Create the seraliser
+                            XmlSerializer xmlSerializer = new XmlSerializer(typeof(PhotoMetadata));
+
+                            // Write the file
+                            xmlSerializer.Serialize(writer, photoMetadata, PhotoMetadataTools.XmlSerializerNamespaces);
+                        }
+
+                        // Try and force the file lock to be released
+                        fileStream.Close();
+                        fileStream.Dispose();
+                    }
+
+                    serializerSucceeded = true;
+                }
+                catch (Exception e)
+                {
+                    serializerException = e;
+                    serializerSucceeded = false;
+                }
+
+                if (serializerSucceeded)
+                {
+                    break;
+                }
+                else
+                {
+                    // Sleep before trying again
+                    Thread.Sleep(PhotoMetadataTools.serializationSleepTime);
+                }
+            }
+
+            if (serializerSucceeded == false)
+            {
+                throw new Exception("Unable to save the file: " + fileName, serializerException);
+            }
+        }
+
+        private static void UseReflection(object source, object destination, bool applyChanges, ref List<CompareResult> compareResults)
         {
             // Use Reflection to copy properties of the same name and type
             // This is done to reduce the risk of overwriting data in the file
-            if (changes == null)
+            if (compareResults == null)
             {
-                changes = new List<string>();
+                compareResults = new List<CompareResult>();
             }
 
             // Loop through every property in the source
@@ -105,17 +207,24 @@ namespace Fotofly
                             }
                         }
 
-                        StringBuilder change = new StringBuilder();
-                        change.Append(destination.GetType().Name + "." + sourceName);
-                        change.Append(" ('");
-                        change.Append(sourceValue == null ? "{null}" : (sourceValue.ToString() == string.Empty ? "{empty}" : sourceValue));
-                        change.Append("' vs '");
-                        change.Append(destinationValue == null ? "{null}" : (destinationValue.ToString() == string.Empty ? "{empty}" : destinationValue));
-                        change.Append("')");
+                        CompareResult compareResult = new CompareResult();
+                        compareResult.PropertyName = destination.GetType().Name + "." + sourceName;
+                        compareResult.SourceObject = sourceValue;
+                        compareResult.DestinationObject = destinationValue;
 
-                        changes.Add(change.ToString());
+                        compareResults.Add(compareResult);
                     }
                 }
+            }
+        }
+
+        private static XmlSerializerNamespaces XmlSerializerNamespaces
+        {
+            get
+            {
+                XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
+                xmlSerializerNamespaces.Add(string.Empty, PhotoMetadataTools.SerializationNamespace);
+                return xmlSerializerNamespaces;
             }
         }
     }

@@ -10,6 +10,7 @@ namespace Fotofly.MetadataProviders
     using System.Text;
     using System.Windows.Media.Imaging;
     using System.Collections.ObjectModel;
+    using Fotofly.MetadataQueries;
 
     public class FileMetadata : IDisposable, IFileMetadata
     {
@@ -292,7 +293,7 @@ namespace Fotofly.MetadataProviders
         /// <summary>
         /// Microsoft Region Info extension which provides data on regions in the photo
         /// </summary>
-        public ImageRegionInfo RegionInfo
+        public MicrosoftImageRegionInfo MicrosoftRegionInfo
         {
             get
             {
@@ -341,10 +342,13 @@ namespace Fotofly.MetadataProviders
             set
             {
                 this.GpsProvider.GpsPositionOfLocationCreated = value;
-                
-                if (this.XmpExifProvider.GpsPositionOfLocationCreated.IsValidCoordinate)
+
+                if (this.XmpExifProvider.GpsPositionOfLocationCreated.IsValidCoordinate && this.XmpExifProvider.GpsPositionOfLocationCreated != this.GpsProvider.GpsPositionOfLocationCreated)
                 {
-                    this.XmpExifProvider.GpsPositionOfLocationCreated = value;
+                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsAltitude.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsAltitudeRef.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsLatitude.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsLongitude.Query);
                 }
             }
         }
@@ -363,9 +367,12 @@ namespace Fotofly.MetadataProviders
             {
                 this.GpsProvider.GpsPositionOfLocationShown = value;
 
-                if (this.XmpExifProvider.GpsPositionOfLocationShown.IsValidCoordinate)
+                if (this.XmpExifProvider.GpsPositionOfLocationShown.IsValidCoordinate && this.XmpExifProvider.GpsPositionOfLocationShown != this.GpsProvider.GpsPositionOfLocationShown)
                 {
-                    this.XmpExifProvider.GpsPositionOfLocationShown = value;
+                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDestLatitude.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDestLatitudeRef.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDestLongitude.Query);
+                    this.BitmapMetadata.RemoveQuery(XmpExifQueries.GpsDestLongitudeRef.Query);
                 }
             }
         }
@@ -687,7 +694,7 @@ namespace Fotofly.MetadataProviders
             }
         }
 
-        public DateTime UtcDate
+        public DateTime DateUtc
         {
             get
             {
@@ -713,7 +720,7 @@ namespace Fotofly.MetadataProviders
             }
         }
 
-        public DateTime FotoflyLastEditDate
+        public DateTime DateLastFotoflySave
         {
             get
             {
@@ -811,19 +818,6 @@ namespace Fotofly.MetadataProviders
                 {
                     this.IptcProvider.AddressOfLocationCreated = value;
                 }
-            }
-        }
-
-        public GpsPosition.Accuracies AccuracyOfGps
-        {
-            get
-            {
-                return this.xmpFotoflyProvider.AccuracyOfGps;
-            }
-
-            set
-            {
-                this.xmpFotoflyProvider.AccuracyOfGps = value;
             }
         }
 

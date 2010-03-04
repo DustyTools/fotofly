@@ -6,7 +6,9 @@ namespace Fotofly
 {
     using System;
     using System.Text;
+    using System.Xml.Serialization;
 
+    [XmlRootAttribute("ExifDateTime", Namespace = "http://www.tassography.com/fotofly")]
     public class ExifDateTime
     {
         private DateTime dateTime;

@@ -6,7 +6,9 @@ namespace Fotofly
 {
     using System;
     using System.Text;
+    using System.Xml.Serialization;
 
+    [XmlRootAttribute("ExposureBias", Namespace = "http://www.tassography.com/fotofly")]
     public class ExposureBias
     {
         SRational srational;

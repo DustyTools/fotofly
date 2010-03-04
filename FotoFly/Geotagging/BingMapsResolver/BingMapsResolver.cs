@@ -72,11 +72,14 @@ namespace Fotofly.Geotagging.Resolvers
             {
                 returnValue = this.resolverCache.FindAddress(gps);
 
-                if (returnValue.IsValidAddress)
+                if (returnValue != null && returnValue.IsValidAddress)
                 {
                     return returnValue;
                 }
             }
+
+            // Reset incase null from above
+            returnValue = new Fotofly.Address();
 
             // Set the LatLong
             LatLong latLong = new LatLong();

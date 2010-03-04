@@ -230,7 +230,7 @@ namespace Fotofly
                 }
 
                 // Update all metadata
-                this.FileFullName = filesToRename.First().Value;
+                this.SetFileName(filesToRename.First().Value);
 
                 this.SecondaryFiles.Clear();
 
@@ -308,8 +308,7 @@ namespace Fotofly
                     return this.FileName.StartsWith(fileNamePrefix + "_" + fileDatePart + "_");
                 }
             }
-            
-            if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddHoursMinutesSeconds)
+            else if (fileFormat == GenericPhotoEnums.FilenameFormats.yyyymmddHoursMinutesSeconds)
             {
                 // Generate fileSequencePart based on HHMMss
                 fileSequencePart = this.InternalPhotoMetadata.DateTaken.ToString("HHmmss");

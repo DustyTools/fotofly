@@ -6,7 +6,9 @@ namespace Fotofly
 {
     using System;
     using System.Text;
+    using System.Xml.Serialization;
 
+    [XmlRootAttribute("Aperture", Namespace = "http://www.tassography.com/fotofly")]
     public class Aperture
     {
         URational uRational;
@@ -46,6 +48,33 @@ namespace Fotofly
             else
             {
                 throw new ArgumentException("Aperture was not of expected format:" + aperture);
+            }
+        }
+
+        [XmlAttribute]
+        public double Numeric
+        {
+            get
+            {
+                if (this.uRational != null)
+                {
+                    return this.uRational.Numerator;
+                }
+
+                return 0;
+            }
+
+            set
+            {
+                this.uRational = new URational(value, 1);
+            }
+        }
+
+        public bool IsValid
+        {
+            get
+            {
+                return this.uRational.Numerator != 0;
             }
         }
 

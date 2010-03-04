@@ -6,10 +6,17 @@ namespace Fotofly
 {
     using System;
     using System.Text;
+    using System.Xml.Serialization;
 
+    [XmlRootAttribute("ShutterSpeed", Namespace = "http://www.tassography.com/fotofly")]
     public class ShutterSpeed
     {
         private TimeSpan timespan;
+
+        public ShutterSpeed()
+        {
+            this.timespan = new TimeSpan();
+        }
 
         public ShutterSpeed(string shutterSpeed)
         {
@@ -55,6 +62,33 @@ namespace Fotofly
           {
               return this.timespan;
           }
+        }
+
+        [XmlAttribute]
+        public int MilliSeconds
+        {
+            get
+            {
+                if (this.timespan != null)
+                {
+                    return Convert.ToInt32(this.timespan.TotalMilliseconds);
+                }
+
+                return 0;
+            }
+
+            set
+            {
+                this.timespan = new TimeSpan(0, 0, 0, 0, value);
+            }
+        }
+
+        public bool IsValid
+        {
+            get
+            {
+                return this.timespan.Ticks != 0;
+            }
         }
 
         public override bool Equals(object obj)

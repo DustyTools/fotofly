@@ -6,7 +6,9 @@ namespace Fotofly
 {
     using System;
     using System.Text;
+    using System.Xml.Serialization;
 
+    [XmlRootAttribute("IsoSpeed", Namespace = "http://www.tassography.com/fotofly")]
     public class IsoSpeed
     {
         private int isoSpeed;
@@ -30,6 +32,7 @@ namespace Fotofly
             this.Numeric = isoSpeed;
         }
 
+        [XmlAttribute]
         public int Numeric
         {
             get

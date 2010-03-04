@@ -9,7 +9,9 @@ namespace Fotofly
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Text;
+    using System.Xml.Serialization;
 
+    [XmlRootAttribute("People", Namespace = "http://www.tassography.com/fotofly")]
     public class PeopleList : List<string>, ICloneable
     {
         public PeopleList()

@@ -43,7 +43,7 @@
 
         string CameraManufacturer { get; set; }
 
-        ImageRegionInfo RegionInfo { get; set; }
+        MicrosoftImageRegionInfo MicrosoftRegionInfo { get; set; }
 
         TagList Tags { get; set; }
 
@@ -69,11 +69,11 @@
 
         DateTime DateDigitised { get; set; }
 
-        DateTime UtcDate { get; set; }
+        DateTime DateUtc { get; set; }
 
         double? UtcOffset { get; set; }
 
-        DateTime FotoflyLastEditDate { get; set; }
+        DateTime DateLastFotoflySave { get; set; }
 
         DateTime AddressOfGpsLookupDate { get; set; }
 
@@ -86,8 +86,6 @@
         Address AddressOfLocationShown { get; set; }
 
         string AddressOfGpsSource { get; set; }
-
-        GpsPosition.Accuracies AccuracyOfGps { get; set; }
 
         #endregion
     }

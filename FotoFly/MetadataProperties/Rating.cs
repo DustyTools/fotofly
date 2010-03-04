@@ -11,6 +11,7 @@ namespace Fotofly
     using System.Text.RegularExpressions;
     using System.Xml.Serialization;
 
+    [XmlRootAttribute("Rating", Namespace = "http://www.tassography.com/fotofly")]
     public class Rating : ICloneable
     {
         public enum Ratings
@@ -52,6 +53,7 @@ namespace Fotofly
             }
         }
 
+        [XmlAttribute]
         public double Numerical
         {
             get
@@ -105,6 +107,24 @@ namespace Fotofly
                         return Ratings.FiveStar;
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return this.AsEnum.ToString().Replace("Star", " Star").Replace("Rating", " Rating");
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Rating)
+            {
+                if ((obj as Rating).ToString() == this.ToString())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public object Clone()

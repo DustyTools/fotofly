@@ -50,6 +50,7 @@
     <Compile Include="GeotaggingUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JpgPhotoUnitTests.cs" />
+    <Compile Include="PropertyUnitTests.cs" />
     <Compile Include="TestPhotos.cs" />
   </ItemGroup>
   <ItemGroup>

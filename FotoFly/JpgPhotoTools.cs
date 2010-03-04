@@ -18,7 +18,6 @@ namespace Fotofly
     using System.Xml.Serialization;
 
     using Fotofly.BitmapMetadataTools;
-    using Fotofly.XmlTools;
 
     public static class JpgPhotoTools
     {

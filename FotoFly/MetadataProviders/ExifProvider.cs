@@ -285,7 +285,7 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(ExifQueries.ExposureBias.Query))
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.ExposureBias.Query, typeof(SRational)))
                 {
                     return new ExposureBias(this.BitmapMetadata.GetQuery<SRational>(ExifQueries.ExposureBias.Query));
                 }
@@ -323,14 +323,11 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(ExifQueries.IsoSpeedRating.Query))
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.IsoSpeedRating.Query, typeof(UInt16)))
                 {
-                    UInt16? isoSpeed = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.IsoSpeedRating.Query);
+                    UInt16 isoSpeed = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.IsoSpeedRating.Query);
 
-                    if (isoSpeed != null)
-                    {
-                        return new IsoSpeed(isoSpeed.Value);
-                    }
+                    return new IsoSpeed(isoSpeed);
                 }
 
                 return new IsoSpeed();
@@ -364,16 +361,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                int? imageHeight = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.ImageHeight.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.ImageHeight.Query, typeof(UInt16)))
+                {
+                    int imageHeight = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.ImageHeight.Query);
 
-                if (imageHeight == null)
-                {
-                    return 0;
+                    return imageHeight;
                 }
-                else
-                {
-                    return imageHeight.Value;
-                }
+
+                return 0;
             }
         }
 
@@ -384,16 +379,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                int? imageWidth = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.ImageWidth.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.ImageWidth.Query, typeof(string)))
+                {
+                 int imageWidth = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.ImageWidth.Query);
 
-                if (imageWidth == null)
-                {
-                    return 0;
+                    return imageWidth;
                 }
-                else
-                {
-                    return imageWidth.Value;
-                }
+
+                return 0;
             }
         }
 
@@ -404,7 +397,7 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                if (this.BitmapMetadata.ContainsQueryAndNotEmpty(ExifQueries.ShutterSpeed.Query))
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.ShutterSpeed.Query, typeof(URational)))
                 {
                     URational urational = this.BitmapMetadata.GetQuery<URational>(ExifQueries.ShutterSpeed.Query);
 
@@ -485,16 +478,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                UInt16? exposureMode = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.ExposureMode.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.ExposureMode.Query, typeof(UInt16)))
+                {
+                    UInt16 exposureMode = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.ExposureMode.Query);
 
-                if (exposureMode == null)
-                {
-                    return MetadataEnums.ExposureModes.AutoExposure;
+                    return (MetadataEnums.ExposureModes)exposureMode;
                 }
-                else
-                {
-                    return (MetadataEnums.ExposureModes)exposureMode.Value;
-                }
+
+                return MetadataEnums.ExposureModes.AutoExposure;
             }
         }
 
@@ -505,16 +496,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                uint? subjectDistanceRange = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.SubjectDistanceRange.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.SubjectDistanceRange.Query, typeof(UInt16)))
+                {
+                    uint subjectDistanceRange = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.SubjectDistanceRange.Query);
 
-                if (subjectDistanceRange == null)
-                {
-                    return MetadataEnums.SubjectDistanceRanges.Unknown;
+                    return (MetadataEnums.SubjectDistanceRanges)subjectDistanceRange;
                 }
-                else
-                {
-                    return (MetadataEnums.SubjectDistanceRanges)subjectDistanceRange.Value;
-                }
+
+                return MetadataEnums.SubjectDistanceRanges.Unknown;
             }
         }
 
@@ -525,16 +514,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                UInt16? meteringMode = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.MeteringMode.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.MeteringMode.Query, typeof(UInt16)))
+                {
+                    UInt16 meteringMode = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.MeteringMode.Query);
 
-                if (meteringMode == null)
-                {
-                    return MetadataEnums.MeteringModes.Unknown;
+                    return (MetadataEnums.MeteringModes)meteringMode;
                 }
-                else
-                {
-                    return (MetadataEnums.MeteringModes)meteringMode.Value;
-                }
+
+                return MetadataEnums.MeteringModes.Unknown;
             }
         }
 
@@ -545,16 +532,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                UInt16? orientation = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.Orientation.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.Orientation.Query, typeof(UInt16)))
+                {
+                    UInt16 orientation = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.Orientation.Query);
 
-                if (orientation == null)
-                {
-                    return MetadataEnums.Orientations.Unknown;
+                    return (MetadataEnums.Orientations)orientation;
                 }
-                else
-                {
-                    return (MetadataEnums.Orientations)orientation.Value;
-                }
+
+                return MetadataEnums.Orientations.Unknown;
             }
         }
 
@@ -565,16 +550,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                UInt16? whiteBalance = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.WhiteBalance.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.WhiteBalance.Query, typeof(UInt16)))
+                {
+                    UInt16 whiteBalance = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.WhiteBalance.Query);
 
-                if (whiteBalance == null)
-                {
-                    return MetadataEnums.WhiteBalances.AutoWhiteBalance;
+                    return (MetadataEnums.WhiteBalances)whiteBalance;
                 }
-                else
-                {
-                    return (MetadataEnums.WhiteBalances)whiteBalance.Value;
-                }
+
+                return MetadataEnums.WhiteBalances.AutoWhiteBalance;
             }
         }
 
@@ -585,16 +568,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                uint? lightSource = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.LightSource.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.LightSource.Query, typeof(UInt16)))
+                {
+                    uint lightSource = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.LightSource.Query);
 
-                if (lightSource == null)
-                {
-                    return MetadataEnums.LightSources.Unknown;
+                    return (MetadataEnums.LightSources)lightSource;
                 }
-                else
-                {
-                    return (MetadataEnums.LightSources)lightSource.Value;
-                }
+
+                return MetadataEnums.LightSources.Unknown;
             }
         }
 
@@ -605,16 +586,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                UInt16? colour = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.ColorRepresentation.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.ColorRepresentation.Query, typeof(UInt16)))
+                {
+                    UInt16 colour = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.ColorRepresentation.Query);
 
-                if (colour == null || colour.Value != 1)
-                {
-                    return MetadataEnums.ColorRepresentations.Unknown;
-                }
-                else
-                {
                     return MetadataEnums.ColorRepresentations.sRGB;
                 }
+
+                return MetadataEnums.ColorRepresentations.Unknown;
             }
         }
 
@@ -625,16 +604,14 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                uint? exposureProgram = this.BitmapMetadata.GetQuery<UInt16?>(ExifQueries.ExposureProgram.Query);
+                if (this.BitmapMetadata.IsQueryValidAndOfType(ExifQueries.ExposureProgram.Query, typeof(UInt16)))
+                {
+                    uint exposureProgram = this.BitmapMetadata.GetQuery<UInt16>(ExifQueries.ExposureProgram.Query);
 
-                if (exposureProgram == null)
-                {
-                    return MetadataEnums.ExposurePrograms.Unknown;
+                    return (MetadataEnums.ExposurePrograms)exposureProgram;
                 }
-                else
-                {
-                    return (MetadataEnums.ExposurePrograms)exposureProgram.Value;
-                }
+
+                return MetadataEnums.ExposurePrograms.Unknown;
             }
         }
 

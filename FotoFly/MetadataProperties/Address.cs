@@ -11,6 +11,7 @@ namespace Fotofly
     using System.Text.RegularExpressions;
     using System.Xml.Serialization;
 
+    [XmlRootAttribute("Address", Namespace = "http://www.tassography.com/fotofly")]
     public class Address : ICloneable
     {
         public Address()
@@ -128,11 +129,6 @@ namespace Fotofly
                     newAddress = newAddress.Trim();
                     newAddress = newAddress.Replace(@" /", @"/");
                     newAddress = newAddress.Replace(@"/ ", @"/");
-                    newAddress = Regex.Replace(newAddress, "GPS Places", string.Empty);
-                    newAddress = Regex.Replace(newAddress, "Places", string.Empty);
-                    newAddress = Regex.Replace(newAddress, "GPS Address", string.Empty);
-                    newAddress = Regex.Replace(newAddress, "Geotagging/Address", string.Empty);
-                    newAddress = Regex.Replace(newAddress, "Address", string.Empty);
                     newAddress = newAddress.TrimStart('/');
 
                     // Split the string up

@@ -11,6 +11,7 @@ namespace Fotofly
     using System.Text.RegularExpressions;
     using System.Xml.Serialization;
 
+    [XmlRootAttribute("Tag", Namespace = "http://www.tassography.com/fotofly")]
     public class Tag : ICloneable
     {
         // ToDo This is crap
@@ -63,6 +64,26 @@ namespace Fotofly
                     return this.Tree[0];
                 }
             }
+        }
+
+        public Tag SubTag(int startTag)
+        {
+            return this.SubTag(startTag, this.Tree.Count);
+        }
+
+        public Tag SubTag(int startTag, int length)
+        {
+            // Build the Tree
+            string parts = string.Empty;
+
+            string[] splitString = this.FullName.TrimEnd('/').Split('/');
+
+            for (int i = startTag; i < length; i++ )
+            {
+                parts = parts + "/" + splitString[i];
+            }
+
+            return new Tag(parts);
         }
 
         [XmlIgnore]

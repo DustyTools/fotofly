@@ -10,7 +10,7 @@ namespace Fotofly
     using System.Text;
     using System.Xml.Serialization;
 
-    [XmlRootAttribute("GpsPosition")]
+    [XmlRootAttribute("GpsPosition", Namespace = "http://www.tassography.com/fotofly")]
     public class GpsPosition : ICloneable
     {
         private const double Rad = Math.PI / 180;
@@ -28,44 +28,33 @@ namespace Fotofly
         {
             this.ResetCoordinates();
 
-            this.Dimension = Dimensions.TwoDimensional;
-
             this.Latitude.Numeric = latitude;
             this.Longitude.Numeric = longitude;
             this.Altitude = double.NaN;
-            this.Source = null;
+        }
+
+        public GpsPosition(double latitude, double longitude, double altitude)
+        {
+            this.ResetCoordinates();
+
+            this.Latitude.Numeric = latitude;
+            this.Longitude.Numeric = longitude;
+            this.Altitude = altitude;
         }
 
         public GpsPosition(GpsCoordinate latitude, GpsCoordinate longitude, double altitude)
         {
             this.ResetCoordinates();
 
-            this.Dimension = Dimensions.ThreeDimensional;
-
             this.Latitude.Numeric = latitude.Numeric;
             this.Longitude.Numeric = longitude.Numeric;
-
             this.Altitude = altitude;
-            this.Source = null;
-        }
-
-        public enum Accuracies : int
-        {
-            Unknown = 0,
-            Country = 1,
-            Region = 2,
-            SubRegion = 3,
-            City = 4,
-            PostalCode = 5,
-            Street = 6,
-            Intersection = 7,
-            Address = 8,
-            Premise = 9
         }
 
         public enum Dimensions
         {
             NotSpecified,
+            OneDimensional = 1,
             TwoDimensional = 2,
             ThreeDimensional = 3
         }
@@ -75,13 +64,6 @@ namespace Fotofly
             NotSpecified,
             AboveSeaLevel,
             BelowSeaLevel
-        }
-
-        [XmlAttribute]
-        public GpsPosition.Accuracies Accuracy
-        {
-            get;
-            set;
         }
 
         [XmlAttribute]
@@ -97,35 +79,10 @@ namespace Fotofly
                 if (double.IsNaN(value))
                 {
                     this.altitude = double.NaN;
-                    this.Dimension = Dimensions.TwoDimensional;
                 }
                 else
                 {
                     this.altitude = Math.Round(value, 3);
-                    this.Dimension = Dimensions.ThreeDimensional;
-                }
-            }
-        }
-
-        [XmlIgnore]
-        public string DegreesMinutesSecondsAltitude
-        {
-            get
-            {
-                string returnValue = this.Latitude.DegreesMinutesSeconds + " " + this.Longitude.DegreesMinutesSeconds;
-
-                if (this.Dimension == Dimensions.ThreeDimensional && !double.IsNaN(this.Altitude))
-                {
-                    returnValue += " " + this.Altitude + "m";
-                }
-
-                if (string.IsNullOrEmpty(returnValue.Replace(" ", string.Empty)))
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return returnValue;
                 }
             }
         }
@@ -133,8 +90,33 @@ namespace Fotofly
         [XmlIgnore]
         public Dimensions Dimension
         {
-            get;
-            set;
+            get
+            {
+                if (double.IsNaN(this.Altitude) && (!this.Latitude.IsValidCoordinate || !this.Longitude.IsValidCoordinate))
+                {
+                    // Altitude is not set and Lat & Lon are not correct
+                    return Dimensions.NotSpecified;
+                }
+                else if (!double.IsNaN(this.Altitude) && (!this.Latitude.IsValidCoordinate || !this.Longitude.IsValidCoordinate))
+                {
+                    // Altitude is correct, Lat & Lon are not
+                    return Dimensions.OneDimensional;
+                }
+                else if (double.IsNaN(this.Altitude) && this.Latitude.IsValidCoordinate && this.Longitude.IsValidCoordinate)
+                {
+                    // Altitude is not correct, Lat & Lon are correct
+                    return Dimensions.TwoDimensional;
+                }
+                else
+                {
+                    return Dimensions.ThreeDimensional;
+                }
+            }
+
+            set
+            {
+                // Ignoreonly used for Serialization
+            }
         }
 
         [XmlAttribute]
@@ -142,14 +124,8 @@ namespace Fotofly
         {
             get
             {
-                if (this.Latitude.IsValidCoordinate && this.Longitude.IsValidCoordinate)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                // Dimension does the root check of what is valid or not
+                return this.Dimension != Dimensions.NotSpecified;
             }
 
             set
@@ -163,10 +139,9 @@ namespace Fotofly
         {
             get
             {
-                if (this.latitude == null)
+                if (this.latitude == null || double.IsNaN(this.latitude.Numeric))
                 {
-                    this.latitude = new GpsCoordinate();
-                    this.latitude.LatOrLon = GpsCoordinate.LatOrLons.Latitude;
+                    this.latitude = new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude);
                 }
 
                 return this.latitude;
@@ -174,8 +149,12 @@ namespace Fotofly
 
             set
             {
-                this.latitude = value;
-                this.latitude.LatOrLon = GpsCoordinate.LatOrLons.Latitude;
+                if (double.IsNaN(value.Numeric))
+                {
+                    this.latitude = new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude);
+                }
+
+                this.latitude = new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude, value.Numeric);
             }
         }
 
@@ -184,10 +163,9 @@ namespace Fotofly
         {
             get
             {
-                if (this.longitude == null)
+                if (this.longitude == null || double.IsNaN(this.longitude.Numeric))
                 {
-                    this.longitude = new GpsCoordinate();
-                    this.longitude.LatOrLon = GpsCoordinate.LatOrLons.Longitude;
+                    this.longitude = new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude);
                 }
 
                 return this.longitude;
@@ -195,8 +173,12 @@ namespace Fotofly
 
             set
             {
-                this.longitude = value;
-                this.longitude.LatOrLon = GpsCoordinate.LatOrLons.Longitude;
+                if (double.IsNaN(value.Numeric))
+                {
+                    this.longitude = new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude);
+                }
+
+                this.longitude = new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude, value.Numeric);
             }
         }
 
@@ -293,15 +275,68 @@ namespace Fotofly
 
         public void ResetCoordinates()
         {
-            this.Accuracy = 0;
-            this.Latitude.Numeric = double.NaN;
-            this.Longitude.Numeric = double.NaN;
-            this.Dimension = Dimensions.NotSpecified;
+            this.Latitude = new GpsCoordinate(GpsCoordinate.LatOrLons.Latitude);
+            this.Longitude = new GpsCoordinate(GpsCoordinate.LatOrLons.Longitude);
             this.Source = null;
             this.altitude = double.NaN;
             this.satelliteTime = new DateTime();
         }
 
+        public override bool Equals(object unknownObject)
+        {
+            if (unknownObject is GpsPosition)
+            {
+                GpsPosition otherPosition = (GpsPosition)unknownObject;
+
+                if (otherPosition.ToString() == this.ToString()
+                    && otherPosition.SatelliteTime.Ticks == this.SatelliteTime.Ticks
+                    && otherPosition.Source == this.Source)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override string ToString()
+        {
+            // Return the correct format based on the dimensions
+            switch (this.Dimension)
+            {
+                default:
+                case Dimensions.NotSpecified:
+                    return string.Empty;
+
+                case Dimensions.OneDimensional:
+                    return this.Altitude + "m";
+
+                case Dimensions.TwoDimensional:
+                    return this.Latitude.DegreesMinutesSeconds + " " + this.Longitude.DegreesMinutesSeconds;
+
+                case Dimensions.ThreeDimensional:
+                    return this.Latitude.DegreesMinutesSeconds + " " + this.Longitude.DegreesMinutesSeconds + " " + this.Altitude + "m";
+            }
+        }
+
+        public object Clone()
+        {
+            GpsPosition gpsPosition = new GpsPosition();
+            gpsPosition.Latitude = this.Latitude.Clone() as GpsCoordinate;
+            gpsPosition.Longitude = this.Longitude.Clone() as GpsCoordinate;
+            gpsPosition.Altitude = this.Altitude;
+            gpsPosition.Source = this.Source;
+            gpsPosition.SatelliteTime = this.SatelliteTime;
+
+            return gpsPosition;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        /* Accuracy Code, not currently used
         public string AccuracyAsString(GpsPosition.Accuracies accuracy)
         {
             Dictionary<int, string> accuracies = new Dictionary<int, string>();
@@ -319,44 +354,85 @@ namespace Fotofly
             return accuracies[(int)accuracy];
         }
 
-        public override bool Equals(object unknownObject)
+        public enum Accuracies : int
         {
-            if (unknownObject is GpsPosition)
-            {
-                GpsPosition otherPosition = (GpsPosition)unknownObject;
+            Unknown = 0,
+            Country = 1,
+            Region = 2,
+            SubRegion = 3,
+            City = 4,
+            PostalCode = 5,
+            Street = 6,
+            Intersection = 7,
+            Address = 8,
+            Premise = 9
+        }
 
-                if (otherPosition.DegreesMinutesSecondsAltitude == this.DegreesMinutesSecondsAltitude
-                    && otherPosition.SatelliteTime.Ticks == this.SatelliteTime.Ticks
-                    && otherPosition.Source == this.Source)
+        public GpsPosition.Accuracies AccuracyOfGps
+        {
+            get
+            {
+                string accuracyOfGpsString = this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.AccuracyOfGps.Query);
+
+                if (!string.IsNullOrEmpty(accuracyOfGpsString))
                 {
-                    return true;
+                    int accuracyOfGps;
+
+                    if (Int32.TryParse(accuracyOfGpsString[0].ToString(), out accuracyOfGps) && accuracyOfGps < 9 && accuracyOfGps > 0)
+                    {
+                        return (GpsPosition.Accuracies)accuracyOfGps;
+                    }
                 }
+
+                return GpsPosition.Accuracies.Unknown;
             }
 
-            return false;
-        }
+            set
+            {
+                if (this.ValueHasChanged(value, this.AccuracyOfGps))
+                {
+                    this.CreateFotoflyStruct();
 
-        public override string ToString()
-        {
-            return this.satelliteTime.ToString() + " - " + this.DegreesMinutesSecondsAltitude;
+                    if (value == GpsPosition.Accuracies.Unknown)
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AccuracyOfGps.Query);
+                    }
+                    else
+                    {
+                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AccuracyOfGps.Query, (int)value + "-" + value.ToString());
+                    }
+                }
+            }
         }
+         
+                // Set Accuracy
+                double distanceToPointA = this.GpsPositionBefore.Distance(this.gpsPositionMiddle);
+                double distanceToPointB = this.GpsPositionAfter.Distance(this.gpsPositionMiddle);
 
-        public object Clone()
-        {
-            GpsPosition gpsPosition = new GpsPosition();
-            gpsPosition.Latitude = this.Latitude.Clone() as GpsCoordinate;
-            gpsPosition.Longitude = this.Longitude.Clone() as GpsCoordinate;
-            gpsPosition.Altitude = this.Altitude;
-            gpsPosition.Source = this.Source;
-            gpsPosition.SatelliteTime = this.SatelliteTime;
-            gpsPosition.Accuracy = this.Accuracy;
+                // Work out farthest point because this is the least accurate point
+                double distanceToFarthestPoint = distanceToPointA > distanceToPointB ? distanceToPointA : distanceToPointB;
 
-            return gpsPosition;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+                // Calculate Accuracy
+                if (distanceToFarthestPoint < 100)
+                {
+                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.Address;
+                }
+                else if (distanceToFarthestPoint < 1000)
+                {
+                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.Street;
+                }
+                else if (distanceToFarthestPoint < 10000)
+                {
+                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.City;
+                }
+                else if (distanceToFarthestPoint < 50000)
+                {
+                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.Region;
+                }
+                else
+                {
+                    this.gpsPositionMiddle.Accuracy = GpsPosition.Accuracies.Country;
+                }
+        */
     }
 }

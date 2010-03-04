@@ -11,13 +11,14 @@ namespace Fotofly
     using System.Xml.Serialization;
 
     /// <summary>
-    /// Class representing Industry Standard Metadata
+    /// Class representing Photo Metadata
     /// </summary>
+    [XmlRoot("PhotoMetadata", Namespace = "http://www.tassography.com/fotofly")]
     public class PhotoMetadata : IFileMetadata
     {
         public PhotoMetadata()
         {
-            this.RegionInfo = new ImageRegionInfo();
+            this.MicrosoftRegionInfo = new MicrosoftImageRegionInfo();
             this.GpsPositionOfLocationShown = new GpsPosition();
             this.GpsPositionOfLocationCreated = new GpsPosition();
             this.Authors = new PeopleList();
@@ -29,7 +30,7 @@ namespace Fotofly
         /// <summary>
         /// Aperture
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public Aperture Aperture
         {
             get;
@@ -39,7 +40,7 @@ namespace Fotofly
         /// <summary>
         /// Software used to last modify the photo
         /// </summary>
-        [XmlIgnore]
+        [XmlElementAttribute]
         public string CreationSoftware
         {
             get;
@@ -49,7 +50,7 @@ namespace Fotofly
         /// <summary>
         /// Shutter Speed
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public ShutterSpeed ShutterSpeed
         {
             get;
@@ -57,21 +58,9 @@ namespace Fotofly
         }
 
         /// <summary>
-        /// Shutter Speed and Aperture (Readonly)
-        /// </summary>
-        [XmlIgnore]
-        public string ShutterSpeedAndAperture
-        {
-            get
-            {
-                return this.ShutterSpeed + " " + this.Aperture;
-            }
-        }
-
-        /// <summary>
         /// Exposure Bias
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public ExposureBias ExposureBias
         {
             get;
@@ -81,7 +70,7 @@ namespace Fotofly
         /// <summary>
         /// Focal Length
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public string FocalLength
         {
             get;
@@ -91,7 +80,7 @@ namespace Fotofly
         /// <summary>
         /// Copyright owner of the photo
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public string Copyright
         {
             get;
@@ -101,7 +90,7 @@ namespace Fotofly
         /// <summary>
         /// Camera Model, normally includes camera Manufacturer
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public string CameraModel
         {
             get;
@@ -111,7 +100,7 @@ namespace Fotofly
         /// <summary>
         /// Camera Manufacturer
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public string CameraManufacturer
         {
             get;
@@ -121,7 +110,7 @@ namespace Fotofly
         /// <summary>
         /// Metering Mode
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public MetadataEnums.MeteringModes MeteringMode
         {
             get;
@@ -132,7 +121,7 @@ namespace Fotofly
         /// Microsoft Region Info extension which provides data on regions in the photo
         /// </summary>
         [XmlElementAttribute]
-        public ImageRegionInfo RegionInfo
+        public MicrosoftImageRegionInfo MicrosoftRegionInfo
         {
             get;
             set;
@@ -171,7 +160,7 @@ namespace Fotofly
         /// <summary>
         /// DateModified, as stored in Metadata (not the same as file last modified)
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public DateTime DateModified
         {
             get;
@@ -181,7 +170,7 @@ namespace Fotofly
         /// <summary>
         /// DateAquired, Microsoft Windows7 Property field
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public DateTime DateAquired
         {
             get;
@@ -191,7 +180,7 @@ namespace Fotofly
         /// <summary>
         /// DateTaken, recorded by the camera when the photo is taken
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public DateTime DateTaken
         {
             get;
@@ -201,7 +190,7 @@ namespace Fotofly
         /// <summary>
         /// ISO Speed rating 
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public IsoSpeed IsoSpeed
         {
             get;
@@ -211,7 +200,7 @@ namespace Fotofly
         /// <summary>
         /// Image Width measured in Pixels
         /// </summary>
-        [XmlAttribute("Width")]
+        [XmlElementAttribute]
         public int ImageWidth
         {
             get;
@@ -221,7 +210,7 @@ namespace Fotofly
         /// <summary>
         /// Image Height measured in Pixels
         /// </summary>
-        [XmlAttribute("Height")]
+        [XmlElementAttribute]
         public int ImageHeight
         {
             get;
@@ -231,18 +220,8 @@ namespace Fotofly
         /// <summary>
         /// Rating (Ranging -1.0 to 5.0)
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public Rating Rating
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Description Also Known as Title (in Windows), User Comment, Caption, Abstract or Description
-        /// </summary>
-        [XmlAttribute]
-        public string Description
         {
             get;
             set;
@@ -251,7 +230,18 @@ namespace Fotofly
         /// <summary>
         /// List of Authors, also known as Photographer
         /// </summary>
+        [XmlArray]
         public PeopleList Authors
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Description Also Known as Title (in Windows), User Comment, Caption, Abstract or Description
+        /// </summary>
+        [XmlElementAttribute]
+        public string Description
         {
             get;
             set;
@@ -260,7 +250,7 @@ namespace Fotofly
         /// <summary>
         /// Comment, not stored in XMP, IPTC or Exif
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public string Comment
         {
             get;
@@ -270,7 +260,7 @@ namespace Fotofly
         /// <summary>
         /// Subject, not stored in XMP, IPTC or Exif
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public string Subject
         {
             get;
@@ -280,7 +270,7 @@ namespace Fotofly
         /// <summary>
         /// DateDigitized, recorded by the camera when the photo is taken
         /// </summary>
-        [XmlIgnore]
+        [XmlElementAttribute]
         public DateTime DateDigitised
         {
             get;
@@ -290,14 +280,14 @@ namespace Fotofly
         /// <summary>
         /// List of People stored in Region (Readonly)
         /// </summary>
-        [XmlIgnore]
+        [XmlElementAttribute]
         public PeopleList People
         {
             get
             {
                 PeopleList people = new PeopleList();
 
-                foreach (ImageRegion region in this.RegionInfo.Regions)
+                foreach (MicrosoftImageRegion region in this.MicrosoftRegionInfo.Regions)
                 {
                     people.Add(region.PersonDisplayName);
                 }
@@ -309,7 +299,7 @@ namespace Fotofly
         /// <summary>
         /// Orientation of the Image (Readonly)
         /// </summary>
-        [XmlIgnore]
+        [XmlElementAttribute]
         public MetadataEnums.ImageOrientations Orientation
         {
             get
@@ -329,7 +319,7 @@ namespace Fotofly
         /// <summary>
         /// Vertical Resolution of main photo
         /// </summary>
-        [XmlIgnore]
+        [XmlElementAttribute]
         public int VerticalResolution
         {
             get;
@@ -339,7 +329,7 @@ namespace Fotofly
         /// <summary>
         /// Horizontal Resolution of main photo
         /// </summary>
-        [XmlIgnore]
+        [XmlElementAttribute]
         public int HorizontalResolution
         {
             get;
@@ -349,40 +339,39 @@ namespace Fotofly
         /// <summary>
         /// DigitalZoomRatio
         /// </summary>
-        [XmlAttribute]
+        [XmlElementAttribute]
         public double? DigitalZoomRatio
         {
             get;
             set;
         }
 
-        [XmlAttribute]
-        public DateTime UtcDate { get; set; }
+        [XmlElementAttribute]
+        public DateTime DateUtc { get; set; }
 
-        [XmlElement]
+        [XmlElementAttribute]
         public double? UtcOffset { get; set; }
 
-        [XmlAttribute]
-        public DateTime FotoflyLastEditDate { get; set; }
+        [XmlElementAttribute]
+        public DateTime DateLastFotoflySave { get; set; }
 
-        [XmlAttribute]
+        [XmlElementAttribute]
         public DateTime AddressOfGpsLookupDate { get; set; }
 
-        [XmlAttribute]
+        [XmlElementAttribute]
         public DateTime OriginalCameraDate { get; set; }
 
-        [XmlAttribute]
+        [XmlElementAttribute]
         public string OriginalCameraFilename { get; set; }
 
+        [XmlElementAttribute]
         public Address AddressOfLocationCreated { get; set; }
 
+        [XmlElementAttribute]
         public Address AddressOfLocationShown { get; set; }
 
-        [XmlAttribute]
+        [XmlElementAttribute]
         public string AddressOfGpsSource { get; set; }
-
-        [XmlAttribute]
-        public GpsPosition.Accuracies AccuracyOfGps { get; set; }
 
         [XmlIgnore]
         public bool IsUtcOffsetSet
@@ -398,7 +387,7 @@ namespace Fotofly
         {
             get
             {
-                return this.UtcDate != new DateTime();
+                return this.DateUtc != new DateTime();
             }
         }
 
@@ -413,14 +402,14 @@ namespace Fotofly
 
         public bool IsUtcOffsetCorrect(DateTime dateTaken)
         {
-            if (this.UtcOffset == null || this.UtcDate == null)
+            if (this.UtcOffset == null || this.DateUtc == null)
             {
                 return false;
             }
             else
             {
                 double utcOffsetInMins = this.UtcOffset.Value * 60;
-                double dateGapInMins = new TimeSpan(dateTaken.Ticks - this.UtcDate.Ticks).TotalMinutes;
+                double dateGapInMins = new TimeSpan(dateTaken.Ticks - this.DateUtc.Ticks).TotalMinutes;
 
                 return utcOffsetInMins == dateGapInMins;
             }
