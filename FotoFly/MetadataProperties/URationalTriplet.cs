@@ -76,7 +76,7 @@ namespace Fotofly
         {
             double numeric = this.A.ToDouble() + (this.B.ToDouble() / 60) + (this.C.ToDouble() / 3600);
 
-            return Math.Round(numeric, 4);
+            return Math.Round(numeric, 6);
         }
 
         public override string ToString()

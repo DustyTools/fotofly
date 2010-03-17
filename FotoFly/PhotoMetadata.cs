@@ -353,10 +353,10 @@ namespace Fotofly
         public double? UtcOffset { get; set; }
 
         [XmlElementAttribute]
-        public DateTime DateLastFotoflySave { get; set; }
+        public DateTime FotoflyDateLastSave { get; set; }
 
         [XmlElementAttribute]
-        public DateTime AddressOfGpsLookupDate { get; set; }
+        public DateTime AddressOfLocationCreatedLookupDate { get; set; }
 
         [XmlElementAttribute]
         public DateTime OriginalCameraDate { get; set; }
@@ -371,7 +371,7 @@ namespace Fotofly
         public Address AddressOfLocationShown { get; set; }
 
         [XmlElementAttribute]
-        public string AddressOfGpsSource { get; set; }
+        public string AddressOfLocationCreatedSource { get; set; }
 
         [XmlIgnore]
         public bool IsUtcOffsetSet

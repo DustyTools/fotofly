@@ -19,26 +19,31 @@ namespace Fotofly.MetadataProviders
         public XmpFotoflyProvider(BitmapMetadata bitmapMetadata)
             : base(bitmapMetadata)
         {
-            // Remove unused queries
             if (!bitmapMetadata.IsFrozen)
             {
-                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AccuracyOfGps.Query);
-                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AddressOfGps.Query);
-            }
-            
-            string query = XmpFotoflyQueries.FotoflyStruct.Query.Replace(XmpFotoflyQueries.QueryStruct, XmpFotoflyQueries.OldQueryStruct);
+                // Migrate Old Namespace data
+                this.BitmapMetadata.MoveStruct(@"http\:\/\/ns.fotofly.com:", "Fotofly", XmpFotoflyQueries.QueryNamespace, XmpFotoflyQueries.QueryStructName, false, true);
+                this.BitmapMetadata.MoveStruct(@"http\:\/\/ns.fotofly:", "Fotofly", XmpFotoflyQueries.QueryNamespace, XmpFotoflyQueries.QueryStructName, false, true);
+                this.BitmapMetadata.MoveStruct(@"http\:\/\/ns.fotofly:", "FotoFly", XmpFotoflyQueries.QueryNamespace, XmpFotoflyQueries.QueryStructName, false, true);
 
-            if (this.BitmapMetadata.ContainsQuery(query))
-            {
-                this.MigrateXmpNamespace();
+                // Move old values
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.QueryRoot + "UtcDate", XmpFotoflyQueries.DateUtc.Query, false);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.QueryRoot + "AddressOfGpsLookupDate", XmpFotoflyQueries.AddressOfLocationCreatedLookupDate.Query, false);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.QueryRoot + "AddressOfGpsSource", XmpFotoflyQueries.AddressOfLocationCreatedSource.Query, false);
+                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.QueryRoot + "LastEditDate", XmpFotoflyQueries.DateLastSave.Query, false);
+
+                // Remove unused queries
+                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.QueryRoot + "Address");
+                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.QueryRoot + "AccuracyOfGps");
+                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.QueryRoot + "AddressOfGps");
             }
         }
 
-        public DateTime UtcDate
+        public DateTime DateUtc
         {
             get
             {
-                DateTime utcDate = this.BitmapMetadata.GetQuery<DateTime>(XmpFotoflyQueries.UtcDate.Query);
+                DateTime utcDate = this.BitmapMetadata.GetQuery<DateTime>(XmpFotoflyQueries.DateUtc.Query);
 
                 if (utcDate == null)
                 {
@@ -52,19 +57,19 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.UtcDate))
+                if (this.ValueHasChanged(value, this.DateUtc))
                 {
                     this.CreateFotoflyStruct();
 
                     if (value == new DateTime())
                     {
-                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.UtcDate.Query);
+                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.DateUtc.Query);
                     }
                     else
                     {
                         string utcDate = value.ToString("yyyy-MM-ddTHH:mm:ss");
 
-                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.UtcDate.Query, utcDate);
+                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.DateUtc.Query, utcDate);
                     }
                 }
             }
@@ -124,11 +129,11 @@ namespace Fotofly.MetadataProviders
             }
         }
 
-        public DateTime LastEditDate
+        public DateTime DateLastSave
         {
             get
             {
-                string lastEditDate = this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.LastEditDate.Query);
+                string lastEditDate = this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.DateLastSave.Query);
 
                 if (string.IsNullOrEmpty(lastEditDate))
                 {
@@ -148,23 +153,20 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.LastEditDate))
+                if (this.ValueHasChanged(value, this.DateLastSave))
                 {
                     this.CreateFotoflyStruct();
 
                     if (value == new DateTime())
                     {
-                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.LastEditDate.Query);
+                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.DateLastSave.Query);
                     }
                     else
                     {
                         string lastEditDate = value.ToString("yyyy-MM-ddTHH:mm:ss");
 
-                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.LastEditDate.Query, lastEditDate);
+                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.DateLastSave.Query, lastEditDate);
                     }
-
-                    // Remove Address
-                    this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.Address.Query);
                 }
             }
         }
@@ -236,11 +238,11 @@ namespace Fotofly.MetadataProviders
             }
         }
 
-        public DateTime AddressOfGpsLookupDate
+        public DateTime AddressCreatedLookupDate
         {
             get
             {
-                string addressOfGpsLookupDate = this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.AddressOfGpsLookupDate.Query);
+                string addressOfGpsLookupDate = this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.AddressOfLocationCreatedLookupDate.Query);
 
                 if (string.IsNullOrEmpty(addressOfGpsLookupDate))
                 {
@@ -260,73 +262,44 @@ namespace Fotofly.MetadataProviders
 
             set
             {
-                if (this.ValueHasChanged(value, this.AddressOfGpsLookupDate))
+                if (this.ValueHasChanged(value, this.AddressCreatedLookupDate))
                 {
                     this.CreateFotoflyStruct();
 
                     if (value == new DateTime())
                     {
-                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AddressOfGpsLookupDate.Query);
+                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AddressOfLocationCreatedLookupDate.Query);
                     }
                     else
                     {
                         string addressOfGpsLookupDate = value.ToString("yyyy-MM-ddTHH:mm:ss");
 
-                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AddressOfGpsLookupDate.Query, addressOfGpsLookupDate);
+                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AddressOfLocationCreatedLookupDate.Query, addressOfGpsLookupDate);
                     }
                 }
             }
         }
 
-        public string AddressOfGpsSource
+        public string AddressCreatedSource
         {
             get
             {
-                return this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.AddressOfGpsSource.Query);
+                return this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.AddressOfLocationCreatedSource.Query);
             }
 
             set
             {
-                if (this.ValueHasChanged(value, this.AddressOfGpsSource))
+                if (this.ValueHasChanged(value, this.AddressCreatedSource))
                 {
                     if (string.IsNullOrEmpty(value))
                     {
-                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AddressOfGpsSource.Query);
+                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.AddressOfLocationCreatedSource.Query);
                     }
                     else
                     {
-                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AddressOfGpsSource.Query, value);
+                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.AddressOfLocationCreatedSource.Query, value);
                     }
                 }
-            }
-        }
-
-        private void MigrateXmpNamespace()
-        {
-            if (this.BitmapMetadata.IsFrozen)
-            {
-                throw new Exception("This file has been saved with a previous version of Fotofly (v0.5 or earlier) and the data needs to be migrated. Use the XmpFotoflyProvider.MigrateXmpNamespace() Method to migrate data.");
-            }
-            else
-            {
-                // Migrate older naming schema to new
-                // Create a new Struct
-                this.BitmapMetadata.SetQuery(XmpFotoflyQueries.FotoflyStruct.Query, new BitmapMetadata(XmpCoreQueries.StructBlock));
-
-                // Move all Metadata
-                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AccuracyOfGps.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot), XmpFotoflyQueries.AccuracyOfGps.Query);
-                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AddressOfGps.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot), XmpFotoflyQueries.AddressOfGps.Query);
-                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AddressOfGpsLookupDate.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot), XmpFotoflyQueries.AddressOfGpsLookupDate.Query);
-                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.AddressOfGpsSource.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot), XmpFotoflyQueries.AddressOfGpsSource.Query);
-                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.LastEditDate.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot), XmpFotoflyQueries.LastEditDate.Query);
-                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.OriginalCameraDate.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot), XmpFotoflyQueries.OriginalCameraDate.Query);
-                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.OriginalCameraFilename.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot), XmpFotoflyQueries.OriginalCameraFilename.Query);
-                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.UtcDate.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot), XmpFotoflyQueries.UtcDate.Query);
-                this.BitmapMetadata.MoveQuery(XmpFotoflyQueries.UtcOffset.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot), XmpFotoflyQueries.UtcOffset.Query);
-                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.Address.Query.Replace(XmpFotoflyQueries.QueryRoot, XmpFotoflyQueries.OldQueryRoot));
-
-                // Remove the old struct
-                this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.QueryStruct.Replace(XmpFotoflyQueries.QueryStruct, XmpFotoflyQueries.OldQueryStruct));
             }
         }
 
@@ -335,6 +308,22 @@ namespace Fotofly.MetadataProviders
             if (!this.BitmapMetadata.ContainsQuery(XmpFotoflyQueries.FotoflyStruct.Query))
             {
                 this.BitmapMetadata.SetQuery(XmpFotoflyQueries.FotoflyStruct.Query, new BitmapMetadata(XmpCoreQueries.StructBlock));
+            }
+        }
+
+        private Dictionary<string, string> AllFotoflyProperties
+        {
+            get
+            {
+                Dictionary<string, string> allFotoflyProperties = new Dictionary<string, string>();
+
+                // Loop through all data in the struct
+                foreach (string query in base.BitmapMetadata.GetQuery<BitmapMetadata>(XmpFotoflyQueries.FotoflyStruct.Query))
+                {
+                    allFotoflyProperties.Add(XmpFotoflyQueries.FotoflyStruct.Query + query, base.BitmapMetadata.GetQuery<string>(query));
+                }
+
+                return allFotoflyProperties;
             }
         }
     }

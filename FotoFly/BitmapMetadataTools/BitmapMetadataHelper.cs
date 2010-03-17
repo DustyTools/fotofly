@@ -164,22 +164,82 @@ namespace Fotofly.BitmapMetadataTools
             return (T)unknownObject;
         }
 
-        public static void MoveQuery(this BitmapMetadata bitmapMetadata, string sourceQuery, string destinationQuery)
+        public static void MoveQuery(this BitmapMetadata bitmapMetadata, string sourceQuery, string destinationQuery, bool overWriteExistingData)
         {
             // Check Source Query exists
             if (bitmapMetadata.ContainsQuery(sourceQuery))
             {
-                // Copy the Query
-                bitmapMetadata.CopyQuery(sourceQuery, destinationQuery);
+                bool existingData = bitmapMetadata.ContainsQuery(destinationQuery);
 
-                // Finally remove old query
-                bitmapMetadata.RemoveQuery(sourceQuery);
-
-                // Ensure old query has been removed
-                if (!bitmapMetadata.ContainsQuery(destinationQuery))
+                if (existingData && !overWriteExistingData)
                 {
-                    throw new Exception("Move Query Failed");
+                    // Skip the copy and source the value
+                    bitmapMetadata.RemoveQuery(sourceQuery);
                 }
+                else
+                {
+                    // Copy the Query
+                    bitmapMetadata.CopyQuery(sourceQuery, destinationQuery);
+
+                    // Finally remove old query
+                    bitmapMetadata.RemoveQuery(sourceQuery);
+
+                    // Ensure old query has been removed
+                    if (!bitmapMetadata.ContainsQuery(destinationQuery))
+                    {
+                        throw new Exception("Move Query Failed");
+                    }
+                }
+
+            }
+        }
+
+        public static void MoveStruct(this BitmapMetadata bitmapMetadata, string sourceNameSpace, string sourceStructName, string destinationNameSpace, string destinationStructName, bool overWriteExistingData, bool ignoreInvalidSource)
+        {
+            // Rewrite Structnames
+            string sourceStruct = @"/xmp/" + sourceNameSpace + sourceStructName;
+            string sourceQuery = sourceStruct + "/" + sourceNameSpace;
+
+            string destinationStruct = @"/xmp/" + destinationNameSpace + destinationStructName;
+            string destinationQuery = destinationStruct + "/" + destinationNameSpace;
+
+            // Check Source exists
+            bool sourceExists = bitmapMetadata.ContainsQuery(sourceStruct);
+
+            if (sourceExists)
+            {
+                // Create a new Struct, if it doesn't exist
+                if (!bitmapMetadata.ContainsQuery(destinationStruct))
+                {
+                    bitmapMetadata.SetQuery(destinationStruct, new BitmapMetadata("xmpstruct"));
+                }
+
+                List<string> sourceSubQueries = bitmapMetadata.GetSubQueries(sourceStruct);
+
+                // Loop through all data in the struct
+                foreach (string sourceProperty in sourceSubQueries)
+                {
+                    // Construct the full query
+                    string destinationProperty = sourceProperty.Replace(sourceQuery, destinationQuery);
+
+                    bitmapMetadata.MoveQuery(sourceProperty, destinationProperty, overWriteExistingData);
+                }
+
+                // Remove the old struct
+                bitmapMetadata.RemoveQuery(sourceStruct);
+
+                // Get Destination Queries
+                List<string> destinationSubQueries = bitmapMetadata.GetSubQueries(destinationStruct);
+
+                // Check the destination has at least as many subqueries as the source
+                if (destinationSubQueries.Count < sourceSubQueries.Count)
+                {
+                    throw new Exception("Source Struct was not fully moved to Destination");
+                }
+            }
+            else if (!sourceExists && !ignoreInvalidSource)
+            {
+                throw new Exception("Source Struct does not exist:" + sourceStruct);
             }
         }
 
@@ -206,6 +266,26 @@ namespace Fotofly.BitmapMetadataTools
                     throw new Exception("Copy Query Failed");
                 }
             }
+        }
+
+        public static List<string> GetSubQueries(this BitmapMetadata bitmapMetadata, string query)
+        {
+            BitmapMetadata subBitmapMetadata = bitmapMetadata.GetQuery<BitmapMetadata>(query);
+
+            if (subBitmapMetadata == null)
+            {
+                throw new Exception("Query does not return a BitmapMetadata object");
+            }
+
+            List<string> subQueries = new List<string>();
+
+            // Loop through all data in the struct
+            foreach (string subQuery in subBitmapMetadata)
+            {
+                subQueries.Add(query + subQuery);
+            }
+
+            return subQueries;
         }
 
         public static bool IsQueryValidAndOfType(this BitmapMetadata bitmapMetadata, string query, Type type)

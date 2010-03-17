@@ -269,13 +269,13 @@ namespace Fotofly
             List<CompareResult> changes = new List<CompareResult>();
 
             // Compare the two
-            PhotoMetadataTools.CompareMetadata(this.InternalPhotoMetadata, this.InternalPhotoMetadataInFile, ref changes);
+            PhotoMetadataTools.CompareMetadata(this.InternalPhotoMetadataInFile, this.InternalPhotoMetadata, ref changes);
 
             // Save if there have been changes to the Metadata
             if (changes.Count > 0)
             {
                 // Set the Last Edit Date
-                this.Metadata.DateLastFotoflySave = DateTime.Now;
+                this.Metadata.FotoflyDateLastSave = DateTime.Now;
                 this.Metadata.CreationSoftware = FotoflyAssemblyInfo.ShortBuildVersion;
 
                 // Read the file

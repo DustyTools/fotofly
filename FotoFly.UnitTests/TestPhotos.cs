@@ -7,6 +7,8 @@
 
     public static class TestPhotos
     {
+        public static readonly string PhotosFolder = @"..\..\..\~Sample Files\JpgPhotos\";
+
         public static readonly string TagsWithUnicode = "TagsWithUnicode.jpg";
 
         public static readonly string MakeKodakDX4900 = "Make-KodakDX4900.jpg";
@@ -48,6 +50,18 @@
         public static readonly string ExposureBiasPlus03 = "ExposureBias+0.3.jpg";
         public static readonly string ExposureBiasPlus10 = "ExposureBias+1.0.jpg";
         public static readonly string ExposureBiasPlus13 = "ExposureBias+1.3.jpg";
+
+        public static readonly string ShutterSpeed1Over60 = "ShutterSpeed-1-60.jpg";
+        public static readonly string ShutterSpeed1Over285 = "ShutterSpeed-1-285.jpg";
+        public static readonly string ShutterSpeed1Over1000 = "ShutterSpeed-1-1000.jpg";
+        public static readonly string ShutterSpeed1Over2 = "ShutterSpeed-1-2.jpg";
+        public static readonly string ShutterSpeed1Over10 = "ShutterSpeed-1-10.jpg";
+        public static readonly string ShutterSpeed2Seconds5 = "ShutterSpeed-2.5.jpg";
+        public static readonly string ShutterSpeed10Seconds = "ShutterSpeed-10.jpg";
+
+        public static readonly string Aperture28 = "Aperture-2.8.jpg";
+        public static readonly string Aperture71 = "Aperture-7.1.jpg";
+        public static readonly string Aperture80 = "Aperture-8.0.jpg";
 
         public static readonly string FlashAuto = "Flash-Auto.jpg";
         public static readonly string FlashManual = "Flash-Manual.jpg";
@@ -100,5 +114,11 @@
 
         // WriteAddressMetadata
         public static readonly string UnitTestTemp10 = "UnitTest-Temp10.jpg";
+
+        public static JpgPhoto Load(string name)
+        {
+            JpgPhoto jpgPhoto = new JpgPhoto(PhotosFolder + name);
+            return jpgPhoto;
+        }
     }
 }

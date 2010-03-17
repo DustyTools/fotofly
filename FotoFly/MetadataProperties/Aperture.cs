@@ -21,6 +21,9 @@ namespace Fotofly
         public Aperture(URational uRational)
         {
             this.uRational = new URational(uRational);
+
+            ////URational urational = this.BitmapMetadata.GetQuery<URational>(ExifQueries.Aperture.Query);
+            ////return "f/" + urational.ToDouble().ToString();
         }
 
         public Aperture(double numerator)

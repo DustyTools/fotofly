@@ -99,8 +99,14 @@ namespace Fotofly.Geotagging
             return new GpsPosition();
         }
 
-        public void FindGpsPositionCreated(JpgPhoto photo)
+        public void FindGpsPositionCreated(JpgPhoto photo, bool reparse)
         {
+            // Reset Data
+            if (reparse)
+            {
+                photo.Metadata.GpsPositionOfLocationCreated = new GpsPosition();
+            }
+
             // Use Gps Tracks if Configured
             if (!photo.Metadata.GpsPositionOfLocationCreated.IsValidCoordinate && this.IsGpsTracksResolverConfigured)
             {
@@ -118,8 +124,14 @@ namespace Fotofly.Geotagging
             }
         }
 
-        public void FindGpsPositionShown(JpgPhoto photo)
+        public void FindGpsPositionShown(JpgPhoto photo, bool reparse)
         {
+            // Reset Data
+            if (reparse)
+            {
+                photo.Metadata.GpsPositionOfLocationShown = new GpsPosition();
+            }
+
             // If we have no valid result try alternate methods
             if (!photo.Metadata.GpsPositionOfLocationShown.IsValidCoordinate)
             {
@@ -180,41 +192,62 @@ namespace Fotofly.Geotagging
                 else if (manualAccuracy > bingAccuracy)
                 {
                     photo.Metadata.GpsPositionOfLocationShown = manualResult;
+                    photo.Metadata.GpsPositionOfLocationShown.SatelliteTime = new DateTime();
                 }
                 else
                 {
                     photo.Metadata.GpsPositionOfLocationShown = bingResult;
+                    photo.Metadata.GpsPositionOfLocationShown.SatelliteTime = new DateTime();
                 }
             }
         }
 
-        public void FindAddressCreated(JpgPhoto photo)
+        public void FindAddressCreated(JpgPhoto photo, bool reparse)
         {
             // Look up address for Gps Position recorded by a Tracker
-            // Order is: 1) Bing Maps 2) Google Maps
+            // Gps Location Created must be valid
             if (photo.Metadata.GpsPositionOfLocationCreated.IsValidCoordinate)
             {
+                // Order is: 1) Bing Maps 2) Google Maps
+
+                // Save the current address, or reset it
+                Address newAddress = reparse == true ? new Address() : photo.Metadata.AddressOfLocationCreated;
+
                 // Use Bing if configured
-                if (!photo.Metadata.AddressOfLocationCreated.IsValidAddress && this.IsBingMapsResolverConfigured)
+                if (!newAddress.IsValidAddress && this.IsBingMapsResolverConfigured)
                 {
-                    photo.Metadata.AddressOfLocationCreated = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPositionOfLocationCreated, photo.Metadata.AddressOfLocationShown.Country);
-                    photo.Metadata.AddressOfGpsLookupDate = DateTime.Now;
-                    photo.Metadata.AddressOfGpsSource = BingMapsResolver.SourceName;
+                    Address bingAddress = this.bingMapsResolver.FindAddress(photo.Metadata.GpsPositionOfLocationCreated, photo.Metadata.AddressOfLocationShown.Country);
+
+                    if (bingAddress.IsValidAddress && !bingAddress.Equals(photo.Metadata.AddressOfLocationCreated))
+                    {
+                        photo.Metadata.AddressOfLocationCreated = bingAddress;
+                        photo.Metadata.AddressOfLocationCreatedLookupDate = DateTime.Now;
+                        photo.Metadata.AddressOfLocationCreatedSource = BingMapsResolver.SourceName;
+
+                        newAddress = bingAddress;
+                    }
                 }
 
                 // Use Google if configured
-                if (!photo.Metadata.AddressOfLocationCreated.IsValidAddress && this.IsGoogleMapsResolverConfigured)
+                if (!newAddress.IsValidAddress && this.IsGoogleMapsResolverConfigured)
                 {
-                    photo.Metadata.AddressOfLocationCreated = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPositionOfLocationCreated);
-                    photo.Metadata.AddressOfGpsLookupDate = DateTime.Now;
-                    photo.Metadata.AddressOfGpsSource = GoogleMapsResolver.SourceName;
+                    Address googleAddress = this.googleMapsResolver.FindAddress(photo.Metadata.GpsPositionOfLocationCreated);
+
+                    if (googleAddress.IsValidAddress && !googleAddress.Equals(photo.Metadata.AddressOfLocationCreated))
+                    {
+                        photo.Metadata.AddressOfLocationCreated = googleAddress;
+                        photo.Metadata.AddressOfLocationCreatedLookupDate = DateTime.Now;
+                        photo.Metadata.AddressOfLocationCreatedSource = GoogleMapsResolver.SourceName;
+
+                        newAddress = googleAddress;
+                    }
                 }
 
-                if (!photo.Metadata.AddressOfLocationCreated.IsValidAddress)
+                if (!newAddress.IsValidAddress && !photo.Metadata.AddressOfLocationCreated.IsValidAddress)
                 {
                     photo.Metadata.AddressOfLocationCreated = new Address();
-                    photo.Metadata.AddressOfGpsLookupDate = new DateTime();
-                    photo.Metadata.AddressOfGpsSource = null;
+                    photo.Metadata.AddressOfLocationCreatedLookupDate = new DateTime();
+                    photo.Metadata.AddressOfLocationCreatedSource = null;
                 }
             }
         }

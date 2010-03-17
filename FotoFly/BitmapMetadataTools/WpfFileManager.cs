@@ -25,8 +25,8 @@ namespace Fotofly.BitmapMetadataTools
 
     public class WpfFileManager : IDisposable
     {
+        public static bool AlwaysCloneBitmap = false;
         public static readonly uint PaddingAmount = 5120;
-
         private static BitmapCreateOptions createOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
 
         private bool disposed = false;
@@ -287,7 +287,7 @@ namespace Fotofly.BitmapMetadataTools
             if (this.BitmapDecoder.Frames[0] != null && this.BitmapDecoder.Frames[0].Metadata != null)
             {
                 // Grab the metadata
-                if (this.openForEditing)
+                if (this.openForEditing || WpfFileManager.AlwaysCloneBitmap)
                 {
                     // Clone so we have an unfrozen object
                     this.bitmapMetadata = this.BitmapDecoder.Frames[0].Metadata.Clone() as BitmapMetadata;

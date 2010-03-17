@@ -73,9 +73,11 @@
 
         double? UtcOffset { get; set; }
 
-        DateTime DateLastFotoflySave { get; set; }
+        DateTime FotoflyDateLastSave { get; set; }
 
-        DateTime AddressOfGpsLookupDate { get; set; }
+        DateTime AddressOfLocationCreatedLookupDate { get; set; }
+
+        string AddressOfLocationCreatedSource { get; set; }
 
         DateTime OriginalCameraDate { get; set; }
 
@@ -84,8 +86,6 @@
         Address AddressOfLocationCreated { get; set; }
 
         Address AddressOfLocationShown { get; set; }
-
-        string AddressOfGpsSource { get; set; }
 
         #endregion
     }

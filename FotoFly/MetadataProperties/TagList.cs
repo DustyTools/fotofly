@@ -207,6 +207,15 @@ namespace Fotofly
             return query.ToList<Tag>();
         }
 
+        public List<Tag> FindAllByEndName(string tag)
+        {
+            var query = from x in this.tags
+                        where x.ToString().ToLower().EndsWith(tag.ToLower())
+                        select x;
+
+            return query.ToList<Tag>();
+        }
+
         public override bool Equals(object unknownObject)
         {
             if (unknownObject is TagList)

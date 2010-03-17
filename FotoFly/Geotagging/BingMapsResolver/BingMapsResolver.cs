@@ -12,6 +12,7 @@ namespace Fotofly.Geotagging.Resolvers
     using System.IO;
     using System.Net;
     using System.Security.Principal;
+    using System.ServiceModel;
     using System.ServiceModel.Security;
     using System.Text;
     using System.Web.Services.Protocols;
@@ -47,6 +48,16 @@ namespace Fotofly.Geotagging.Resolvers
 
             // Setup the Failed Lookup List
             this.failedLookups = new List<string>();
+
+            // Call Bing and ensure we get a valid response
+            Fotofly.Address testAddress = new Fotofly.Address(@"United Kingdom/Lancaster/Kellet Lane");
+            GpsPosition gpsPosition = this.FindGpsPosition(new Fotofly.Address(testAddress.Country), false);
+            Fotofly.Address address = this.FindAddress(gpsPosition, testAddress.Country, false);
+
+            if (gpsPosition.Latitude.Degrees != 54 || gpsPosition.Longitude.Degrees != 2 || address.HierarchicalName != testAddress.HierarchicalName)
+            {
+                throw new Exception("Bing Maps test failed");
+            }
         }
 
         private enum BingMapsDataSources
@@ -63,14 +74,19 @@ namespace Fotofly.Geotagging.Resolvers
             this.resolverCache = new ResolverCache(cacheDirectory, cacheName);
         }
 
-        public Fotofly.Address FindAddress(GpsPosition gps, string country)
+        public Fotofly.Address FindAddress(GpsPosition gpsPosition, string country)
+        {
+            return this.FindAddress(gpsPosition, country, true);
+        }
+
+        public Fotofly.Address FindAddress(GpsPosition gpsPosition, string country, bool useCache)
         {
             Fotofly.Address returnValue = new Fotofly.Address();
 
             // Check Resolver Cache
-            if (this.resolverCache != null)
+            if (this.resolverCache != null && useCache)
             {
-                returnValue = this.resolverCache.FindAddress(gps);
+                returnValue = this.resolverCache.FindAddress(gpsPosition);
 
                 if (returnValue != null && returnValue.IsValidAddress)
                 {
@@ -83,8 +99,8 @@ namespace Fotofly.Geotagging.Resolvers
 
             // Set the LatLong
             LatLong latLong = new LatLong();
-            latLong.Latitude = gps.Latitude.Numeric;
-            latLong.Longitude = gps.Longitude.Numeric;
+            latLong.Latitude = gpsPosition.Latitude.Numeric;
+            latLong.Longitude = gpsPosition.Longitude.Numeric;
 
             // Set the datasource
             BingMapsDataSources dataSource = this.LiveMapsDataSource(country);
@@ -104,7 +120,15 @@ namespace Fotofly.Geotagging.Resolvers
             {
                 places = this.findService.GetLocationInfo(null, null, latLong, infoRequest.dataSourceName, options);
             }
-            catch
+            catch (EndpointNotFoundException e)
+            {
+                throw new Exception("Unable to find\\connect to Bing Map WebService", e);
+            }
+            catch (TimeoutException e)
+            {
+                throw new Exception("Bing Map call timed out", e);
+            }
+            catch (Exception e)
             {
                 places = null;
             }
@@ -121,7 +145,7 @@ namespace Fotofly.Geotagging.Resolvers
                 // Add to Failure to cache
                 if (this.resolverCache != null)
                 {
-                    this.resolverCache.AddToReverseFailedRecords(gps);
+                    this.resolverCache.AddToReverseFailedRecords(gpsPosition);
                 }
             }
 
@@ -130,10 +154,15 @@ namespace Fotofly.Geotagging.Resolvers
 
         public GpsPosition FindGpsPosition(Fotofly.Address addressToLookup)
         {
+            return this.FindGpsPosition(addressToLookup, true);
+        }
+
+        public GpsPosition FindGpsPosition(Fotofly.Address addressToLookup, bool useCache)
+        {
             GpsPosition returnValue = new GpsPosition();
 
             // Check Resolver Cache
-            if (this.resolverCache != null)
+            if (this.resolverCache != null && useCache)
             {
                 returnValue = this.resolverCache.FindGpsPosition(addressToLookup);
 

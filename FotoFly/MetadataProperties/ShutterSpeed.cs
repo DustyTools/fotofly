@@ -11,11 +11,11 @@ namespace Fotofly
     [XmlRootAttribute("ShutterSpeed", Namespace = "http://www.tassography.com/fotofly")]
     public class ShutterSpeed
     {
-        private TimeSpan timespan;
+        private readonly int millisecondsInSecond = 1000;
 
         public ShutterSpeed()
         {
-            this.timespan = new TimeSpan();
+            this.Seconds = double.NaN;
         }
 
         public ShutterSpeed(string shutterSpeed)
@@ -27,10 +27,7 @@ namespace Fotofly
             {
                 URational urational = new URational(Convert.ToInt32(splitString[0]), Convert.ToInt32(splitString[1]));
 
-                int seconds = (int)Math.Floor(urational.ToDouble());
-                int milliseconds = (int)((urational.ToDouble() - seconds) * 1000);
-
-                this.timespan = new TimeSpan(0, 0, 0, urational.ToInt(), milliseconds);
+                this.Seconds = urational.ToDouble();
             }
             else
             {
@@ -38,56 +35,29 @@ namespace Fotofly
             }
         }
 
-        public ShutterSpeed(int numerator, int denominator)
+        public ShutterSpeed(double seconds)
         {
-            URational urational = new URational(numerator, denominator);
-
-            int seconds = (int)Math.Floor(urational.ToDouble());
-            int milliseconds = (int)((urational.ToDouble() - seconds) * 1000);
-
-            this.timespan = new TimeSpan(0, 0, 0, urational.ToInt(), milliseconds);
+            this.Seconds = seconds;
         }
 
         public ShutterSpeed(URational urational)
         {
-            int seconds = (int)Math.Floor(urational.ToDouble());
-            int milliseconds = (int)((urational.ToDouble() - seconds) * 1000);
-
-            this.timespan = new TimeSpan(0, 0, 0, urational.ToInt(), milliseconds);
-        }
-
-        public TimeSpan Timespan
-        {
-          get
-          {
-              return this.timespan;
-          }
+            // Use 6 decimal places
+            this.Seconds = urational.ToDouble(6);
         }
 
         [XmlAttribute]
-        public int MilliSeconds
+        public double Seconds
         {
-            get
-            {
-                if (this.timespan != null)
-                {
-                    return Convert.ToInt32(this.timespan.TotalMilliseconds);
-                }
-
-                return 0;
-            }
-
-            set
-            {
-                this.timespan = new TimeSpan(0, 0, 0, 0, value);
-            }
+            get;
+            set;
         }
 
         public bool IsValid
         {
             get
             {
-                return this.timespan.Ticks != 0;
+                return !double.IsNaN(this.Seconds);
             }
         }
 
@@ -95,7 +65,7 @@ namespace Fotofly
         {
             if (obj is ShutterSpeed)
             {
-                if ((obj as ShutterSpeed).Timespan.Ticks == this.Timespan.Ticks)
+                if ((obj as ShutterSpeed).ToString() == this.ToString())
                 {
                     return true;
                 }
@@ -106,19 +76,26 @@ namespace Fotofly
 
         public override string ToString()
         {
-            if (this.timespan.Ticks > 0)
+            string formattedString = string.Empty;
+
+            if (this.Seconds > 1)
             {
-                if (this.timespan.Seconds > 1)
-                {
-                    return this.timespan.Seconds + " sec.";
-                }
-                else
-                {
-                    return "1/" + (this.timespan.Milliseconds * 1000) + " sec.";
-                }
+                formattedString = this.Seconds.ToString();
+            }
+            else
+            {
+                // Convert Decimal to Integer
+                formattedString = Math.Round(1 / this.Seconds, 0).ToString();
+
+                formattedString = "1/" + formattedString;
             }
 
-            return string.Empty;
+            if (formattedString != String.Empty)
+            {
+                formattedString += " sec.";
+            }
+
+            return formattedString;
         }
     }
 }

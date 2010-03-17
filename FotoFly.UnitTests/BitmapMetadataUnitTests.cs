@@ -257,12 +257,12 @@
             using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.UnitTestTemp1, true))
             {
                 XmpFotoflyProvider xmpFotoflyProvider = new XmpFotoflyProvider(wpfFileManager.BitmapMetadata);
-                xmpFotoflyProvider.AddressOfGpsLookupDate = testDate;
-                xmpFotoflyProvider.AddressOfGpsSource = "Bing Maps for Enterprise";
-                xmpFotoflyProvider.LastEditDate = testDate;
+                xmpFotoflyProvider.AddressCreatedLookupDate = testDate;
+                xmpFotoflyProvider.AddressCreatedSource = "Bing Maps for Enterprise";
+                xmpFotoflyProvider.DateLastSave = testDate;
                 xmpFotoflyProvider.OriginalCameraDate = testDate;
                 xmpFotoflyProvider.OriginalCameraFilename = "img_123.jpg";
-                xmpFotoflyProvider.UtcDate = testDate;
+                xmpFotoflyProvider.DateUtc = testDate;
                 xmpFotoflyProvider.UtcOffset = 5;
 
                 wpfFileManager.WriteMetadata();
@@ -272,12 +272,12 @@
             {
                 XmpFotoflyProvider xmpFotoflyProvider = new XmpFotoflyProvider(wpfFileManager.BitmapMetadata);
 
-                Assert.AreEqual<DateTime>(xmpFotoflyProvider.AddressOfGpsLookupDate, testDate);
-                Assert.AreEqual<string>(xmpFotoflyProvider.AddressOfGpsSource, "Bing Maps for Enterprise");
-                Assert.AreEqual<DateTime>(xmpFotoflyProvider.LastEditDate, testDate);
+                Assert.AreEqual<DateTime>(xmpFotoflyProvider.AddressCreatedLookupDate, testDate);
+                Assert.AreEqual<string>(xmpFotoflyProvider.AddressCreatedSource, "Bing Maps for Enterprise");
+                Assert.AreEqual<DateTime>(xmpFotoflyProvider.DateLastSave, testDate);
                 Assert.AreEqual<DateTime>(xmpFotoflyProvider.OriginalCameraDate, testDate);
                 Assert.AreEqual<string>(xmpFotoflyProvider.OriginalCameraFilename, "img_123.jpg");
-                Assert.AreEqual<DateTime>(xmpFotoflyProvider.UtcDate, testDate);
+                Assert.AreEqual<DateTime>(xmpFotoflyProvider.DateUtc, testDate);
                 Assert.AreEqual<double>(xmpFotoflyProvider.UtcOffset.Value, 5);
             }
 

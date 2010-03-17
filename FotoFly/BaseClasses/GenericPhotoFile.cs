@@ -15,6 +15,7 @@ namespace Fotofly
     public abstract class GenericPhotoFile
     {
         private string fileName = string.Empty;
+        private string filefullname = string.Empty;
         private string fileExtension = string.Empty;
         private DateTime fileLastModified = new DateTime();
 
@@ -34,8 +35,10 @@ namespace Fotofly
         /// </summary>
         public string FileFullName
         {
-            get;
-            set;
+            get
+            {
+                return this.filefullname;
+            }
         }
 
         /// <summary>
@@ -173,12 +176,14 @@ namespace Fotofly
                 Dictionary<string, string> filesToRename = new Dictionary<string, string>();
 
                 // Add the base file name
-                filesToRename.Add(this.FileFullName, Regex.Replace(this.FileFullName, Regex.Escape(this.FileName), newFileName, RegexOptions.IgnoreCase));
+                filesToRename.Add(this.FileFullName, Regex.Replace(this.FileFullName, Regex.Escape(this.FileName + this.FileExtension), newFileName + this.FileExtension, RegexOptions.IgnoreCase));
                 
                 // Add all secondary filenames
                 foreach (string file in this.SecondaryFiles)
                 {
-                    filesToRename.Add(file, Regex.Replace(file, Regex.Escape(this.FileName), newFileName, RegexOptions.IgnoreCase));
+                    FileInfo fileInfo = new FileInfo(file);
+
+                    filesToRename.Add(file, Regex.Replace(file, Regex.Escape(this.FileName + fileInfo.Extension), newFileName + fileInfo.Extension, RegexOptions.IgnoreCase));
                 }
 
                 // Check source files don't already exist
@@ -422,7 +427,7 @@ namespace Fotofly
         protected void SetFileName(string fileName)
         {
             // Save the filename
-            this.FileFullName = this.GetFullFileName(fileName);
+            this.filefullname = this.GetFullFileName(fileName);
 
             // Get and save File data (using FileInfo realtime creates locks on the file)
             FileInfo file = new FileInfo(this.FileFullName);

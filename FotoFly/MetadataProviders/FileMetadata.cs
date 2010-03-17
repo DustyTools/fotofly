@@ -649,7 +649,7 @@ namespace Fotofly.MetadataProviders
             {
                 this.ExifProvider.DateDigitised = value;
 
-                if (this.XmpCoreProvider.DateTimeDigitised != new DateTime())
+                if (this.XmpCoreProvider.DateTimeModified != new DateTime())
                 {
                     this.XmpCoreProvider.DateTimeModified = value;
                 }
@@ -698,12 +698,12 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                return this.xmpFotoflyProvider.UtcDate;
+                return this.xmpFotoflyProvider.DateUtc;
             }
 
             set
             {
-                this.xmpFotoflyProvider.UtcDate = value;
+                this.xmpFotoflyProvider.DateUtc = new DateTime(value.Ticks, DateTimeKind.Local);
             }
         }
 
@@ -720,29 +720,29 @@ namespace Fotofly.MetadataProviders
             }
         }
 
-        public DateTime DateLastFotoflySave
+        public DateTime FotoflyDateLastSave
         {
             get
             {
-                return this.xmpFotoflyProvider.LastEditDate;
+                return this.xmpFotoflyProvider.DateLastSave;
             }
 
             set
             {
-                this.xmpFotoflyProvider.LastEditDate = value;
+                this.xmpFotoflyProvider.DateLastSave = value;
             }
         }
 
-        public DateTime AddressOfGpsLookupDate
+        public DateTime AddressOfLocationCreatedLookupDate
         {
             get
             {
-                return this.xmpFotoflyProvider.AddressOfGpsLookupDate;
+                return this.xmpFotoflyProvider.AddressCreatedLookupDate;
             }
 
             set
             {
-                this.xmpFotoflyProvider.AddressOfGpsLookupDate = value;
+                this.xmpFotoflyProvider.AddressCreatedLookupDate = value;
             }
         }
 
@@ -772,16 +772,16 @@ namespace Fotofly.MetadataProviders
             }
         }
 
-        public string AddressOfGpsSource
+        public string AddressOfLocationCreatedSource
         {
             get
             {
-                return this.xmpFotoflyProvider.AddressOfGpsSource;
+                return this.xmpFotoflyProvider.AddressCreatedSource;
             }
 
             set
             {
-                this.xmpFotoflyProvider.AddressOfGpsSource = value;
+                this.xmpFotoflyProvider.AddressCreatedSource = value;
             }
         }
 
