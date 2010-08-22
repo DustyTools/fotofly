@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fotofly", "FotoFly\Fotofly.csproj", "{156697C5-5AFD-4E4D-B96C-BC55B219907D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fotofly.Examples", "FotoFly.Examples\Fotofly.Examples.csproj", "{045AA83C-1045-4AEC-9827-49747C843112}"
