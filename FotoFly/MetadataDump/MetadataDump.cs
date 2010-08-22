@@ -72,6 +72,7 @@ namespace Fotofly
         public void GenerateStringList()
         {
             this.stringList = new List<string>();
+
             this.stringList.AddRange(this.GenerateStringList(this.PropertyList));
         }
 

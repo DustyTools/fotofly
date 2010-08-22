@@ -303,6 +303,31 @@ namespace Fotofly.MetadataProviders
             }
         }
 
+        public string GpsPositionShownSource
+        {
+            get
+            {
+                return this.BitmapMetadata.GetQuery<string>(XmpFotoflyQueries.GpsPositionOfLocationShownSource.Query);
+            }
+
+            set
+            {
+                if (this.ValueHasChanged(value, this.GpsPositionShownSource))
+                {
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.GpsPositionOfLocationShownSource.Query);
+                    }
+                    else
+                    {
+                        this.CreateFotoflyStruct();
+
+                        this.BitmapMetadata.SetQuery(XmpFotoflyQueries.GpsPositionOfLocationShownSource.Query, value);
+                    }
+                }
+            }
+        }
+
         private void CreateFotoflyStruct()
         {
             if (!this.BitmapMetadata.ContainsQuery(XmpFotoflyQueries.FotoflyStruct.Query))

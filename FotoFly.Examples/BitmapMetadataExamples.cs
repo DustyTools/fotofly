@@ -1,4 +1,4 @@
-﻿namespace Fotofly.JpegBackup
+﻿namespace Fotofly.Examples
 {
     using System;
     using System.Collections.Generic;

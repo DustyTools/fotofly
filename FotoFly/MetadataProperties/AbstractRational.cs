@@ -23,8 +23,16 @@ namespace Fotofly
         {
             accuracy = (int)Math.Pow(10, accuracy);
 
-            this.Numerator = Convert.ToInt32(Math.Abs(numerator * accuracy));
-            this.Denominator = accuracy;
+            if ((long)(numerator * accuracy) < Int32.MaxValue)
+            {
+                this.Numerator = Convert.ToInt32(Math.Abs(numerator * accuracy));
+                this.Denominator = accuracy;
+            }
+            else
+            {
+                this.Numerator = 0;
+                this.Denominator = accuracy;
+            }
         }
 
         /// <summary>

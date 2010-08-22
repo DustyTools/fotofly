@@ -66,6 +66,8 @@
         public static readonly string FlashAuto = "Flash-Auto.jpg";
         public static readonly string FlashManual = "Flash-Manual.jpg";
 
+        public static readonly string GeotaggedKin = "GeotaggedKin.jpg";
+
         public static readonly string GeotaggedExif1 = "GeotaggedExif1.jpg";
 
         public static readonly string GeotaggedXmp1 = "GeotaggedXmp1.jpg";
@@ -98,7 +100,10 @@
 
         // Contains GPS Data
         public static readonly string UnitTest2 = "UnitTest-2.jpg";
-        
+
+        // For comparisons
+        public static readonly string UnitTest3 = "UnitTest-3.jpg";
+
         // Not a real file, used to save the during testing
         public static readonly string UnitTestTemp1 = "UnitTest-Temp1.jpg";
         public static readonly string UnitTestTemp2 = "UnitTest-Temp2.jpg";

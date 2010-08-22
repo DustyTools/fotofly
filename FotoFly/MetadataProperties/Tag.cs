@@ -51,6 +51,15 @@ namespace Fotofly
         }
 
         [XmlIgnore]
+        public int Length
+        {
+            get
+            {
+                return this.FullName.TrimEnd('/').TrimStart('/').Split('/').Length;
+            }
+        }
+
+        [XmlIgnore]
         public string RootTag
         {
             get
@@ -83,7 +92,7 @@ namespace Fotofly
                 parts = parts + "/" + splitString[i];
             }
 
-            return new Tag(parts);
+            return new Tag(parts.TrimStart('/'));
         }
 
         [XmlIgnore]

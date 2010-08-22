@@ -526,24 +526,26 @@
         [TestMethod]
         public void WriteMetadataAndCheckForMetadataLoss()
         {
+            JpgPhoto beforePhoto = TestPhotos.Load(TestPhotos.UnitTest3);
+            JpgPhoto afterPhoto = TestPhotos.Load(TestPhotos.UnitTestTemp5);
+
             // Copy Test file
-            JpgPhoto testPhoto = TestPhotos.Load(TestPhotos.UnitTestTemp5);
-            File.Copy(this.jpgPhotoOne.FileFullName, testPhoto.FileFullName, true);
+            File.Copy(beforePhoto.FileFullName, afterPhoto.FileFullName, true);
 
             // Change date and save
-            testPhoto.Metadata.FotoflyDateLastSave = DateTime.Now.AddTicks(-DateTime.Now.TimeOfDay.Ticks);
-            testPhoto.WriteMetadata();
+            afterPhoto.Metadata.FotoflyDateLastSave = DateTime.Now.AddTicks(-DateTime.Now.TimeOfDay.Ticks);
+            afterPhoto.WriteMetadata();
 
             MetadataDump beforeDump;
             MetadataDump afterDump;
 
-            using (WpfFileManager wpfFileManager = new WpfFileManager(this.jpgPhotoOne.FileFullName))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(beforePhoto.FileFullName))
             {
                 beforeDump = new MetadataDump(wpfFileManager.BitmapMetadata);
                 beforeDump.GenerateStringList();
             }
 
-            using (WpfFileManager wpfFileManager = new WpfFileManager(testPhoto.FileFullName))
+            using (WpfFileManager wpfFileManager = new WpfFileManager(afterPhoto.FileFullName))
             {
                 afterDump = new MetadataDump(wpfFileManager.BitmapMetadata);
                 afterDump.GenerateStringList();
@@ -562,13 +564,13 @@
                 }
             }
 
-            if (new FileInfo(this.jpgPhotoTwo.FileFullName).Length > new FileInfo(testPhoto.FileFullName).Length)
+            if (new FileInfo(afterPhoto.FileFullName).Length > new FileInfo(beforePhoto.FileFullName).Length)
             {
                 Assert.Fail("Photo has decreased in size after saving");
             }
 
             // Clean up
-            File.Delete(testPhoto.FileFullName);
+            File.Delete(afterPhoto.FileFullName);
         }
 
         /// <summary>

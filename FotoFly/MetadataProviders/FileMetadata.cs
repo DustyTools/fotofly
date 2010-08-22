@@ -360,12 +360,30 @@ namespace Fotofly.MetadataProviders
         {
             get
             {
-                return this.ReconcileAndReadExifAndXmp<GpsPosition>(this.GpsProvider.GpsPositionOfLocationShown, this.XmpExifProvider.GpsPositionOfLocationShown);
+                GpsPosition gpsPosition = this.ReconcileAndReadExifAndXmp<GpsPosition>(this.GpsProvider.GpsPositionOfLocationShown, this.XmpExifProvider.GpsPositionOfLocationShown);
+
+                // If the source is null read it from Fotofly XMP
+                if (string.IsNullOrEmpty(gpsPosition.Source))
+                {
+                    gpsPosition.Source = this.xmpFotoflyProvider.GpsPositionShownSource;
+                }
+
+                return gpsPosition;
             }
 
             set
             {
                 this.GpsProvider.GpsPositionOfLocationShown = value;
+
+                // Save the source to XMP because there's no Exif property for Shown Source
+                if (string.IsNullOrEmpty(value.Source))
+                {
+                    this.BitmapMetadata.RemoveQuery(XmpFotoflyQueries.GpsPositionOfLocationShownSource.Query);
+                }
+                else
+                {
+                    this.xmpFotoflyProvider.GpsPositionShownSource = value.Source;
+                }
 
                 if (this.XmpExifProvider.GpsPositionOfLocationShown.IsValidCoordinate && this.XmpExifProvider.GpsPositionOfLocationShown != this.GpsProvider.GpsPositionOfLocationShown)
                 {

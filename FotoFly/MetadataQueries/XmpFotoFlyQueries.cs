@@ -32,5 +32,7 @@ namespace Fotofly.MetadataQueries
         public static readonly MetdataQuery<string, DateTime> AddressOfLocationCreatedLookupDate = new MetdataQuery<string, DateTime>(XmpFotoflyQueries.QueryRoot, "AddressOfLocationCreatedLookupDate");
 
         public static readonly MetdataQuery<string, string> AddressOfLocationCreatedSource = new MetdataQuery<string, string>(XmpFotoflyQueries.QueryRoot, "AddressOfLocationCreatedSource");
+
+        public static readonly MetdataQuery<string, string> GpsPositionOfLocationShownSource = new MetdataQuery<string, string>(XmpFotoflyQueries.QueryRoot, "GpsPositionOfLocationShownSource");
     }
 }
