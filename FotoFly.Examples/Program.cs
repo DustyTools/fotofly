@@ -25,7 +25,7 @@ namespace Fotofly.Examples
             BitmapMetadataExamples.UpdateWLPGRegions(Program.testPhotoPath + TestPhotos.Regions0);
             BitmapMetadataExamples.ReadGpsAltitude(Program.testPhotoPath + TestPhotos.GeotaggedExif1);
             BitmapMetadataExamples.ReadGpsLatitude(Program.testPhotoPath + TestPhotos.GeotaggedExif1);
-            BitmapMetadataExamples.ReadIPTCAddres(Program.testPhotoPath + TestPhotos.GeotaggedExif1);
+            BitmapMetadataExamples.ReadIPTCAddress(Program.testPhotoPath + TestPhotos.GeotaggedExif1);
             BitmapMetadataExamples.RemoveIPTCAddres(Program.testPhotoPath + TestPhotos.GeotaggedExif1);
 
             // JpgPhoto Examples:

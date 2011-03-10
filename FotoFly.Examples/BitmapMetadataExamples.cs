@@ -37,7 +37,7 @@
             }
         }
 
-        public static void ReadIPTCAddres(string inputFile)
+        public static void ReadIPTCAddress(string inputFile)
         {
             // Queries for the IPTC Address fields
             // Note: Region is normally the State or County
