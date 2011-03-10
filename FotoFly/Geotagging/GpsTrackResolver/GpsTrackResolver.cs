@@ -53,7 +53,14 @@ namespace Fotofly.Geotagging.Resolvers
         {
             get
             {
-                return this.TrackPoints.First().SatelliteTime;
+                if (this.TrackPoints.Count == 0)
+                {
+                    return new DateTime();
+                }
+                else
+                {
+                    return this.TrackPoints.First().Time;
+                }
             }
         }
 
@@ -61,7 +68,14 @@ namespace Fotofly.Geotagging.Resolvers
         {
             get
             {
-                return this.TrackPoints.Last().SatelliteTime;
+                if (this.TrackPoints.Count == 0)
+                {
+                    return new DateTime();
+                }
+                else
+                {
+                    return this.TrackPoints.Last().Time;
+                }
             }
         }
 
@@ -85,13 +99,46 @@ namespace Fotofly.Geotagging.Resolvers
                         foreach (GpxPointNode pointNode in gpxSegmentNode.Points)
                         {
                             GpsPosition newCoordinate = new GpsPosition();
-                            newCoordinate.SatelliteTime = pointNode.Time;
+                            newCoordinate.Time = pointNode.Time;
                             newCoordinate.Latitude.Numeric = pointNode.Lat;
                             newCoordinate.Longitude.Numeric = pointNode.Lon;
                             newCoordinate.Altitude = pointNode.Ele;
 
                             // Use the tracks data or the parameter override
                             newCoordinate.Source = string.IsNullOrEmpty(this.GpsTrackSource) ? gpxFile.RootNode.Creator : this.GpsTrackSource;
+
+                            // Add the point to the cache
+                            this.TrackPoints.Add(newCoordinate);
+                        }
+                    }
+                }
+
+                // ReOptimise the Track
+                this.OptimiseTrack();
+            }
+        }
+
+        public void Add(GpsFile gpsFile)
+        {
+            if (gpsFile != null && gpsFile.Tracks != null && gpsFile.Tracks.Count > 0)
+            {
+                // Loop through each Track
+                foreach (GpsTrack gpsTrack in gpsFile.Tracks)
+                {
+                    // Loop through each Segment
+                    foreach (GpsTrackSegment gpsTrackSegment in gpsTrack.Segments)
+                    {
+                        // Loop through each Point
+                        foreach (GpsTrackPoint gpsTrackPoint in gpsTrackSegment.Points)
+                        {
+                            GpsPosition newCoordinate = new GpsPosition();
+                            newCoordinate.Time = gpsTrackPoint.Time;
+                            newCoordinate.Latitude.Numeric = gpsTrackPoint.LatitudeAsDouble;
+                            newCoordinate.Longitude.Numeric = gpsTrackPoint.LongitudeAsDouble;
+                            newCoordinate.Altitude = gpsTrackPoint.Altitude;
+
+                            // Use the tracks data or the parameter override
+                            newCoordinate.Source = string.IsNullOrEmpty(this.GpsTrackSource) ? gpsTrackPoint.Source : this.GpsTrackSource;
 
                             // Add the point to the cache
                             this.TrackPoints.Add(newCoordinate);
@@ -125,14 +172,14 @@ namespace Fotofly.Geotagging.Resolvers
             {
                 // Find the closet point before utcTime
                 var beforeQuery = from x in this.TrackPoints
-                                  where x.SatelliteTime < utcTime
-                                  orderby x.SatelliteTime
+                                  where x.Time < utcTime
+                                  orderby x.Time
                                   select x;
 
                 // Find the closest point after utcTime
                 var afterQuery = from x in this.TrackPoints
-                                 where x.SatelliteTime > utcTime
-                                 orderby x.SatelliteTime
+                                 where x.Time > utcTime
+                                 orderby x.Time
                                  select x;
 
                 gpsTrackMatch.GpsPositionBefore = beforeQuery.LastOrDefault();
@@ -149,8 +196,8 @@ namespace Fotofly.Geotagging.Resolvers
                     gpsTrackMatch.SetGpsPositionDate(utcTime);
 
                     // Work out the time before and after
-                    long minsBefore = (utcTime.Ticks - gpsTrackMatch.GpsPositionBefore.SatelliteTime.Ticks) / TimeSpan.TicksPerMinute;
-                    long minsAfter = (gpsTrackMatch.GpsPositionAfter.SatelliteTime.Ticks - utcTime.Ticks) / TimeSpan.TicksPerMinute;
+                    long minsBefore = (utcTime.Ticks - gpsTrackMatch.GpsPositionBefore.Time.Ticks) / TimeSpan.TicksPerMinute;
+                    long minsAfter = (gpsTrackMatch.GpsPositionAfter.Time.Ticks - utcTime.Ticks) / TimeSpan.TicksPerMinute;
 
                     // Save accurancy in Minutes of the closest point
                     gpsTrackMatch.AccuracyInMinutes = minsBefore > minsAfter ? minsAfter : minsBefore;
@@ -195,9 +242,9 @@ namespace Fotofly.Geotagging.Resolvers
             {
                 // Filter out the points that are not needed and sort
                 var query = from x in this.TrackPoints
-                            where x.SatelliteTime > this.earliestUtcDate
-                            && x.SatelliteTime < this.latestUtcDate
-                            orderby x.SatelliteTime
+                            where x.Time > this.earliestUtcDate
+                            && x.Time < this.latestUtcDate
+                            orderby x.Time
                             select x;
 
                 // Save the points list
@@ -207,7 +254,7 @@ namespace Fotofly.Geotagging.Resolvers
             {
                 // Filter out the points that are not needed and sort
                 var query = from x in this.TrackPoints
-                            orderby x.SatelliteTime
+                            orderby x.Time
                             select x;
 
                 // Save the points list

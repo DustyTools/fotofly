@@ -6,6 +6,7 @@ namespace Fotofly
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Text;
     using System.Xml.Serialization;
@@ -41,6 +42,7 @@ namespace Fotofly
         /// Software used to last modify the photo
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue("")]
         public string CreationSoftware
         {
             get;
@@ -71,6 +73,7 @@ namespace Fotofly
         /// Focal Length
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue("")]
         public string FocalLength
         {
             get;
@@ -81,6 +84,7 @@ namespace Fotofly
         /// Copyright owner of the photo
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue("")]
         public string Copyright
         {
             get;
@@ -91,6 +95,7 @@ namespace Fotofly
         /// Camera Model, normally includes camera Manufacturer
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue("")]
         public string CameraModel
         {
             get;
@@ -101,6 +106,7 @@ namespace Fotofly
         /// Camera Manufacturer
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue("")]
         public string CameraManufacturer
         {
             get;
@@ -161,6 +167,7 @@ namespace Fotofly
         /// DateModified, as stored in Metadata (not the same as file last modified)
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue(typeof(DateTime), "0001-01-01T00:00:00")]
         public DateTime DateModified
         {
             get;
@@ -171,6 +178,7 @@ namespace Fotofly
         /// DateAquired, Microsoft Windows7 Property field
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue(typeof(DateTime), "0001-01-01T00:00:00")]
         public DateTime DateAquired
         {
             get;
@@ -181,6 +189,7 @@ namespace Fotofly
         /// DateTaken, recorded by the camera when the photo is taken
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue(typeof(DateTime), "0001-01-01T00:00:00")]
         public DateTime DateTaken
         {
             get;
@@ -241,6 +250,7 @@ namespace Fotofly
         /// Description Also Known as Title (in Windows), User Comment, Caption, Abstract or Description
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue("")]
         public string Description
         {
             get;
@@ -251,6 +261,7 @@ namespace Fotofly
         /// Comment, not stored in XMP, IPTC or Exif
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue("")]
         public string Comment
         {
             get;
@@ -261,6 +272,7 @@ namespace Fotofly
         /// Subject, not stored in XMP, IPTC or Exif
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue("")]
         public string Subject
         {
             get;
@@ -271,6 +283,7 @@ namespace Fotofly
         /// DateDigitized, recorded by the camera when the photo is taken
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue(typeof(DateTime), "0001-01-01T00:00:00")]
         public DateTime DateDigitised
         {
             get;
@@ -320,6 +333,7 @@ namespace Fotofly
         /// Vertical Resolution of main photo
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue(0)]
         public int VerticalResolution
         {
             get;
@@ -330,6 +344,7 @@ namespace Fotofly
         /// Horizontal Resolution of main photo
         /// </summary>
         [XmlElementAttribute]
+        [DefaultValue(0)]
         public int HorizontalResolution
         {
             get;
@@ -347,31 +362,73 @@ namespace Fotofly
         }
 
         [XmlElementAttribute]
-        public DateTime DateUtc { get; set; }
+        [DefaultValue(typeof(DateTime), "0001-01-01T00:00:00")]
+        public DateTime DateUtc
+        {
+            get;
+            set;
+        }
 
         [XmlElementAttribute]
-        public double? UtcOffset { get; set; }
+        public double? UtcOffset
+        {
+            get;
+            set;
+        }
 
         [XmlElementAttribute]
-        public DateTime FotoflyDateLastSave { get; set; }
+        [DefaultValue(typeof(DateTime), "0001-01-01T00:00:00")]
+        public DateTime FotoflyDateLastSave
+        {
+            get;
+            set;
+        }
 
         [XmlElementAttribute]
-        public DateTime AddressOfLocationCreatedLookupDate { get; set; }
+        [DefaultValue(typeof(DateTime), "0001-01-01T00:00:00")]
+        public DateTime AddressOfLocationCreatedLookupDate
+        {
+            get;
+            set;
+        }
 
         [XmlElementAttribute]
-        public DateTime OriginalCameraDate { get; set; }
+        [DefaultValue(typeof(DateTime), "0001-01-01T00:00:00")]
+        public DateTime OriginalCameraDate
+        {
+            get;
+            set;
+        }
 
         [XmlElementAttribute]
-        public string OriginalCameraFilename { get; set; }
+        [DefaultValue("")]
+        public string OriginalCameraFilename
+        {
+            get;
+            set;
+        }
 
         [XmlElementAttribute]
-        public Address AddressOfLocationCreated { get; set; }
+        public Address AddressOfLocationCreated
+        {
+            get;
+            set;
+        }
 
         [XmlElementAttribute]
-        public Address AddressOfLocationShown { get; set; }
+        public Address AddressOfLocationShown
+        {
+            get;
+            set;
+        }
 
         [XmlElementAttribute]
-        public string AddressOfLocationCreatedSource { get; set; }
+        [DefaultValue("")]
+        public string AddressOfLocationCreatedSource
+        {
+            get;
+            set;
+        }
 
         [XmlIgnore]
         public bool IsUtcOffsetSet
@@ -383,6 +440,7 @@ namespace Fotofly
         }
 
         [XmlIgnore]
+        [DefaultValue(false)]
         public bool IsUtcDateSet
         {
             get

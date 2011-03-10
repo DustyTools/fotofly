@@ -6,6 +6,7 @@ namespace Fotofly
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -214,6 +215,8 @@ namespace Fotofly
             }
         }
 
+        [XmlElement]
+        [DefaultValue("")]
         public int HierarchicalNameLength
         {
             get

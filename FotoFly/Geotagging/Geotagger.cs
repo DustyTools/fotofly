@@ -12,14 +12,18 @@ namespace Fotofly.Geotagging
 
     using Fotofly.Geotagging.Resolvers;
     using Fotofly.GpseXchangeFormat;
+    using Fotofly.NmeaFormat;
 
     public class Geotagger
     {
         // All Resolvers
         private BingMapsResolver bingMapsResolver;
         private GoogleMapsResolver googleMapsResolver;
-        private GpsTrackResolver gpsTrackResolver;
         private ResolverCache manualCache;
+
+        // One track resolver per file type
+        private GpsTrackResolver nmeaTrackResolver;
+        private GpsTrackResolver gpxTrackResolver;
 
         public Geotagger()
         {
@@ -40,9 +44,14 @@ namespace Fotofly.Geotagging
             get { return this.googleMapsResolver != null; }
         }
 
-        public bool IsGpsTracksResolverConfigured
+        public bool IsGpxTracksResolverConfigured
         {
-            get { return this.gpsTrackResolver != null; }
+            get { return this.gpxTrackResolver != null; }
+        }
+
+        public bool IsNmeaTracksResolverConfigured
+        {
+            get { return this.nmeaTrackResolver != null; }
         }
 
         public void ConfigureManualCache(string cacheDirectory)
@@ -62,33 +71,67 @@ namespace Fotofly.Geotagging
             this.googleMapsResolver.ConfigResolverCache(cacheDirectory, "GoogleMaps");
         }
 
-        public void ConfigureGpsTracksResolver(List<string> gpxTrackFiles, string trackSource, int toleranceInMeters, int toleranceInMinutes)
+        public void ConfigureGpxTracksResolver(List<string> gpxTrackFiles, string trackSource, int toleranceInMeters, int toleranceInMinutes)
         {
             // Only setup if we have valid tracks
             if (gpxTrackFiles != null && gpxTrackFiles.Count != 0)
             {
-                this.gpsTrackResolver = new GpsTrackResolver();
-                this.gpsTrackResolver.ToleranceInMeters = toleranceInMeters;
-                this.gpsTrackResolver.ToleranceInMinutes = toleranceInMinutes;
-                this.gpsTrackResolver.GpsTrackSource = trackSource;
+                this.gpxTrackResolver = new GpsTrackResolver();
+                this.gpxTrackResolver.ToleranceInMeters = toleranceInMeters;
+                this.gpxTrackResolver.ToleranceInMinutes = toleranceInMinutes;
+                this.gpxTrackResolver.GpsTrackSource = trackSource;
 
                 foreach (string gpxTrackFile in gpxTrackFiles)
                 {
-                    this.gpsTrackResolver.Add(GpxFileManager.Read(gpxTrackFile));
+                    this.gpxTrackResolver.Add(GpxFileManager.Read(gpxTrackFile));
+                }
+            }
+        }
+
+        public void ConfigureNmeaTracksResolver(List<string> nmeaTrackFiles, string trackSource, int toleranceInMeters, int toleranceInMinutes)
+        {
+            // Only setup if we have valid tracks
+            if (nmeaTrackFiles != null && nmeaTrackFiles.Count != 0)
+            {
+                this.nmeaTrackResolver = new GpsTrackResolver();
+                this.nmeaTrackResolver.ToleranceInMeters = toleranceInMeters;
+                this.nmeaTrackResolver.ToleranceInMinutes = toleranceInMinutes;
+                this.nmeaTrackResolver.GpsTrackSource = trackSource;
+
+                foreach (string nmeaTrackFile in nmeaTrackFiles)
+                {
+                    this.nmeaTrackResolver.Add(NmeaFileManager.Read(nmeaTrackFile));
                 }
             }
         }
 
         public GpsPosition FindGpsPosition(DateTime utcDate)
         {
-            if (this.IsGpsTracksResolverConfigured)
+            GpsPosition gpsPosition = new GpsPosition();
+
+            if (this.IsGpxTracksResolverConfigured)
             {
                 if (utcDate == null || utcDate == new DateTime())
                 {
                     throw new Exception("Metadata.UtcDate must be set Gps Tracks are UTC based");
                 }
 
-                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(utcDate);
+                gpsPosition = this.gpxTrackResolver.FindGpsPosition(utcDate);
+
+                if (gpsPosition != null && gpsPosition.IsValidCoordinate)
+                {
+                    return gpsPosition;
+                }
+            }
+
+            if (this.IsNmeaTracksResolverConfigured)
+            {
+                if (utcDate == null || utcDate == new DateTime())
+                {
+                    throw new Exception("Metadata.UtcDate must be set Gps Tracks are UTC based");
+                }
+
+                gpsPosition = this.nmeaTrackResolver.FindGpsPosition(utcDate);
 
                 if (gpsPosition != null && gpsPosition.IsValidCoordinate)
                 {
@@ -107,15 +150,31 @@ namespace Fotofly.Geotagging
                 photo.Metadata.GpsPositionOfLocationCreated = new GpsPosition();
             }
 
-            // Use Gps Tracks if Configured
-            if (!photo.Metadata.GpsPositionOfLocationCreated.IsValidCoordinate && this.IsGpsTracksResolverConfigured)
+            // Use Gpx Tracks if Configured
+            if (!photo.Metadata.GpsPositionOfLocationCreated.IsValidCoordinate && this.IsGpxTracksResolverConfigured)
             {
                 if (photo.Metadata.DateUtc == null || photo.Metadata.DateUtc == new DateTime())
                 {
                     throw new Exception("Metadata.UtcDate must be set Gps Tracks are UTC based");
                 }
 
-                GpsPosition gpsPosition = this.gpsTrackResolver.FindGpsPosition(photo.Metadata.DateUtc);
+                GpsPosition gpsPosition = this.gpxTrackResolver.FindGpsPosition(photo.Metadata.DateUtc);
+
+                if (gpsPosition != null && gpsPosition.IsValidCoordinate)
+                {
+                    photo.Metadata.GpsPositionOfLocationCreated = gpsPosition;
+                }
+            }
+
+            // Use Nmea Tracks if Configured
+            if (!photo.Metadata.GpsPositionOfLocationCreated.IsValidCoordinate && this.IsNmeaTracksResolverConfigured)
+            {
+                if (photo.Metadata.DateUtc == null || photo.Metadata.DateUtc == new DateTime())
+                {
+                    throw new Exception("Metadata.UtcDate must be set Gps Tracks are UTC based");
+                }
+
+                GpsPosition gpsPosition = this.nmeaTrackResolver.FindGpsPosition(photo.Metadata.DateUtc);
 
                 if (gpsPosition != null && gpsPosition.IsValidCoordinate)
                 {
@@ -192,12 +251,12 @@ namespace Fotofly.Geotagging
                 else if (manualAccuracy > bingAccuracy)
                 {
                     photo.Metadata.GpsPositionOfLocationShown = manualResult;
-                    photo.Metadata.GpsPositionOfLocationShown.SatelliteTime = new DateTime();
+                    photo.Metadata.GpsPositionOfLocationShown.Time = new DateTime();
                 }
                 else
                 {
                     photo.Metadata.GpsPositionOfLocationShown = bingResult;
-                    photo.Metadata.GpsPositionOfLocationShown.SatelliteTime = new DateTime();
+                    photo.Metadata.GpsPositionOfLocationShown.Time = new DateTime();
                 }
             }
         }

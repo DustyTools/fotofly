@@ -40,7 +40,7 @@
         public static readonly string MeteringModeCenterWeightedAverage = "MeteringMode-CenterWeightedAverage.jpg";
         public static readonly string MeteringModeEvaluative = "MeteringMode-Evaluative.jpg";
         public static readonly string MeteringModeSpot = "MeteringMode-Spot.jpg";
-        
+
         public static readonly string DigitalZoom = "DigitalZoom.jpg";
 
         public static readonly string ExposureBiasMinus03 = "ExposureBias-0.3.jpg";
@@ -77,17 +77,17 @@
 
         public static readonly string ISO400 = "ISO-400.jpg";
         public static readonly string ISOAuto = "ISO-Auto.jpg";
-        
+
         public static readonly string ExposureProgramAv = "ExposureProgram-Av.jpg";
         public static readonly string ExposureProgramManual = "ExposureProgram-Manual.jpg";
         public static readonly string ExposureProgramP = "ExposureProgram-P.jpg";
         public static readonly string ExposureProgramTV = "ExposureProgram-Tv.jpg";
-        
+
         public static readonly string Orientation180Clockwise = "Orientation-180Clockwise.jpg";
         public static readonly string Orientation270Clockwise = "Orientation-270Clockwise.jpg";
         public static readonly string Orientation90Clockwise = "Orientation-90Clockwise.jpg";
         public static readonly string OrientationHorizontal = "Orientation-Horizontal.jpg";
-        
+
         public static readonly string Regions0 = "Regions-0.jpg";
         public static readonly string Regions1 = "Regions-1.jpg";
         public static readonly string Regions2 = "Regions-2.jpg";

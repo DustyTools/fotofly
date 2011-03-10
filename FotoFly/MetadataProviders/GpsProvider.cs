@@ -33,7 +33,7 @@ namespace Fotofly.MetadataProviders
                 gpsPosition.Longitude = this.Longitude.Clone() as GpsCoordinate;
                 gpsPosition.Altitude = this.Altitude;
                 gpsPosition.Source = this.ProcessingMethod;
-                gpsPosition.SatelliteTime = this.DateTimeStamp;
+                gpsPosition.Time = this.DateTimeStamp;
 
                 return gpsPosition;
             }
@@ -45,7 +45,7 @@ namespace Fotofly.MetadataProviders
                     this.Altitude = value.Altitude;
                     this.Latitude = value.Latitude.Clone() as GpsCoordinate;
                     this.Longitude = value.Longitude.Clone() as GpsCoordinate;
-                    this.DateTimeStamp = value.SatelliteTime;
+                    this.DateTimeStamp = value.Time;
                     this.MeasureMode = value.Dimension;
                     this.ProcessingMethod = value.Source;
                     this.VersionID = "2200";
@@ -75,7 +75,7 @@ namespace Fotofly.MetadataProviders
                 gpsPosition.Longitude = this.DestLongitude.Clone() as GpsCoordinate;
                 gpsPosition.Altitude = Double.NaN;
                 gpsPosition.Source = null;
-                gpsPosition.SatelliteTime = new DateTime();
+                gpsPosition.Time = new DateTime();
 
                 return gpsPosition;
             }

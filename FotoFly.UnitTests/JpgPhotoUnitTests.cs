@@ -151,7 +151,7 @@
 
             Assert.AreEqual<double>(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.Altitude, -17.464, "Altitude");
             Assert.AreEqual<GpsPosition.Dimensions>(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.Dimension, GpsPosition.Dimensions.ThreeDimensional, "Dimensions");
-            Assert.AreEqual<DateTime>(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.SatelliteTime, new DateTime(2009, 10, 10, 21, 46, 24), "Satalite Time");
+            Assert.AreEqual<DateTime>(this.jpgPhotoOne.Metadata.GpsPositionOfLocationCreated.Time, new DateTime(2009, 10, 10, 21, 46, 24), "Satalite Time");
         }
 
         /// <summary>
@@ -382,7 +382,7 @@
             // Test data, includes Unicode strings
             Address addressCreated = new Address(@"CòuntryCreàted/RegÎon/Ĉity/Stréét");
             Address addressShown = new Address(@"CòuntryShówn/RegÎon/Ĉity/Stréét");
-            
+
             // Scrub existing data
             testPhoto.Metadata.AddressOfLocationCreated = new Address();
             testPhoto.Metadata.AddressOfLocationShown = new Address();

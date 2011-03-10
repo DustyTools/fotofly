@@ -33,7 +33,7 @@ namespace Fotofly.Geotagging.Resolvers
 
             // Create a new GpsPosition
             this.GpsPosition = new GpsPosition(Convert.ToDouble(latitude), Convert.ToDouble(longitude));
-            this.GpsPosition.SatelliteTime = this.Date;
+            this.GpsPosition.Time = this.Date;
         }
 
         public GeoCacheRecord(DateTime date, Address address, GpsPosition gpsPosition)

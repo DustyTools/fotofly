@@ -34,7 +34,7 @@ namespace Fotofly.MetadataProviders
                 gpsPosition.Longitude = this.GpsLongitude.Clone() as GpsCoordinate;
                 gpsPosition.Altitude = this.GpsAltitude;
                 gpsPosition.Source = this.GpsProcessingMethod;
-                gpsPosition.SatelliteTime = this.GpsDateTimeStamp;
+                gpsPosition.Time = this.GpsDateTimeStamp;
 
                 return gpsPosition;
             }
@@ -365,7 +365,7 @@ namespace Fotofly.MetadataProviders
                 gpsPosition.Longitude = this.GpsDestLongitude.Clone() as GpsCoordinate;
                 gpsPosition.Altitude = double.NaN;
                 gpsPosition.Source = string.Empty;
-                gpsPosition.SatelliteTime = new DateTime();
+                gpsPosition.Time = new DateTime();
 
                 return gpsPosition;
             }

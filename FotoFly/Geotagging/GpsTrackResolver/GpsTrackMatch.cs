@@ -60,21 +60,21 @@ namespace Fotofly.Geotagging.Resolvers
             // Ensure Points are valid and utcTime is inbetween the two points
             if (this.GpsPositionBefore.IsValidCoordinate
                 && this.GpsPositionAfter.IsValidCoordinate
-                && this.GpsPositionBefore.SatelliteTime < utcTime
-                && this.GpsPositionAfter.SatelliteTime > utcTime)
+                && this.GpsPositionBefore.Time < utcTime
+                && this.GpsPositionAfter.Time > utcTime)
             {
                 // Set common properties
                 this.gpsPositionMiddle.Source = this.GpsPositionAfter.Source;
 
                 // Work out the difference between the two points in nano seconds
-                long nanoSecondsGap = this.GpsPositionAfter.SatelliteTime.Ticks - this.GpsPositionBefore.SatelliteTime.Ticks;
+                long nanoSecondsGap = this.GpsPositionAfter.Time.Ticks - this.GpsPositionBefore.Time.Ticks;
 
                 // Work out LatLong distance between the two points
                 double latDistance = this.GpsPositionAfter.Latitude.Numeric - this.GpsPositionBefore.Latitude.Numeric;
                 double longDistance = this.GpsPositionAfter.Longitude.Numeric - this.GpsPositionBefore.Longitude.Numeric;
                 double elevDistance = this.GpsPositionAfter.Altitude - this.GpsPositionBefore.Altitude;
 
-                long nanoSecondsPhoto = utcTime.Ticks - this.GpsPositionBefore.SatelliteTime.Ticks;
+                long nanoSecondsPhoto = utcTime.Ticks - this.GpsPositionBefore.Time.Ticks;
 
                 // Work out the new values using the % difference between the two points and add this to the first point
                 // Round Lat\Long to 6 decimals and altitude to 3
@@ -92,13 +92,13 @@ namespace Fotofly.Geotagging.Resolvers
                 }
 
                 // Set the match time based on the closest satellite
-                if (this.GpsPositionBefore.SatelliteTime.Ticks - utcTime.Ticks > utcTime.Ticks - this.GpsPositionAfter.SatelliteTime.Ticks)
+                if (this.GpsPositionBefore.Time.Ticks - utcTime.Ticks > utcTime.Ticks - this.GpsPositionAfter.Time.Ticks)
                 {
-                    this.gpsPositionMiddle.SatelliteTime = this.GpsPositionBefore.SatelliteTime;
+                    this.gpsPositionMiddle.Time = this.GpsPositionBefore.Time;
                 }
                 else
                 {
-                    this.gpsPositionMiddle.SatelliteTime = this.GpsPositionAfter.SatelliteTime;
+                    this.gpsPositionMiddle.Time = this.GpsPositionAfter.Time;
                 }
             }
         }

@@ -9,6 +9,7 @@ namespace Fotofly
     using System.Linq;
     using System.Text;
     using System.Xml.Serialization;
+    using System.ComponentModel;
 
     [XmlRootAttribute("GpsPosition", Namespace = "http://www.tassography.com/fotofly")]
     public class GpsPosition : ICloneable
@@ -22,6 +23,15 @@ namespace Fotofly
         public GpsPosition()
         {
             this.ResetCoordinates();
+        }
+
+        public GpsPosition(GpsPosition gpsPosition)
+        {
+            this.Altitude = gpsPosition.Altitude;
+            this.Latitude = gpsPosition.Latitude.Clone() as GpsCoordinate;
+            this.Longitude = gpsPosition.Longitude.Clone() as GpsCoordinate;
+            this.Source = gpsPosition.Source;
+            this.Time = gpsPosition.Time;
         }
 
         public GpsPosition(double latitude, double longitude)
@@ -66,7 +76,7 @@ namespace Fotofly
             BelowSeaLevel
         }
 
-        [XmlAttribute]
+        [XmlAttribute("Alt")]
         public double Altitude
         {
             get
@@ -120,6 +130,7 @@ namespace Fotofly
         }
 
         [XmlAttribute]
+        [DefaultValue(true)]
         public bool IsValidCoordinate
         {
             get
@@ -134,7 +145,21 @@ namespace Fotofly
             }
         }
 
-        [XmlElement]
+        [XmlAttribute("Lat")]
+        public double LatitudeAsDouble
+        {
+            get
+            {
+                return this.Latitude.Numeric;
+            }
+
+            set
+            {
+                this.Latitude.Numeric = value;
+            }
+        }
+
+        [XmlIgnore]
         public GpsCoordinate Latitude
         {
             get
@@ -158,7 +183,21 @@ namespace Fotofly
             }
         }
 
-        [XmlElement]
+        [XmlAttribute("Lon")]
+        public double LongitudeAsDouble
+        {
+            get
+            {
+                return this.Longitude.Numeric;
+            }
+
+            set
+            {
+                this.Longitude.Numeric = value;
+            }
+        }
+
+        [XmlIgnore]
         public GpsCoordinate Longitude
         {
             get
@@ -183,6 +222,7 @@ namespace Fotofly
         }
 
         [XmlAttribute]
+        [DefaultValue("")]
         public string Source
         {
             get;
@@ -190,7 +230,8 @@ namespace Fotofly
         }
 
         [XmlAttribute]
-        public DateTime SatelliteTime
+        [DefaultValue(typeof(DateTime), "0001-01-01T00:00:00")]
+        public DateTime Time
         {
             get
             {
@@ -289,7 +330,7 @@ namespace Fotofly
                 GpsPosition otherPosition = (GpsPosition)unknownObject;
 
                 if (otherPosition.ToString() == this.ToString()
-                    && otherPosition.SatelliteTime.Ticks == this.SatelliteTime.Ticks
+                    && otherPosition.Time.Ticks == this.Time.Ticks
                     && otherPosition.Source == this.Source)
                 {
                     return true;
@@ -326,7 +367,7 @@ namespace Fotofly
             gpsPosition.Longitude = this.Longitude.Clone() as GpsCoordinate;
             gpsPosition.Altitude = this.Altitude;
             gpsPosition.Source = this.Source;
-            gpsPosition.SatelliteTime = this.SatelliteTime;
+            gpsPosition.Time = this.Time;
 
             return gpsPosition;
         }
@@ -334,6 +375,11 @@ namespace Fotofly
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public bool ShouldSerializeAltitude()
+        {
+            return !double.IsNaN(this.Altitude);
         }
 
         /* Accuracy Code, not currently used
