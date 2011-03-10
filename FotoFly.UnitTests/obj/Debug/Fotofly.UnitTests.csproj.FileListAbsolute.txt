@@ -1,0 +1,7 @@
+D:\Storage (Dev)\CodexPlex\Fotofly\FotoFly.UnitTests\bin\Debug\Fotofly.UnitTests.dll
+D:\Storage (Dev)\CodexPlex\Fotofly\FotoFly.UnitTests\bin\Debug\Fotofly.UnitTests.pdb
+D:\Storage (Dev)\CodexPlex\Fotofly\FotoFly.UnitTests\bin\Debug\Fotofly.dll
+D:\Storage (Dev)\CodexPlex\Fotofly\FotoFly.UnitTests\bin\Debug\Fotofly.pdb
+D:\Storage (Dev)\CodexPlex\Fotofly\FotoFly.UnitTests\obj\Debug\ResolveAssemblyReference.cache
+D:\Storage (Dev)\CodexPlex\Fotofly\FotoFly.UnitTests\obj\Debug\Fotofly.UnitTests.dll
+D:\Storage (Dev)\CodexPlex\Fotofly\FotoFly.UnitTests\obj\Debug\Fotofly.UnitTests.pdb
