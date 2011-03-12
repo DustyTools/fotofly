@@ -11,51 +11,25 @@ namespace Fotofly.GpseXchangeFormat
    
     public class GpxPointNode
     {
-        private double ele;
-        private double lat;
-        private double lon;
-        private string xmlTime;
-
         [XmlElement("ele")]
         public double Ele
         {
-            get
-            {
-                return this.ele;
-            }
-
-            set
-            {
-                this.ele = value;
-            }
+            get;
+            set;
         }
 
         [XmlAttribute("lat")]
         public double Lat
         {
-            get
-            {
-                return this.lat;
-            }
-
-            set
-            {
-                this.lat = value;
-            }
+            get;
+            set;
         }
 
         [XmlAttribute("lon")]
         public double Lon
         {
-            get
-            {
-                return this.lon;
-            }
-
-            set
-            {
-                this.lon = value;
-            }
+            get;
+            set;
         }
 
         [XmlIgnore]
@@ -64,7 +38,7 @@ namespace Fotofly.GpseXchangeFormat
             get
             {
                 // Read the XML, remove the Z to force reading the time as local
-                DateTime returnValue = DateTime.Parse(this.xmlTime.Replace("Z", string.Empty));
+                DateTime returnValue = DateTime.Parse(this.XmlTime.Replace("Z", string.Empty));
 
                 returnValue = DateTime.SpecifyKind(returnValue, DateTimeKind.Local);
 
@@ -73,22 +47,15 @@ namespace Fotofly.GpseXchangeFormat
 
             set
             {
-                this.xmlTime = value.ToString("s") + "Z";
+                this.XmlTime = value.ToString("s") + "Z";
             }
         }
 
         [XmlElement("time")]
         public string XmlTime
         {
-            get
-            {
-                return this.xmlTime;
-            }
-
-            set
-            {
-                this.xmlTime = value;
-            }
+            get;
+            set;
         }
 
         public override string ToString()

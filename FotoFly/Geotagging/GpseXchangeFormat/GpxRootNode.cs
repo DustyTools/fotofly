@@ -18,21 +18,67 @@ namespace Fotofly.GpseXchangeFormat
     [XmlRoot("gpx", Namespace = "http://www.topografix.com/GPX/1/1")]
     public class GpxRootNode
     {
-        private string creator;
         private List<GpxTrackNode> tracks;
-        private string version;
+        private List<GpxWaypointNode> waypoints;
+        private List<GpxRouteNode> routes;
+        private GpxMetadataNode metadata;
+
+        [XmlAttribute("version")]
+        public string Version
+        {
+            get;
+            set;
+        }
 
         [XmlAttribute("creator")]
         public string Creator
         {
+            get;
+            set;
+        }
+
+        [XmlAttribute("author")]
+        public string Author
+        {
+            get;
+            set;
+        }
+
+        [XmlElement("metadata")]
+        public GpxMetadataNode Metadata
+        {
             get
             {
-                return this.creator;
+                if (this.metadata == null)
+                {
+                    this.metadata = new GpxMetadataNode();
+                }
+
+                return this.metadata;
             }
 
             set
             {
-                this.creator = value;
+                this.metadata = value;
+            }
+        }
+
+        [XmlElement("wpt")]
+        public List<GpxWaypointNode> Waypoints
+        {
+            get
+            {
+                if (this.waypoints == null)
+                {
+                    this.waypoints = new List<GpxWaypointNode>();
+                }
+
+                return this.waypoints;
+            }
+
+            set
+            {
+                this.waypoints = value;
             }
         }
 
@@ -55,17 +101,22 @@ namespace Fotofly.GpseXchangeFormat
             }
         }
 
-        [XmlAttribute("version")]
-        public string Version
+        [XmlElement("rte")]
+        public List<GpxRouteNode> Routes
         {
             get
             {
-                return this.version;
+                if (this.routes == null)
+                {
+                    this.routes = new List<GpxRouteNode>();
+                }
+
+                return this.routes;
             }
 
             set
             {
-                this.version = value;
+                this.routes = value;
             }
         }
     }

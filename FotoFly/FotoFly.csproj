@@ -89,14 +89,32 @@
     <Compile Include="BitmapMetadataTools\WpfFileManager.cs" />
     <Compile Include="CommonProperties\FotoflyAssemblyInfo.cs" />
     <Compile Include="CommonProperties\GpsPositionUtils.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxFile.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxFileManager.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxMetadataBounds.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxMetadataLink.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxMetadataNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxPointNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxRootNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxRouteNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxRoutePointNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxSegmentNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxTrackNode.cs" />
+    <Compile Include="Geotagging\GpseXchangeFormat\GpxWaypointNode.cs" />
+    <Compile Include="Geotagging\GpsFile.cs" />
+    <Compile Include="Geotagging\GpsRoute.cs" />
+    <Compile Include="Geotagging\GpsRoutePoint.cs" />
     <Compile Include="Geotagging\GpsTrack.cs" />
-    <Compile Include="Geotagging\GpsTrackCache.cs" />
+    <Compile Include="Geotagging\GpsTrackPoint.cs" />
+    <Compile Include="Geotagging\GpsTrackSegment.cs" />
+    <Compile Include="Geotagging\GpsTrackSummary.cs" />
+    <Compile Include="Geotagging\GpsUtils.cs" />
+    <Compile Include="Geotagging\GpsWaypoint.cs" />
+    <Compile Include="Geotagging\NmeaFormat\NmeaFileManager.cs" />
     <Compile Include="JpgPhotoTools.cs" />
     <Compile Include="MetadataProperties\Aperture.cs" />
     <Compile Include="MetadataProperties\CompareResult.cs" />
     <Compile Include="MetadataProperties\ExposureBias.cs" />
-    <Compile Include="MetadataProperties\ImageRegion.cs" />
-    <Compile Include="MetadataProperties\ImageRegionInfo.cs" />
     <Compile Include="MetadataProperties\IsoSpeed.cs" />
     <Compile Include="MetadataProperties\MetadataEnums.cs" />
     <Compile Include="MetadataProperties\MicrosoftImageRegion.cs" />
@@ -123,6 +141,7 @@
     <Compile Include="MetadataQueries\XmpDublinCoreQueries.cs" />
     <Compile Include="MetadataQueries\XmpExifQueries.cs" />
     <Compile Include="MetadataQueries\XmpFotoFlyQueries.cs" />
+    <Compile Include="MetadataQueries\XmpIptcExtQueries.cs" />
     <Compile Include="MetadataQueries\XmpIptcQueries.cs" />
     <Compile Include="MetadataQueries\XmpMicrosoftQueries.cs" />
     <Compile Include="MetadataQueries\XmpPhotoshopQueries.cs" />
@@ -133,12 +152,6 @@
     <Compile Include="Geotagging\Geotagger.cs" />
     <Compile Include="Geotagging\GoogleMapsResolver\GoogleMapsResolver.cs" />
     <Compile Include="Geotagging\GeoCache\GeoCacheRecord.cs" />
-    <Compile Include="Geotagging\GpsTrackResolver\GpseXchangeFormat\GpxFile.cs" />
-    <Compile Include="Geotagging\GpsTrackResolver\GpseXchangeFormat\GpxFileManager.cs" />
-    <Compile Include="Geotagging\GpsTrackResolver\GpseXchangeFormat\GpxPointNode.cs" />
-    <Compile Include="Geotagging\GpsTrackResolver\GpseXchangeFormat\GpxRootNode.cs" />
-    <Compile Include="Geotagging\GpsTrackResolver\GpseXchangeFormat\GpxSegmentNode.cs" />
-    <Compile Include="Geotagging\GpsTrackResolver\GpseXchangeFormat\GpxTrackNode.cs" />
     <Compile Include="Geotagging\GpsTrackResolver\GpsTrackMatch.cs" />
     <Compile Include="Geotagging\GpsTrackResolver\GpsTrackResolver.cs" />
     <Compile Include="JpgPhoto.cs" />
@@ -169,7 +182,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="XmlTools\GenericSerialiser.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
