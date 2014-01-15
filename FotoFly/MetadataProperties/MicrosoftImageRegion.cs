@@ -9,6 +9,7 @@ namespace Fotofly
     using System.Linq;
     using System.Text;
     using System.Xml.Serialization;
+    using System.Globalization;
 
     [XmlRootAttribute("MicrosoftImageRegion", Namespace = "http://www.tassography.com/fotofly")]
     public class MicrosoftImageRegion : RectangleCoordinates, ICloneable
@@ -56,7 +57,7 @@ namespace Fotofly
         {
             get
             {
-                return string.Format("{0}, {1}, {2}, {3}", this.Left.ToString().TrimEnd('0'), this.Top.ToString().TrimEnd('0'), this.Width.ToString().TrimEnd('0'), this.Height.ToString().TrimEnd('0'));
+                return string.Format("{0}, {1}, {2}, {3}", this.Left.ToString(NumberFormatInfo.InvariantInfo).TrimEnd('0'), this.Top.ToString(NumberFormatInfo.InvariantInfo).TrimEnd('0'), this.Width.ToString(NumberFormatInfo.InvariantInfo).TrimEnd('0'), this.Height.ToString(NumberFormatInfo.InvariantInfo).TrimEnd('0'));
             }
 
             set
@@ -129,22 +130,22 @@ namespace Fotofly
                 {
                     if (!string.IsNullOrEmpty(splitString[0]))
                     {
-                        this.Left = Convert.ToDouble(splitString[0]);
+                        this.Left = Convert.ToDouble(splitString[0], NumberFormatInfo.InvariantInfo);
                     }
 
                     if (!string.IsNullOrEmpty(splitString[1]))
                     {
-                        this.Top = Convert.ToDouble(splitString[1]);
+                        this.Top = Convert.ToDouble(splitString[1], NumberFormatInfo.InvariantInfo);
                     }
 
                     if (!string.IsNullOrEmpty(splitString[2]))
                     {
-                        this.Width = Convert.ToDouble(splitString[2]);
+                        this.Width = Convert.ToDouble(splitString[2], NumberFormatInfo.InvariantInfo);
                     }
 
                     if (!string.IsNullOrEmpty(splitString[3]))
                     {
-                        this.Height = Convert.ToDouble(splitString[3]);
+                        this.Height = Convert.ToDouble(splitString[3], NumberFormatInfo.InvariantInfo);
                     }
                 }
             }
