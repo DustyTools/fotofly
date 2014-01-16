@@ -1,4 +1,4 @@
-﻿// <copyright file="ShutterSpeed.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <copyright file="ShutterSpeed.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
 // <date>2010-02-25</date>
 // <summary>ShutterSpeed</summary>
@@ -7,6 +7,7 @@ namespace Fotofly
     using System;
     using System.Text;
     using System.Xml.Serialization;
+	using System.Globalization;
 
     [XmlRootAttribute("ShutterSpeed", Namespace = "http://www.tassography.com/fotofly")]
     public class ShutterSpeed
@@ -80,12 +81,12 @@ namespace Fotofly
 
             if (this.Seconds > 1)
             {
-                formattedString = this.Seconds.ToString();
+                formattedString = this.Seconds.ToString(NumberFormatInfo.InvariantInfo);
             }
             else
             {
                 // Convert Decimal to Integer
-                formattedString = Math.Round(1 / this.Seconds, 0).ToString();
+                formattedString = Math.Round(1 / this.Seconds, 0).ToString(NumberFormatInfo.InvariantInfo);
 
                 formattedString = "1/" + formattedString;
             }
