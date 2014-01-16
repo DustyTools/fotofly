@@ -8,6 +8,7 @@ namespace Fotofly
     using System.Collections.Generic;
     using System.Text;
     using System.Xml.Serialization;
+	using System.Globalization;
 
     [XmlRootAttribute("GpsCoordinate", Namespace = "http://www.tassography.com/fotofly")]
     public class GpsCoordinate : ICloneable
@@ -294,7 +295,7 @@ namespace Fotofly
 
         public override string ToString()
         {
-            return this.Numeric.ToString();
+            return this.Numeric.ToString(NumberFormatInfo.InvariantInfo);
         }
 
         public object Clone()
@@ -320,7 +321,7 @@ namespace Fotofly
             else
             {
                 // Example 32° 56' 26.57" is 32 + (56/60) + (26.57 / 3600) = 32.940713888
-                this.Numeric = Math.Round(degrees + (Convert.ToDouble(minutes) / 60) + (Convert.ToDouble(seconds) / 3600), 4);
+				this.Numeric = Math.Round(degrees + (Convert.ToDouble(minutes, NumberFormatInfo.InvariantInfo) / 60) + (Convert.ToDouble(seconds, NumberFormatInfo.InvariantInfo) / 3600), 4);
 
                 // If this isn't valid reset the value
                 if (!this.IsValidCoordinate)
@@ -374,7 +375,7 @@ namespace Fotofly
         {
             StringBuilder returnValue = new StringBuilder();
 
-            string input = Math.Abs(number).ToString();
+            string input = Math.Abs(number).ToString(NumberFormatInfo.InvariantInfo);
 
             string[] inputArray = input.Split('.');
 
