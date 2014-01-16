@@ -1,4 +1,4 @@
-﻿// <copyright file="GeoCacheRecord.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <copyright file="GeoCacheRecord.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
 // <date>2009-12-06</date>
 // <summary>Record stored in from Gps Cache</summary>
@@ -10,6 +10,7 @@ namespace Fotofly.Geotagging.Resolvers
     using System.Text;
 
     using Fotofly;
+	using System.Globalization;
 
     public class GeoCacheRecord
     {
@@ -32,7 +33,7 @@ namespace Fotofly.Geotagging.Resolvers
             this.Address = new Address(hierarchicalName.Trim());
 
             // Create a new GpsPosition
-            this.GpsPosition = new GpsPosition(Convert.ToDouble(latitude), Convert.ToDouble(longitude));
+			this.GpsPosition = new GpsPosition(Convert.ToDouble(latitude, NumberFormatInfo.InvariantInfo), Convert.ToDouble(longitude, NumberFormatInfo.InvariantInfo));
             this.GpsPosition.Time = this.Date;
         }
 
