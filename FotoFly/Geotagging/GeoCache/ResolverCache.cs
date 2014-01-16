@@ -10,6 +10,7 @@ namespace Fotofly.Geotagging.Resolvers
     using System.Linq;
     using System.Text;
     using System.Xml.Serialization;
+	using System.Globalization;
 
     public class ResolverCache
     {
@@ -219,7 +220,7 @@ namespace Fotofly.Geotagging.Resolvers
                         {
                             string[] data = newData.Split(',');
 
-                            returnValue.Add(new GpsPosition(Convert.ToDouble(data[0]), Convert.ToDouble(data[1])));
+							returnValue.Add(new GpsPosition(Convert.ToDouble(data[0], NumberFormatInfo.InvariantInfo), Convert.ToDouble(data[1], NumberFormatInfo.InvariantInfo)));
                         }
                     }
 
