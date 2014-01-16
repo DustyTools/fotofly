@@ -1,4 +1,4 @@
-﻿// <copyright file="XmpExifProvider.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <copyright file="XmpExifProvider.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
 // <date>2010-02-15</date>
 // <summary>XmpExifProvider Class</summary>
@@ -14,6 +14,7 @@ namespace Fotofly.MetadataProviders
 
     using Fotofly.BitmapMetadataTools;
     using Fotofly.MetadataQueries;
+	using System.Globalization;
 
     public class XmpExifProvider : BaseProvider
     {
@@ -150,7 +151,7 @@ namespace Fotofly.MetadataProviders
                         double degrees;
                         double minutes;
 
-                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
+						if (Double.TryParse(splitString[0], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out degrees) && Double.TryParse(splitString[1], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out minutes))
                         {
                             return new GpsCoordinate(gpsLatitudeRef, degrees, minutes);
                         }
@@ -161,7 +162,7 @@ namespace Fotofly.MetadataProviders
                         double minutes;
                         double seconds;
 
-                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
+						if (Double.TryParse(splitString[0], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out degrees) && Double.TryParse(splitString[1], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out minutes) && Double.TryParse(splitString[2], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out seconds))
                         {
                             return new GpsCoordinate(gpsLatitudeRef, degrees, minutes, seconds);
                         }
@@ -262,7 +263,7 @@ namespace Fotofly.MetadataProviders
                         double degrees;
                         double minutes;
 
-                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
+						if (Double.TryParse(splitString[0], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out degrees) && Double.TryParse(splitString[1], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out minutes))
                         {
                             return new GpsCoordinate(gpsLongitudeRef, degrees, minutes);
                         }
@@ -273,7 +274,7 @@ namespace Fotofly.MetadataProviders
                         double minutes;
                         double seconds;
 
-                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
+						if (Double.TryParse(splitString[0], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out degrees) && Double.TryParse(splitString[1], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out minutes) && Double.TryParse(splitString[2], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out seconds))
                         {
                             return new GpsCoordinate(gpsLongitudeRef, degrees, minutes, seconds);
                         }
@@ -410,7 +411,7 @@ namespace Fotofly.MetadataProviders
                         double degrees;
                         double minutes;
 
-                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
+						if (Double.TryParse(splitString[0], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out degrees) && Double.TryParse(splitString[1], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out minutes))
                         {
                             return new GpsCoordinate(gpsDestLatitudeRef, degrees, minutes);
                         }
@@ -421,7 +422,7 @@ namespace Fotofly.MetadataProviders
                         double minutes;
                         double seconds;
 
-                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
+						if (Double.TryParse(splitString[0], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out degrees) && Double.TryParse(splitString[1], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out minutes) && Double.TryParse(splitString[2], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out seconds))
                         {
                             return new GpsCoordinate(gpsDestLatitudeRef, degrees, minutes, seconds);
                         }
@@ -522,7 +523,7 @@ namespace Fotofly.MetadataProviders
                         double degrees;
                         double minutes;
 
-                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes))
+						if (Double.TryParse(splitString[0], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out degrees) && Double.TryParse(splitString[1], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out minutes))
                         {
                             return new GpsCoordinate(gpsDestLongitudeRef, degrees, minutes);
                         }
@@ -533,7 +534,7 @@ namespace Fotofly.MetadataProviders
                         double minutes;
                         double seconds;
 
-                        if (Double.TryParse(splitString[0], out degrees) && Double.TryParse(splitString[1], out minutes) && Double.TryParse(splitString[2], out seconds))
+						if (Double.TryParse(splitString[0], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out degrees) && Double.TryParse(splitString[1], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out minutes) && Double.TryParse(splitString[2], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out seconds))
                         {
                             return new GpsCoordinate(gpsDestLongitudeRef, degrees, minutes, seconds);
                         }
@@ -906,7 +907,7 @@ namespace Fotofly.MetadataProviders
                 {
                     double digitalZoomRatio;
 
-                    if (double.TryParse(digitalZoomRatioString, out digitalZoomRatio))
+					if (double.TryParse(digitalZoomRatioString, NumberStyles.None, NumberFormatInfo.InvariantInfo, out digitalZoomRatio))
                     {
                         return digitalZoomRatio;
                     }
