@@ -18,6 +18,7 @@
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Fotofly.MetadataQueries;
+	using System.Globalization;
 
     [TestClass]
     public class BitmapMetadataUnitTests
@@ -322,7 +323,7 @@
                 Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLongitude, new GpsCoordinate(GpsCoordinate.LongitudeRef.East, 4, 26.6922), "Longitude");
                 Assert.AreEqual<double>(xmpExifProvider.GpsAltitude, Double.NaN, "Altitude");
                 Assert.AreEqual<string>(xmpExifProvider.GpsVersionID, "2.2.0.0", "Gps VersionID");
-                Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 13:02:34Z", "Satalite Time");
+                Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u", DateTimeFormatInfo.InvariantInfo), "2010-02-01 22:02:34Z", "Satalite Time");
             }
 
             using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.GeotaggedXmp2))
@@ -332,7 +333,7 @@
 
                 Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLatitude, new GpsCoordinate(GpsCoordinate.LatitudeRef.North, 51, 55.7057));
                 Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLongitude, new GpsCoordinate(GpsCoordinate.LongitudeRef.East, 4, 26.9547));
-                Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 13:25:12Z");
+                Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 22:25:12Z");
             }
 
             using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.GeotaggedXmp3))
@@ -342,7 +343,7 @@
 
                 Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLatitude, new GpsCoordinate(GpsCoordinate.LatitudeRef.North, 51, 55.6767));
                 Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLongitude, new GpsCoordinate(GpsCoordinate.LongitudeRef.East, 4, 27.2393));
-                Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 14:35:07Z");
+                Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 23:35:07Z");
             }
 
             using (WpfFileManager wpfFileManager = new WpfFileManager(this.samplePhotosFolder + TestPhotos.GeotaggedXmp4))
@@ -352,7 +353,7 @@
 
                 Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLatitude, new GpsCoordinate(GpsCoordinate.LatitudeRef.North, 51, 55.4804));
                 Assert.AreEqual<GpsCoordinate>(xmpExifProvider.GpsLongitude, new GpsCoordinate(GpsCoordinate.LongitudeRef.East, 4, 27, 9));
-                Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 14:00:52Z");
+                Assert.AreEqual<string>(xmpExifProvider.GpsDateTimeStamp.ToString("u"), "2010-02-01 23:00:52Z");
             }
         }
 
