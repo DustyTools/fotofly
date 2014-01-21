@@ -44,6 +44,7 @@
         [ClassInitialize()]
         public static void PreTestPassInitialize(TestContext testContext)
         {
+			GlobalUnitTests.InitializeCulture();
         }
         #endregion
 

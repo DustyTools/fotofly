@@ -19,6 +19,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Fotofly.MetadataQueries;
 	using System.Globalization;
+	using System.Threading;
 
     [TestClass]
     public class BitmapMetadataUnitTests
@@ -36,6 +37,7 @@
         [ClassInitialize()]
         public static void PreTestPassInitialize(TestContext testContext)
         {
+			GlobalUnitTests.InitializeCulture();
         }
         #endregion
 

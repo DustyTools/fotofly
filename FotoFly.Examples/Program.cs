@@ -6,6 +6,8 @@ namespace Fotofly.Examples
     using System.Windows.Media.Imaging;
 
     using Fotofly.UnitTests;
+	using Fotofly.BitmapMetadataTools;
+	using System.IO;
 
     public class Program
     {
@@ -14,6 +16,25 @@ namespace Fotofly.Examples
         [STAThread]
         public static void Main(string[] args)
         {
+			//foreach (string fileName in Directory.GetFiles(@"..\..\..\~Sample Files\IptcPhotos", "*.jpg"))
+			//{
+			//    using (WpfFileManager wpfFileManager = new WpfFileManager(fileName))
+			//    {
+			//        MetadataDump metadataDump = new MetadataDump(wpfFileManager.BitmapMetadata);
+
+			//        //foreach (var x in metadataDump.PropertyList)
+			//        //    Console.WriteLine(x.Query + "\t" + x.Value);
+
+			//        foreach (var s in metadataDump.StringList)
+			//            Console.WriteLine(s);
+
+			//        //// Check total count
+			//        //Assert.AreEqual<int>(metadataDump.StringList.Count, 187);
+			//    }
+			//}
+
+			//return;
+
             // Wpf Examples:
             // WpfFileManager uses WPF to read and write BitmapMetadata in a valid jpg file
             // BitmapMetadataHelper provides Extension Methods on top of BitmapMetadata
