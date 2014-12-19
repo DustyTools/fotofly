@@ -4,24 +4,13 @@
 // <summary>Class for reading and writing BitmapMetadata</summary>
 namespace Fotofly.BitmapMetadataTools
 {
+    using Fotofly.MetadataQueries;
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
     using System.Diagnostics;
-    using System.Drawing;
-    using System.Drawing.Imaging;
     using System.IO;
-    using System.Runtime.Serialization;
-    using System.Runtime.Serialization.Formatters.Binary;
-    using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading;
-    using System.Windows;
-    using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using Fotofly.MetadataQueries;
 
     public class WpfFileManager : IDisposable
     {
@@ -223,7 +212,7 @@ namespace Fotofly.BitmapMetadataTools
                 this.Dispose(true);
             }
 
-            // Take yourself off the Finalization queue 
+            // Take yourself off the Finalization queue
             // to prevent finalization code for this object
             // from executing a second time.
             GC.SuppressFinalize(this);
@@ -275,33 +264,54 @@ namespace Fotofly.BitmapMetadataTools
             }
         }
 
+        public static BitmapDecoder CreateBitmapDecoder(Stream source)
+        {
+            return BitmapDecoder.Create(source, WpfFileManager.createOptions, BitmapCacheOption.None);
+        }
+
+        public static BitmapMetadata ReadMetadata(Stream stream)
+        {
+            return ReadMetadata(stream, AlwaysCloneBitmap);
+        }
+
+        public static BitmapMetadata ReadMetadata(Stream stream, bool cloneBitmap)
+        {
+            return ReadMetadata(CreateBitmapDecoder(stream), cloneBitmap);
+        }
+
+        public static BitmapMetadata ReadMetadata(BitmapDecoder decoder, bool cloneBitmap)
+        {
+            // Check the contents of the file is valid
+            if (decoder.Frames[0] == null || decoder.Frames[0].Metadata == null)
+            {
+                return null;
+            }
+
+            // Grab the metadata
+            if (cloneBitmap)
+            {
+                // Clone so we have an unfrozen object
+                return decoder.Frames[0].Metadata.Clone() as BitmapMetadata;
+            }
+
+            return decoder.Frames[0].Metadata as BitmapMetadata;
+        }
+
         private void ReadMetadata()
         {
             // Create a decoder, cache all content on load because we'll close the stream
             this.sourceStream = File.Open(this.sourceFilename, FileMode.Open, FileAccess.Read);
 
             // Create a Bitmap Decoder
-            this.bitmapDecoder = BitmapDecoder.Create(this.sourceStream, WpfFileManager.createOptions, BitmapCacheOption.None);
+            this.bitmapDecoder = CreateBitmapDecoder(this.sourceStream);
 
-            // Check the contents of the file is valid
-            if (this.BitmapDecoder.Frames[0] != null && this.BitmapDecoder.Frames[0].Metadata != null)
+            this.bitmapMetadata = ReadMetadata(this.bitmapDecoder, this.openForEditing || WpfFileManager.AlwaysCloneBitmap);
+            if (this.bitmapMetadata == null)
             {
-                // Grab the metadata
-                if (this.openForEditing || WpfFileManager.AlwaysCloneBitmap)
-                {
-                    // Clone so we have an unfrozen object
-                    this.bitmapMetadata = this.BitmapDecoder.Frames[0].Metadata.Clone() as BitmapMetadata;
-                }
-                else
-                {
-                    this.bitmapMetadata = this.BitmapDecoder.Frames[0].Metadata as BitmapMetadata;
-                }
-            }
-            else
-            {
-                throw new Exception("No Frames of Metadata in the file:\n\n" + sourceFilename);
+                throw new Exception("No Frames of Metadata in the file:\n\n" + this.sourceFilename);
             }
         }
+
 
         private void AddMetadataPadding()
         {
