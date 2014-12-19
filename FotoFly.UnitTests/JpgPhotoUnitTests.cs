@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -135,9 +136,9 @@
         [TestMethod]
         public void ReadDateMetadata()
         {
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateDigitised.ToString(), new Regex("10/10/2009 21:46:37"));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateTaken.ToString(), new Regex("10/10/2009 14:46:37"));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateAquired.ToString(), new Regex("15/11/2009 00:05:58"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateDigitised.ToString(CultureInfo.InvariantCulture), new Regex("10/10/2009 21:46:37"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateTaken.ToString(CultureInfo.InvariantCulture), new Regex("10/10/2009 14:46:37"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateAquired.ToString(CultureInfo.InvariantCulture), new Regex("11/15/2009 00:05:58"));
         }
 
         /// <summary>

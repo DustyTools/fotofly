@@ -187,9 +187,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\BingMapsForEnterprise\mappoint.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadataStorage Include="Service References\BingMapsForEnterprise\" />
   </ItemGroup>
   <ItemGroup>
