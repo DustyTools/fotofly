@@ -44,6 +44,7 @@
         [ClassInitialize()]
         public static void PreTestPassInitialize(TestContext testContext)
         {
+			GlobalUnitTests.InitializeCulture();
         }
         #endregion
 
@@ -135,9 +136,9 @@
         [TestMethod]
         public void ReadDateMetadata()
         {
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateDigitised.ToString(), new Regex("10/10/2009 21:46:37"));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateTaken.ToString(), new Regex("10/10/2009 14:46:37"));
-            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateAquired.ToString(), new Regex("15/11/2009 00:05:58"));
+            StringAssert.Matches(this.jpgPhotoOne.Metadata.DateDigitised.ToString(), new Regex(new DateTime(2009, 10, 10, 21, 46, 37).ToString()));
+			StringAssert.Matches(this.jpgPhotoOne.Metadata.DateTaken.ToString(), new Regex(new DateTime(2009, 10, 10, 14, 46, 37).ToString()));
+			StringAssert.Matches(this.jpgPhotoOne.Metadata.DateAquired.ToString(), new Regex(new DateTime(2009, 11, 15, 0, 5, 58).ToString()));
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿// <copyright file="Aperture.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
+// <copyright file="Aperture.cs" company="Taasss">Copyright (c) 2009 All Right Reserved</copyright>
 // <author>Ben Vincent</author>
 // <date>2010-02-25</date>
 // <summary>Aperture</summary>
@@ -7,6 +7,7 @@ namespace Fotofly
     using System;
     using System.Text;
     using System.Xml.Serialization;
+	using System.Globalization;
 
     [XmlRootAttribute("Aperture", Namespace = "http://www.tassography.com/fotofly")]
     public class Aperture
@@ -102,7 +103,7 @@ namespace Fotofly
             }
             else
             {
-                return "f/" + this.uRational.ToDouble().ToString();
+				return "f/" + this.uRational.ToDouble().ToString(NumberFormatInfo.InvariantInfo);
             }
         }
     }

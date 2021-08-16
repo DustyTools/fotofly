@@ -13,6 +13,7 @@ namespace Fotofly.MetadataProviders
 
     using Fotofly.BitmapMetadataTools;
     using Fotofly.MetadataQueries;
+	using System.Globalization;
 
     public class XmpFotoflyProvider : BaseProvider, IDisposable
     {
@@ -87,7 +88,7 @@ namespace Fotofly.MetadataProviders
                 }
                 else
                 {
-                    double utcOffset = Convert.ToDouble(utcOffsetString);
+                    double utcOffset = Convert.ToDouble(utcOffsetString, NumberFormatInfo.InvariantInfo);
 
                     // Max range is -12 to +14
                     // UTC-12 = Baker Island, Howland Island

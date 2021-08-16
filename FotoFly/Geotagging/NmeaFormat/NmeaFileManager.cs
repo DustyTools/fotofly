@@ -113,8 +113,8 @@ namespace Fotofly.NmeaFormat
             if (sentence[2] != "" && sentence[3] != "" && sentence[4] != "" && sentence[5] != "")
             {
                 // Get Latitude
-                double latHours = Math.Floor(Convert.ToDouble(sentence[2]) / 100);
-                double latMinutes = Convert.ToDouble(sentence[2]) - (latHours * 100);
+                double latHours = Math.Floor(Convert.ToDouble(sentence[2], NumberFormatInfo.InvariantInfo) / 100);
+				double latMinutes = Convert.ToDouble(sentence[2], NumberFormatInfo.InvariantInfo) - (latHours * 100);
 
                 if (sentence[3] == "N")
                 {
@@ -126,8 +126,8 @@ namespace Fotofly.NmeaFormat
                 }
 
                 // Get Longitude
-                double lonHours = Math.Floor(Convert.ToDouble(sentence[4]) / 100);
-                double lonMinutes = Convert.ToDouble(sentence[4]) - (lonHours * 100);
+				double lonHours = Math.Floor(Convert.ToDouble(sentence[4], NumberFormatInfo.InvariantInfo) / 100);
+				double lonMinutes = Convert.ToDouble(sentence[4], NumberFormatInfo.InvariantInfo) - (lonHours * 100);
 
                 if (sentence[5] == "E")
                 {
@@ -143,7 +143,7 @@ namespace Fotofly.NmeaFormat
             if (sentence[9] != "" && sentence[10] != "")
             {
                 // Get Altitude
-                double altitude = Convert.ToDouble(sentence[9]);
+				double altitude = Convert.ToDouble(sentence[9], NumberFormatInfo.InvariantInfo);
 
                 gpsTrackPoint.Altitude = altitude;
             }
